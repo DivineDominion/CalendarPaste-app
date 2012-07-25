@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		60AAB7C815C09243002114B9 /* ShiftTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB7C715C09243002114B9 /* ShiftTemplate.m */; };
+		60AAB7CC15C0926D002114B9 /* ShiftTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */; };
 		60BB96A215C08EB900801105 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A115C08EB900801105 /* UIKit.framework */; };
 		60BB96A415C08EB900801105 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A315C08EB900801105 /* Foundation.framework */; };
 		60BB96A615C08EB900801105 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A515C08EB900801105 /* CoreGraphics.framework */; };
@@ -31,6 +33,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		60AAB7C615C09243002114B9 /* ShiftTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplate.h; sourceTree = "<group>"; };
+		60AAB7C715C09243002114B9 /* ShiftTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplate.m; sourceTree = "<group>"; };
+		60AAB7CA15C0926D002114B9 /* ShiftTemplateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplateTests.h; sourceTree = "<group>"; };
+		60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplateTests.m; sourceTree = "<group>"; };
 		60BB969D15C08EB900801105 /* ShiftCal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftCal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60BB96A115C08EB900801105 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		60BB96A315C08EB900801105 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -106,6 +112,8 @@
 		60BB96A715C08EB900801105 /* ShiftCal */ = {
 			isa = PBXGroup;
 			children = (
+				60AAB7C615C09243002114B9 /* ShiftTemplate.h */,
+				60AAB7C715C09243002114B9 /* ShiftTemplate.m */,
 				60BB96B015C08EB900801105 /* AppDelegate.h */,
 				60BB96B115C08EB900801105 /* AppDelegate.m */,
 				60BB96A815C08EB900801105 /* Supporting Files */,
@@ -127,6 +135,8 @@
 		60BB96BF15C08EB900801105 /* ShiftCalTests */ = {
 			isa = PBXGroup;
 			children = (
+				60AAB7CA15C0926D002114B9 /* ShiftTemplateTests.h */,
+				60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */,
 				60BB96C515C08EB900801105 /* ShiftCalTests.h */,
 				60BB96C615C08EB900801105 /* ShiftCalTests.m */,
 				60BB96C015C08EB900801105 /* Supporting Files */,
@@ -251,6 +261,7 @@
 			files = (
 				60BB96AE15C08EB900801105 /* main.m in Sources */,
 				60BB96B215C08EB900801105 /* AppDelegate.m in Sources */,
+				60AAB7C815C09243002114B9 /* ShiftTemplate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				60BB96C715C08EB900801105 /* ShiftCalTests.m in Sources */,
+				60AAB7CC15C0926D002114B9 /* ShiftTemplateTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,6 +428,7 @@
 				60BB96CC15C08EB900801105 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		60BB96CD15C08EB900801105 /* Build configuration list for PBXNativeTarget "ShiftCalTests" */ = {
 			isa = XCConfigurationList;
@@ -424,6 +437,7 @@
 				60BB96CF15C08EB900801105 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
