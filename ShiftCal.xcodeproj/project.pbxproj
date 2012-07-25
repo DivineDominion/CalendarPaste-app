@@ -1,0 +1,431 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		60BB96A215C08EB900801105 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A115C08EB900801105 /* UIKit.framework */; };
+		60BB96A415C08EB900801105 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A315C08EB900801105 /* Foundation.framework */; };
+		60BB96A615C08EB900801105 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A515C08EB900801105 /* CoreGraphics.framework */; };
+		60BB96AC15C08EB900801105 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 60BB96AA15C08EB900801105 /* InfoPlist.strings */; };
+		60BB96AE15C08EB900801105 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BB96AD15C08EB900801105 /* main.m */; };
+		60BB96B215C08EB900801105 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BB96B115C08EB900801105 /* AppDelegate.m */; };
+		60BB96BA15C08EB900801105 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96B915C08EB900801105 /* SenTestingKit.framework */; };
+		60BB96BB15C08EB900801105 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A115C08EB900801105 /* UIKit.framework */; };
+		60BB96BC15C08EB900801105 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A315C08EB900801105 /* Foundation.framework */; };
+		60BB96C415C08EB900801105 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 60BB96C215C08EB900801105 /* InfoPlist.strings */; };
+		60BB96C715C08EB900801105 /* ShiftCalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BB96C615C08EB900801105 /* ShiftCalTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		60BB96BD15C08EB900801105 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60BB969415C08EB900801105 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 60BB969C15C08EB900801105;
+			remoteInfo = ShiftCal;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		60BB969D15C08EB900801105 /* ShiftCal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftCal.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		60BB96A115C08EB900801105 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		60BB96A315C08EB900801105 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		60BB96A515C08EB900801105 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		60BB96A915C08EB900801105 /* ShiftCal-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShiftCal-Info.plist"; sourceTree = "<group>"; };
+		60BB96AB15C08EB900801105 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		60BB96AD15C08EB900801105 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		60BB96AF15C08EB900801105 /* ShiftCal-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShiftCal-Prefix.pch"; sourceTree = "<group>"; };
+		60BB96B015C08EB900801105 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		60BB96B115C08EB900801105 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		60BB96B815C08EB900801105 /* ShiftCalTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShiftCalTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		60BB96B915C08EB900801105 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		60BB96C115C08EB900801105 /* ShiftCalTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShiftCalTests-Info.plist"; sourceTree = "<group>"; };
+		60BB96C315C08EB900801105 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		60BB96C515C08EB900801105 /* ShiftCalTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShiftCalTests.h; sourceTree = "<group>"; };
+		60BB96C615C08EB900801105 /* ShiftCalTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShiftCalTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		60BB969A15C08EB900801105 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60BB96A215C08EB900801105 /* UIKit.framework in Frameworks */,
+				60BB96A415C08EB900801105 /* Foundation.framework in Frameworks */,
+				60BB96A615C08EB900801105 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60BB96B415C08EB900801105 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60BB96BA15C08EB900801105 /* SenTestingKit.framework in Frameworks */,
+				60BB96BB15C08EB900801105 /* UIKit.framework in Frameworks */,
+				60BB96BC15C08EB900801105 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		60BB969215C08EB900801105 = {
+			isa = PBXGroup;
+			children = (
+				60BB96A715C08EB900801105 /* ShiftCal */,
+				60BB96BF15C08EB900801105 /* ShiftCalTests */,
+				60BB96A015C08EB900801105 /* Frameworks */,
+				60BB969E15C08EB900801105 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		60BB969E15C08EB900801105 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				60BB969D15C08EB900801105 /* ShiftCal.app */,
+				60BB96B815C08EB900801105 /* ShiftCalTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		60BB96A015C08EB900801105 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				60BB96A115C08EB900801105 /* UIKit.framework */,
+				60BB96A315C08EB900801105 /* Foundation.framework */,
+				60BB96A515C08EB900801105 /* CoreGraphics.framework */,
+				60BB96B915C08EB900801105 /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		60BB96A715C08EB900801105 /* ShiftCal */ = {
+			isa = PBXGroup;
+			children = (
+				60BB96B015C08EB900801105 /* AppDelegate.h */,
+				60BB96B115C08EB900801105 /* AppDelegate.m */,
+				60BB96A815C08EB900801105 /* Supporting Files */,
+			);
+			path = ShiftCal;
+			sourceTree = "<group>";
+		};
+		60BB96A815C08EB900801105 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				60BB96A915C08EB900801105 /* ShiftCal-Info.plist */,
+				60BB96AA15C08EB900801105 /* InfoPlist.strings */,
+				60BB96AD15C08EB900801105 /* main.m */,
+				60BB96AF15C08EB900801105 /* ShiftCal-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		60BB96BF15C08EB900801105 /* ShiftCalTests */ = {
+			isa = PBXGroup;
+			children = (
+				60BB96C515C08EB900801105 /* ShiftCalTests.h */,
+				60BB96C615C08EB900801105 /* ShiftCalTests.m */,
+				60BB96C015C08EB900801105 /* Supporting Files */,
+			);
+			path = ShiftCalTests;
+			sourceTree = "<group>";
+		};
+		60BB96C015C08EB900801105 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				60BB96C115C08EB900801105 /* ShiftCalTests-Info.plist */,
+				60BB96C215C08EB900801105 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		60BB969C15C08EB900801105 /* ShiftCal */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 60BB96CA15C08EB900801105 /* Build configuration list for PBXNativeTarget "ShiftCal" */;
+			buildPhases = (
+				60BB969915C08EB900801105 /* Sources */,
+				60BB969A15C08EB900801105 /* Frameworks */,
+				60BB969B15C08EB900801105 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShiftCal;
+			productName = ShiftCal;
+			productReference = 60BB969D15C08EB900801105 /* ShiftCal.app */;
+			productType = "com.apple.product-type.application";
+		};
+		60BB96B715C08EB900801105 /* ShiftCalTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 60BB96CD15C08EB900801105 /* Build configuration list for PBXNativeTarget "ShiftCalTests" */;
+			buildPhases = (
+				60BB96B315C08EB900801105 /* Sources */,
+				60BB96B415C08EB900801105 /* Frameworks */,
+				60BB96B515C08EB900801105 /* Resources */,
+				60BB96B615C08EB900801105 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				60BB96BE15C08EB900801105 /* PBXTargetDependency */,
+			);
+			name = ShiftCalTests;
+			productName = ShiftCalTests;
+			productReference = 60BB96B815C08EB900801105 /* ShiftCalTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		60BB969415C08EB900801105 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0440;
+				ORGANIZATIONNAME = "Christian Tietze";
+			};
+			buildConfigurationList = 60BB969715C08EB900801105 /* Build configuration list for PBXProject "ShiftCal" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 60BB969215C08EB900801105;
+			productRefGroup = 60BB969E15C08EB900801105 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				60BB969C15C08EB900801105 /* ShiftCal */,
+				60BB96B715C08EB900801105 /* ShiftCalTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		60BB969B15C08EB900801105 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60BB96AC15C08EB900801105 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60BB96B515C08EB900801105 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60BB96C415C08EB900801105 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		60BB96B615C08EB900801105 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		60BB969915C08EB900801105 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60BB96AE15C08EB900801105 /* main.m in Sources */,
+				60BB96B215C08EB900801105 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60BB96B315C08EB900801105 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60BB96C715C08EB900801105 /* ShiftCalTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		60BB96BE15C08EB900801105 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 60BB969C15C08EB900801105 /* ShiftCal */;
+			targetProxy = 60BB96BD15C08EB900801105 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		60BB96AA15C08EB900801105 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				60BB96AB15C08EB900801105 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		60BB96C215C08EB900801105 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				60BB96C315C08EB900801105 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		60BB96C815C08EB900801105 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		60BB96C915C08EB900801105 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		60BB96CB15C08EB900801105 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ShiftCal/ShiftCal-Prefix.pch";
+				INFOPLIST_FILE = "ShiftCal/ShiftCal-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		60BB96CC15C08EB900801105 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ShiftCal/ShiftCal-Prefix.pch";
+				INFOPLIST_FILE = "ShiftCal/ShiftCal-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		60BB96CE15C08EB900801105 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ShiftCal.app/ShiftCal";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ShiftCal/ShiftCal-Prefix.pch";
+				INFOPLIST_FILE = "ShiftCalTests/ShiftCalTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		60BB96CF15C08EB900801105 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ShiftCal.app/ShiftCal";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ShiftCal/ShiftCal-Prefix.pch";
+				INFOPLIST_FILE = "ShiftCalTests/ShiftCalTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		60BB969715C08EB900801105 /* Build configuration list for PBXProject "ShiftCal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				60BB96C815C08EB900801105 /* Debug */,
+				60BB96C915C08EB900801105 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		60BB96CA15C08EB900801105 /* Build configuration list for PBXNativeTarget "ShiftCal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				60BB96CB15C08EB900801105 /* Debug */,
+				60BB96CC15C08EB900801105 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		60BB96CD15C08EB900801105 /* Build configuration list for PBXNativeTarget "ShiftCalTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				60BB96CE15C08EB900801105 /* Debug */,
+				60BB96CF15C08EB900801105 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 60BB969415C08EB900801105 /* Project object */;
+}
