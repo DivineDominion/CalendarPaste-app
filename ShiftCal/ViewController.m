@@ -8,11 +8,32 @@
 
 #import "ViewController.h"
 
+
 @implementation ViewController
+
+- (void)loadView
+{
+    // Never use same view objects with multiple controllers! -> copy?
+    self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.title = @"Test";
+    
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -22,4 +43,9 @@
     // Release any retained subviews of the main view.
 }
 
+- (void)dealloc
+{
+    [self.view release];
+    [super dealloc];
+}
 @end
