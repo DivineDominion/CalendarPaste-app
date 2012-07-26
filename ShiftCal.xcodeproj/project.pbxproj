@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		60AAB7C815C09243002114B9 /* ShiftTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB7C715C09243002114B9 /* ShiftTemplate.m */; };
 		60AAB7CC15C0926D002114B9 /* ShiftTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */; };
-		60AAB81315C13297002114B9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB81215C13297002114B9 /* ViewController.m */; };
+		60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB81215C13297002114B9 /* ShiftOverviewController.m */; };
 		60BB96A215C08EB900801105 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A115C08EB900801105 /* UIKit.framework */; };
 		60BB96A415C08EB900801105 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A315C08EB900801105 /* Foundation.framework */; };
 		60BB96A615C08EB900801105 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A515C08EB900801105 /* CoreGraphics.framework */; };
@@ -38,8 +38,8 @@
 		60AAB7C715C09243002114B9 /* ShiftTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplate.m; sourceTree = "<group>"; };
 		60AAB7CA15C0926D002114B9 /* ShiftTemplateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplateTests.h; sourceTree = "<group>"; };
 		60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplateTests.m; sourceTree = "<group>"; };
-		60AAB81115C13297002114B9 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		60AAB81215C13297002114B9 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		60AAB81115C13297002114B9 /* ShiftOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftOverviewController.h; sourceTree = "<group>"; };
+		60AAB81215C13297002114B9 /* ShiftOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftOverviewController.m; sourceTree = "<group>"; };
 		60BB969D15C08EB900801105 /* ShiftCal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftCal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60BB96A115C08EB900801105 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		60BB96A315C08EB900801105 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -120,8 +120,8 @@
 				60BB96B015C08EB900801105 /* AppDelegate.h */,
 				60BB96B115C08EB900801105 /* AppDelegate.m */,
 				60BB96A815C08EB900801105 /* Supporting Files */,
-				60AAB81115C13297002114B9 /* ViewController.h */,
-				60AAB81215C13297002114B9 /* ViewController.m */,
+				60AAB81115C13297002114B9 /* ShiftOverviewController.h */,
+				60AAB81215C13297002114B9 /* ShiftOverviewController.m */,
 			);
 			path = ShiftCal;
 			sourceTree = "<group>";
@@ -267,7 +267,7 @@
 				60BB96AE15C08EB900801105 /* main.m in Sources */,
 				60BB96B215C08EB900801105 /* AppDelegate.m in Sources */,
 				60AAB7C815C09243002114B9 /* ShiftTemplate.m in Sources */,
-				60AAB81315C13297002114B9 /* ViewController.m in Sources */,
+				60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

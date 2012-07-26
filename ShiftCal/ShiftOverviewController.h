@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  ShiftOverviewController.h
 //  ShiftCal
 //
 //  Created by Christian Tietze on 26.07.12.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ShiftOverviewController : UIViewController
 
 @end

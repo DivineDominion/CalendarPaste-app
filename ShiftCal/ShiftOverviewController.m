@@ -1,21 +1,21 @@
 //
-//  ViewController.m
+//  ShiftOverviewController.m
 //  ShiftCal
 //
 //  Created by Christian Tietze on 26.07.12.
 //  Copyright (c) 2012 Christian Tietze. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "ShiftOverviewController.h"
 
-@interface ViewController ()
+@interface ShiftOverviewController ()
 
 // forward declarations
 - (void)addAction:(id)sender;
 
 @end
 
-@implementation ViewController
+@implementation ShiftOverviewController
 
 - (void)dealloc
 {

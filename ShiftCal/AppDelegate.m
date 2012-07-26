@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 
-#import "ViewController.h"
+#import "ShiftOverviewController.h"
 
 @interface AppDelegate ()
 
@@ -24,7 +24,7 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    ViewController *viewController = [[ViewController alloc] init];
+    ShiftOverviewController *viewController = [[ShiftOverviewController alloc] init];
     self.navController  = [[UINavigationController alloc] initWithRootViewController:viewController];
     [viewController release];
     
