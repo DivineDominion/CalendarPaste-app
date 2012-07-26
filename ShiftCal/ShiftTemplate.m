@@ -14,7 +14,9 @@
 @synthesize from = _from;
 @synthesize until = _until;
 
--(id)initWithTitle:(NSString *)title from:(NSDate *)from until:(NSDate *)until
+- (id)initWithTitle:(NSString *)title
+               from:(NSDate *)from
+              until:(NSDate *)until
 {
     self = [super init];
     if (self) {

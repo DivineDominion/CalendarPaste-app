@@ -10,10 +10,10 @@
 
 @interface ShiftTemplate : NSObject
 
-@property NSString *title;
-@property NSDate   *from;
-@property NSDate   *until;
+@property (nonatomic, copy)   NSString *title;
+@property (nonatomic, strong) NSDate   *from;
+@property (nonatomic, strong) NSDate   *until;
 
--(id)initWithTitle:(NSString *)title from:(NSDate *)from until:(NSDate *)until;
+- (id)initWithTitle:(NSString *)title from:(NSDate *)from until:(NSDate *)until;
 
 @end
