@@ -11,7 +11,7 @@
 @implementation ShiftTemplate
 
 @synthesize title = _title;
-@synthesize from = _from;
+@synthesize from  = _from;
 @synthesize until = _until;
 
 - (id)initWithTitle:(NSString *)title
