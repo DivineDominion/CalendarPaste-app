@@ -10,6 +10,4 @@
 
 @interface ViewController : UIViewController
 
-- (void)addAction:(id)sender;
-
 @end

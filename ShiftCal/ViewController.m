@@ -8,8 +8,20 @@
 
 #import "ViewController.h"
 
+@interface ViewController ()
+
+// forward declarations
+- (void)addAction:(id)sender;
+
+@end
 
 @implementation ViewController
+
+- (void)dealloc
+{
+    [self.view release];
+    [super dealloc];
+}
 
 - (void)loadView
 {
@@ -17,13 +29,23 @@
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
+    // Navigation Bar:
+    // ---------------------
+    // [+]    TITLE   [Edit]
+    // ---------------------
+    
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                            target:self
                                                                                            action:@selector(addAction:)]
                                              autorelease];
     
     self.navigationItem.rightBarButtonItem = [self editButtonItem];
+    
+    self.title = @"Shifts";
 }
+
+
+#pragma mark View callbacks
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -38,10 +60,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.title = @"Test";
-    
-	// Do any additional setup after loading the view, typically from a nib.
 }
 
 - (void)viewDidUnload
@@ -51,15 +69,12 @@
 }
 
 
+#pragma mark UI Actions
+
 - (void)addAction:(id)sender
 {
     NSLog(@"test!");
+    // TODO switch view to "new entry" view
 }
 
-
-- (void)dealloc
-{
-    [self.view release];
-    [super dealloc];
-}
 @end

@@ -10,23 +10,37 @@
 
 #import "ViewController.h"
 
+@interface AppDelegate ()
+
+// private properties
+@property (nonatomic, retain, readwrite) UINavigationController *navController;
+
+@end
+
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    self.viewController = [[ViewController alloc] init];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.viewController];
+    ViewController *viewController = [[ViewController alloc] init];
+    self.navController  = [[UINavigationController alloc] initWithRootViewController:viewController];
+    [viewController release];
     
-    self.window.rootViewController = nav;
-    
-    //[self.window addSubview:nav.view];
-
+    self.window.rootViewController = self.navController;
     
     [self.window makeKeyAndVisible];
     return YES;
 }
+
+- (void)dealloc
+{
+    [self.navController release];
+    [super dealloc];
+}
+
+#pragma mark Application callbacks
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
