@@ -16,6 +16,13 @@
     // Never use same view objects with multiple controllers! -> copy?
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                           target:self
+                                                                                           action:@selector(addAction:)]
+                                             autorelease];
+    
+    self.navigationItem.rightBarButtonItem = [self editButtonItem];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -42,6 +49,13 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
+
+
+- (void)addAction:(id)sender
+{
+    NSLog(@"test!");
+}
+
 
 - (void)dealloc
 {
