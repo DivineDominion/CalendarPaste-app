@@ -7,7 +7,7 @@
 //
 
 #import "ShiftOverviewController.h"
-#import "ShiftAddController.h"
+#import "ShiftAddViewController.h"
 
 @interface ShiftOverviewController ()
 
@@ -47,7 +47,7 @@
 }
 
 
-#pragma mark View callbacks
+#pragma mark - View callbacks
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -71,11 +71,11 @@
 }
 
 
-#pragma mark UI Actions
+#pragma mark - UI Actions
 
 - (void)addAction:(id)sender
 {
-    ShiftAddController *addController = [[ShiftAddController alloc] init];
+    ShiftAddViewController *addController = [[ShiftAddViewController alloc] init];
     UINavigationController *addNavController = [[UINavigationController alloc] initWithRootViewController:addController];
     
     [[self navigationController] presentModalViewController:addNavController animated:YES];

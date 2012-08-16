@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ShiftAddController : UIViewController
+@interface ShiftAddViewController : UIViewController
+
+- (void)save:(id)sender;
+- (void)cancel:(id)sender;
 
 @end
