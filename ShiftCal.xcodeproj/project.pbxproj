@@ -22,7 +22,6 @@
 		60BB96C415C08EB900801105 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 60BB96C215C08EB900801105 /* InfoPlist.strings */; };
 		60BB96C715C08EB900801105 /* ShiftCalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BB96C615C08EB900801105 /* ShiftCalTests.m */; };
 		60F1603415DD1447005834B3 /* ShiftAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1603315DD1447005834B3 /* ShiftAddViewController.m */; };
-		60F1603915DD30B2005834B3 /* ShiftAddView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1603815DD30B2005834B3 /* ShiftAddView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,8 +60,6 @@
 		60F1603215DD1447005834B3 /* ShiftAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShiftAddViewController.h; path = ../ShiftAddViewController.h; sourceTree = "<group>"; };
 		60F1603315DD1447005834B3 /* ShiftAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShiftAddViewController.m; path = ../ShiftAddViewController.m; sourceTree = "<group>"; };
 		60F1603615DD1B16005834B3 /* ShiftAddDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftAddDelegate.h; sourceTree = "<group>"; };
-		60F1603715DD30B2005834B3 /* ShiftAddView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShiftAddView.h; path = ../ShiftAddView.h; sourceTree = "<group>"; };
-		60F1603815DD30B2005834B3 /* ShiftAddView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShiftAddView.m; path = ../ShiftAddView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,8 +119,6 @@
 		60BB96A715C08EB900801105 /* ShiftCal */ = {
 			isa = PBXGroup;
 			children = (
-				60F1603715DD30B2005834B3 /* ShiftAddView.h */,
-				60F1603815DD30B2005834B3 /* ShiftAddView.m */,
 				60F1603215DD1447005834B3 /* ShiftAddViewController.h */,
 				60F1603315DD1447005834B3 /* ShiftAddViewController.m */,
 				60F1603615DD1B16005834B3 /* ShiftAddDelegate.h */,
@@ -281,7 +276,6 @@
 				60AAB7C815C09243002114B9 /* ShiftTemplate.m in Sources */,
 				60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */,
 				60F1603415DD1447005834B3 /* ShiftAddViewController.m in Sources */,
-				60F1603915DD30B2005834B3 /* ShiftAddView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

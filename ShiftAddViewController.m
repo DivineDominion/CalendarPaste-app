@@ -15,9 +15,11 @@
 
 - (void)loadView
 {
-    ShiftAddView *view = [[ShiftAddView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    self.view    = view; // Root view
+    //ShiftAddView *view = [[ShiftAddView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    UITableView *view = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStyleGrouped];
+    view.delegate = self;
+    view.dataSource = self;
+    self.view = view;
     
     [view release];
 }
@@ -58,6 +60,64 @@
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+}
+
+#pragma mark - Table View callbacks
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 2;
+    }
+    
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"cell"];
+    
+    if (cell == nil)
+    {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"] autorelease];
+        
+        if ([indexPath section] == 0)
+        {
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 285, 30)]; // 110, 10, 185, 30
+            textField.clearsOnBeginEditing = NO;
+            //textField.delegate = self;
+            
+            if ([indexPath row] == 0)
+            {
+                // TODO textField.tag
+                textField.placeholder = @"Title";
+            }
+            else if ([indexPath row] == 1) {
+                // TODO textField.tag
+                textField.placeholder = @"Location";
+            }
+            
+            [cell.contentView addSubview:textField];
+        }
+        else if ([indexPath section] == 1)
+        {
+            //cell.textLabel.text = @"label";
+        }
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    // TODO add subview
 }
 
 #pragma mark - Save and Cancel
