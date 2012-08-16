@@ -7,8 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ShiftTemplate.h"
+#import "ShiftAddDelegate.h"
 
 @interface ShiftAddViewController : UIViewController
+{
+    id <ShiftAddDelegate> addDelegate_;
+    ShiftTemplate *shift_;
+}
+
+@property (nonatomic, assign) id <ShiftAddDelegate> addDelegate;
+@property (nonatomic, retain) ShiftTemplate *shift;
 
 - (void)save:(id)sender;
 - (void)cancel:(id)sender;

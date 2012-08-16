@@ -73,12 +73,22 @@
 }
 
 
+#pragma mark - manipulating Shifts
+
+- (void)shiftAddViewController:(ShiftAddViewController *)shiftAddViewController didAddShift:(id)shift
+{
+    NSLog(@"add shift");
+    // TODO add shift
+}
+
 #pragma mark - UI Actions
 
 - (void)addAction:(id)sender
 {
     ShiftAddViewController *addController = [[ShiftAddViewController alloc] init];
     UINavigationController *addNavController = [[UINavigationController alloc] initWithRootViewController:addController];
+    
+    addController.addDelegate = self;
     
     [[self navigationController] presentModalViewController:addNavController animated:YES];
     

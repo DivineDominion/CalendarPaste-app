@@ -10,6 +10,9 @@
 
 @implementation ShiftAddViewController
 
+@synthesize shift=shift_;
+@synthesize addDelegate=addDelegate_;
+
 - (void)loadView
 {
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -44,6 +47,8 @@
     
     [saveItem release];
     [cancelItem release];
+    
+    // TODO title becomeFirstResponder
 }
 
 - (void)viewDidUnload
@@ -56,13 +61,13 @@
 
 - (void)save:(id)sender
 {
-    if (NO) {
+    if (self.addDelegate) {
+        ShiftTemplate *shift = nil;
         
+        [self.addDelegate shiftAddViewController:self didAddShift:shift];
     }
     
     [self dismissModalViewControllerAnimated:YES];
-    // TODO add item
-    // TODO dismiss modal
 }
 
 - (void)cancel:(id)sender

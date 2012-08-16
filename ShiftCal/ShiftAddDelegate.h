@@ -7,11 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ShiftAddController.h"
+
+@class ShiftAddViewController;
 
 @protocol ShiftAddDelegate <NSObject>
 
-- (void)shiftAddViewController:(ShiftAddController *)shiftAddViewController
-                   didAddShift:(id)shift;
+@required
+/// shift == nil on cancel
+- (void)shiftAddViewController:(ShiftAddViewController*)shiftAddViewController didAddShift:(id)shift;
 
 @end
