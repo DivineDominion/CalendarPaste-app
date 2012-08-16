@@ -79,6 +79,9 @@
     UINavigationController *addNavController = [[UINavigationController alloc] initWithRootViewController:addController];
     
     [[self navigationController] presentModalViewController:addNavController animated:YES];
+    
+    [addController release];
+    [addNavController release];
 }
 
 @end
