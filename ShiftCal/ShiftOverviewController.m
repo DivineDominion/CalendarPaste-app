@@ -31,15 +31,16 @@
     
     // Navigation Bar:
     // ---------------------
-    // [+]    TITLE   [Edit]
+    // [Edit]  TITLE     [+]
     // ---------------------
     
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                           target:self
-                                                                                           action:@selector(addAction:)]
-                                             autorelease];
+    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                             target:self
+                                                                             action:@selector(addAction:)];
+    self.navigationItem.leftBarButtonItem  = [self editButtonItem];
+    self.navigationItem.rightBarButtonItem = addItem;
     
-    self.navigationItem.rightBarButtonItem = [self editButtonItem];
+    [addItem release];
     
     self.title = @"Shifts";
 }
