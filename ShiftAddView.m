@@ -14,8 +14,10 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        // Stiped background
         self.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        
+        
     }
     return self;
 }

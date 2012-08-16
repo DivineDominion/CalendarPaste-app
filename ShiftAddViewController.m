@@ -18,6 +18,8 @@
     ShiftAddView *view = [[ShiftAddView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.view    = view; // Root view
+    
+    [view release];
 }
 
 #pragma mark - View callbacks
