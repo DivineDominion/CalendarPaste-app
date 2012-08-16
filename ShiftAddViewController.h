@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "ShiftTemplate.h"
 #import "ShiftAddDelegate.h"
+#import "ShiftAddView.h"
 
 @interface ShiftAddViewController : UIViewController
 {
     id <ShiftAddDelegate> addDelegate_;
+
     ShiftTemplate *shift_;
 }
 

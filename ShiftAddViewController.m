@@ -10,13 +10,14 @@
 
 @implementation ShiftAddViewController
 
-@synthesize shift=shift_;
-@synthesize addDelegate=addDelegate_;
+@synthesize shift = shift_;
+@synthesize addDelegate = addDelegate_;
 
 - (void)loadView
 {
-    self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    [self.view setBackgroundColor:[UIColor whiteColor]];    
+    ShiftAddView *view = [[ShiftAddView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    self.view    = view; // Root view
 }
 
 #pragma mark - View callbacks
