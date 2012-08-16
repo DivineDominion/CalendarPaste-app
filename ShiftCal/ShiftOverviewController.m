@@ -30,18 +30,7 @@
     self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    // Navigation Bar:
-    // ---------------------
-    // [Edit]  TITLE     [+]
-    // ---------------------
     
-    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                             target:self
-                                                                             action:@selector(addAction:)];
-    self.navigationItem.leftBarButtonItem  = [self editButtonItem];
-    self.navigationItem.rightBarButtonItem = addItem;
-    
-    [addItem release];
     
     self.title = @"Shifts";
 }
@@ -62,6 +51,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Navigation Bar:
+    // ---------------------
+    // [Edit]  TITLE     [+]
+    // ---------------------
+    
+    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                             target:self
+                                                                             action:@selector(addAction:)];
+    self.navigationItem.leftBarButtonItem  = [self editButtonItem];
+    self.navigationItem.rightBarButtonItem = addItem;
+    
+    [addItem release];
 }
 
 - (void)viewDidUnload
