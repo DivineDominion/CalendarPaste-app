@@ -9,6 +9,19 @@
 #import <Foundation/Foundation.h>
 
 @interface ShiftTemplate : NSObject
+{
+    NSString *title_;
+
+    NSDate *from_;
+    NSDate *until_;
+    
+    NSString *location_;
+    NSString *note_;
+    NSString *url_;
+    
+    // TODO calendar_;
+    // TODO reminder_;
+}
 
 @property (nonatomic, copy, readwrite) NSString *title;
 @property (nonatomic, copy, readwrite) NSDate   *from;

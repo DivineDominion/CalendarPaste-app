@@ -10,21 +10,24 @@
 
 @implementation ShiftTemplate
 
-@synthesize title = _title;
-@synthesize from  = _from;
-@synthesize until = _until;
+@synthesize title = title_;
+@synthesize from  = from_;
+@synthesize until = until_;
 
 - (id)initWithTitle:(NSString *)title
                from:(NSDate *)from
               until:(NSDate *)until
 {
     self = [super init];
+    
     if (self) {
-        _title = title;
-        _from  = from;
-        _until = until;
+        self.title = title;
+        self.from  = from;
+        self.until = until;
+        
         return self;
     }
+    
     return nil;
 }
 
