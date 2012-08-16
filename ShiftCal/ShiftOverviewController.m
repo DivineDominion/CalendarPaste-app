@@ -7,6 +7,7 @@
 //
 
 #import "ShiftOverviewController.h"
+#import "ShiftAddController.h"
 
 @interface ShiftOverviewController ()
 
@@ -74,8 +75,10 @@
 
 - (void)addAction:(id)sender
 {
-    NSLog(@"test!");
-    // TODO switch view to "new entry" view
+    ShiftAddController *addController = [[ShiftAddController alloc] init];
+    UINavigationController *addNavController = [[UINavigationController alloc] initWithRootViewController:addController];
+    
+    [[self navigationController] presentModalViewController:addNavController animated:YES];
 }
 
 @end

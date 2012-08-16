@@ -21,6 +21,7 @@
 		60BB96BC15C08EB900801105 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A315C08EB900801105 /* Foundation.framework */; };
 		60BB96C415C08EB900801105 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 60BB96C215C08EB900801105 /* InfoPlist.strings */; };
 		60BB96C715C08EB900801105 /* ShiftCalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BB96C615C08EB900801105 /* ShiftCalTests.m */; };
+		60F1603415DD1447005834B3 /* ShiftAddController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1603315DD1447005834B3 /* ShiftAddController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,8 @@
 		60BB96C315C08EB900801105 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		60BB96C515C08EB900801105 /* ShiftCalTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShiftCalTests.h; sourceTree = "<group>"; };
 		60BB96C615C08EB900801105 /* ShiftCalTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShiftCalTests.m; sourceTree = "<group>"; };
+		60F1603215DD1447005834B3 /* ShiftAddController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShiftAddController.h; path = ../ShiftAddController.h; sourceTree = "<group>"; };
+		60F1603315DD1447005834B3 /* ShiftAddController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShiftAddController.m; path = ../ShiftAddController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +118,8 @@
 		60BB96A715C08EB900801105 /* ShiftCal */ = {
 			isa = PBXGroup;
 			children = (
+				60F1603215DD1447005834B3 /* ShiftAddController.h */,
+				60F1603315DD1447005834B3 /* ShiftAddController.m */,
 				60AAB7C615C09243002114B9 /* ShiftTemplate.h */,
 				60AAB7C715C09243002114B9 /* ShiftTemplate.m */,
 				60BB96B015C08EB900801105 /* AppDelegate.h */,
@@ -268,6 +273,7 @@
 				60BB96B215C08EB900801105 /* AppDelegate.m in Sources */,
 				60AAB7C815C09243002114B9 /* ShiftTemplate.m in Sources */,
 				60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */,
+				60F1603415DD1447005834B3 /* ShiftAddController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
