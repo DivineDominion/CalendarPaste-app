@@ -57,13 +57,13 @@
     // [Edit]  TITLE     [+]
     // ---------------------
     
-    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                             target:self
-                                                                             action:@selector(addAction:)];
+    UIBarButtonItem *addButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                   target:self
+                                                                                   action:@selector(addAction:)];
     self.navigationItem.leftBarButtonItem  = [self editButtonItem];
-    self.navigationItem.rightBarButtonItem = addItem;
+    self.navigationItem.rightBarButtonItem = addButtonItem;
     
-    [addItem release];
+    [addButtonItem release];
 }
 
 - (void)viewDidUnload
@@ -85,15 +85,15 @@
 
 - (void)addAction:(id)sender
 {
-    ShiftAddViewController *addController = [[ShiftAddViewController alloc] init];
-    UINavigationController *addNavController = [[UINavigationController alloc] initWithRootViewController:addController];
+    ShiftAddViewController *additionController = [[ShiftAddViewController alloc] init];
+    UINavigationController *additionNavController = [[UINavigationController alloc] initWithRootViewController:additionController];
     
-    addController.addDelegate = self;
+    additionController.additionDelegate = self;
     
-    [[self navigationController] presentModalViewController:addNavController animated:YES];
+    [[self navigationController] presentModalViewController:additionNavController animated:YES];
     
-    [addController release];
-    [addNavController release];
+    [additionController release];
+    [additionNavController release];
 }
 
 @end

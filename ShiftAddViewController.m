@@ -11,7 +11,7 @@
 @implementation ShiftAddViewController
 
 @synthesize shift = shift_;
-@synthesize addDelegate = addDelegate_;
+@synthesize additionDelegate = additionDelegate_;
 
 - (void)loadView
 {
@@ -124,10 +124,10 @@
 
 - (void)save:(id)sender
 {
-    if (self.addDelegate) {
+    if (self.additionDelegate) {
         ShiftTemplate *shift = nil;
         
-        [self.addDelegate shiftAddViewController:self didAddShift:shift];
+        [self.additionDelegate shiftAddViewController:self didAddShift:shift];
     }
     
     [self dismissModalViewControllerAnimated:YES];

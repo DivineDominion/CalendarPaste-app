@@ -12,12 +12,12 @@
 
 @interface ShiftAddViewController : UITableViewController
 {
-    id <ShiftAddDelegate> addDelegate_;
+    id <ShiftAddDelegate> additionDelegate_;
 
     ShiftTemplate *shift_;
 }
 
-@property (nonatomic, assign) id <ShiftAddDelegate> addDelegate;
+@property (nonatomic, assign) id <ShiftAddDelegate> additionDelegate;
 @property (nonatomic, retain) ShiftTemplate *shift;
 
 - (void)save:(id)sender;
