@@ -57,8 +57,8 @@
 		60BB96C315C08EB900801105 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		60BB96C515C08EB900801105 /* ShiftCalTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShiftCalTests.h; sourceTree = "<group>"; };
 		60BB96C615C08EB900801105 /* ShiftCalTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShiftCalTests.m; sourceTree = "<group>"; };
-		60F1603215DD1447005834B3 /* ShiftAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShiftAddViewController.h; path = ../ShiftAddViewController.h; sourceTree = "<group>"; };
-		60F1603315DD1447005834B3 /* ShiftAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShiftAddViewController.m; path = ../ShiftAddViewController.m; sourceTree = "<group>"; };
+		60F1603215DD1447005834B3 /* ShiftAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftAddViewController.h; sourceTree = "<group>"; };
+		60F1603315DD1447005834B3 /* ShiftAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftAddViewController.m; sourceTree = "<group>"; };
 		60F1603615DD1B16005834B3 /* ShiftAddDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftAddDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
