@@ -105,10 +105,13 @@
             {
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                reuseIdentifier:CELL_TEXT_FIELD] autorelease];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
-                //20.0f, 40.0f, 280.0f, 30.0f
-                UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 285, 30)]; // 110, 10, 185, 30
+                UITextField *textField     = [[UITextField alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 285.0f, 30.0f)];
+                textField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                
                 [cell.contentView addSubview:textField];
+                
                 [textField release];
             }
             
