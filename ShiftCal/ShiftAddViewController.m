@@ -8,6 +8,8 @@
 
 #import "ShiftAddViewController.h"
 
+#define StupidError(...) [NSException raise:@"StudipError" format:__VA_ARGS__];
+
 #define SECTION_TITLE_LOCATION 0
 
 // TODO refactor to     
@@ -135,8 +137,7 @@
                 textField.placeholder = @"Location";
             }
             else {
-                // TODO throw StupidError
-                @throw @"test";
+                StupidError(@"no placeholder for row %d", row);
             }
             
             break;
