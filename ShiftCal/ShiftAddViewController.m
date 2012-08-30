@@ -23,12 +23,21 @@
 - (void)loadView
 {
     //ShiftAddView *view = [[ShiftAddView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    UITableView *view = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStyleGrouped];
-    view.delegate = self;
-    view.dataSource = self;
-    self.view = view;
+    _tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStyleGrouped];
     
-    [view release];
+    [_tableView setDelegate:self];
+    [_tableView setDataSource:self];
+    
+    self.view = _tableView;
+}
+
+- (void)dealloc
+{
+    [_tableView setDelegate: nil];
+    [_tableView setDataSource: nil];
+    [_tableView release];
+    
+    [super dealloc];
 }
 
 #pragma mark - View callbacks
@@ -95,7 +104,7 @@
     NSInteger row = [indexPath row];
     NSInteger section = [indexPath section];
     
-    UITableViewCell *cell;
+    UITableViewCell *cell = nil;
     
     switch (section) {
         case SECTION_TITLE_LOCATION:
@@ -117,7 +126,6 @@
             
             UITextField *textField = [[cell.contentView subviews] lastObject];
             textField.clearsOnBeginEditing = NO;
-            //textField.delegate = self; // TODO implement delegate methods
             
             if (row == 0) {
                 textField.placeholder = @"Title";
@@ -128,6 +136,7 @@
             }
             else {
                 // TODO throw StupidError
+                @throw @"test";
             }
             
             break;
