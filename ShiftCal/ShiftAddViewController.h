@@ -12,9 +12,9 @@
 
 @interface ShiftAddViewController : UITableViewController
 {
-    id <ShiftAddDelegate> additionDelegate_;
+    id <ShiftAddDelegate> _additionDelegate;
 
-    ShiftTemplate *shift_;
+    ShiftTemplate *_shift;
     UITableView *_tableView;
 }
 

@@ -17,8 +17,8 @@
 
 @implementation ShiftAddViewController
 
-@synthesize shift = shift_;
-@synthesize additionDelegate = additionDelegate_;
+@synthesize shift = _shift;
+@synthesize additionDelegate = _additionDelegate;
 
 - (void)loadView
 {

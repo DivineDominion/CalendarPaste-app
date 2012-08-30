@@ -10,17 +10,17 @@
 
 @interface ShiftTemplate : NSObject
 {
-    NSString *title_;
+    NSString *_title;
 
-    NSDate *from_;
-    NSDate *until_;
+    NSDate *_from;
+    NSDate *_until;
     
-    NSString *location_;
-    NSString *note_;
-    NSString *url_;
+    NSString *_location;
+    NSString *_note;
+    NSString *_url;
     
-    // TODO calendar_;
-    // TODO reminder_;
+    // TODO _calendar;
+    // TODO _reminder;
 }
 
 @property (nonatomic, copy, readwrite) NSString *title;
