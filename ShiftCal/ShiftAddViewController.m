@@ -8,6 +8,13 @@
 
 #import "ShiftAddViewController.h"
 
+#define SECTION_TITLE_LOCATION 0
+
+// TODO refactor to     
+#define CELL_TEXT_FIELD @"textfield"
+#define CELL_SUB_VIEW   @"sub"
+#define CELL_TEXT_AREA  @"textarea"
+
 @implementation ShiftAddViewController
 
 @synthesize shift = shift_;
@@ -71,8 +78,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 2;
+    switch (section) {
+        case SECTION_TITLE_LOCATION:
+            return 2;
+            break;
+            
+        default:
+            break;
     }
     
     return 0;
@@ -80,36 +92,45 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"cell"];
+    NSInteger row = [indexPath row];
+    NSInteger section = [indexPath section];
     
-    if (cell == nil)
-    {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"] autorelease];
-        
-        if ([indexPath section] == 0)
-        {
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    UITableViewCell *cell;
+    
+    switch (section) {
+        case SECTION_TITLE_LOCATION:
+            cell = [tableView dequeueReusableCellWithIdentifier:CELL_TEXT_FIELD];
             
-            UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 285, 30)]; // 110, 10, 185, 30
-            textField.clearsOnBeginEditing = NO;
-            //textField.delegate = self;
-            
-            if ([indexPath row] == 0)
+            if (cell == nil)
             {
-                // TODO textField.tag
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                               reuseIdentifier:CELL_TEXT_FIELD] autorelease];
+                
+                //20.0f, 40.0f, 280.0f, 30.0f
+                UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 285, 30)]; // 110, 10, 185, 30
+                [cell.contentView addSubview:textField];
+                [textField release];
+            }
+            
+            UITextField *textField = [[cell.contentView subviews] lastObject];
+            textField.clearsOnBeginEditing = NO;
+            //textField.delegate = self; // TODO implement delegate methods
+            
+            if (row == 0) {
                 textField.placeholder = @"Title";
             }
-            else if ([indexPath row] == 1) {
-                // TODO textField.tag
+            else if (row == 1)
+            {
                 textField.placeholder = @"Location";
             }
+            else {
+                // TODO throw StupidError
+            }
             
-            [cell.contentView addSubview:textField];
-        }
-        else if ([indexPath section] == 1)
-        {
-            //cell.textLabel.text = @"label";
-        }
+            break;
+            
+        default:
+            break;
     }
     
     return cell;
