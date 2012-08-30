@@ -10,12 +10,19 @@
 
 #define StupidError(...) [NSException raise:@"StudipError" format:__VA_ARGS__];
 
+#define NUM_SECTIONS 6
 #define SECTION_TITLE_LOCATION 0
+#define SECTION_DURATION       1
+#define SECTION_CALENDAR       2
+#define SECTION_REMINDER       3
+#define SECTION_URL            4
+#define SECTION_NOTES          5
 
-// TODO refactor to     
+// TODO refactor to NSString constants
 #define CELL_TEXT_FIELD @"textfield"
-#define CELL_SUB_VIEW   @"sub"
+#define CELL_SUBVIEW    @"sub"
 #define CELL_TEXT_AREA  @"textarea"
+
 
 @implementation ShiftAddViewController
 
@@ -26,7 +33,7 @@
 {
     //ShiftAddView *view = [[ShiftAddView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStyleGrouped];
-    
+    _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     
@@ -84,7 +91,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return NUM_SECTIONS;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -92,9 +99,14 @@
     switch (section) {
         case SECTION_TITLE_LOCATION:
             return 2;
-            break;
-            
+        case SECTION_DURATION:
+        case SECTION_CALENDAR:
+        case SECTION_REMINDER:
+        case SECTION_URL:
+        case SECTION_NOTES:
+            return 1;
         default:
+            StupidError(@"section %d not supported", section);
             break;
     }
     
@@ -110,16 +122,18 @@
     
     switch (section) {
         case SECTION_TITLE_LOCATION:
+        {
             cell = [tableView dequeueReusableCellWithIdentifier:CELL_TEXT_FIELD];
             
-            if (cell == nil)
+            if (!cell)
             {
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                reuseIdentifier:CELL_TEXT_FIELD] autorelease];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
-                UITextField *textField     = [[UITextField alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 285.0f, 30.0f)];
+                UITextField *textField     = [[UITextField alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 300.0f, 30.0f)];
                 textField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                textField.adjustsFontSizeToFitWidth = YES;
                 
                 [cell.contentView addSubview:textField];
                 
@@ -129,7 +143,8 @@
             UITextField *textField = [[cell.contentView subviews] lastObject];
             textField.clearsOnBeginEditing = NO;
             
-            if (row == 0) {
+            if (row == 0)
+            {
                 textField.placeholder = @"Title";
             }
             else if (row == 1)
@@ -141,12 +156,110 @@
             }
             
             break;
+        }
+        case SECTION_DURATION:
+            cell = [tableView dequeueReusableCellWithIdentifier:CELL_SUBVIEW];
             
+            if (!cell)
+            {
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                               reuseIdentifier:CELL_SUBVIEW] autorelease];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+            
+            cell.textLabel.text = @"Duration";
+            cell.detailTextLabel.text = @"1h";
+            
+            break;
+        case SECTION_CALENDAR:
+            cell = [tableView dequeueReusableCellWithIdentifier:CELL_SUBVIEW];
+            
+            if (!cell)
+            {
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                               reuseIdentifier:CELL_SUBVIEW] autorelease];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+            
+            cell.textLabel.text = @"Calendar";
+            cell.detailTextLabel.text = @"DEFAULT";
+
+            break;
+        case SECTION_REMINDER:
+            cell = [tableView dequeueReusableCellWithIdentifier:CELL_SUBVIEW];
+            
+            if (!cell)
+            {
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                               reuseIdentifier:CELL_SUBVIEW] autorelease];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+            
+            cell.textLabel.text = @"Reminder";
+            cell.detailTextLabel.text = @"None";
+            
+            break;
+        case SECTION_URL:
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:CELL_TEXT_AREA];
+            
+            if (!cell)
+            {
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                               reuseIdentifier:CELL_TEXT_FIELD] autorelease];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                UITextField *textField     = [[UITextField alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 300.0f, 30.0f)];
+                textField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                textField.adjustsFontSizeToFitWidth = YES;
+                cell.bounds = CGRectMake(0.0f, 0.0f, 300.0f, 110.0f);
+                [cell.contentView addSubview:textField];
+                
+                [textField release];
+            }
+            
+            UITextField *textField = [[cell.contentView subviews] lastObject];
+            textField.clearsOnBeginEditing = NO;
+            textField.placeholder = @"URL";
+            
+            break;
+        }
+        case SECTION_NOTES:
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:CELL_TEXT_AREA];
+            
+            if (!cell)
+            {
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                               reuseIdentifier:CELL_TEXT_AREA] autorelease];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(4.0f, 10.0f, 292.0f, 90.0f)];
+                textView.contentInset = UIEdgeInsetsMake(-4,0,-4,0);
+                textView.backgroundColor = cell.backgroundColor;
+                textView.font = [UIFont systemFontOfSize:UIFont.labelFontSize];
+                
+                [cell.contentView addSubview:textView];
+                
+                [textView release];
+            }
+                        
+            break;
+        }
         default:
             break;
     }
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (SECTION_NOTES == [indexPath section]) {
+        return 110.0;
+    }
+    
+    return tableView.rowHeight;
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
