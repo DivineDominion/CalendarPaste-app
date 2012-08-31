@@ -7,8 +7,7 @@
 //
 
 #import "ShiftAddViewController.h"
-
-#define StupidError(...) [NSException raise:@"StudipError" format:__VA_ARGS__];
+#import "DurationSetViewController.h"
 
 #define NUM_SECTIONS 6
 #define SECTION_TITLE_LOCATION 0
@@ -37,7 +36,6 @@
 
 - (void)loadView
 {
-    //ShiftAddView *view = [[ShiftAddView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStyleGrouped];
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     [_tableView setDelegate:self];
@@ -56,16 +54,6 @@
 }
 
 #pragma mark - View callbacks
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
 
 - (void)viewDidLoad
 {
@@ -272,10 +260,29 @@
     return tableView.rowHeight;
 }
 
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+#pragma mark - TableView interaction
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO add subview
+    NSInteger section = [indexPath section];
+    
+    switch (section) {
+        case SECTION_DURATION:
+        {
+            DurationSetViewController *durationController = [[DurationSetViewController alloc] init];
+            UINavigationController *durationNavController = [[UINavigationController alloc] initWithRootViewController:durationController];
+            
+            [[self navigationController] presentModalViewController:durationNavController animated:YES];
+            
+            [durationController release];
+            [durationNavController release];
+            break;
+        }
+        default:
+            break;
+    }
 }
+
 
 #pragma mark - TextView delegate
 
