@@ -91,6 +91,48 @@
     return cell;
 }
 
+#pragma mark TableView interaction
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIPickerView *picker = [[[UIPickerView alloc] init] autorelease];
+    
+    picker.delegate = self;
+    picker.dataSource = self;
+    picker.showsSelectionIndicator = YES;
+    
+    tableView.tableFooterView = picker; // http://stackoverflow.com/questions/5486170/put-picker-at-the-bottom-of-tableview
+    
+    // http://stackoverflow.com/questions/5025204/uidatepicker-and-a-uitableview
+}
+
+#pragma mark - PickerView management
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 2;
+}
+
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if (component == 0)
+    {
+        return 25;
+    }
+    
+    return 61;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSString *format = @"min";
+    if (component == 0)
+    {
+        format = @"h";
+    }
+    return [NSString stringWithFormat:@"%d%@", row, format];
+}
 
 #pragma mark - Save and Cancel
 
