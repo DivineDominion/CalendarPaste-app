@@ -24,6 +24,12 @@
 #define CELL_TEXT_AREA  @"textarea"
 
 
+@interface ShiftAddViewController ()
+
+// private methods
+- (void)resetTextViewToPlaceholder:(UITextView *)textView;
+@end
+
 @implementation ShiftAddViewController
 
 @synthesize shift = _shift;
@@ -238,6 +244,10 @@
                 textView.contentInset = UIEdgeInsetsMake(-4,0,-4,0);
                 textView.backgroundColor = cell.backgroundColor;
                 textView.font = [UIFont systemFontOfSize:UIFont.labelFontSize];
+
+                [textView setDelegate:self];
+                
+                [self resetTextViewToPlaceholder:textView];
                 
                 [cell.contentView addSubview:textView];
                 
@@ -265,6 +275,36 @@
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     // TODO add subview
+}
+
+#pragma mark - TextView delegate
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    if (textView.tag == 0)
+    {
+        textView.tag       = 1;    // Indicates 'editing'
+        textView.text      = @"";
+        textView.textColor = [UIColor blackColor];
+    }
+    return YES;
+}
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView
+{
+    if ([textView.text length] == 0)
+    {
+        [self resetTextViewToPlaceholder:textView];
+    }
+    
+    return YES;
+}
+
+- (void)resetTextViewToPlaceholder:(UITextView *)textView
+{
+    textView.text      = @"Notes";
+    textView.textColor = [UIColor lightGrayColor];
+    textView.tag       = 0; // Indicates 'default/placeholder state
 }
 
 #pragma mark - Save and Cancel

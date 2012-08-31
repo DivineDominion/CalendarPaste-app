@@ -10,7 +10,7 @@
 #import "ShiftTemplate.h"
 #import "ShiftAddDelegate.h"
 
-@interface ShiftAddViewController : UITableViewController
+@interface ShiftAddViewController : UITableViewController <UITextViewDelegate>
 {
     id <ShiftAddDelegate> _additionDelegate;
 
