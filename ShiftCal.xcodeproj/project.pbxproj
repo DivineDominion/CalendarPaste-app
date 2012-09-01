@@ -22,7 +22,7 @@
 		60BB96C415C08EB900801105 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 60BB96C215C08EB900801105 /* InfoPlist.strings */; };
 		60BB96C715C08EB900801105 /* ShiftCalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BB96C615C08EB900801105 /* ShiftCalTests.m */; };
 		60F1603415DD1447005834B3 /* ShiftAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1603315DD1447005834B3 /* ShiftAddViewController.m */; };
-		60FBA82315F10443008B48A1 /* DurationSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82215F10443008B48A1 /* DurationSetViewController.m */; };
+		60FBA82315F10443008B48A1 /* DurationPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82215F10443008B48A1 /* DurationPickerController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,8 +61,8 @@
 		60F1603215DD1447005834B3 /* ShiftAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftAddViewController.h; sourceTree = "<group>"; };
 		60F1603315DD1447005834B3 /* ShiftAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftAddViewController.m; sourceTree = "<group>"; };
 		60F1603615DD1B16005834B3 /* ShiftAddDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftAddDelegate.h; sourceTree = "<group>"; };
-		60FBA82115F10443008B48A1 /* DurationSetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationSetViewController.h; sourceTree = "<group>"; };
-		60FBA82215F10443008B48A1 /* DurationSetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DurationSetViewController.m; sourceTree = "<group>"; };
+		60FBA82115F10443008B48A1 /* DurationPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationPickerController.h; sourceTree = "<group>"; };
+		60FBA82215F10443008B48A1 /* DurationPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DurationPickerController.m; sourceTree = "<group>"; };
 		60FBA82515F10BCC008B48A1 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,8 +125,8 @@
 			children = (
 				60F1603215DD1447005834B3 /* ShiftAddViewController.h */,
 				60F1603315DD1447005834B3 /* ShiftAddViewController.m */,
-				60FBA82115F10443008B48A1 /* DurationSetViewController.h */,
-				60FBA82215F10443008B48A1 /* DurationSetViewController.m */,
+				60FBA82115F10443008B48A1 /* DurationPickerController.h */,
+				60FBA82215F10443008B48A1 /* DurationPickerController.m */,
 				60F1603615DD1B16005834B3 /* ShiftAddDelegate.h */,
 				60AAB7C615C09243002114B9 /* ShiftTemplate.h */,
 				60AAB7C715C09243002114B9 /* ShiftTemplate.m */,
@@ -283,7 +283,7 @@
 				60AAB7C815C09243002114B9 /* ShiftTemplate.m in Sources */,
 				60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */,
 				60F1603415DD1447005834B3 /* ShiftAddViewController.m in Sources */,
-				60FBA82315F10443008B48A1 /* DurationSetViewController.m in Sources */,
+				60FBA82315F10443008B48A1 /* DurationPickerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DurationSetViewController : UITableViewController <UIPickerViewDataSource, UIPickerViewDelegate>
+@interface DurationPickerController : UITableViewController <UIPickerViewDataSource, UIPickerViewDelegate>
 {
+    UIView *_mainView;
     UITableView *_tableView;
+    UIPickerView *_pickerView;
 }
 
 - (void)save:(id)sender;

@@ -6,24 +6,40 @@
 //  Copyright (c) 2012 Christian Tietze. All rights reserved.
 //
 
-#import "DurationSetViewController.h"
+#import "DurationPickerController.h"
 
 #define CELL_ID @"duration"
 
-@interface DurationSetViewController ()
+@interface DurationPickerController ()
 
 @end
 
-@implementation DurationSetViewController
+@implementation DurationPickerController
 
 - (void)loadView
 {
+    _mainView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
     _tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStyleGrouped];
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     
-    self.view = _tableView;
+    [_mainView addSubview:_tableView];
+    
+    
+    // Visually hide down below screen bounds
+    _pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0.0f, [[UIScreen mainScreen] bounds].size.height, 320.0f, 216.0f)];
+    
+    _pickerView.delegate = self;
+    _pickerView.dataSource = self;
+    _pickerView.showsSelectionIndicator = YES;
+    
+    _pickerView.hidden = NO; // set it to visible and then animate it to slide up
+    
+    [_mainView addSubview:_pickerView];
+
+    self.view = _mainView;
 }
 
 - (void)dealloc
@@ -31,6 +47,12 @@
     [_tableView setDelegate:nil];
     [_tableView setDataSource:nil];
     [_tableView release];
+    
+    [_pickerView setDelegate:nil];
+    [_pickerView setDataSource:nil];
+    [_pickerView release];
+    
+    [_mainView release];
     
     [super dealloc];
 }
@@ -55,6 +77,17 @@
     [cancelItem release];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [UIView beginAnimations:@"slideIn" context:nil];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    // Picker height: 216px
+    // Navbar + status bar height: 64px
+    _pickerView.frame = CGRectMake(0.0f, _pickerView.frame.origin.y - 216.0f - 64.0f, 320.0f, 216.0f);
+    [UIView commitAnimations];
+}
+
 #pragma mark - TableView data
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -64,12 +97,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0)
+    if (section != 0)
     {
-        return 1;
+        StupidError(@"more sections asked for than set up: %d", section)
     }
     
-    return 0;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -91,20 +124,6 @@
     return cell;
 }
 
-#pragma mark TableView interaction
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UIPickerView *picker = [[[UIPickerView alloc] init] autorelease];
-    
-    picker.delegate = self;
-    picker.dataSource = self;
-    picker.showsSelectionIndicator = YES;
-    
-    tableView.tableFooterView = picker; // http://stackoverflow.com/questions/5486170/put-picker-at-the-bottom-of-tableview
-    
-    // http://stackoverflow.com/questions/5025204/uidatepicker-and-a-uitableview
-}
 
 #pragma mark - PickerView management
 

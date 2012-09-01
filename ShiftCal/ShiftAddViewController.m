@@ -7,7 +7,7 @@
 //
 
 #import "ShiftAddViewController.h"
-#import "DurationSetViewController.h"
+#import "DurationPickerController.h"
 
 #define NUM_SECTIONS 6
 #define SECTION_TITLE_LOCATION 0
@@ -269,7 +269,7 @@
     switch (section) {
         case SECTION_DURATION:
         {
-            DurationSetViewController *durationController = [[DurationSetViewController alloc] init];
+            DurationPickerController *durationController = [[DurationPickerController alloc] init];
             UINavigationController *durationNavController = [[UINavigationController alloc] initWithRootViewController:durationController];
             
             [[self navigationController] presentModalViewController:durationNavController animated:YES];
