@@ -14,22 +14,26 @@
 #define COMPONENT_LABEL_OFFSET 10.0f
 #define COMPONENT_LABEL_Y 83.0f
 #define COMPONENT_LABEL_HEIGHT 50.0f
+#define COMPONENT_SUBLABEL_TAG 100
 
 #define COMPONENT_HOUR 0
+#define COMPONENT_HOUR_TAG 101
 #define COMPONENT_HOUR_WIDTH 80.0f
 #define COMPONENT_HOUR_X (160.0f - PICKER_WIDTH/2)
-#define COMPONENT_HOUR_LABEL_WIDTH 30.0f
+#define COMPONENT_HOUR_LABEL_WIDTH 25.0f
 #define COMPONENT_HOUR_LABEL_X (COMPONENT_HOUR_X + COMPONENT_HOUR_WIDTH - COMPONENT_HOUR_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
 
 #define COMPONENT_MIN 1
-#define COMPONENT_MIN_WIDTH 120.0f
+#define COMPONENT_MIN_TAG 102
+#define COMPONENT_MIN_WIDTH 110.0f
 #define COMPONENT_MIN_X (COMPONENT_HOUR_X + COMPONENT_HOUR_WIDTH)
 #define COMPONENT_MIN_LABEL_WIDTH 50.0f
 #define COMPONENT_MIN_LABEL_X (COMPONENT_MIN_X + COMPONENT_MIN_WIDTH - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
 
 
 @interface DurationPickerController ()
-
+// private methods
+- (UIView *)rowViewForComponent:(NSInteger)component;
 @end
 
 @implementation DurationPickerController
@@ -182,18 +186,13 @@
     {
         return COMPONENT_HOUR_WIDTH;
     }
-    if (component == COMPONENT_MIN)
-    {
-        return COMPONENT_MIN_WIDTH;
-    }
-    
-    StupidError(@"illegal component: %d", component);
-    return 0.0f;
+
+    return COMPONENT_MIN_WIDTH;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    if (component == 0)
+    if (component == COMPONENT_HOUR)
     {
         return 25;
     }
@@ -201,15 +200,74 @@
     return 61;
 }
 
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
 {
-    return [NSString stringWithFormat:@"%d", row];
+    UIView *rowView = nil;
+    
+    if ((view.tag == COMPONENT_HOUR_TAG) || (view.tag == COMPONENT_MIN_TAG))
+    {
+        rowView = view;
+    }
+    else
+    {
+        rowView = [self rowViewForComponent:component];
+    }
+
+    UILabel * theLabel = (UILabel *)[rowView viewWithTag:COMPONENT_SUBLABEL_TAG];
+    theLabel.text = [NSString stringWithFormat:@"%d", row];
+    
+    return rowView;
+}
+
+- (UIView *)rowViewForComponent:(NSInteger)component
+{
+    UIView *rowView   = nil;
+    UILabel *subLabel = nil;
+
+    CGFloat width;
+    CGRect frame;
+    
+    if (component == COMPONENT_HOUR)
+    {
+        width = COMPONENT_HOUR_WIDTH;
+        frame = CGRectMake(0, 0, width, 32.0f);
+        
+        rowView = [[[UIView alloc] initWithFrame:frame] autorelease];
+        rowView.tag = COMPONENT_HOUR_TAG;
+        
+        // offset for sublabel
+        frame.size.width = width - COMPONENT_HOUR_LABEL_WIDTH - COMPONENT_LABEL_OFFSET;
+    }
+    else
+    {
+        width = COMPONENT_MIN_WIDTH;
+        frame = CGRectMake(0, 0, width, 32.0f);
+        
+        rowView = [[[UIView alloc] initWithFrame:frame] autorelease];
+        rowView.tag = COMPONENT_MIN_TAG;
+        
+        // offset for sublabel
+        frame.size.width = width - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET;
+    }
+    
+    subLabel = [[UILabel alloc] initWithFrame:frame];
+    
+    subLabel.textAlignment = UITextAlignmentRight;
+    subLabel.backgroundColor = [UIColor clearColor];
+    subLabel.font = [UIFont systemFontOfSize:24.0];
+    subLabel.userInteractionEnabled = NO;
+    subLabel.tag = COMPONENT_SUBLABEL_TAG;
+    
+    [rowView addSubview:subLabel];
+    [subLabel release];
+    
+    return rowView;
 }
 
 #pragma mark - Save and Cancel
 
 - (void)save:(id)sender
-{    
+{
     [self dismissModalViewControllerAnimated:YES];
 }
 
