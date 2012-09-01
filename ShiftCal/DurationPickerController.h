@@ -10,9 +10,9 @@
 
 @interface DurationPickerController : UITableViewController <UIPickerViewDataSource, UIPickerViewDelegate>
 {
-    UIView *_mainView;
     UITableView *_tableView;
     UIPickerView *_pickerView;
+    UIView *_pickerWrap;
 }
 
 - (void)save:(id)sender;

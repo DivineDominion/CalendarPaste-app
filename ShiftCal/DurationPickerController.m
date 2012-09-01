@@ -10,6 +10,24 @@
 
 #define CELL_ID @"duration"
 
+#define PICKER_WIDTH (COMPONENT_HOUR_WIDTH + COMPONENT_MIN_WIDTH)
+#define COMPONENT_LABEL_OFFSET 10.0f
+#define COMPONENT_LABEL_Y 83.0f
+#define COMPONENT_LABEL_HEIGHT 50.0f
+
+#define COMPONENT_HOUR 0
+#define COMPONENT_HOUR_WIDTH 80.0f
+#define COMPONENT_HOUR_X (160.0f - PICKER_WIDTH/2)
+#define COMPONENT_HOUR_LABEL_WIDTH 30.0f
+#define COMPONENT_HOUR_LABEL_X (COMPONENT_HOUR_X + COMPONENT_HOUR_WIDTH - COMPONENT_HOUR_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
+
+#define COMPONENT_MIN 1
+#define COMPONENT_MIN_WIDTH 120.0f
+#define COMPONENT_MIN_X (COMPONENT_HOUR_X + COMPONENT_HOUR_WIDTH)
+#define COMPONENT_MIN_LABEL_WIDTH 50.0f
+#define COMPONENT_MIN_LABEL_X (COMPONENT_MIN_X + COMPONENT_MIN_WIDTH - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
+
+
 @interface DurationPickerController ()
 
 @end
@@ -18,28 +36,53 @@
 
 - (void)loadView
 {
-    _mainView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    UIView *mainView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    mainView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     _tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStyleGrouped];
-    _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     
-    [_mainView addSubview:_tableView];
-    
+    [mainView addSubview:_tableView];
     
     // Visually hide down below screen bounds
-    _pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0.0f, [[UIScreen mainScreen] bounds].size.height, 320.0f, 216.0f)];
+    _pickerWrap = [[UIView alloc] initWithFrame:CGRectMake(0.0f, [[UIScreen mainScreen] bounds].size.height, 320.0f, 216.0f)];
     
+    _pickerView = [[UIPickerView alloc] init];
     _pickerView.delegate = self;
     _pickerView.dataSource = self;
     _pickerView.showsSelectionIndicator = YES;
+    _pickerView.hidden = NO;
     
-    _pickerView.hidden = NO; // set it to visible and then animate it to slide up
-    
-    [_mainView addSubview:_pickerView];
+    UILabel *hourLabel = [[UILabel alloc] initWithFrame:CGRectMake(COMPONENT_HOUR_LABEL_X, COMPONENT_LABEL_Y, COMPONENT_HOUR_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT)];
+    hourLabel.text = @"h";
+    hourLabel.textAlignment = UITextAlignmentRight;
+    hourLabel.font = [UIFont systemFontOfSize:24.0f];
+    hourLabel.backgroundColor = [UIColor clearColor];
+    hourLabel.userInteractionEnabled = NO;
 
-    self.view = _mainView;
+    UILabel *minLabel = [[UILabel alloc] initWithFrame:CGRectMake(COMPONENT_MIN_LABEL_X, COMPONENT_LABEL_Y, COMPONENT_MIN_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT)];
+    minLabel.text = @"min";
+    minLabel.textAlignment = UITextAlignmentRight;
+    minLabel.font = [UIFont systemFontOfSize:24.0f];
+    minLabel.backgroundColor = [UIColor clearColor];
+    minLabel.userInteractionEnabled = NO;
+    
+    // TODO refactor label creation
+
+    [_pickerWrap addSubview:_pickerView];
+    [_pickerWrap addSubview:hourLabel];
+    [_pickerWrap addSubview:minLabel];
+    
+    
+    [mainView addSubview:_pickerWrap];
+    self.view = mainView;
+
+    [hourLabel release];
+    [minLabel release];
+    
+    [mainView release];
 }
 
 - (void)dealloc
@@ -52,7 +95,7 @@
     [_pickerView setDataSource:nil];
     [_pickerView release];
     
-    [_mainView release];
+    [_pickerWrap release];
     
     [super dealloc];
 }
@@ -84,7 +127,7 @@
     [UIView setAnimationDelegate:self];
     // Picker height: 216px
     // Navbar + status bar height: 64px
-    _pickerView.frame = CGRectMake(0.0f, _pickerView.frame.origin.y - 216.0f - 64.0f, 320.0f, 216.0f);
+    _pickerWrap.frame = CGRectMake(0.0f, _pickerWrap.frame.origin.y - 216.0f - 64.0f, 320.0f, 216.0f);
     [UIView commitAnimations];
 }
 
@@ -120,7 +163,7 @@
         
         cell.detailTextLabel.text = @"Duration";
     }
-
+    
     return cell;
 }
 
@@ -132,6 +175,21 @@
     return 2;
 }
 
+
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
+{
+    if (component == COMPONENT_HOUR)
+    {
+        return COMPONENT_HOUR_WIDTH;
+    }
+    if (component == COMPONENT_MIN)
+    {
+        return COMPONENT_MIN_WIDTH;
+    }
+    
+    StupidError(@"illegal component: %d", component);
+    return 0.0f;
+}
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
@@ -145,12 +203,7 @@
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    NSString *format = @"min";
-    if (component == 0)
-    {
-        format = @"h";
-    }
-    return [NSString stringWithFormat:@"%d%@", row, format];
+    return [NSString stringWithFormat:@"%d", row];
 }
 
 #pragma mark - Save and Cancel
