@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DurationPickerDelegate.h"
 
 @interface DurationPickerController : UITableViewController <UIPickerViewDataSource, UIPickerViewDelegate>
 {
@@ -16,10 +17,14 @@
     
     NSInteger _hours;
     NSInteger _minutes;
+    
+    id<DurationPickerDelegate> _delegate;
 }
 
-@property (assign) NSInteger hours;
-@property (assign) NSInteger minutes;
+@property (nonatomic, assign) NSInteger hours;
+@property (nonatomic, assign) NSInteger minutes;
+
+@property (nonatomic, assign) id<DurationPickerDelegate> delegate;
 
 - (void)save:(id)sender;
 - (void)cancel:(id)sender;

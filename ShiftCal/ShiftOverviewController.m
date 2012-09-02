@@ -77,8 +77,8 @@
 
 - (void)shiftAddViewController:(ShiftAddViewController *)shiftAddViewController didAddShift:(id)shift
 {
-    NSLog(@"add shift");
     // TODO add shift
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UI Actions

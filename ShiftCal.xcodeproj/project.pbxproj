@@ -64,6 +64,7 @@
 		60FBA82115F10443008B48A1 /* DurationPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationPickerController.h; sourceTree = "<group>"; };
 		60FBA82215F10443008B48A1 /* DurationPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DurationPickerController.m; sourceTree = "<group>"; };
 		60FBA82515F10BCC008B48A1 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
+		60FBA82A15F3DD76008B48A1 /* DurationPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationPickerDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,18 +124,19 @@
 		60BB96A715C08EB900801105 /* ShiftCal */ = {
 			isa = PBXGroup;
 			children = (
-				60F1603215DD1447005834B3 /* ShiftAddViewController.h */,
-				60F1603315DD1447005834B3 /* ShiftAddViewController.m */,
 				60FBA82115F10443008B48A1 /* DurationPickerController.h */,
 				60FBA82215F10443008B48A1 /* DurationPickerController.m */,
+				60FBA82A15F3DD76008B48A1 /* DurationPickerDelegate.h */,
+				60F1603215DD1447005834B3 /* ShiftAddViewController.h */,
+				60F1603315DD1447005834B3 /* ShiftAddViewController.m */,
 				60F1603615DD1B16005834B3 /* ShiftAddDelegate.h */,
+				60AAB81115C13297002114B9 /* ShiftOverviewController.h */,
+				60AAB81215C13297002114B9 /* ShiftOverviewController.m */,
 				60AAB7C615C09243002114B9 /* ShiftTemplate.h */,
 				60AAB7C715C09243002114B9 /* ShiftTemplate.m */,
 				60BB96B015C08EB900801105 /* AppDelegate.h */,
 				60BB96B115C08EB900801105 /* AppDelegate.m */,
 				60BB96A815C08EB900801105 /* Supporting Files */,
-				60AAB81115C13297002114B9 /* ShiftOverviewController.h */,
-				60AAB81215C13297002114B9 /* ShiftOverviewController.m */,
 			);
 			path = ShiftCal;
 			sourceTree = "<group>";

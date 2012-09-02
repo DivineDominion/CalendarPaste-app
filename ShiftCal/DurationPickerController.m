@@ -42,8 +42,9 @@
 
 @implementation DurationPickerController
 
-@synthesize hours   = _hours;
-@synthesize minutes = _minutes;
+@synthesize hours    = _hours;
+@synthesize minutes  = _minutes;
+@synthesize delegate = _delegate;
 
 - (void)loadView
 {
@@ -93,12 +94,13 @@
     [_pickerWrap addSubview:hourLabel];
     [_pickerWrap addSubview:minLabel];
     
-    
-    [mainView addSubview:_pickerWrap];
-    self.view = mainView;
-
     [hourLabel release];
     [minLabel release];
+    
+    [mainView addSubview:_pickerWrap];
+
+    self.view = mainView;
+    self.title = @"Duration";
     
     [mainView release];
 }
@@ -329,12 +331,12 @@
 
 - (void)save:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self.delegate durationPicker:self didSelectHours:self.hours andMinutes:self.minutes renderedAs:[self textForUserSelection]];
 }
 
 - (void)cancel:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self.delegate durationPicker:self didSelectHours:0 andMinutes:0 renderedAs:nil];
 }
 
 @end

@@ -42,6 +42,8 @@
     [_tableView setDataSource:self];
     
     self.view = _tableView;
+    
+    self.title = @"Add Shift";
 }
 
 - (void)dealloc
@@ -195,7 +197,7 @@
             break;
         case SECTION_URL:
         {
-            cell = [tableView dequeueReusableCellWithIdentifier:CELL_TEXT_AREA];
+            cell = [tableView dequeueReusableCellWithIdentifier:CELL_TEXT_FIELD];
             
             if (!cell)
             {
@@ -270,9 +272,11 @@
         case SECTION_DURATION:
         {
             DurationPickerController *durationController = [[DurationPickerController alloc] init];
+            durationController.delegate = self;
+            
             UINavigationController *durationNavController = [[UINavigationController alloc] initWithRootViewController:durationController];
             
-            [[self navigationController] presentModalViewController:durationNavController animated:YES];
+            [self presentModalViewController:durationNavController animated:YES];
             
             [durationController release];
             [durationNavController release];
@@ -314,6 +318,23 @@
     textView.tag       = 0; // Indicates 'default/placeholder state
 }
 
+#pragma mark - Sub view delegate
+
+- (void)durationPicker:(id)durationPicker didSelectHours:(NSInteger)hours andMinutes:(NSInteger)minutes renderedAs:(NSString *)text
+{
+    // means "Done";  both equal 0 on "Cancel"
+    if ((hours > 0 || minutes > 0) && text != nil)
+    {
+        UITableViewCell *durationCell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:SECTION_DURATION]];
+        
+        durationCell.detailTextLabel.text = text;
+        // TODO set temporary model's duration
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 #pragma mark - Save and Cancel
 
 - (void)save:(id)sender
@@ -323,13 +344,13 @@
         
         [self.additionDelegate shiftAddViewController:self didAddShift:shift];
     }
-    
-    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)cancel:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    if (self.additionDelegate) {
+        [self.additionDelegate shiftAddViewController:self didAddShift:nil];
+    }
 }
 
 @end
