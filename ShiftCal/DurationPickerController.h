@@ -13,7 +13,13 @@
     UITableView *_tableView;
     UIPickerView *_pickerView;
     UIView *_pickerWrap;
+    
+    NSInteger _hours;
+    NSInteger _minutes;
 }
+
+@property (assign) NSInteger hours;
+@property (assign) NSInteger minutes;
 
 - (void)save:(id)sender;
 - (void)cancel:(id)sender;

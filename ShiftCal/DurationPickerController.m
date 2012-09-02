@@ -9,8 +9,10 @@
 #import "DurationPickerController.h"
 
 #define CELL_ID @"duration"
+#define CELL_LABEL_TAG 104
 
 #define PICKER_WIDTH (COMPONENT_HOUR_WIDTH + COMPONENT_MIN_WIDTH)
+#define PICKER_HEIGHT 216.0f
 #define COMPONENT_LABEL_OFFSET 10.0f
 #define COMPONENT_LABEL_Y 83.0f
 #define COMPONENT_LABEL_HEIGHT 50.0f
@@ -20,38 +22,50 @@
 #define COMPONENT_HOUR_TAG 101
 #define COMPONENT_HOUR_WIDTH 80.0f
 #define COMPONENT_HOUR_X (160.0f - PICKER_WIDTH/2)
-#define COMPONENT_HOUR_LABEL_WIDTH 25.0f
+#define COMPONENT_HOUR_LABEL_WIDTH 15.0f
 #define COMPONENT_HOUR_LABEL_X (COMPONENT_HOUR_X + COMPONENT_HOUR_WIDTH - COMPONENT_HOUR_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
 
 #define COMPONENT_MIN 1
 #define COMPONENT_MIN_TAG 102
-#define COMPONENT_MIN_WIDTH 110.0f
+#define COMPONENT_MIN_WIDTH 100.0f
 #define COMPONENT_MIN_X (COMPONENT_HOUR_X + COMPONENT_HOUR_WIDTH)
-#define COMPONENT_MIN_LABEL_WIDTH 50.0f
+#define COMPONENT_MIN_LABEL_WIDTH 46.0f
 #define COMPONENT_MIN_LABEL_X (COMPONENT_MIN_X + COMPONENT_MIN_WIDTH - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
 
 
 @interface DurationPickerController ()
 // private methods
 - (UIView *)rowViewForComponent:(NSInteger)component;
+- (void)updateCellForHoursAndMinutes;
+- (NSString *)textForUserSelection;
 @end
 
 @implementation DurationPickerController
 
+@synthesize hours   = _hours;
+@synthesize minutes = _minutes;
+
 - (void)loadView
 {
+    self.hours   = 1;
+    self.minutes = 0;
+    
     UIView *mainView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     mainView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
+    CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, 320.0f, 67.0f); // 100px content - 1/2 cell height - 10px margin
+    
     _tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStyleGrouped];
-    _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    _tableView.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    _tableView.tableHeaderView = [[[UIView alloc] initWithFrame:tableHeaderFrame] autorelease];
+    _tableView.scrollEnabled = NO;
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     
     [mainView addSubview:_tableView];
     
     // Visually hide down below screen bounds
-    _pickerWrap = [[UIView alloc] initWithFrame:CGRectMake(0.0f, [[UIScreen mainScreen] bounds].size.height, 320.0f, 216.0f)];
+    _pickerWrap = [[UIView alloc] initWithFrame:CGRectMake(0.0f, [[UIScreen mainScreen] bounds].size.height, 320.0f, PICKER_HEIGHT)];
     
     _pickerView = [[UIPickerView alloc] init];
     _pickerView.delegate = self;
@@ -133,6 +147,8 @@
     // Navbar + status bar height: 64px
     _pickerWrap.frame = CGRectMake(0.0f, _pickerWrap.frame.origin.y - 216.0f - 64.0f, 320.0f, 216.0f);
     [UIView commitAnimations];
+    
+    [_pickerView selectRow:1 inComponent:COMPONENT_HOUR animated:YES];
 }
 
 #pragma mark - TableView data
@@ -163,16 +179,58 @@
 
     if (!cell)
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CELL_ID] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CELL_ID] autorelease];
         
-        cell.detailTextLabel.text = @"Duration";
+        cell.textLabel.text = @"Duration";
+        cell.detailTextLabel.text = [self textForUserSelection];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     return cell;
 }
 
+- (NSString *)textForUserSelection
+{
+    NSString *minutesString = @"";
+    NSString *hoursString   = [NSString stringWithFormat:@"%dh", self.hours];
+    
+    if (self.minutes > 0) {
+        minutesString = [NSString stringWithFormat:@" %dmin", self.minutes];
+        
+        if (self.hours == 0) {
+            hoursString = @"";
+        }
+    }
+    
+    return [NSString stringWithFormat:@"%@%@", hoursString, minutesString];
+}
 
-#pragma mark - PickerView management
+- (void)updateCellForHoursAndMinutes
+{
+    UITableViewCell *cell  = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    cell.detailTextLabel.text = [self textForUserSelection];
+}
+
+#pragma mark - PickerView
+#pragma mark PickerView delegate
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{    
+    // Update data
+    if (component == COMPONENT_HOUR)
+    {
+        self.hours = row;
+    }
+    if (component == COMPONENT_MIN)
+    {
+        self.minutes = row;
+    }
+    
+    // Update view
+    [self updateCellForHoursAndMinutes];
+}
+
+#pragma mark PickerView data source
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
@@ -213,8 +271,11 @@
         rowView = [self rowViewForComponent:component];
     }
 
+    // rows display just their own count
+    NSString *theText = [NSString stringWithFormat:@"%d", row];
+    
     UILabel * theLabel = (UILabel *)[rowView viewWithTag:COMPONENT_SUBLABEL_TAG];
-    theLabel.text = [NSString stringWithFormat:@"%d", row];
+    theLabel.text = theText;
     
     return rowView;
 }
@@ -254,7 +315,7 @@
     
     subLabel.textAlignment = UITextAlignmentRight;
     subLabel.backgroundColor = [UIColor clearColor];
-    subLabel.font = [UIFont systemFontOfSize:24.0];
+    subLabel.font = [UIFont boldSystemFontOfSize:24.0];
     subLabel.userInteractionEnabled = NO;
     subLabel.tag = COMPONENT_SUBLABEL_TAG;
     
