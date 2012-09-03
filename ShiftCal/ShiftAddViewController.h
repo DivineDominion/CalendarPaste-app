@@ -18,6 +18,7 @@
     id <ShiftAddDelegate> _additionDelegate;
 
     ShiftTemplate *_shift;
+    
     UITableView *_tableView;
 }
 

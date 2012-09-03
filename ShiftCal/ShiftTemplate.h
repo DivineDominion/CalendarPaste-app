@@ -13,8 +13,8 @@
     NSString *_title;
     NSString *_location;
     
-    NSInteger *_hours;
-    NSInteger *_minutes;
+    NSInteger _hours;
+    NSInteger _minutes;
     
     NSString *_url;
     
@@ -25,8 +25,8 @@
 }
 
 @property (nonatomic, copy,   readwrite) NSString *title;
-@property (nonatomic, assign, readwrite) NSInteger *hours;
-@property (nonatomic, assign, readwrite) NSInteger *minutes;
+@property (nonatomic, assign, readwrite) NSInteger hours;
+@property (nonatomic, assign, readwrite) NSInteger minutes;
 
 //@property (nonatomic, copy, readwrite) NSDate   *from;
 //@property (nonatomic, copy, readwrite) NSDate   *until;
@@ -34,4 +34,5 @@
 //- (id)initWithTitle:(NSString *)title from:(NSDate *)from until:(NSDate *)until;
 //- (id)initWithTitle:(NSString *)title duration:(NSTimeInterval *)duration;
 
+- (void)setDurationHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
 @end

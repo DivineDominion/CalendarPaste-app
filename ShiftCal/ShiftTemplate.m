@@ -11,24 +11,29 @@
 @implementation ShiftTemplate
 
 @synthesize title = _title;
-@synthesize from  = _from;
-@synthesize until = _until;
+@synthesize hours = _hours;
+@synthesize minutes = _minutes;
 
-- (id)initWithTitle:(NSString *)title
-               from:(NSDate *)from
-              until:(NSDate *)until
+- (id)init
 {
     self = [super init];
     
-    if (self) {
-        self.title = title;
-        self.from  = from;
-        self.until = until;
+    if (self)
+    {
+        self.title = nil;
+        self.hours = 1;
+        self.minutes = 0;
         
         return self;
     }
     
     return nil;
+}
+
+- (void)setDurationHours:(NSInteger)hours andMinutes:(NSInteger)minutes
+{
+    self.hours = hours;
+    self.minutes = minutes;
 }
 
 @end

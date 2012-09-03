@@ -28,12 +28,27 @@
 
 // private methods
 - (void)resetTextViewToPlaceholder:(UITextView *)textView;
+- (void)displayDurationInCell:(UITableViewCell *)cell;
 @end
 
 @implementation ShiftAddViewController
 
 @synthesize shift = _shift;
 @synthesize additionDelegate = _additionDelegate;
+
+- (id)init
+{
+    self = [super init];
+    
+    if (self)
+    {
+        self.shift = [[ShiftTemplate alloc] init];
+        
+        return self;
+    }
+    
+    return nil;
+}
 
 - (void)loadView
 {
@@ -52,6 +67,8 @@
     [_tableView setDelegate: nil];
     [_tableView setDataSource: nil];
     [_tableView release];
+    
+    [self.shift release];
     
     [super dealloc];
 }
@@ -165,7 +182,7 @@
             }
             
             cell.textLabel.text = @"Duration";
-            cell.detailTextLabel.text = @"1h";
+            [self displayDurationInCell:cell];
             
             break;
         case SECTION_CALENDAR:
@@ -263,6 +280,14 @@
     return tableView.rowHeight;
 }
 
+- (void)displayDurationInCell:(UITableViewCell *)cell
+{
+    NSString *theText = [ShiftTemplateController durationTextForHours:self.shift.hours andMinutes:self.shift.minutes];
+    
+    cell.detailTextLabel.text = theText;
+}
+
+
 #pragma mark - TableView interaction
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -326,16 +351,16 @@
     // means "Done";  both equal 0 on "Cancel"
     if (hours > 0 || minutes > 0)
     {
-        UITableViewCell *durationCell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:SECTION_DURATION]];
-        NSString *theText = [ShiftTemplateController durationTextForHours:hours andMinutes:minutes];
+        NSIndexPath *durationPath     = [NSIndexPath indexPathForRow:0 inSection:SECTION_DURATION];
+        UITableViewCell *durationCell = [_tableView cellForRowAtIndexPath:durationPath];
         
-        durationCell.detailTextLabel.text = theText;
-        // TODO set temporary model's duration
+        [self.shift setDurationHours:hours andMinutes:minutes];
+        
+        [self displayDurationInCell:durationCell];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 #pragma mark - Save and Cancel
 
