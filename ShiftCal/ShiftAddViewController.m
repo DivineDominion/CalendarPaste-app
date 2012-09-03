@@ -288,7 +288,7 @@
 }
 
 
-#pragma mark - TableView interaction
+#pragma mark TableView interaction
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -297,7 +297,7 @@
     switch (section) {
         case SECTION_DURATION:
         {
-            DurationPickerController *durationController = [[DurationPickerController alloc] init];
+            DurationPickerController *durationController = [[DurationPickerController alloc] initWitHours:self.shift.hours andMinutes:self.shift.minutes];
             durationController.delegate = self;
             
             UINavigationController *durationNavController = [[UINavigationController alloc] initWithRootViewController:durationController];

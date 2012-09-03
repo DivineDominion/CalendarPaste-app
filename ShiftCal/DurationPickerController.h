@@ -11,7 +11,6 @@
 
 @interface DurationPickerController : UITableViewController <UIPickerViewDataSource, UIPickerViewDelegate>
 {
-    UITableView *_tableView;
     UIPickerView *_pickerView;
     UIView *_pickerWrap;
     
@@ -25,6 +24,8 @@
 @property (nonatomic, assign) NSInteger minutes;
 
 @property (nonatomic, assign) id<DurationPickerDelegate> delegate;
+
+- (id)initWitHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
 
 - (void)save:(id)sender;
 - (void)cancel:(id)sender;

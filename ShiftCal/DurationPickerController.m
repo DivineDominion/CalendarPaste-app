@@ -12,6 +12,9 @@
 #define CELL_ID @"duration"
 #define CELL_LABEL_TAG 104
 
+#define SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.width
+#define SCREEN_HEIGHT [[UIScreen mainScreen] bounds].size.height
+
 #define PICKER_WIDTH (COMPONENT_HOUR_WIDTH + COMPONENT_MIN_WIDTH)
 #define PICKER_HEIGHT 216.0f
 #define COMPONENT_LABEL_OFFSET 10.0f
@@ -36,6 +39,8 @@
 
 @interface DurationPickerController ()
 // private methods
++ (UILabel *)createLabelForComponet:(NSInteger)component;
+
 - (UIView *)rowViewForComponent:(NSInteger)component;
 - (void)updateCellForHoursAndMinutes;
 - (NSString *)textForUserSelection;
@@ -47,27 +52,38 @@
 @synthesize minutes  = _minutes;
 @synthesize delegate = _delegate;
 
+- (id)init
+{
+    return [self initWitHours:0 andMinutes:0];
+}
+
+- (id)initWitHours:(NSInteger)hours andMinutes:(NSInteger)minutes
+{
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    
+    if (self)
+    {
+        self.hours = hours;
+        self.minutes = minutes;
+        return self;
+    }
+    
+    return nil;
+}
+
 - (void)loadView
 {
-    self.hours   = 1;
-    self.minutes = 0;
+    [super loadView];
+        
+    // top margin:  67px = 1/2 200px (visible content height) - 1/2 46px (cell height) - 10px table margin
+    CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, SCREEN_WIDTH, 67.0f);
     
-    UIView *mainView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    mainView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    
-    CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, 320.0f, 67.0f); // 100px content - 1/2 cell height - 10px margin
-    
-    _tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStyleGrouped];
-    _tableView.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    _tableView.tableHeaderView = [[[UIView alloc] initWithFrame:tableHeaderFrame] autorelease];
-    _tableView.scrollEnabled = NO;
-    [_tableView setDelegate:self];
-    [_tableView setDataSource:self];
-    
-    [mainView addSubview:_tableView];
+    self.tableView.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.tableView.tableHeaderView  = [[[UIView alloc] initWithFrame:tableHeaderFrame] autorelease];
+    self.tableView.scrollEnabled    = NO;
     
     // Visually hide down below screen bounds
-    _pickerWrap = [[UIView alloc] initWithFrame:CGRectMake(0.0f, [[UIScreen mainScreen] bounds].size.height, 320.0f, PICKER_HEIGHT)];
+    _pickerWrap = [[UIView alloc] initWithFrame:CGRectMake(0.0f, SCREEN_HEIGHT, SCREEN_WIDTH, PICKER_HEIGHT)];
     
     _pickerView = [[UIPickerView alloc] init];
     _pickerView.delegate = self;
@@ -75,21 +91,8 @@
     _pickerView.showsSelectionIndicator = YES;
     _pickerView.hidden = NO;
     
-    UILabel *hourLabel = [[UILabel alloc] initWithFrame:CGRectMake(COMPONENT_HOUR_LABEL_X, COMPONENT_LABEL_Y, COMPONENT_HOUR_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT)];
-    hourLabel.text = @"h";
-    hourLabel.textAlignment = UITextAlignmentRight;
-    hourLabel.font = [UIFont systemFontOfSize:24.0f];
-    hourLabel.backgroundColor = [UIColor clearColor];
-    hourLabel.userInteractionEnabled = NO;
-
-    UILabel *minLabel = [[UILabel alloc] initWithFrame:CGRectMake(COMPONENT_MIN_LABEL_X, COMPONENT_LABEL_Y, COMPONENT_MIN_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT)];
-    minLabel.text = @"min";
-    minLabel.textAlignment = UITextAlignmentRight;
-    minLabel.font = [UIFont systemFontOfSize:24.0f];
-    minLabel.backgroundColor = [UIColor clearColor];
-    minLabel.userInteractionEnabled = NO;
-    
-    // TODO refactor label creation
+    UILabel *hourLabel = [self.class createLabelForComponet:COMPONENT_HOUR];
+    UILabel *minLabel  = [self.class createLabelForComponet:COMPONENT_MIN];
 
     [_pickerWrap addSubview:_pickerView];
     [_pickerWrap addSubview:hourLabel];
@@ -98,20 +101,40 @@
     [hourLabel release];
     [minLabel release];
     
-    [mainView addSubview:_pickerWrap];
+    [self.tableView addSubview:_pickerWrap];
 
-    self.view = mainView;
     self.title = @"Duration";
+}
+
++ (UILabel *)createLabelForComponet:(NSInteger)component
+{
+    UILabel *theLabel = nil;
+    CGRect labelFrame;
+    NSString *labelText = nil;
     
-    [mainView release];
+    if (component == COMPONENT_HOUR)
+    {
+        labelFrame = CGRectMake(COMPONENT_HOUR_LABEL_X, COMPONENT_LABEL_Y, COMPONENT_HOUR_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT);
+        labelText  = @"h";
+    }
+    else // assuming: component == COMPONENT_MIN
+    {
+        labelFrame = CGRectMake(COMPONENT_MIN_LABEL_X, COMPONENT_LABEL_Y, COMPONENT_MIN_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT);
+        labelText  = @"min";
+    }
+    
+    theLabel = [[UILabel alloc] initWithFrame:labelFrame];
+    theLabel.text = labelText;
+    theLabel.textAlignment = UITextAlignmentRight;
+    theLabel.font = [UIFont systemFontOfSize:24.0f];
+    theLabel.backgroundColor = [UIColor clearColor];
+    theLabel.userInteractionEnabled = NO;
+
+    return theLabel;
 }
 
 - (void)dealloc
-{
-    [_tableView setDelegate:nil];
-    [_tableView setDataSource:nil];
-    [_tableView release];
-    
+{    
     [_pickerView setDelegate:nil];
     [_pickerView setDataSource:nil];
     [_pickerView release];
@@ -151,7 +174,8 @@
     _pickerWrap.frame = CGRectMake(0.0f, _pickerWrap.frame.origin.y - 216.0f - 64.0f, 320.0f, 216.0f);
     [UIView commitAnimations];
     
-    [_pickerView selectRow:1 inComponent:COMPONENT_HOUR animated:YES];
+    [_pickerView selectRow:self.hours   inComponent:COMPONENT_HOUR animated:YES];
+    [_pickerView selectRow:self.minutes inComponent:COMPONENT_MIN  animated:YES];
 }
 
 #pragma mark - TableView data
@@ -199,7 +223,7 @@
 
 - (void)updateCellForHoursAndMinutes
 {
-    UITableViewCell *cell  = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    UITableViewCell *cell  = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     cell.detailTextLabel.text = [self textForUserSelection];
 }
 
