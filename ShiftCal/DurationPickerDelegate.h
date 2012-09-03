@@ -13,6 +13,6 @@
 @protocol DurationPickerDelegate <NSObject>
 
 @required
-// (hours == 0 && minutes == 0 && text == nil) on cancel
-- (void)durationPicker:(DurationPickerController *)durationPicker didSelectHours:(NSInteger)hours andMinutes:(NSInteger)minutes renderedAs:(NSString *)text;
+// (hours == 0 && minutes == 0) on cancel
+- (void)durationPicker:(DurationPickerController *)durationPicker didSelectHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
 @end

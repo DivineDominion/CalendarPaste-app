@@ -11,22 +11,27 @@
 @interface ShiftTemplate : NSObject
 {
     NSString *_title;
-
-    NSDate *_from;
-    NSDate *_until;
-    
     NSString *_location;
-    NSString *_note;
+    
+    NSInteger *_hours;
+    NSInteger *_minutes;
+    
     NSString *_url;
+    
+    NSString *_note;
     
     // TODO _calendar;
     // TODO _reminder;
 }
 
-@property (nonatomic, copy, readwrite) NSString *title;
-@property (nonatomic, copy, readwrite) NSDate   *from;
-@property (nonatomic, copy, readwrite) NSDate   *until;
+@property (nonatomic, copy,   readwrite) NSString *title;
+@property (nonatomic, assign, readwrite) NSInteger *hours;
+@property (nonatomic, assign, readwrite) NSInteger *minutes;
 
-- (id)initWithTitle:(NSString *)title from:(NSDate *)from until:(NSDate *)until;
+//@property (nonatomic, copy, readwrite) NSDate   *from;
+//@property (nonatomic, copy, readwrite) NSDate   *until;
+
+//- (id)initWithTitle:(NSString *)title from:(NSDate *)from until:(NSDate *)until;
+//- (id)initWithTitle:(NSString *)title duration:(NSTimeInterval *)duration;
 
 @end

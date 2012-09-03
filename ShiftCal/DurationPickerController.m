@@ -7,6 +7,7 @@
 //
 
 #import "DurationPickerController.h"
+#import "ShiftTemplateController.h"
 
 #define CELL_ID @"duration"
 #define CELL_LABEL_TAG 104
@@ -192,19 +193,8 @@
 }
 
 - (NSString *)textForUserSelection
-{
-    NSString *minutesString = @"";
-    NSString *hoursString   = [NSString stringWithFormat:@"%dh", self.hours];
-    
-    if (self.minutes > 0) {
-        minutesString = [NSString stringWithFormat:@" %dmin", self.minutes];
-        
-        if (self.hours == 0) {
-            hoursString = @"";
-        }
-    }
-    
-    return [NSString stringWithFormat:@"%@%@", hoursString, minutesString];
+{   
+    return [ShiftTemplateController durationTextForHours:self.hours andMinutes:self.minutes];
 }
 
 - (void)updateCellForHoursAndMinutes
@@ -331,12 +321,12 @@
 
 - (void)save:(id)sender
 {
-    [self.delegate durationPicker:self didSelectHours:self.hours andMinutes:self.minutes renderedAs:[self textForUserSelection]];
+    [self.delegate durationPicker:self didSelectHours:self.hours andMinutes:self.minutes];
 }
 
 - (void)cancel:(id)sender
 {
-    [self.delegate durationPicker:self didSelectHours:0 andMinutes:0 renderedAs:nil];
+    [self.delegate durationPicker:self didSelectHours:0 andMinutes:0];
 }
 
 @end

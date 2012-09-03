@@ -8,6 +8,7 @@
 
 #import "ShiftAddViewController.h"
 #import "DurationPickerController.h"
+#import "ShiftTemplateController.h"
 
 #define NUM_SECTIONS 6
 #define SECTION_TITLE_LOCATION 0
@@ -320,14 +321,15 @@
 
 #pragma mark - Sub view delegate
 
-- (void)durationPicker:(id)durationPicker didSelectHours:(NSInteger)hours andMinutes:(NSInteger)minutes renderedAs:(NSString *)text
+- (void)durationPicker:(id)durationPicker didSelectHours:(NSInteger)hours andMinutes:(NSInteger)minutes
 {
     // means "Done";  both equal 0 on "Cancel"
-    if ((hours > 0 || minutes > 0) && text != nil)
+    if (hours > 0 || minutes > 0)
     {
         UITableViewCell *durationCell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:SECTION_DURATION]];
+        NSString *theText = [ShiftTemplateController durationTextForHours:hours andMinutes:minutes];
         
-        durationCell.detailTextLabel.text = text;
+        durationCell.detailTextLabel.text = theText;
         // TODO set temporary model's duration
     }
     

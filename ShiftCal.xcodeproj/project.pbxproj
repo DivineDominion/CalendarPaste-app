@@ -23,6 +23,7 @@
 		60BB96C715C08EB900801105 /* ShiftCalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BB96C615C08EB900801105 /* ShiftCalTests.m */; };
 		60F1603415DD1447005834B3 /* ShiftAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1603315DD1447005834B3 /* ShiftAddViewController.m */; };
 		60FBA82315F10443008B48A1 /* DurationPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82215F10443008B48A1 /* DurationPickerController.m */; };
+		60FBA82D15F4FE2C008B48A1 /* ShiftTemplateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82C15F4FE2B008B48A1 /* ShiftTemplateController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,8 @@
 		60FBA82215F10443008B48A1 /* DurationPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DurationPickerController.m; sourceTree = "<group>"; };
 		60FBA82515F10BCC008B48A1 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Macros.h; sourceTree = "<group>"; };
 		60FBA82A15F3DD76008B48A1 /* DurationPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationPickerDelegate.h; sourceTree = "<group>"; };
+		60FBA82B15F4FE2B008B48A1 /* ShiftTemplateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplateController.h; sourceTree = "<group>"; };
+		60FBA82C15F4FE2B008B48A1 /* ShiftTemplateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplateController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +136,8 @@
 				60AAB81115C13297002114B9 /* ShiftOverviewController.h */,
 				60AAB81215C13297002114B9 /* ShiftOverviewController.m */,
 				60AAB7C615C09243002114B9 /* ShiftTemplate.h */,
+				60FBA82B15F4FE2B008B48A1 /* ShiftTemplateController.h */,
+				60FBA82C15F4FE2B008B48A1 /* ShiftTemplateController.m */,
 				60AAB7C715C09243002114B9 /* ShiftTemplate.m */,
 				60BB96B015C08EB900801105 /* AppDelegate.h */,
 				60BB96B115C08EB900801105 /* AppDelegate.m */,
@@ -286,6 +291,7 @@
 				60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */,
 				60F1603415DD1447005834B3 /* ShiftAddViewController.m in Sources */,
 				60FBA82315F10443008B48A1 /* DurationPickerController.m in Sources */,
+				60FBA82D15F4FE2C008B48A1 /* ShiftTemplateController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
