@@ -13,7 +13,7 @@
 
 #import "ShiftAddDelegate.h"
 
-@interface ShiftAddViewController : UITableViewController <UITextViewDelegate, DurationPickerDelegate>
+@interface ShiftAddViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, DurationPickerDelegate>
 {
     id <ShiftAddDelegate> _additionDelegate;
 

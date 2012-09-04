@@ -27,6 +27,8 @@
 @property (nonatomic, copy,   readwrite) NSString *title;
 @property (nonatomic, assign, readwrite) NSInteger hours;
 @property (nonatomic, assign, readwrite) NSInteger minutes;
+@property (nonatomic, copy,   readwrite) NSString *location;
+@property (nonatomic, copy,   readwrite) NSString *url;
 
 //@property (nonatomic, copy, readwrite) NSDate   *from;
 //@property (nonatomic, copy, readwrite) NSDate   *until;

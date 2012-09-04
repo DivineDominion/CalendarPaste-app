@@ -13,6 +13,8 @@
 @synthesize title = _title;
 @synthesize hours = _hours;
 @synthesize minutes = _minutes;
+@synthesize location = _location;
+@synthesize url = _url;
 
 - (id)init
 {

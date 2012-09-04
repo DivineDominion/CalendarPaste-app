@@ -23,6 +23,9 @@
 #define CELL_SUBVIEW    @"sub"
 #define CELL_TEXT_AREA  @"textarea"
 
+#define TAG_TEXT_FIELD_TITLE 100
+#define TAG_TEXT_FIELD_LOCATION 101
+#define TAG_TEXT_FIELD_URL 102
 
 @interface ShiftAddViewController ()
 
@@ -92,7 +95,7 @@
     [saveItem release];
     [cancelItem release];
     
-    // TODO title becomeFirstResponder
+    [[_tableView viewWithTag:TAG_TEXT_FIELD_TITLE] becomeFirstResponder];
 }
 
 - (void)viewDidUnload
@@ -156,14 +159,18 @@
             
             UITextField *textField = [[cell.contentView subviews] lastObject];
             textField.clearsOnBeginEditing = NO;
+            textField.delegate = self;
             
             if (row == 0)
             {
                 textField.placeholder = @"Title";
+                textField.returnKeyType = UIReturnKeyNext;
+                textField.tag = TAG_TEXT_FIELD_TITLE;
             }
             else if (row == 1)
             {
                 textField.placeholder = @"Location";
+                textField.tag = TAG_TEXT_FIELD_LOCATION;
             }
             else {
                 StupidError(@"no placeholder for row %d", row);
@@ -235,6 +242,8 @@
             UITextField *textField = [[cell.contentView subviews] lastObject];
             textField.clearsOnBeginEditing = NO;
             textField.placeholder = @"URL";
+            textField.tag = TAG_TEXT_FIELD_URL;
+            textField.delegate = self;
             
             break;
         }
@@ -344,7 +353,42 @@
     textView.tag       = 0; // Indicates 'default/placeholder state
 }
 
-#pragma mark - Sub view delegate
+#pragma mark TextField delegate
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    switch (textField.tag) {
+        case TAG_TEXT_FIELD_TITLE:
+            self.shift.title = textField.text;
+            break;
+        case TAG_TEXT_FIELD_LOCATION:
+            self.shift.location = textField.text;
+            break;
+        case TAG_TEXT_FIELD_URL:
+            self.shift.url = textField.text;
+            break;
+        default:
+            StupidError(@"unhandled textField ended editing: %@", textField);
+            break;
+    }
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField.tag == TAG_TEXT_FIELD_TITLE)
+    {
+        [[_tableView viewWithTag:TAG_TEXT_FIELD_LOCATION] becomeFirstResponder];
+    }
+    
+    if (textField.tag == TAG_TEXT_FIELD_LOCATION || textField.tag == TAG_TEXT_FIELD_URL)
+    {
+        [textField resignFirstResponder];
+    }
+    
+    return YES;
+}
+
+#pragma mark - Presented view delegate
 
 - (void)durationPicker:(id)durationPicker didSelectHours:(NSInteger)hours andMinutes:(NSInteger)minutes
 {
