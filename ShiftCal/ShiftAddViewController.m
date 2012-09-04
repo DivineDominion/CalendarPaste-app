@@ -202,9 +202,13 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
+            EKEventStore *eventStore = [[EKEventStore alloc] init];
+            EKCalendar *cal = [eventStore defaultCalendarForNewEvents];
+            
             cell.textLabel.text = @"Calendar";
-            cell.detailTextLabel.text = @"DEFAULT";
+            cell.detailTextLabel.text = cal.title;
 
+            [eventStore release];
             break;
         case SECTION_REMINDER:
             cell = [tableView dequeueReusableCellWithIdentifier:CELL_SUBVIEW];

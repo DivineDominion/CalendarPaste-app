@@ -25,6 +25,8 @@
 		60FBA82315F10443008B48A1 /* DurationPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82215F10443008B48A1 /* DurationPickerController.m */; };
 		60FBA82D15F4FE2C008B48A1 /* ShiftTemplateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82C15F4FE2B008B48A1 /* ShiftTemplateController.m */; };
 		60FBA83015F66C4C008B48A1 /* CalendarPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82F15F66C4C008B48A1 /* CalendarPickerController.m */; };
+		60FBA83815F67532008B48A1 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60FBA83615F67532008B48A1 /* EventKit.framework */; };
+		60FBA83915F67532008B48A1 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60FBA83715F67532008B48A1 /* EventKitUI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +73,8 @@
 		60FBA82C15F4FE2B008B48A1 /* ShiftTemplateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplateController.m; sourceTree = "<group>"; };
 		60FBA82E15F66C4C008B48A1 /* CalendarPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarPickerController.h; sourceTree = "<group>"; };
 		60FBA82F15F66C4C008B48A1 /* CalendarPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarPickerController.m; sourceTree = "<group>"; };
+		60FBA83615F67532008B48A1 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		60FBA83715F67532008B48A1 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +82,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60FBA83815F67532008B48A1 /* EventKit.framework in Frameworks */,
+				60FBA83915F67532008B48A1 /* EventKitUI.framework in Frameworks */,
 				60BB96A215C08EB900801105 /* UIKit.framework in Frameworks */,
 				60BB96A415C08EB900801105 /* Foundation.framework in Frameworks */,
 				60BB96A615C08EB900801105 /* CoreGraphics.framework in Frameworks */,
@@ -119,6 +125,8 @@
 		60BB96A015C08EB900801105 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				60FBA83615F67532008B48A1 /* EventKit.framework */,
+				60FBA83715F67532008B48A1 /* EventKitUI.framework */,
 				60BB96A115C08EB900801105 /* UIKit.framework */,
 				60BB96A315C08EB900801105 /* Foundation.framework */,
 				60BB96A515C08EB900801105 /* CoreGraphics.framework */,
