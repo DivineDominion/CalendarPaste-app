@@ -24,6 +24,7 @@
 		60F1603415DD1447005834B3 /* ShiftAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1603315DD1447005834B3 /* ShiftAddViewController.m */; };
 		60FBA82315F10443008B48A1 /* DurationPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82215F10443008B48A1 /* DurationPickerController.m */; };
 		60FBA82D15F4FE2C008B48A1 /* ShiftTemplateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82C15F4FE2B008B48A1 /* ShiftTemplateController.m */; };
+		60FBA83015F66C4C008B48A1 /* CalendarPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82F15F66C4C008B48A1 /* CalendarPickerController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,8 @@
 		60FBA82A15F3DD76008B48A1 /* DurationPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationPickerDelegate.h; sourceTree = "<group>"; };
 		60FBA82B15F4FE2B008B48A1 /* ShiftTemplateController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplateController.h; sourceTree = "<group>"; };
 		60FBA82C15F4FE2B008B48A1 /* ShiftTemplateController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplateController.m; sourceTree = "<group>"; };
+		60FBA82E15F66C4C008B48A1 /* CalendarPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarPickerController.h; sourceTree = "<group>"; };
+		60FBA82F15F66C4C008B48A1 /* CalendarPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarPickerController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,12 +130,7 @@
 		60BB96A715C08EB900801105 /* ShiftCal */ = {
 			isa = PBXGroup;
 			children = (
-				60FBA82115F10443008B48A1 /* DurationPickerController.h */,
-				60FBA82215F10443008B48A1 /* DurationPickerController.m */,
-				60FBA82A15F3DD76008B48A1 /* DurationPickerDelegate.h */,
-				60F1603215DD1447005834B3 /* ShiftAddViewController.h */,
-				60F1603315DD1447005834B3 /* ShiftAddViewController.m */,
-				60F1603615DD1B16005834B3 /* ShiftAddDelegate.h */,
+				60FBA83115F66C59008B48A1 /* Add Shift */,
 				60AAB81115C13297002114B9 /* ShiftOverviewController.h */,
 				60AAB81215C13297002114B9 /* ShiftOverviewController.m */,
 				60AAB7C615C09243002114B9 /* ShiftTemplate.h */,
@@ -177,6 +175,21 @@
 				60BB96C215C08EB900801105 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		60FBA83115F66C59008B48A1 /* Add Shift */ = {
+			isa = PBXGroup;
+			children = (
+				60FBA82115F10443008B48A1 /* DurationPickerController.h */,
+				60FBA82215F10443008B48A1 /* DurationPickerController.m */,
+				60FBA82A15F3DD76008B48A1 /* DurationPickerDelegate.h */,
+				60FBA82E15F66C4C008B48A1 /* CalendarPickerController.h */,
+				60FBA82F15F66C4C008B48A1 /* CalendarPickerController.m */,
+				60F1603215DD1447005834B3 /* ShiftAddViewController.h */,
+				60F1603315DD1447005834B3 /* ShiftAddViewController.m */,
+				60F1603615DD1B16005834B3 /* ShiftAddDelegate.h */,
+			);
+			name = "Add Shift";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -292,6 +305,7 @@
 				60F1603415DD1447005834B3 /* ShiftAddViewController.m in Sources */,
 				60FBA82315F10443008B48A1 /* DurationPickerController.m in Sources */,
 				60FBA82D15F4FE2C008B48A1 /* ShiftTemplateController.m in Sources */,
+				60FBA83015F66C4C008B48A1 /* CalendarPickerController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
