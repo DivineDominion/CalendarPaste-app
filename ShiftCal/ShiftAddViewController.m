@@ -8,6 +8,7 @@
 
 #import "ShiftAddViewController.h"
 #import "DurationPickerController.h"
+#import "CalendarPickerController.h"
 #import "ShiftTemplateController.h"
 
 #define NUM_SECTIONS 6
@@ -310,7 +311,7 @@
     switch (section) {
         case SECTION_DURATION:
         {
-            DurationPickerController *durationController = [[DurationPickerController alloc] initWitHours:self.shift.hours andMinutes:self.shift.minutes];
+            DurationPickerController *durationController = [[DurationPickerController alloc] initWithHours:self.shift.hours andMinutes:self.shift.minutes];
             durationController.delegate = self;
             
             UINavigationController *durationNavController = [[UINavigationController alloc] initWithRootViewController:durationController];
@@ -319,6 +320,19 @@
             
             [durationController release];
             [durationNavController release];
+            break;
+        }
+        case SECTION_CALENDAR:
+        {
+            CalendarPickerController *calendarController = [[CalendarPickerController alloc] init];
+            
+            UINavigationController *calendarNavController = [[UINavigationController alloc] initWithRootViewController:calendarController];
+            
+            [self presentModalViewController:calendarNavController animated:YES];
+            
+            [calendarController release];
+            [calendarNavController release];
+            
             break;
         }
         default:

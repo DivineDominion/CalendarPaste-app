@@ -25,7 +25,7 @@
 
 @property (nonatomic, assign) id<DurationPickerDelegate> delegate;
 
-- (id)initWitHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
+- (id)initWithHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
 
 - (void)save:(id)sender;
 - (void)cancel:(id)sender;

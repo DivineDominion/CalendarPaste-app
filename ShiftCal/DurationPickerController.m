@@ -54,10 +54,10 @@
 
 - (id)init
 {
-    return [self initWitHours:0 andMinutes:0];
+    return [self initWithHours:0 andMinutes:0];
 }
 
-- (id)initWitHours:(NSInteger)hours andMinutes:(NSInteger)minutes
+- (id)initWithHours:(NSInteger)hours andMinutes:(NSInteger)minutes
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     

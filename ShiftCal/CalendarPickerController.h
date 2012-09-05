@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <EventKitUI/EventKitUI.h>
 
 @interface CalendarPickerController : UITableViewController
+{
+    EKEventStore *_eventStore;
+}
+
+@property (nonatomic, retain) EKEventStore *eventStore;
 
 @end
