@@ -26,6 +26,7 @@
 @property (weak) id<DurationPickerDelegate> delegate;
 
 - (id)initWithHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
+- (id)initWithHours:(NSInteger)hours andMinutes:(NSInteger)minutes withStyle:(UITableViewStyle)style;
 
 - (void)save:(id)sender;
 - (void)cancel:(id)sender;

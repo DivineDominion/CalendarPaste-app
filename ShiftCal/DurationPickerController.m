@@ -57,18 +57,27 @@
     return [self initWithHours:0 andMinutes:0];
 }
 
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    return [self initWithHours:0 andMinutes:0 withStyle:style];
+}
+
 - (id)initWithHours:(NSInteger)hours andMinutes:(NSInteger)minutes
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    return [self initWithHours:hours andMinutes:minutes withStyle:UITableViewStyleGrouped];
+}
+
+- (id)initWithHours:(NSInteger)hours andMinutes:(NSInteger)minutes withStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
     
     if (self)
     {
         self.hours = hours;
         self.minutes = minutes;
-        return self;
     }
     
-    return nil;
+    return self;
 }
 
 - (void)loadView
