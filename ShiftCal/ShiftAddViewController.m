@@ -42,36 +42,27 @@
 
 - (id)init
 {
-    self = [super init];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     
     if (self)
     {
         self.shift = [[ShiftTemplate alloc] init];
-        
-        return self;
     }
     
-    return nil;
+    return self;
 }
 
 - (void)loadView
 {
-    _tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] bounds] style:UITableViewStyleGrouped];
-    _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-    [_tableView setDelegate:self];
-    [_tableView setDataSource:self];
+    [super loadView];
     
-    self.view = _tableView;
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     self.title = @"Add Shift";
 }
 
 - (void)dealloc
 {
-    [_tableView setDelegate: nil];
-    [_tableView setDataSource: nil];
-    [_tableView release];
-    
     [self.shift release];
     
     [super dealloc];
@@ -96,7 +87,7 @@
     [saveItem release];
     [cancelItem release];
     
-    [[_tableView viewWithTag:TAG_TEXT_FIELD_TITLE] becomeFirstResponder];
+    [[self.tableView viewWithTag:TAG_TEXT_FIELD_TITLE] becomeFirstResponder];
 }
 
 - (void)viewDidUnload
@@ -398,7 +389,7 @@
 {
     if (textField.tag == TAG_TEXT_FIELD_TITLE)
     {
-        [[_tableView viewWithTag:TAG_TEXT_FIELD_LOCATION] becomeFirstResponder];
+        [[self.tableView viewWithTag:TAG_TEXT_FIELD_LOCATION] becomeFirstResponder];
     }
     
     if (textField.tag == TAG_TEXT_FIELD_LOCATION || textField.tag == TAG_TEXT_FIELD_URL)
@@ -417,7 +408,7 @@
     if (hours > 0 || minutes > 0)
     {
         NSIndexPath *durationPath     = [NSIndexPath indexPathForRow:0 inSection:SECTION_DURATION];
-        UITableViewCell *durationCell = [_tableView cellForRowAtIndexPath:durationPath];
+        UITableViewCell *durationCell = [self.tableView cellForRowAtIndexPath:durationPath];
         
         [self.shift setDurationHours:hours andMinutes:minutes];
         
@@ -432,7 +423,7 @@
     if (calendar)
     {
         NSIndexPath *calendarPath     = [NSIndexPath indexPathForRow:0 inSection:SECTION_CALENDAR];
-        UITableViewCell *calendarCell = [_tableView cellForRowAtIndexPath:calendarPath];
+        UITableViewCell *calendarCell = [self.tableView cellForRowAtIndexPath:calendarPath];
         
         self.shift.calendar = calendar;
         

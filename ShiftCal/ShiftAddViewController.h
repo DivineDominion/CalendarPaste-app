@@ -22,8 +22,6 @@
     id <ShiftAddDelegate> _additionDelegate;
 
     ShiftTemplate *_shift;
-    
-    UITableView *_tableView;
 }
 
 @property (nonatomic, assign) id <ShiftAddDelegate> additionDelegate;
