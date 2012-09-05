@@ -13,10 +13,11 @@
 #import "ShiftTemplate.h"
 
 #import "DurationPickerDelegate.h"
+#import "CalendarPickerDelegate.h"
 
 #import "ShiftAddDelegate.h"
 
-@interface ShiftAddViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, DurationPickerDelegate>
+@interface ShiftAddViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, DurationPickerDelegate, CalendarPickerDelegate>
 {
     id <ShiftAddDelegate> _additionDelegate;
 

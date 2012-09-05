@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <EventKit/EventKit.h>
 
 @interface ShiftTemplate : NSObject
 {
@@ -20,7 +21,7 @@
     
     NSString *_note;
     
-    // TODO _calendar;
+    EKCalendar *_calendar;
     // TODO _reminder;
 }
 
@@ -29,6 +30,7 @@
 @property (nonatomic, assign, readwrite) NSInteger minutes;
 @property (nonatomic, copy,   readwrite) NSString *location;
 @property (nonatomic, copy,   readwrite) NSString *url;
+@property (nonatomic, retain, readwrite) EKCalendar *calendar;
 
 //@property (nonatomic, copy, readwrite) NSDate   *from;
 //@property (nonatomic, copy, readwrite) NSDate   *until;

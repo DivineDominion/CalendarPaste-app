@@ -75,6 +75,7 @@
 		60FBA82F15F66C4C008B48A1 /* CalendarPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarPickerController.m; sourceTree = "<group>"; };
 		60FBA83615F67532008B48A1 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		60FBA83715F67532008B48A1 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
+		60FBA83A15F7BAFA008B48A1 /* CalendarPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarPickerDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +194,7 @@
 				60FBA82A15F3DD76008B48A1 /* DurationPickerDelegate.h */,
 				60FBA82E15F66C4C008B48A1 /* CalendarPickerController.h */,
 				60FBA82F15F66C4C008B48A1 /* CalendarPickerController.m */,
+				60FBA83A15F7BAFA008B48A1 /* CalendarPickerDelegate.h */,
 				60F1603215DD1447005834B3 /* ShiftAddViewController.h */,
 				60F1603315DD1447005834B3 /* ShiftAddViewController.m */,
 				60F1603615DD1B16005834B3 /* ShiftAddDelegate.h */,

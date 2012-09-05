@@ -203,13 +203,9 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
-            EKEventStore *eventStore = [[EKEventStore alloc] init];
-            EKCalendar *cal = [eventStore defaultCalendarForNewEvents];
-            
             cell.textLabel.text = @"Calendar";
-            cell.detailTextLabel.text = cal.title;
+            [self displayCalendarInCell:cell];
 
-            [eventStore release];
             break;
         case SECTION_REMINDER:
             cell = [tableView dequeueReusableCellWithIdentifier:CELL_SUBVIEW];
@@ -301,6 +297,11 @@
     cell.detailTextLabel.text = theText;
 }
 
+- (void)displayCalendarInCell:(UITableViewCell *)cell
+{
+    cell.detailTextLabel.text = self.shift.calendar.title;
+}
+
 
 #pragma mark TableView interaction
 
@@ -324,7 +325,9 @@
         }
         case SECTION_CALENDAR:
         {
-            CalendarPickerController *calendarController = [[CalendarPickerController alloc] init];
+            EKCalendar *calendar = self.shift.calendar;
+            CalendarPickerController *calendarController = [[CalendarPickerController alloc] initWithSelectedCalendar:calendar];
+            calendarController.delegate = self;
             
             UINavigationController *calendarNavController = [[UINavigationController alloc] initWithRootViewController:calendarController];
             
@@ -419,6 +422,21 @@
         [self.shift setDurationHours:hours andMinutes:minutes];
         
         [self displayDurationInCell:durationCell];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)calendarPicker:(CalendarPickerController *)calendarPicker didSelectCalendar:(EKCalendar *)calendar
+{
+    if (calendar)
+    {
+        NSIndexPath *calendarPath     = [NSIndexPath indexPathForRow:0 inSection:SECTION_CALENDAR];
+        UITableViewCell *calendarCell = [_tableView cellForRowAtIndexPath:calendarPath];
+        
+        self.shift.calendar = calendar;
+        
+        [self displayCalendarInCell:calendarCell];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];

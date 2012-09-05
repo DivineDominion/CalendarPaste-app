@@ -8,12 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import <EventKitUI/EventKitUI.h>
+#import "CalendarPickerDelegate.h"
 
 @interface CalendarPickerController : UITableViewController
 {
     EKEventStore *_eventStore;
+    NSIndexPath *_selectedCellIndexPath;
+    
+    id<CalendarPickerDelegate> _delegate;
 }
 
 @property (nonatomic, retain) EKEventStore *eventStore;
+@property (nonatomic, retain) NSIndexPath *selectedCellIndexPath;
+@property (weak) id<CalendarPickerDelegate> delegate;
+
+- (id)initWithSelectedCalendar:(EKCalendar *)calendar;
+- (id)initWithSelectedCalendar:(EKCalendar *)calendar withStyle:(UITableViewStyle)style;
 
 @end

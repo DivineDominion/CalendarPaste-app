@@ -23,7 +23,7 @@
 @property (nonatomic, assign) NSInteger hours;
 @property (nonatomic, assign) NSInteger minutes;
 
-@property (nonatomic, assign) id<DurationPickerDelegate> delegate;
+@property (weak) id<DurationPickerDelegate> delegate;
 
 - (id)initWithHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
 

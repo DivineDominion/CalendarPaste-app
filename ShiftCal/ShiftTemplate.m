@@ -15,6 +15,7 @@
 @synthesize minutes = _minutes;
 @synthesize location = _location;
 @synthesize url = _url;
+@synthesize calendar = _calendar;
 
 - (id)init
 {
@@ -25,6 +26,10 @@
         self.title = nil;
         self.hours = 1;
         self.minutes = 0;
+        
+        EKEventStore *eventStore = [[EKEventStore alloc] init];
+        self.calendar = [eventStore defaultCalendarForNewEvents];
+        [eventStore release];
         
         return self;
     }

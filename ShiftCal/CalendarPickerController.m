@@ -15,6 +15,8 @@
 @implementation CalendarPickerController
 
 @synthesize eventStore = _eventStore;
+@synthesize selectedCellIndexPath = _selectedCellIndexPath;
+@synthesize delegate = _delegate;
 
 - (id)init
 {
@@ -23,11 +25,32 @@
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
+    return [self initWithSelectedCalendar:nil withStyle:style];
+}
+
+- (id)initWithSelectedCalendar:(EKCalendar *)calendar
+{
+    return [self initWithSelectedCalendar:calendar withStyle:UITableViewStyleGrouped];
+}
+
+- (id)initWithSelectedCalendar:(EKCalendar *)calendar withStyle:(UITableViewStyle)style
+{
     self = [super initWithStyle:style];
-    if (self) {
+    
+    if (self)
+    {
         self.eventStore = [[EKEventStore alloc] init];
         
+        NSIndexPath *defaultPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        
+        if (calendar) {
+            NSInteger index = [self.eventStore.calendars indexOfObject:calendar];
+            defaultPath = [NSIndexPath indexPathForRow:index inSection:0];
+        }
+        
+        self.selectedCellIndexPath = defaultPath;
     }
+    
     return self;
 }
 
@@ -78,10 +101,16 @@
     if (!cell)
     {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
     EKCalendar *calendar = [self.eventStore.calendars objectAtIndex:row];
     cell.textLabel.text = calendar.title;
+    
+    if ([indexPath isEqual:self.selectedCellIndexPath])
+    {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
     
     return cell;
 }
@@ -90,14 +119,32 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if ([indexPath isEqual:self.selectedCellIndexPath])
+    {
+        return;
+    }
+    
+    [tableView cellForRowAtIndexPath:self.selectedCellIndexPath].accessoryType = UITableViewCellAccessoryNone;
+    [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+    
+    self.selectedCellIndexPath = indexPath;
+}
+
+#pragma mark - Save and Cancel
+
+- (void)save:(id)sender
+{
+    NSInteger row = self.selectedCellIndexPath.row;
+    EKCalendar *calendar = [self.eventStore.calendars objectAtIndex:row];
+    
+    [self.delegate calendarPicker:self didSelectCalendar:calendar];
+}
+
+- (void)cancel:(id)sender
+{
+    [self.delegate calendarPicker:self didSelectCalendar:nil];
 }
 
 @end
