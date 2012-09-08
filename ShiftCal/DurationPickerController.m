@@ -175,13 +175,12 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [UIView beginAnimations:@"slideIn" context:nil];
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationDelegate:self];
-    // Picker height: 216px
-    // Navbar + status bar height: 64px
-    _pickerWrap.frame = CGRectMake(0.0f, _pickerWrap.frame.origin.y - 216.0f - 64.0f, 320.0f, 216.0f);
-    [UIView commitAnimations];
+    CGRect frame = _pickerWrap.frame;
+    frame.origin.y = frame.origin.y - PICKER_HEIGHT - 64.0f; // Navbar + status bar height: 64px
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        _pickerWrap.frame = frame;
+    }];
     
     [_pickerView selectRow:self.hours   inComponent:COMPONENT_HOUR animated:YES];
     [_pickerView selectRow:self.minutes inComponent:COMPONENT_MIN  animated:YES];
