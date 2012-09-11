@@ -30,7 +30,7 @@
 @property (nonatomic, retain) NSIndexPath *selectedCellIndexPath;
 
 // private methods
-- (UIView *)tableView:(UITableView *)tableView actionPanelForIndexPath:(NSIndexPath *)indexPath;
+- (UIView *)actionPanelForIndexPath:(NSIndexPath *)indexPath andTableView:(UITableView *)tableView;
 - (void)animateActionPanelHeight:(NSInteger)height forIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
 - (void)showActionPanelForIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
 - (void)hideActionPanelForIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
@@ -157,7 +157,7 @@
     return self.eventStore.calendars.count;
 }
 
-- (UIView *)tableView:(UITableView *)tableView actionPanelForIndexPath:(NSIndexPath *)indexPath
+- (UIView *)actionPanelForIndexPath:(NSIndexPath *)indexPath andTableView:(UITableView *)tableView
 {
     NSInteger row     = [indexPath row];
     BOOL hideToolView = ![self.selectedCellIndexPath isEqual:indexPath] || [self.defaultCellIndexPath isEqual:indexPath];
@@ -219,6 +219,17 @@
     return view;
 }
 
+- (NSString *)defaultTextForCellAt:(NSIndexPath *)indexPath
+{
+    if ([indexPath isEqual:self.defaultCellIndexPath])
+    {
+        return @"default";
+    }
+    
+    // Not nil to prevent strange animation on updates
+    return @" ";
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -238,17 +249,14 @@
     EKCalendar *calendar = [self.eventStore.calendars objectAtIndex:row];
     cell.textLabel.text = calendar.title;
     
-    if ([indexPath isEqual:self.defaultCellIndexPath])
-    {
-        cell.detailTextLabel.text = @"Default";
-    }
+    cell.detailTextLabel.text = [self defaultTextForCellAt:indexPath];
         
     if ([indexPath isEqual:self.selectedCellIndexPath])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
     
-    UIView *actionPanelView = [self tableView:tableView actionPanelForIndexPath:indexPath];
+    UIView *actionPanelView = [self actionPanelForIndexPath:indexPath andTableView:tableView];
     [cell.contentView addSubview:actionPanelView];
     
     return cell;
@@ -290,7 +298,11 @@
     
     // Animate action panels
     [self hideActionPanelForIndexPath:self.selectedCellIndexPath inTableView:tableView];
-    [self showActionPanelForIndexPath:indexPath inTableView:tableView];
+    
+    if (![indexPath isEqual:self.defaultCellIndexPath])
+    {
+        [self showActionPanelForIndexPath:indexPath inTableView:tableView];
+    }
         
     // Update accessory views
     [tableView beginUpdates];
@@ -310,11 +322,16 @@
     {
         NSInteger row = actionButton.tag;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-
+        NSIndexPath *oldDefaultIndexPath = [self.defaultCellIndexPath copy];
+        
+        [self.tableView beginUpdates];
         self.defaultCellIndexPath = indexPath;
         
-        [self hideActionPanelForIndexPath:indexPath inTableView:self.tableView];
+        [self.tableView cellForRowAtIndexPath:oldDefaultIndexPath].detailTextLabel.text = [self defaultTextForCellAt:oldDefaultIndexPath];
+        [self.tableView cellForRowAtIndexPath:indexPath].detailTextLabel.text = [self defaultTextForCellAt:indexPath];
         
+        [self hideActionPanelForIndexPath:indexPath inTableView:self.tableView];
+        [self.tableView endUpdates];
         // TODO store defaults permanently
     }
 }
