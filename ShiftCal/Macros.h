@@ -11,4 +11,6 @@
 
     #define StupidError(...) [NSException raise:@"StudipError" format:__VA_ARGS__];
 
+    #define PREFS_DEFAULT_CALENDAR_KEY @"DefaultCalendar"
+
 #endif

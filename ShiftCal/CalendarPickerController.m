@@ -21,36 +21,76 @@
 #define ACTION_PANEL_CORNER_RADIUS 8.0f
 #define ACTION_PANEL_HEIGHT 43.0f
 
+#pragma mark - Custom Table Cell: prevents auto layout and uses custom checkmarks
 
-@interface CalendarPickerController ()
+@interface UITableViewCellFixed : UITableViewCell
 {
-    NSIndexPath *_defaultCellIndexPath;
-    NSIndexPath *_selectedCellIndexPath;
+    // private instance variables
+    BOOL _checked;
 }
 
 // private properties
-@property (nonatomic, retain) NSIndexPath *defaultCellIndexPath;
-@property (nonatomic, retain) NSIndexPath *selectedCellIndexPath;
-
-// private methods
-- (UIImage *)actionPanelBackground;
-- (UIView *)actionPanelForIndexPath:(NSIndexPath *)indexPath andTableView:(UITableView *)tableView;
-- (void)animateActionPanelHeight:(NSInteger)height forIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
-- (void)showActionPanelForIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
-- (void)hideActionPanelForIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
-- (void)makeDefault:(id)sender;
-@end
-
-
-#pragma mark - Custom Table Cell to prevent auto layout
-
-@interface UITableViewCellFixed : UITableViewCell
+@property (nonatomic, assign, getter = isChecked) BOOL checked;
 @end
 
 @implementation UITableViewCellFixed
+
+@synthesize checked = _checked;
+
+- (id)init
+{
+    return [self initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [self init];
+    self.frame = frame;
+    
+    return self;
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    
+    self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.userInteractionEnabled = NO; // Prevents selection
+    self.accessoryView = button;
+    
+    self.layer.masksToBounds = YES;
+    self.detailTextLabel.textAlignment = UITextAlignmentRight;
+    
+    return self;
+}
+
+- (void)setChecked:(BOOL)checked
+{
+    if (checked != _checked)
+    {
+        _checked = checked;
+        
+        UIImage *imageNormal    = nil;
+        UIImage *imageHighlight = nil;
+        UIButton *button = (UIButton *)self.accessoryView;
+        
+        if (checked == YES)
+        {
+            imageNormal    = [UIImage imageNamed:@"UIPreferencesBlueCheck.png"];
+            imageHighlight = [UIImage imageNamed:@"UIPreferencesWhiteCheck.png"];
+        }
+        
+        [button setBackgroundImage:imageNormal forState:UIControlStateNormal];
+        [button setBackgroundImage:imageHighlight forState:UIControlStateHighlighted];
+    }
+}
+
 - (void)layoutSubviews {
     static double kCellVisualHeight = CELL_HEIGHT - 1.0f;
     static double kCheckmarkSize    = 14.0f;
+    static double kCheckmarkX       = CELL_WIDTH - 14.0f; // - kCheckmarkSize
     static double kMargin           = 10.0f;
     
     [super layoutSubviews];
@@ -58,16 +98,42 @@
     // TODO replace with @"default" simulated width when drawn
     CGRect textFrame = CGRectMake(10.0f, 0.0f, LABEL_TEXT_WIDTH, kCellVisualHeight);
     
-    if (self.detailTextLabel.text != @" ")
+    if (![self.detailTextLabel.text isEqualToString:@" "])
     {
         textFrame.size.width = textFrame.size.width - LABEL_DETAIL_WIDTH - kMargin;
     }
     
     self.textLabel.frame = textFrame;
-    self.detailTextLabel.frame = CGRectMake(CELL_WIDTH - LABEL_DETAIL_WIDTH - 2 * kMargin - kCheckmarkSize, 0.0f, LABEL_DETAIL_WIDTH, kCellVisualHeight);
+    self.detailTextLabel.frame = CGRectMake(kCheckmarkX - LABEL_DETAIL_WIDTH - 2 * kMargin, 0.0f, LABEL_DETAIL_WIDTH, kCellVisualHeight);
     
-    self.accessoryView.frame = CGRectMake(self.accessoryView.frame.origin.x, 15.0f, kCheckmarkSize, kCheckmarkSize);
+    self.accessoryView.frame = CGRectMake(kCheckmarkX, 15.0f, kCheckmarkSize, kCheckmarkSize);
 }
+@end
+
+#pragma mark CalendarPickerController
+@interface CalendarPickerController ()
+{
+    NSIndexPath *_defaultCellIndexPath;
+    NSIndexPath *_selectedCellIndexPath;
+    
+    EKEventStore *_eventStore;
+}
+
+// private properties
+@property (nonatomic, retain) NSIndexPath *defaultCellIndexPath;
+@property (nonatomic, retain) NSIndexPath *selectedCellIndexPath;
+@property (nonatomic, retain) EKEventStore *eventStore;
+
+// private methods
+- (UIImage *)actionPanelBackground;
+- (UIView *)actionPanelForIndexPath:(NSIndexPath *)indexPath andTableView:(UITableView *)tableView;
+- (EKCalendar *)calendarForIndexPath:(NSIndexPath *)indexPath;
+- (NSString *)defaultTextForCellAt:(NSIndexPath *)indexPath;
+
+- (void)animateActionPanelHeight:(NSInteger)height forIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
+- (void)showActionPanelForIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
+- (void)hideActionPanelForIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
+- (void)makeDefault:(id)sender;
 @end
 
 @implementation CalendarPickerController
@@ -100,15 +166,24 @@
     {
         self.eventStore = [[EKEventStore alloc] init];
         
-        NSIndexPath *defaultPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        // Read user defaults
+        NSUserDefaults *prefs       = [NSUserDefaults standardUserDefaults];
+        NSString *defaultIdentifier = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
+        EKCalendar *defaultCalendar = [self.eventStore calendarWithIdentifier:defaultIdentifier];
+        NSInteger defaultIndex      = [self.eventStore.calendars indexOfObject:defaultCalendar];
+
+        self.defaultCellIndexPath = [NSIndexPath indexPathForRow:defaultIndex inSection:0];
+
+        // Fallback to first row
+        NSIndexPath *selectionPath = [NSIndexPath indexPathForRow:0 inSection:0];
         
-        if (calendar) {
+        if (calendar)
+        {
             NSInteger index = [self.eventStore.calendars indexOfObject:calendar];
-            defaultPath = [NSIndexPath indexPathForRow:index inSection:0];
+            selectionPath = [NSIndexPath indexPathForRow:index inSection:0];
         }
-        
-        self.defaultCellIndexPath  = defaultPath;
-        self.selectedCellIndexPath = defaultPath;
+                
+        self.selectedCellIndexPath = selectionPath;
     }
     
     return self;
@@ -143,12 +218,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    static double kDoubleHeight = 2 * CELL_HEIGHT;
+    
     if ([indexPath isEqual:self.selectedCellIndexPath] && ![indexPath isEqual:self.defaultCellIndexPath])
     {
-        return 88.0f;
+        return kDoubleHeight;
     }
     
-    return 44.0f;
+    return CELL_HEIGHT;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -163,16 +240,20 @@
 
 - (UIImage *)actionPanelBackground
 {
+    UIImage *backgroundImage = nil;
+    
     CGRect rect = CGRectMake(0, 0, 1, 1);
     UIGraphicsBeginImageContext(rect.size);
+    
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(context, [[UIColor grayColor] CGColor]);
-    //  [[UIColor colorWithRed:222./255 green:227./255 blue: 229./255 alpha:1] CGColor]) ;
     CGContextFillRect(context, rect);
-    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    
+    backgroundImage = UIGraphicsGetImageFromCurrentImageContext();
+    
     UIGraphicsEndImageContext();
     
-    return img;
+    return backgroundImage;
 }
 
 - (UIView *)actionPanelForIndexPath:(NSIndexPath *)indexPath andTableView:(UITableView *)tableView
@@ -242,6 +323,14 @@
     return view;
 }
 
+- (EKCalendar *)calendarForIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger row = indexPath.row;
+    EKCalendar *calendar = [self.eventStore.calendars objectAtIndex:row];
+    
+    return calendar;
+}
+
 - (NSString *)defaultTextForCellAt:(NSIndexPath *)indexPath
 {
     if ([indexPath isEqual:self.defaultCellIndexPath])
@@ -255,38 +344,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    NSInteger row = [indexPath row];
+    static NSString *CellIdentifier = @"CellFixed";
+    UITableViewCellFixed *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell)
     {
         cell = [[[UITableViewCellFixed alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
-        cell.layer.masksToBounds = YES;
-        cell.detailTextLabel.textAlignment = UITextAlignmentRight;
     }
     
-    EKCalendar *calendar = [self.eventStore.calendars objectAtIndex:row];
+    EKCalendar *calendar = [self calendarForIndexPath:indexPath];
     cell.textLabel.text = calendar.title;
-    
     cell.detailTextLabel.text = [self defaultTextForCellAt:indexPath];
-        
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect frame = CGRectMake(15.0, 15.0, 14.0, 14.0);
-    button.frame = frame;
     
     if ([indexPath isEqual:self.selectedCellIndexPath])
     {
-        UIImage *imageNormal = [UIImage imageNamed:@"UIPreferencesBlueCheck.png"];
-        UIImage *imageHighlight = [UIImage imageNamed:@"UIPreferencesWhiteCheck.png"];
-        [button setBackgroundImage:imageNormal forState:UIControlStateNormal];
-        [button setBackgroundImage:imageHighlight forState:UIControlStateHighlighted];
+        cell.checked = YES;
     }
-    
-    cell.accessoryView = button;
     
     UIView *actionPanelView = [self actionPanelForIndexPath:indexPath andTableView:tableView];
     [cell.contentView addSubview:actionPanelView];
@@ -294,7 +367,7 @@
     return cell;
 }
 
-#pragma mark Table view delegate
+#pragma mark Table view & subview delegate
 
 - (void)animateActionPanelHeight:(NSInteger)height forIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView
 {
@@ -335,19 +408,14 @@
     {
         [self showActionPanelForIndexPath:indexPath inTableView:tableView];
     }
-        
-    // Update accessory views
-    [tableView beginUpdates];
-    UIImage *imageNormal = [UIImage imageNamed:@"UIPreferencesBlueCheck.png"];
-    UIImage *imageHighlight = [UIImage imageNamed:@"UIPreferencesWhiteCheck.png"];
-    UIButton *button = (UIButton *)[tableView cellForRowAtIndexPath:self.selectedCellIndexPath].accessoryView;//Type = UITableViewCellAccessoryNone;
-    [button setBackgroundImage:nil forState:UIControlStateNormal];
-    [button setBackgroundImage:nil forState:UIControlStateHighlighted];
     
-    //[tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-    button = (UIButton *)[tableView cellForRowAtIndexPath:indexPath].accessoryView;
-    [button setBackgroundImage:imageNormal forState:UIControlStateNormal];
-    [button setBackgroundImage:imageHighlight forState:UIControlStateHighlighted];
+    // Update accessory views
+    UITableViewCellFixed *oldCell = (UITableViewCellFixed *)[tableView cellForRowAtIndexPath:self.selectedCellIndexPath];
+    UITableViewCellFixed *newCell = (UITableViewCellFixed *)[tableView cellForRowAtIndexPath:indexPath];
+    
+    [tableView beginUpdates];
+    oldCell.checked = NO;
+    newCell.checked = YES;
     
     self.selectedCellIndexPath = indexPath;
     [tableView endUpdates];
@@ -362,19 +430,30 @@
     {
         NSInteger row = actionButton.tag;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-        NSIndexPath *oldDefaultIndexPath = [self.defaultCellIndexPath copy];
+        NSIndexPath *oldIndexPath = [[self.defaultCellIndexPath copy] autorelease];
+        
+        // Hide "make default" panel for selected cell
+        [self hideActionPanelForIndexPath:indexPath inTableView:self.tableView];
+        
+        
+        // Update "default" labels
+        UITableViewCell *newCell = [self.tableView cellForRowAtIndexPath:indexPath];
+        UITableViewCell *oldCell = [self.tableView cellForRowAtIndexPath:oldIndexPath];
         
         [self.tableView beginUpdates];
         self.defaultCellIndexPath = indexPath;
         
-        [self.tableView cellForRowAtIndexPath:oldDefaultIndexPath].detailTextLabel.text = [self defaultTextForCellAt:oldDefaultIndexPath];
-        [self.tableView cellForRowAtIndexPath:indexPath].detailTextLabel.text = [self defaultTextForCellAt:indexPath];
-        
-        [self hideActionPanelForIndexPath:indexPath inTableView:self.tableView];
+        oldCell.detailTextLabel.text = [self defaultTextForCellAt:oldIndexPath];
+        newCell.detailTextLabel.text = [self defaultTextForCellAt:indexPath];
         [self.tableView endUpdates];
-        // TODO store defaults permanently
+
         
-        [oldDefaultIndexPath release];
+        // Store in preferences
+        NSUserDefaults *prefs        = [NSUserDefaults standardUserDefaults];
+        EKCalendar *calendar         = [self calendarForIndexPath:self.defaultCellIndexPath];
+        NSString *calendarIdentifier = calendar.calendarIdentifier;
+        
+        [prefs setObject:calendarIdentifier forKey:PREFS_DEFAULT_CALENDAR_KEY];
     }
 }
 
@@ -382,10 +461,9 @@
 
 - (void)save:(id)sender
 {
-    NSInteger row = self.selectedCellIndexPath.row;
-    EKCalendar *calendar = [self.eventStore.calendars objectAtIndex:row];
+    EKCalendar *selectedCalendar = [self calendarForIndexPath:self.selectedCellIndexPath];
     
-    [self.delegate calendarPicker:self didSelectCalendar:calendar];
+    [self.delegate calendarPicker:self didSelectCalendar:selectedCalendar];
 }
 
 - (void)cancel:(id)sender

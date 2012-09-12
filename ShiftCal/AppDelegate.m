@@ -22,6 +22,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [self registerPreferenceDefaults];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     ShiftOverviewController *viewController = [[ShiftOverviewController alloc] init];
@@ -39,6 +41,22 @@
     [self.navController release];
     [super dealloc];
 }
+
+#pragma mark User preferences
+
+- (void)registerPreferenceDefaults
+{
+    EKEventStore *eventStore = [[EKEventStore alloc] init];
+    
+    NSString *defaultCalendarIdentifier = [eventStore defaultCalendarForNewEvents].calendarIdentifier;
+    NSDictionary *calendarDefaults      = [NSDictionary dictionaryWithObject:defaultCalendarIdentifier
+                                                                      forKey:PREFS_DEFAULT_CALENDAR_KEY];
+    
+    [[NSUserDefaults standardUserDefaults] registerDefaults:calendarDefaults];
+
+    [eventStore release];
+}
+
 
 #pragma mark Application callbacks
 

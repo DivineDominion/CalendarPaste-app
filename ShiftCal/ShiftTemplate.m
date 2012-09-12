@@ -8,6 +8,13 @@
 
 #import "ShiftTemplate.h"
 
+@interface ShiftTemplate ()
+
+//private methods
+- (EKCalendar *)userDefaultCalendar;
+
+@end
+
 @implementation ShiftTemplate
 
 @synthesize title = _title;
@@ -26,15 +33,28 @@
         self.title = nil;
         self.hours = 1;
         self.minutes = 0;
-        
-        EKEventStore *eventStore = [[EKEventStore alloc] init];
-        self.calendar = [eventStore defaultCalendarForNewEvents];
-        [eventStore release];
+                
+        self.calendar = [self userDefaultCalendar];
         
         return self;
     }
     
     return nil;
+}
+
+- (EKCalendar *)userDefaultCalendar
+{
+    EKCalendar *defaultCalendar = nil;
+    
+    EKEventStore *eventStore = [[EKEventStore alloc] init];
+    NSUserDefaults *prefs    = [NSUserDefaults standardUserDefaults];
+    
+    NSString *defaultCalendarId = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
+    defaultCalendar             = [eventStore calendarWithIdentifier:defaultCalendarId];
+    
+    [eventStore release];
+    
+    return defaultCalendar;
 }
 
 - (void)setDurationHours:(NSInteger)hours andMinutes:(NSInteger)minutes

@@ -12,12 +12,9 @@
 
 @interface CalendarPickerController : UITableViewController
 {
-    EKEventStore *_eventStore;
-    
     id<CalendarPickerDelegate> _delegate;
 }
 
-@property (nonatomic, retain) EKEventStore *eventStore;
 @property (weak) id<CalendarPickerDelegate> delegate;
 
 - (id)initWithSelectedCalendar:(EKCalendar *)calendar;
