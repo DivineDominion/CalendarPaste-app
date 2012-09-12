@@ -21,9 +21,11 @@
 #define ACTION_PANEL_CORNER_RADIUS 8.0f
 #define ACTION_PANEL_HEIGHT 43.0f
 
+#define CELL_ID @"calendarcell"
+
 #pragma mark - Custom Table Cell: prevents auto layout and uses custom checkmarks
 
-@interface UITableViewCellFixed : UITableViewCell
+@interface CTCalendarCell : UITableViewCell
 {
     // private instance variables
     BOOL _checked;
@@ -33,13 +35,13 @@
 @property (nonatomic, assign, getter = isChecked) BOOL checked;
 @end
 
-@implementation UITableViewCellFixed
+@implementation CTCalendarCell
 
 @synthesize checked = _checked;
 
 - (id)init
 {
-    return [self initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+    return [self initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CELL_ID];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -344,12 +346,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"CellFixed";
-    UITableViewCellFixed *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    CTCalendarCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_ID];
     
     if (!cell)
     {
-        cell = [[[UITableViewCellFixed alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[CTCalendarCell alloc] init] autorelease];
     }
     
     EKCalendar *calendar = [self calendarForIndexPath:indexPath];
@@ -410,8 +411,8 @@
     }
     
     // Update accessory views
-    UITableViewCellFixed *oldCell = (UITableViewCellFixed *)[tableView cellForRowAtIndexPath:self.selectedCellIndexPath];
-    UITableViewCellFixed *newCell = (UITableViewCellFixed *)[tableView cellForRowAtIndexPath:indexPath];
+    CTCalendarCell *oldCell = (CTCalendarCell *)[tableView cellForRowAtIndexPath:self.selectedCellIndexPath];
+    CTCalendarCell *newCell = (CTCalendarCell *)[tableView cellForRowAtIndexPath:indexPath];
     
     [tableView beginUpdates];
     oldCell.checked = NO;
