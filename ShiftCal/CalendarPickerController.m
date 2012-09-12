@@ -12,10 +12,13 @@
 
 #define TAG_ACTIONPANEL 102
 
+#define LABEL_TEXT_WIDTH 256.0f
+#define LABEL_DETAIL_WIDTH 60.0f
+
 #define CELL_WIDTH 300.0f
 #define CELL_HEIGHT 44.0f
 
-#define ACTION_PANEL_CORNER_RADIUS 10.0f
+#define ACTION_PANEL_CORNER_RADIUS 8.0f
 #define ACTION_PANEL_HEIGHT 43.0f
 
 
@@ -30,6 +33,7 @@
 @property (nonatomic, retain) NSIndexPath *selectedCellIndexPath;
 
 // private methods
+- (UIImage *)actionPanelBackground;
 - (UIView *)actionPanelForIndexPath:(NSIndexPath *)indexPath andTableView:(UITableView *)tableView;
 - (void)animateActionPanelHeight:(NSInteger)height forIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
 - (void)showActionPanelForIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView;
@@ -37,32 +41,32 @@
 - (void)makeDefault:(id)sender;
 @end
 
+
+#pragma mark - Custom Table Cell to prevent auto layout
+
 @interface UITableViewCellFixed : UITableViewCell
 @end
+
 @implementation UITableViewCellFixed
 - (void)layoutSubviews {
+    static double kCellVisualHeight = CELL_HEIGHT - 1.0f;
+    static double kCheckmarkSize    = 14.0f;
+    static double kMargin           = 10.0f;
+    
     [super layoutSubviews];
     
-    self.textLabel.frame = CGRectMake(10.0f, 0.0f, self.textLabel.frame.size.width, 43.0f);
-    self.accessoryView.frame = CGRectMake(self.accessoryView.frame.origin.x, 0.0f,
-                                          self.accessoryView.frame.size.width, 43.0f);
-}
-@end
-
-@interface UIButtonTool : UIButton
-@end
-@implementation UIButtonTool
-- (void)setHighlighted:(BOOL)highlighted
-{
-    return;
-    //[super setHighlighted:bHighlighted];
+    // TODO replace with @"default" simulated width when drawn
+    CGRect textFrame = CGRectMake(10.0f, 0.0f, LABEL_TEXT_WIDTH, kCellVisualHeight);
     
-    //if (bHighlighted) {
-    //    [self.titleLabel setTextColor:[UIColor whiteColor]];
-    //} else {
-    //    [self.titleLabel setTextColor:[UIColor blackColor]];
-    //}
-    //[self.titleLabel setTextColor:[UIColor blackColor]];
+    if (self.detailTextLabel.text != @" ")
+    {
+        textFrame.size.width = textFrame.size.width - LABEL_DETAIL_WIDTH - kMargin;
+    }
+    
+    self.textLabel.frame = textFrame;
+    self.detailTextLabel.frame = CGRectMake(CELL_WIDTH - LABEL_DETAIL_WIDTH - 2 * kMargin - kCheckmarkSize, 0.0f, LABEL_DETAIL_WIDTH, kCellVisualHeight);
+    
+    self.accessoryView.frame = CGRectMake(self.accessoryView.frame.origin.x, 15.0f, kCheckmarkSize, kCheckmarkSize);
 }
 @end
 
@@ -157,6 +161,20 @@
     return self.eventStore.calendars.count;
 }
 
+- (UIImage *)actionPanelBackground
+{
+    CGRect rect = CGRectMake(0, 0, 1, 1);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [[UIColor grayColor] CGColor]);
+    //  [[UIColor colorWithRed:222./255 green:227./255 blue: 229./255 alpha:1] CGColor]) ;
+    CGContextFillRect(context, rect);
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return img;
+}
+
 - (UIView *)actionPanelForIndexPath:(NSIndexPath *)indexPath andTableView:(UITableView *)tableView
 {
     NSInteger row     = [indexPath row];
@@ -167,7 +185,7 @@
     actionPanelFrame.origin.y  = CELL_HEIGHT;  // Top margin = cell height
     
     UIView *view           = [[UIView alloc] initWithFrame:actionPanelFrame];
-    UIButton *actionButton = [UIButtonTool buttonWithType:UIButtonTypeCustom];
+    UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
 
     // Setup wrapping view
     view.tag                 = TAG_ACTIONPANEL;
@@ -177,8 +195,13 @@
     actionButton.frame               = actionButtonFrame;
     actionButton.tag                 = row;
     actionButton.autoresizingMask    = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-    actionButton.backgroundColor     = [UIColor grayColor];
     actionButton.layer.masksToBounds = YES;
+    
+    UIImage *background = [[self actionPanelBackground] retain];
+    [actionButton setBackgroundImage:background forState:UIControlStateNormal];
+    [actionButton setBackgroundImage:background forState:UIControlStateSelected];
+    [actionButton setBackgroundImage:background forState:UIControlStateSelected | UIControlStateHighlighted];
+    [background release];
     
     [actionButton setTitle:@"make default" forState:UIControlStateNormal];
     actionButton.titleLabel.font      = [UIFont boldSystemFontOfSize:actionButton.titleLabel.font.pointSize];
@@ -240,10 +263,10 @@
     if (!cell)
     {
         cell = [[[UITableViewCellFixed alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         cell.layer.masksToBounds = YES;
+        cell.detailTextLabel.textAlignment = UITextAlignmentRight;
     }
     
     EKCalendar *calendar = [self.eventStore.calendars objectAtIndex:row];
@@ -251,10 +274,19 @@
     
     cell.detailTextLabel.text = [self defaultTextForCellAt:indexPath];
         
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGRect frame = CGRectMake(15.0, 15.0, 14.0, 14.0);
+    button.frame = frame;
+    
     if ([indexPath isEqual:self.selectedCellIndexPath])
     {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        UIImage *imageNormal = [UIImage imageNamed:@"UIPreferencesBlueCheck.png"];
+        UIImage *imageHighlight = [UIImage imageNamed:@"UIPreferencesWhiteCheck.png"];
+        [button setBackgroundImage:imageNormal forState:UIControlStateNormal];
+        [button setBackgroundImage:imageHighlight forState:UIControlStateHighlighted];
     }
+    
+    cell.accessoryView = button;
     
     UIView *actionPanelView = [self actionPanelForIndexPath:indexPath andTableView:tableView];
     [cell.contentView addSubview:actionPanelView];
@@ -306,9 +338,17 @@
         
     // Update accessory views
     [tableView beginUpdates];
-    [tableView cellForRowAtIndexPath:self.selectedCellIndexPath].accessoryType = UITableViewCellAccessoryNone;
-    [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
-        
+    UIImage *imageNormal = [UIImage imageNamed:@"UIPreferencesBlueCheck.png"];
+    UIImage *imageHighlight = [UIImage imageNamed:@"UIPreferencesWhiteCheck.png"];
+    UIButton *button = (UIButton *)[tableView cellForRowAtIndexPath:self.selectedCellIndexPath].accessoryView;//Type = UITableViewCellAccessoryNone;
+    [button setBackgroundImage:nil forState:UIControlStateNormal];
+    [button setBackgroundImage:nil forState:UIControlStateHighlighted];
+    
+    //[tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+    button = (UIButton *)[tableView cellForRowAtIndexPath:indexPath].accessoryView;
+    [button setBackgroundImage:imageNormal forState:UIControlStateNormal];
+    [button setBackgroundImage:imageHighlight forState:UIControlStateHighlighted];
+    
     self.selectedCellIndexPath = indexPath;
     [tableView endUpdates];
 }
@@ -333,6 +373,8 @@
         [self hideActionPanelForIndexPath:indexPath inTableView:self.tableView];
         [self.tableView endUpdates];
         // TODO store defaults permanently
+        
+        [oldDefaultIndexPath release];
     }
 }
 

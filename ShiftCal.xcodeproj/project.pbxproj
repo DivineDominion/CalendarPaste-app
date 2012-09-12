@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		600BFE7615FB5ADF008B03CA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A515C08EB900801105 /* CoreGraphics.framework */; };
+		608F6FE315FF78C4001C8217 /* UIPreferencesBlueCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FDF15FF78C4001C8217 /* UIPreferencesBlueCheck.png */; };
+		608F6FE415FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */; };
+		608F6FE515FF78C4001C8217 /* UIPreferencesWhiteCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */; };
+		608F6FE615FF78C4001C8217 /* UIPreferencesWhiteCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FE215FF78C4001C8217 /* UIPreferencesWhiteCheck@2x.png */; };
 		60AAB7C815C09243002114B9 /* ShiftTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB7C715C09243002114B9 /* ShiftTemplate.m */; };
 		60AAB7CC15C0926D002114B9 /* ShiftTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */; };
 		60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB81215C13297002114B9 /* ShiftOverviewController.m */; };
@@ -40,6 +44,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		608F6FDF15FF78C4001C8217 /* UIPreferencesBlueCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesBlueCheck.png; sourceTree = "<group>"; };
+		608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPreferencesBlueCheck@2x.png"; sourceTree = "<group>"; };
+		608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesWhiteCheck.png; sourceTree = "<group>"; };
+		608F6FE215FF78C4001C8217 /* UIPreferencesWhiteCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPreferencesWhiteCheck@2x.png"; sourceTree = "<group>"; };
 		60AAB7C615C09243002114B9 /* ShiftTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplate.h; sourceTree = "<group>"; };
 		60AAB7C715C09243002114B9 /* ShiftTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplate.m; sourceTree = "<group>"; };
 		60AAB7CA15C0926D002114B9 /* ShiftTemplateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplateTests.h; sourceTree = "<group>"; };
@@ -105,6 +113,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		608F6FDD15FF78AD001C8217 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				608F6FDF15FF78C4001C8217 /* UIPreferencesBlueCheck.png */,
+				608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */,
+				608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */,
+				608F6FE215FF78C4001C8217 /* UIPreferencesWhiteCheck@2x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		60BB969215C08EB900801105 = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +160,7 @@
 		60BB96A715C08EB900801105 /* ShiftCal */ = {
 			isa = PBXGroup;
 			children = (
+				608F6FDD15FF78AD001C8217 /* Images */,
 				60FBA83115F66C59008B48A1 /* Add Shift */,
 				60AAB81115C13297002114B9 /* ShiftOverviewController.h */,
 				60AAB81215C13297002114B9 /* ShiftOverviewController.m */,
@@ -276,6 +296,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				60BB96AC15C08EB900801105 /* InfoPlist.strings in Resources */,
+				608F6FE315FF78C4001C8217 /* UIPreferencesBlueCheck.png in Resources */,
+				608F6FE415FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png in Resources */,
+				608F6FE515FF78C4001C8217 /* UIPreferencesWhiteCheck.png in Resources */,
+				608F6FE615FF78C4001C8217 /* UIPreferencesWhiteCheck@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
