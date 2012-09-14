@@ -6,35 +6,35 @@
 //  Copyright (c) 2012 Christian Tietze. All rights reserved.
 //
 
-#import "ReminderPickerViewController.h"
+#import "AlertPickerViewController.h"
 
-@interface ReminderPickerViewController ()
+@interface AlertPickerViewController ()
 {
     // private instance variables
     NSIndexPath *_selectedIndexPath;
-    NSArray *_reminders;
+    NSArray *_alerts;
 }
 
 // private properties
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
-@property (nonatomic, copy) NSArray *reminders;
+@property (nonatomic, copy) NSArray *alerts;
 @end
 
-@implementation ReminderPickerViewController
+@implementation AlertPickerViewController
 
 @synthesize delegate = _delegate;
 
 @synthesize selectedIndexPath = _selectedIndexPath;
-@synthesize reminders = _reminders;
+@synthesize alerts = _alerts;
 
 - (id)init
 {
-    return [self initWithReminder:nil];
+    return [self initWithAlert:nil];
 }
 
-- (id)initWithReminder:(id)reminder
+- (id)initWithAlert:(id)alert
 {
-    return [self initWithStyle:UITableViewStyleGrouped selectedReminder:reminder];
+    return [self initWithStyle:UITableViewStyleGrouped selectedReminder:alert];
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -42,34 +42,37 @@
     return [self initWithStyle:style selectedReminder:nil];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style selectedReminder:(id)reminder
+- (id)initWithStyle:(UITableViewStyle)style selectedReminder:(id)alert
 {
     self = [super initWithStyle:style];
-    if (self) {
+    
+    if (self)
+    {
         [self loadModel];
         
         self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         
-        if (reminder != nil)
+        if (alert)
         {
             // TODO map param to index path
         }
     }
+    
     return self;
 }
 
 - (void)dealloc
 {
-    [_reminders release];
+    [_alerts release];
     
     [super dealloc];
 }
 
 - (void)loadModel
 {
-    NSArray *reminders = @[@"None", @"On date", @"5min", @"15min", @"30min", @"1h", @"2h", @"1d", @"2d"];
+    NSArray *intervals = @[@"None", @"On date", @"5min", @"15min", @"30min", @"1h", @"2h", @"1d", @"2d"];
     
-    self.reminders = reminders;
+    self.alerts = intervals;
 }
 
 - (void)viewDidLoad
@@ -89,7 +92,7 @@
     [saveItem release];
     [cancelItem release];
     
-    self.title = @"Reminder";
+    self.title = @"Alert";
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -106,7 +109,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.reminders count];
+    return [self.alerts count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -123,7 +126,7 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
-    cell.textLabel.text = [self.reminders objectAtIndex:row];
+    cell.textLabel.text = [self.alerts objectAtIndex:row];
     
     if ([self.selectedIndexPath isEqual:indexPath])
     {
@@ -163,12 +166,12 @@
 {
     id reminder = nil;
     
-    [self.delegate reminderPicker:self didSelectReminder:reminder];
+    [self.delegate alertPicker:self didSelectAlert:reminder];
 }
 
 - (void)cancel:(id)sender
 {
-    [self.delegate reminderPicker:self didSelectReminder:nil];
+    [self.delegate alertPicker:self didSelectAlert:nil];
 }
 
 @end

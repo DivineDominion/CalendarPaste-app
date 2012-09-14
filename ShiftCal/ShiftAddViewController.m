@@ -10,13 +10,13 @@
 #import "DurationPickerController.h"
 #import "CalendarPickerController.h"
 #import "ShiftTemplateController.h"
-#import "ReminderPickerViewController.h"
+#import "AlertPickerViewController.h"
 
 #define NUM_SECTIONS 6
 #define SECTION_TITLE_LOCATION 0
 #define SECTION_DURATION       1
 #define SECTION_CALENDAR       2
-#define SECTION_REMINDER       3
+#define SECTION_ALERT          3
 #define SECTION_URL            4
 #define SECTION_NOTES          5
 
@@ -108,7 +108,7 @@
             return 2;
         case SECTION_DURATION:
         case SECTION_CALENDAR:
-        case SECTION_REMINDER:
+        case SECTION_ALERT:
         case SECTION_URL:
         case SECTION_NOTES:
             return 1;
@@ -196,7 +196,7 @@
             [self displayCalendarInCell:cell];
 
             break;
-        case SECTION_REMINDER:
+        case SECTION_ALERT:
             cell = [tableView dequeueReusableCellWithIdentifier:CELL_SUBVIEW];
             
             if (!cell)
@@ -206,7 +206,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
-            cell.textLabel.text = @"Reminder";
+            cell.textLabel.text = @"Alert";
             cell.detailTextLabel.text = @"None";
             
             break;
@@ -319,13 +319,13 @@
             
             break;
         }
-        case SECTION_REMINDER:
+        case SECTION_ALERT:
         {
-            id reminder = nil;
-            ReminderPickerViewController *reminderController = [[ReminderPickerViewController alloc] initWithReminder:reminder];
-            reminderController.delegate = self;
+            id alert = nil;
+            AlertPickerViewController *alertController = [[AlertPickerViewController alloc] initWithAlert:alert];
+            alertController.delegate = self;
             
-            modalController = reminderController;
+            modalController = alertController;
         }
         default:
             break;
@@ -441,9 +441,9 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)reminderPicker:(ReminderPickerViewController *)reminderPicker didSelectReminder:(id)reminder
+- (void)alertPicker:(AlertPickerViewController *)alertPicker didSelectAlert:(id)alert
 {
-    if (reminder)
+    if (alert)
     {
         // TODO assign reminder to model
         // TODO display reminder

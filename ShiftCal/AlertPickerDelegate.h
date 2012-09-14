@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@class ReminderPickerViewController;
+@class AlertPickerViewController;
 
-@protocol ReminderPickerDelegate <NSObject>
+@protocol AlertPickerDelegate <NSObject>
 
 @required
-- (void)reminderPicker:(ReminderPickerViewController *)reminderPicker didSelectReminder:(id)reminder;
+- (void)alertPicker:(AlertPickerViewController *)alertPicker didSelectAlert:(id)alert;
 @end
