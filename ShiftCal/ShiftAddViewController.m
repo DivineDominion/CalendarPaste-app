@@ -7,16 +7,17 @@
 //
 
 #import "ShiftAddViewController.h"
+
 #import "DurationPickerController.h"
 #import "CalendarPickerController.h"
 #import "ShiftTemplateController.h"
-#import "AlertPickerViewController.h"
+#import "AlarmPickerViewController.h"
 
-#define NUM_SECTIONS 6
+#define NUM_SECTIONS           6
 #define SECTION_TITLE_LOCATION 0
 #define SECTION_DURATION       1
 #define SECTION_CALENDAR       2
-#define SECTION_ALERT          3
+#define SECTION_ALARM          3
 #define SECTION_URL            4
 #define SECTION_NOTES          5
 
@@ -25,9 +26,9 @@
 #define CELL_SUBVIEW    @"sub"
 #define CELL_TEXT_AREA  @"textarea"
 
-#define TAG_TEXT_FIELD_TITLE 100
+#define TAG_TEXT_FIELD_TITLE    100
 #define TAG_TEXT_FIELD_LOCATION 101
-#define TAG_TEXT_FIELD_URL 102
+#define TAG_TEXT_FIELD_URL      102
 
 @interface ShiftAddViewController ()
 
@@ -108,7 +109,7 @@
             return 2;
         case SECTION_DURATION:
         case SECTION_CALENDAR:
-        case SECTION_ALERT:
+        case SECTION_ALARM:
         case SECTION_URL:
         case SECTION_NOTES:
             return 1;
@@ -196,7 +197,7 @@
             [self displayCalendarInCell:cell];
 
             break;
-        case SECTION_ALERT:
+        case SECTION_ALARM:
             cell = [tableView dequeueReusableCellWithIdentifier:CELL_SUBVIEW];
             
             if (!cell)
@@ -206,7 +207,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
-            cell.textLabel.text = @"Alert";
+            cell.textLabel.text = @"Alarm";
             cell.detailTextLabel.text = @"None";
             
             break;
@@ -319,13 +320,13 @@
             
             break;
         }
-        case SECTION_ALERT:
+        case SECTION_ALARM:
         {
-            id alert = nil;
-            AlertPickerViewController *alertController = [[AlertPickerViewController alloc] initWithAlert:alert];
-            alertController.delegate = self;
+            id alarm = nil;
+            AlarmPickerViewController *alarmController = [[AlarmPickerViewController alloc] initWithAlarm:alarm];
+            alarmController.delegate = self;
             
-            modalController = alertController;
+            modalController = alarmController;
         }
         default:
             break;
@@ -441,11 +442,11 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)alertPicker:(AlertPickerViewController *)alertPicker didSelectAlert:(id)alert
+- (void)alarmPicker:(AlarmPickerViewController *)alarmPicker didSelectAlarm:(id)alarm
 {
-    if (alert)
+    if (alarm)
     {
-        // TODO assign reminder to model
+        // TODO assign alarm to model
         // TODO display reminder
     }
     
