@@ -10,6 +10,7 @@
 #import "DurationPickerController.h"
 #import "CalendarPickerController.h"
 #import "ShiftTemplateController.h"
+#import "ReminderPickerViewController.h"
 
 #define NUM_SECTIONS 6
 #define SECTION_TITLE_LOCATION 0
@@ -57,8 +58,6 @@
     [super loadView];
     
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    
-    self.title = @"Add Shift";
 }
 
 - (void)dealloc
@@ -87,13 +86,12 @@
     [saveItem release];
     [cancelItem release];
     
-    [[self.tableView viewWithTag:TAG_TEXT_FIELD_TITLE] becomeFirstResponder];
+    self.title = @"Add Shift";
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
 }
 
 #pragma mark - Table View callbacks
@@ -299,6 +297,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = [indexPath section];
+    UIViewController *modalController = nil;
     
     switch (section) {
         case SECTION_DURATION:
@@ -306,12 +305,8 @@
             DurationPickerController *durationController = [[DurationPickerController alloc] initWithHours:self.shift.hours andMinutes:self.shift.minutes];
             durationController.delegate = self;
             
-            UINavigationController *durationNavController = [[UINavigationController alloc] initWithRootViewController:durationController];
+            modalController = durationController;
             
-            [self presentModalViewController:durationNavController animated:YES];
-            
-            [durationController release];
-            [durationNavController release];
             break;
         }
         case SECTION_CALENDAR:
@@ -320,17 +315,30 @@
             CalendarPickerController *calendarController = [[CalendarPickerController alloc] initWithSelectedCalendar:calendar];
             calendarController.delegate = self;
             
-            UINavigationController *calendarNavController = [[UINavigationController alloc] initWithRootViewController:calendarController];
-            
-            [self presentModalViewController:calendarNavController animated:YES];
-            
-            [calendarController release];
-            [calendarNavController release];
+            modalController = calendarController;
             
             break;
         }
+        case SECTION_REMINDER:
+        {
+            id reminder = nil;
+            ReminderPickerViewController *reminderController = [[ReminderPickerViewController alloc] initWithReminder:reminder];
+            reminderController.delegate = self;
+            
+            modalController = reminderController;
+        }
         default:
             break;
+    }
+    
+    if (modalController)
+    {
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:modalController];
+        
+        [self presentModalViewController:navController animated:YES];
+        
+        [modalController release];
+        [navController release];
     }
 }
 
@@ -428,6 +436,17 @@
         self.shift.calendar = calendar;
         
         [self displayCalendarInCell:calendarCell];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)reminderPicker:(ReminderPickerViewController *)reminderPicker didSelectReminder:(id)reminder
+{
+    if (reminder)
+    {
+        // TODO assign reminder to model
+        // TODO display reminder
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];

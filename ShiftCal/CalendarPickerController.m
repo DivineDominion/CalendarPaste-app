@@ -209,6 +209,8 @@
     
     [saveItem release];
     [cancelItem release];
+    
+    self.title = @"Duration";
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

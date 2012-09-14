@@ -13,10 +13,11 @@
 
 #import "DurationPickerDelegate.h"
 #import "CalendarPickerDelegate.h"
+#import "ReminderPickerDelegate.h"
 
 #import "ShiftAddDelegate.h"
 
-@interface ShiftAddViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, DurationPickerDelegate, CalendarPickerDelegate>
+@interface ShiftAddViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, DurationPickerDelegate, CalendarPickerDelegate, ReminderPickerDelegate>
 {
     id <ShiftAddDelegate> _additionDelegate;
 

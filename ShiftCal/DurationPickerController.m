@@ -111,8 +111,6 @@
     [minLabel release];
     
     [self.tableView addSubview:_pickerWrap];
-
-    self.title = @"Duration";
 }
 
 + (UILabel *)createLabelForComponet:(NSInteger)component
@@ -171,6 +169,8 @@
     
     [saveItem release];
     [cancelItem release];
+    
+    self.title = @"Duration";
 }
 
 - (void)viewDidAppear:(BOOL)animated
