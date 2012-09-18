@@ -102,6 +102,14 @@
     self.title = @"Add Shift";
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    UITextField *defaultTextField = (UITextField *)[self.tableView viewWithTag:TAG_TEXT_FIELD_TITLE];
+    [defaultTextField becomeFirstResponder];
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
