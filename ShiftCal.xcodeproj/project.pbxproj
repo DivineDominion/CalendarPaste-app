@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		600BFE7615FB5ADF008B03CA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A515C08EB900801105 /* CoreGraphics.framework */; };
 		600E119F160373F3009A7E24 /* AlarmPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 600E119E160373F3009A7E24 /* AlarmPickerViewController.m */; };
+		605AC42616086B5800E02F16 /* DateIntervalTranslator.m in Sources */ = {isa = PBXBuildFile; fileRef = 605AC42516086B5800E02F16 /* DateIntervalTranslator.m */; };
 		608F6FE315FF78C4001C8217 /* UIPreferencesBlueCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FDF15FF78C4001C8217 /* UIPreferencesBlueCheck.png */; };
 		608F6FE415FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */; };
 		608F6FE515FF78C4001C8217 /* UIPreferencesWhiteCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */; };
@@ -48,6 +49,8 @@
 		600E1199160369BF009A7E24 /* AlarmPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerViewController.h; sourceTree = "<group>"; };
 		600E119E160373F3009A7E24 /* AlarmPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmPickerViewController.m; sourceTree = "<group>"; };
 		600E11A216038973009A7E24 /* AlarmPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerDelegate.h; sourceTree = "<group>"; };
+		605AC42416086B5800E02F16 /* DateIntervalTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateIntervalTranslator.h; sourceTree = "<group>"; };
+		605AC42516086B5800E02F16 /* DateIntervalTranslator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateIntervalTranslator.m; sourceTree = "<group>"; };
 		608F6FDF15FF78C4001C8217 /* UIPreferencesBlueCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesBlueCheck.png; sourceTree = "<group>"; };
 		608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPreferencesBlueCheck@2x.png"; sourceTree = "<group>"; };
 		608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesWhiteCheck.png; sourceTree = "<group>"; };
@@ -223,6 +226,8 @@
 				60FBA83A15F7BAFA008B48A1 /* CalendarPickerDelegate.h */,
 				600E1199160369BF009A7E24 /* AlarmPickerViewController.h */,
 				600E119E160373F3009A7E24 /* AlarmPickerViewController.m */,
+				605AC42416086B5800E02F16 /* DateIntervalTranslator.h */,
+				605AC42516086B5800E02F16 /* DateIntervalTranslator.m */,
 				600E11A216038973009A7E24 /* AlarmPickerDelegate.h */,
 				60F1603215DD1447005834B3 /* ShiftAddViewController.h */,
 				60F1603315DD1447005834B3 /* ShiftAddViewController.m */,
@@ -350,6 +355,7 @@
 				60FBA82D15F4FE2C008B48A1 /* ShiftTemplateController.m in Sources */,
 				60FBA83015F66C4C008B48A1 /* CalendarPickerController.m in Sources */,
 				600E119F160373F3009A7E24 /* AlarmPickerViewController.m in Sources */,
+				605AC42616086B5800E02F16 /* DateIntervalTranslator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
