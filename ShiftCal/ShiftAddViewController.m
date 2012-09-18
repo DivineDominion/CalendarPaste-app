@@ -12,6 +12,7 @@
 #import "CalendarPickerController.h"
 #import "ShiftTemplateController.h"
 #import "AlarmPickerViewController.h"
+#import "DateIntervalTranslator.h"
 
 #define NUM_SECTIONS           6
 #define SECTION_TITLE_LOCATION 0
@@ -31,6 +32,13 @@
 #define TAG_TEXT_FIELD_URL      102
 
 @interface ShiftAddViewController ()
+{
+    // private instance variables
+    DateIntervalTranslator *_dateTranslator;
+}
+
+// private properties
+@property (nonatomic, retain) DateIntervalTranslator *dateTranslator;
 
 // private methods
 - (void)resetTextViewToPlaceholder:(UITextView *)textView;
@@ -38,6 +46,8 @@
 @end
 
 @implementation ShiftAddViewController
+
+@synthesize dateTranslator = _dateTranslator;
 
 @synthesize shift = _shift;
 @synthesize additionDelegate = _additionDelegate;
@@ -49,6 +59,7 @@
     if (self)
     {
         self.shift = [[ShiftTemplate alloc] init];
+        self.dateTranslator = [[DateIntervalTranslator alloc] init];
     }
     
     return self;
@@ -64,6 +75,7 @@
 - (void)dealloc
 {
     [self.shift release];
+    [self.dateTranslator release];
     
     [super dealloc];
 }
@@ -292,6 +304,21 @@
     cell.detailTextLabel.text = self.shift.calendar.title;
 }
 
+- (void)displayAlarmInCell:(UITableViewCell *)cell
+{
+    NSString *text = @"None";
+    
+    if (self.shift.alarm)
+    {
+        NSTimeInterval interval = self.shift.alarm.relativeOffset;
+        
+        text = [self.dateTranslator humanReadableFormOfInterval:interval];
+        
+        // TODO refactor: dont ask model, tell it to return text!
+    }
+    
+    cell.detailTextLabel.text = text;
+}
 
 #pragma mark TableView interaction
 
@@ -322,7 +349,7 @@
         }
         case SECTION_ALARM:
         {
-            id alarm = nil;
+            EKAlarm *alarm = self.shift.alarm;
             AlarmPickerViewController *alarmController = [[AlarmPickerViewController alloc] initWithAlarm:alarm];
             alarmController.delegate = self;
             
@@ -442,12 +469,16 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)alarmPicker:(AlarmPickerViewController *)alarmPicker didSelectAlarm:(id)alarm
+- (void)alarmPicker:(AlarmPickerViewController *)alarmPicker didSelectAlarm:(EKAlarm *)alarm
 {
     if (alarm)
     {
-        // TODO assign alarm to model
-        // TODO display reminder
+        NSIndexPath *alarmPath     = [NSIndexPath indexPathForRow:0 inSection:SECTION_ALARM];
+        UITableViewCell *alarmCell = [self.tableView cellForRowAtIndexPath:alarmPath];
+        
+        self.shift.alarm = alarm;
+        
+        [self displayAlarmInCell:alarmCell];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];

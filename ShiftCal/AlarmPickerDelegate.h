@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @class AlarmPickerViewController;
+@class EKAlarm;
 
 @protocol AlarmPickerDelegate <NSObject>
 
 @required
-- (void)alarmPicker:(AlarmPickerViewController *)alarmPicker didSelectAlarm:(id)alarm;
+- (void)alarmPicker:(AlarmPickerViewController *)alarmPicker didSelectAlarm:(EKAlarm *)alarm;
 @end

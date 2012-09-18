@@ -18,6 +18,9 @@
 // private properties
 @property (nonatomic, retain) NSCalendar *calendar;
 @property (nonatomic, retain) NSDate *referenceDate;
+
+//private methods
+- (NSDateComponents *)dateComponentsForDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins;
 @end
 
 @implementation DateIntervalTranslator
@@ -31,21 +34,46 @@
     
     if (self)
     {
-        self.calendar = [NSCalendar currentCalendar];
-        self.referenceDate = [[NSDate alloc] initWithTimeIntervalSince1970:0.0];
+        self.calendar = [[NSCalendar currentCalendar] retain];
+        self.referenceDate = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:0.0];
     }
     
     return self;
 }
 
+- (void)dealloc
+{
+    [self.calendar release];
+    [self.referenceDate release];
+    
+    [super dealloc];
+}
+
+# pragma mark - Private methods
+
+- (NSDateComponents *)dateComponentsForDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins
+{
+    NSDateComponents *components = [[[NSDateComponents alloc] init] autorelease];
+    
+    [components setDay:days];
+    [components setHour:hours];
+    [components setMinute:mins];
+    
+    return components;
+}
+
+# pragma mark - Public methods
+
 - (NSDateComponents *)dateComponentsForTimeInterval:(NSTimeInterval)interval
 {
-    NSDateComponents *components = nil;
     static unsigned int kComponentFlags = NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit;
-    
+
+    NSDateComponents *components = nil;
     NSDate *compDate = [[NSDate alloc] initWithTimeInterval:interval sinceDate:self.referenceDate];
     
     components = [self.calendar components:kComponentFlags fromDate:self.referenceDate toDate:compDate options:0];
+    
+    [compDate release];
     
     return components;
 }
@@ -53,20 +81,13 @@
 - (NSTimeInterval)timeIntervalForComponentDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins
 {    
     NSTimeInterval interval;
-    
-    NSDateComponents *components = [[NSDateComponents alloc] init];
-    
-    [components setDay:days];
-    [components setHour:hours];
-    [components setMinute:mins];
+    NSDateComponents *components = [self dateComponentsForDays:days hours:hours minutes:mins];
     
     NSDate *compDate = [self.calendar dateByAddingComponents:components
                                                       toDate:self.referenceDate
                                                      options:0];
     
     interval = [compDate timeIntervalSinceDate:self.referenceDate];
-    
-    [components release];
     
     return interval;
 }
@@ -76,31 +97,42 @@
     NSMutableArray *textParts = [[NSMutableArray alloc] initWithCapacity:3];
     NSString *text = nil;
     
-    if ([dateComponents day] > 1)
+    if ([dateComponents day] == 0 && [dateComponents hour] == 0 && [dateComponents minute] == 0)
+    {
+        return @"At time of event";
+    }
+    
+    if ([dateComponents day] > 1 || [dateComponents day] < -1)
     {   
-        [textParts addObject:[NSString stringWithFormat:@"%d days", [dateComponents day]]];
+        [textParts addObject:[NSString stringWithFormat:@"%d days", abs([dateComponents day])]];
     }
     else if ([dateComponents day])
     {
-        [textParts addObject:@"1 day "];
+        [textParts addObject:@"1 day"];
     }
     
-    if ([dateComponents hour] > 1)
+    if ([dateComponents hour] > 1 || [dateComponents hour] < -1)
     {
-        [textParts addObject:[NSString stringWithFormat:@"%d hours", [dateComponents hour]]];
+        [textParts addObject:[NSString stringWithFormat:@"%d hours", abs([dateComponents hour])]];
     }
     else if ([dateComponents hour])
     {
         [textParts addObject:@"1 hour"];
     }
     
-    if ([dateComponents minute] > 1)
+    if ([dateComponents minute] > 1 || [dateComponents minute] < -1)
     {
-        [textParts addObject:[NSString stringWithFormat:@"%d minutes", [dateComponents minute]]];
+        [textParts addObject:[NSString stringWithFormat:@"%d minutes", abs([dateComponents minute])]];
     }
     else if ([dateComponents minute])
     {
         [textParts addObject:@"1 minute"];
+    }
+    
+    // Append suffix
+    if ([dateComponents day] < 0 || [dateComponents hour] < 0 || [dateComponents minute] < 0)
+    {
+        [textParts addObject:@"before"];
     }
     
     text = [textParts componentsJoinedByString:@" "];
@@ -108,6 +140,16 @@
     [textParts release];
     
     return text;
+}
+
+- (NSString *)humanReadableFormOfInterval:(NSTimeInterval)interval
+{
+    return [self humanReadableFormOf:[self dateComponentsForTimeInterval:interval]];
+}
+
+- (NSString *)humanReadableFormOfDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins
+{
+    return [self humanReadableFormOf:[self dateComponentsForDays:days hours:hours minutes:mins]];
 }
 
 @end

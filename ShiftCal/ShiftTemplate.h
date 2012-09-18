@@ -22,6 +22,7 @@
     NSString *_note;
     
     EKCalendar *_calendar;
+    EKAlarm *_alarm;
     // TODO _reminder;
 }
 
@@ -31,6 +32,7 @@
 @property (nonatomic, copy,   readwrite) NSString *location;
 @property (nonatomic, copy,   readwrite) NSString *url;
 @property (nonatomic, retain, readwrite) EKCalendar *calendar;
+@property (nonatomic, retain, readwrite) EKAlarm *alarm;
 
 //@property (nonatomic, copy, readwrite) NSDate   *from;
 //@property (nonatomic, copy, readwrite) NSDate   *until;

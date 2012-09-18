@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <EventKit/EventKit.h>
+
 #import "AlarmPickerDelegate.h"
 
 @interface AlarmPickerViewController : UITableViewController
@@ -16,6 +18,6 @@
 
 @property (weak) id<AlarmPickerDelegate> delegate;
 
-- (id)initWithAlarm:(id)alarm;
-- (id)initWithStyle:(UITableViewStyle)style selectedAlarm:(id)alarm;
+- (id)initWithAlarm:(EKAlarm *)alarm;
+- (id)initWithStyle:(UITableViewStyle)style selectedAlarm:(EKAlarm *)alarm;
 @end

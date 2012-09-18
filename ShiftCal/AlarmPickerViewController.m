@@ -7,22 +7,37 @@
 //
 
 #import "AlarmPickerViewController.h"
+#import "DateIntervalTranslator.h"
+
+#define ROW_NONE 0
+
+#define INDEX_LABEL 0
+#define INDEX_OFFSET 1
 
 @interface AlarmPickerViewController ()
 {
     // private instance variables
     NSIndexPath *_selectedIndexPath;
     NSArray *_alarms;
+    UIColor *_selectionColor;
+    DateIntervalTranslator *_dateTranslator;
 }
 
 // private properties
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, copy) NSArray *alarms;
+@property (nonatomic, retain, readonly) UIColor *selectionColor;
+@property (nonatomic, retain) DateIntervalTranslator *dateTranslator;
+
+// private methods
+- (NSInteger)rowForInterval:(NSTimeInterval)interval;
 @end
 
 @implementation AlarmPickerViewController
 
 @synthesize delegate = _delegate;
+@synthesize selectionColor = _selectionColor;
+@synthesize dateTranslator = _dateTranslator;
 
 @synthesize selectedIndexPath = _selectedIndexPath;
 @synthesize alarms = _alarms;
@@ -32,7 +47,7 @@
     return [self initWithAlarm:nil];
 }
 
-- (id)initWithAlarm:(id)alarm
+- (id)initWithAlarm:(EKAlarm *)alarm
 {
     return [self initWithStyle:UITableViewStyleGrouped selectedAlarm:alarm];
 }
@@ -42,7 +57,7 @@
     return [self initWithStyle:style selectedAlarm:nil];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style selectedAlarm:(id)alarm
+- (id)initWithStyle:(UITableViewStyle)style selectedAlarm:(EKAlarm *)alarm
 {
     self = [super initWithStyle:style];
     
@@ -52,27 +67,72 @@
         
         self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         
+        // Corresponds to checkmark color
+        _selectionColor = [[UIColor colorWithRed:45/255.0 green:65/255.0 blue:115/255.0 alpha:1.0] retain];
+        
         if (alarm)
         {
-            // TODO map param to index path
+            NSInteger row = [self rowForInterval:alarm.relativeOffset];
+            
+            self.selectedIndexPath = [NSIndexPath indexPathForRow:row inSection:0];
         }
     }
     
     return self;
 }
 
+- (NSInteger)rowForInterval:(NSTimeInterval)interval
+{
+    NSIndexSet *indexes = [[self.alarms objectAtIndex:INDEX_OFFSET] indexesOfObjectsPassingTest:
+                           ^BOOL(id intervalObj, NSUInteger idx, BOOL *stop)
+                           {
+                               BOOL found = (interval == [intervalObj doubleValue]);
+                               
+                               *stop = found;
+                               return found;
+                           }];
+    
+    return [indexes firstIndex];
+}
+
 - (void)dealloc
 {
     [_alarms release];
+    [_selectionColor release];
+    
+    [self.selectedIndexPath release];
+    [self.dateTranslator release];
     
     [super dealloc];
 }
 
 - (void)loadModel
 {
-    NSArray *intervals = @[@"None", @"On date", @"5min", @"15min", @"30min", @"1h", @"2h", @"1d", @"2d"];
+    self.dateTranslator = [[DateIntervalTranslator alloc] init];
+
+    NSArray *intervals = @[
+        @0.0,
+        @([self.dateTranslator timeIntervalForComponentDays:0 hours:0 minutes:0]),
+        @([self.dateTranslator timeIntervalForComponentDays:0 hours:0 minutes:-5]),
+        @([self.dateTranslator timeIntervalForComponentDays:0 hours:0 minutes:-15]),
+        @([self.dateTranslator timeIntervalForComponentDays:0 hours:0 minutes:-30]),
+        @([self.dateTranslator timeIntervalForComponentDays:0 hours:-1 minutes:0]),
+        @([self.dateTranslator timeIntervalForComponentDays:0 hours:-2 minutes:0]),
+        @([self.dateTranslator timeIntervalForComponentDays:-1 hours:0 minutes:0]),
+        @([self.dateTranslator timeIntervalForComponentDays:-2 hours:0 minutes:0])];
     
-    self.alarms = intervals;
+    NSArray *labels = @[
+        @"None",
+        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:1] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:2] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:3] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:4] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:5] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:6] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:7] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:8] doubleValue]]];
+    
+    self.alarms = @[labels, intervals];
 }
 
 - (void)viewDidLoad
@@ -109,7 +169,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.alarms count];
+    return [[self.alarms objectAtIndex:INDEX_LABEL] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -126,11 +186,12 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
-    cell.textLabel.text = [self.alarms objectAtIndex:row];
+    cell.textLabel.text = [[self.alarms objectAtIndex:INDEX_LABEL] objectAtIndex:row];
     
     if ([self.selectedIndexPath isEqual:indexPath])
     {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        cell.textLabel.textColor = self.selectionColor;
     }
     
     return cell;
@@ -156,6 +217,9 @@
     newSelection.accessoryType = UITableViewCellAccessoryCheckmark;
     // TODO change selected font to checkmark color
     
+    oldSelection.textLabel.textColor = [UIColor darkTextColor];
+    newSelection.textLabel.textColor = self.selectionColor;
+    
     self.selectedIndexPath = indexPath;
     [tableView endUpdates];
 }
@@ -164,7 +228,15 @@
 
 - (void)save:(id)sender
 {
-    id alarm = nil;
+    EKAlarm *alarm = nil;
+    NSInteger row = [self.selectedIndexPath row];
+    
+    if (row != ROW_NONE)
+    {
+        NSTimeInterval offset = [[[self.alarms objectAtIndex:INDEX_OFFSET] objectAtIndex:row] doubleValue];
+        
+        alarm = [EKAlarm alarmWithRelativeOffset:offset];
+    }
     
     [self.delegate alarmPicker:self didSelectAlarm:alarm];
 }

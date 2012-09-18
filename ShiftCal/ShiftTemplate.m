@@ -23,6 +23,7 @@
 @synthesize location = _location;
 @synthesize url = _url;
 @synthesize calendar = _calendar;
+@synthesize alarm = _alarm;
 
 - (id)init
 {

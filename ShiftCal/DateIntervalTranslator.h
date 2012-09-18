@@ -14,4 +14,6 @@
 - (NSDateComponents *)dateComponentsForTimeInterval:(NSTimeInterval)interval;
 - (NSTimeInterval)timeIntervalForComponentDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins;
 - (NSString *)humanReadableFormOf:(NSDateComponents *)dateComponents;
+- (NSString *)humanReadableFormOfInterval:(NSTimeInterval)interval;
+- (NSString *)humanReadableFormOfDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins;
 @end
