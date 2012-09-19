@@ -83,10 +83,13 @@
 
 - (NSInteger)rowForInterval:(NSTimeInterval)interval
 {
+    // Since "None" is not a desired outcome (this method wouldn't be called
+    // in that case), index == ROW_NONE would be illegal and can be ignored.
     NSIndexSet *indexes = [[self.alarms objectAtIndex:INDEX_OFFSET] indexesOfObjectsPassingTest:
-                           ^BOOL(id intervalObj, NSUInteger idx, BOOL *stop)
+                           ^BOOL(id intervalObj, NSUInteger index, BOOL *stop)
                            {
-                               BOOL found = (interval == [intervalObj doubleValue]);
+                               BOOL found = (interval == [intervalObj doubleValue]
+                                             && index != ROW_NONE);
                                
                                *stop = found;
                                return found;
