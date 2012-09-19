@@ -27,11 +27,16 @@
 #define CELL_SUBVIEW    @"sub"
 #define CELL_TEXT_AREA  @"textarea"
 
-#define TAG_TEXT_FIELD_TITLE    100
-#define TAG_TEXT_FIELD_LOCATION 101
-#define TAG_TEXT_FIELD_URL      102
-#define TAG_ALARM_FIRST         103
-#define TAG_ALARM_SECOND        104
+#define COLOR_GRAYSCALE_PLACEHOLDER 0.7
+
+#define TAG_TEXTFIELD_TITLE      100
+#define TAG_TEXTFIELD_LOCATION   101
+#define TAG_TEXTFIELD_URL        102
+#define TAG_ALARM_FIRST          103
+#define TAG_ALARM_SECOND         104
+#define TAG_TEXTVIEW_NORMAL      105
+#define TAG_TEXTVIEW_EDITING     106
+#define TAG_TEXTVIEW_PLACEHOLDER 107
 
 @interface ShiftAddViewController ()
 {
@@ -112,8 +117,10 @@
     
     self.title = @"Add Shift";
     
-    self.tableView.sectionFooterHeight = 0.0f;
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 10.0)];
+    self.tableView.sectionHeaderHeight = 5.0f;
+    self.tableView.sectionFooterHeight = 5.0f;
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 5.0)];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 5.0)];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -122,7 +129,7 @@
     
     if (_firstAppearance)
     {
-        UITextField *defaultTextField = (UITextField *)[self.tableView viewWithTag:TAG_TEXT_FIELD_TITLE];
+        UITextField *defaultTextField = (UITextField *)[self.tableView viewWithTag:TAG_TEXTFIELD_TITLE];
         [defaultTextField becomeFirstResponder];
         
         _firstAppearance = NO;
@@ -201,12 +208,12 @@
             {
                 textField.placeholder = @"Title";
                 textField.returnKeyType = UIReturnKeyNext;
-                textField.tag = TAG_TEXT_FIELD_TITLE;
+                textField.tag = TAG_TEXTFIELD_TITLE;
             }
             else if (row == 1)
             {
                 textField.placeholder = @"Location";
-                textField.tag = TAG_TEXT_FIELD_LOCATION;
+                textField.tag = TAG_TEXTFIELD_LOCATION;
             }
             else {
                 StupidError(@"no placeholder for row %d", row);
@@ -290,7 +297,7 @@
             UITextField *textField = [[cell.contentView subviews] lastObject];
             textField.clearsOnBeginEditing = NO;
             textField.placeholder = @"URL";
-            textField.tag = TAG_TEXT_FIELD_URL;
+            textField.tag = TAG_TEXTFIELD_URL;
             textField.delegate = self;
             
             break;
@@ -305,8 +312,8 @@
                                                reuseIdentifier:CELL_TEXT_AREA] autorelease];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
-                UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(4.0f, 10.0f, 292.0f, 90.0f)];
-                textView.contentInset = UIEdgeInsetsMake(-4,0,-4,0);
+                UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(4.0f, 10.0f, 292.0f, 165.0f)];
+                textView.contentInset = UIEdgeInsetsMake(-8,-2,-8,0);
                 textView.backgroundColor = cell.backgroundColor;
                 textView.font = [UIFont systemFontOfSize:UIFont.labelFontSize];
 
@@ -332,7 +339,7 @@
 {
     if (SECTION_NOTES == [indexPath section])
     {
-        return 110.0f;
+        return 185.0f;
     }
     
     if (SECTION_TITLE_LOCATION == [indexPath section])
@@ -446,32 +453,34 @@
 
 #pragma mark - TextView delegate
 
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+- (void)textViewDidChange:(UITextView *)textView
 {
-    if (textView.tag == 0)
+    if (textView.tag == TAG_TEXTVIEW_NORMAL)
     {
-        textView.tag       = 1;    // Indicates 'editing'
-        textView.text      = @"";
-        textView.textColor = [UIColor blackColor];
+        textView.tag = TAG_TEXTVIEW_EDITING;
+        
+        [[textView viewWithTag:TAG_TEXTVIEW_PLACEHOLDER] removeFromSuperview];
     }
-    return YES;
-}
-
-- (BOOL)textViewShouldEndEditing:(UITextView *)textView
-{
-    if ([textView.text length] == 0)
+    else if ([textView.text length] == 0)
     {
         [self resetTextViewToPlaceholder:textView];
     }
-    
-    return YES;
 }
 
 - (void)resetTextViewToPlaceholder:(UITextView *)textView
 {
-    textView.text      = @"Notes";
-    textView.textColor = [UIColor lightGrayColor];
-    textView.tag       = 0; // Indicates 'default/placeholder state
+    textView.tag = TAG_TEXTVIEW_NORMAL;
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 6.0, 50, 25)];
+    label.tag                    = TAG_TEXTVIEW_PLACEHOLDER;
+    label.text                   = @"Notes";
+    label.textColor              = [UIColor colorWithWhite:COLOR_GRAYSCALE_PLACEHOLDER alpha:1.0];
+    label.backgroundColor        = [UIColor clearColor];
+    label.userInteractionEnabled = NO;
+    
+    [textView addSubview:label];
+    
+    [label release];
 }
 
 #pragma mark TextField delegate
@@ -479,13 +488,13 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     switch (textField.tag) {
-        case TAG_TEXT_FIELD_TITLE:
+        case TAG_TEXTFIELD_TITLE:
             self.shift.title = textField.text;
             break;
-        case TAG_TEXT_FIELD_LOCATION:
+        case TAG_TEXTFIELD_LOCATION:
             self.shift.location = textField.text;
             break;
-        case TAG_TEXT_FIELD_URL:
+        case TAG_TEXTFIELD_URL:
             self.shift.url = textField.text;
             break;
         default:
@@ -496,12 +505,12 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField.tag == TAG_TEXT_FIELD_TITLE)
+    if (textField.tag == TAG_TEXTFIELD_TITLE)
     {
-        [[self.tableView viewWithTag:TAG_TEXT_FIELD_LOCATION] becomeFirstResponder];
+        [[self.tableView viewWithTag:TAG_TEXTFIELD_LOCATION] becomeFirstResponder];
     }
     
-    if (textField.tag == TAG_TEXT_FIELD_LOCATION || textField.tag == TAG_TEXT_FIELD_URL)
+    if (textField.tag == TAG_TEXTFIELD_LOCATION || textField.tag == TAG_TEXTFIELD_URL)
     {
         [textField resignFirstResponder];
     }
