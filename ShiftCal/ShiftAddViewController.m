@@ -33,6 +33,8 @@
 
 @interface ShiftAddViewController ()
 {
+    BOOL _firstAppearance;
+    
     // private instance variables
     DateIntervalTranslator *_dateTranslator;
 }
@@ -60,6 +62,8 @@
     {
         self.shift = [[ShiftTemplate alloc] init];
         self.dateTranslator = [[DateIntervalTranslator alloc] init];
+        
+        _firstAppearance = YES;
     }
     
     return self;
@@ -109,8 +113,13 @@
 {
     [super viewDidAppear:animated];
     
-    UITextField *defaultTextField = (UITextField *)[self.tableView viewWithTag:TAG_TEXT_FIELD_TITLE];
-    [defaultTextField becomeFirstResponder];
+    if (_firstAppearance)
+    {
+        UITextField *defaultTextField = (UITextField *)[self.tableView viewWithTag:TAG_TEXT_FIELD_TITLE];
+        [defaultTextField becomeFirstResponder];
+        
+        _firstAppearance = NO;
+    }
 }
 
 - (void)viewDidUnload
