@@ -100,6 +100,9 @@
     [cancelItem release];
     
     self.title = @"Add Shift";
+    
+    self.tableView.sectionFooterHeight = 0.0f;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 10.0)];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -227,7 +230,7 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
-            cell.textLabel.text = @"Alarm";
+            cell.textLabel.text = @"Alert";
             cell.detailTextLabel.text = @"None";
             
             break;
@@ -293,11 +296,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (SECTION_NOTES == [indexPath section]) {
-        return 110.0;
+    if (SECTION_NOTES == [indexPath section])
+    {
+        return 110.0f;
     }
     
-    return tableView.rowHeight;
+    if (SECTION_TITLE_LOCATION == [indexPath section])
+    {
+        return 45.0f;
+    }
+    
+    return 40.0f;
 }
 
 - (void)displayDurationInCell:(UITableViewCell *)cell
