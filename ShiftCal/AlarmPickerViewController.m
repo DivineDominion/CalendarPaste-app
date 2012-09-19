@@ -241,12 +241,12 @@
         alarm = [EKAlarm alarmWithRelativeOffset:offset];
     }
     
-    [self.delegate alarmPicker:self didSelectAlarm:alarm];
+    [self.delegate alarmPicker:self didSelectAlarm:alarm canceled:NO];
 }
 
 - (void)cancel:(id)sender
 {
-    [self.delegate alarmPicker:self didSelectAlarm:nil];
+    [self.delegate alarmPicker:self didSelectAlarm:nil canceled:YES];
 }
 
 @end

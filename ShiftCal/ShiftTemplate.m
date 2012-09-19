@@ -24,6 +24,7 @@
 @synthesize url = _url;
 @synthesize calendar = _calendar;
 @synthesize alarm = _alarm;
+@synthesize secondAlarm = _secondAlarm;
 
 - (id)init
 {

@@ -30,26 +30,33 @@
 #define TAG_TEXT_FIELD_TITLE    100
 #define TAG_TEXT_FIELD_LOCATION 101
 #define TAG_TEXT_FIELD_URL      102
+#define TAG_ALARM_FIRST         103
+#define TAG_ALARM_SECOND        104
 
 @interface ShiftAddViewController ()
 {
-    BOOL _firstAppearance;
-    
     // private instance variables
+    BOOL _firstAppearance;
     DateIntervalTranslator *_dateTranslator;
+    NSInteger _selectedAlarmRow;
 }
 
 // private properties
 @property (nonatomic, retain) DateIntervalTranslator *dateTranslator;
+@property (nonatomic, assign) NSInteger selectedAlarmRow;
 
 // private methods
 - (void)resetTextViewToPlaceholder:(UITextView *)textView;
 - (void)displayDurationInCell:(UITableViewCell *)cell;
+- (void)displayCalendarInCell:(UITableViewCell *)cell;
+- (void)displayAlarmInCell:(UITableViewCell *)cell;
+- (void)setFirstAlarm:(EKAlarm *)alarm;
 @end
 
 @implementation ShiftAddViewController
 
 @synthesize dateTranslator = _dateTranslator;
+@synthesize selectedAlarmRow = _selectedAlarmRow;
 
 @synthesize shift = _shift;
 @synthesize additionDelegate = _additionDelegate;
@@ -139,9 +146,15 @@
     switch (section) {
         case SECTION_TITLE_LOCATION:
             return 2;
+        case SECTION_ALARM:
+            if (self.shift.alarm)
+            {
+                return 2;
+            }
+            
+            return 1;
         case SECTION_DURATION:
         case SECTION_CALENDAR:
-        case SECTION_ALARM:
         case SECTION_URL:
         case SECTION_NOTES:
             return 1;
@@ -239,8 +252,20 @@
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
-            cell.textLabel.text = @"Alert";
-            cell.detailTextLabel.text = @"None";
+            NSString *labelText = @"Alert";
+            
+            if (row == 0)
+            {
+                cell.tag = TAG_ALARM_FIRST;
+            }
+            else
+            {
+                cell.tag = TAG_ALARM_SECOND;
+                labelText = @"Second Alert";
+            }
+            
+            cell.textLabel.text = labelText;
+            [self displayAlarmInCell:cell];
             
             break;
         case SECTION_URL:
@@ -333,10 +358,20 @@
 - (void)displayAlarmInCell:(UITableViewCell *)cell
 {
     NSString *text = @"None";
+    EKAlarm *alarm = nil;
     
-    if (self.shift.alarm)
+    if (TAG_ALARM_FIRST == cell.tag)
     {
-        NSTimeInterval interval = self.shift.alarm.relativeOffset;
+        alarm = self.shift.alarm;
+    }
+    else if (TAG_ALARM_SECOND == cell.tag)
+    {
+        alarm = self.shift.secondAlarm;
+    }
+
+    if (alarm)
+    {
+        NSTimeInterval interval = alarm.relativeOffset;
         
         text = [self.dateTranslator humanReadableFormOfInterval:interval];
         
@@ -375,11 +410,23 @@
         }
         case SECTION_ALARM:
         {
-            EKAlarm *alarm = self.shift.alarm;
+            EKAlarm *alarm = nil;
+            
+            if ([indexPath row] == 0)
+            {
+                alarm = self.shift.alarm;
+            }
+            else
+            {
+                alarm = self.shift.secondAlarm;
+            }
+            
             AlarmPickerViewController *alarmController = [[AlarmPickerViewController alloc] initWithAlarm:alarm];
             alarmController.delegate = self;
             
             modalController = alarmController;
+            
+            self.selectedAlarmRow = [indexPath row];
         }
         default:
             break;
@@ -495,19 +542,64 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)alarmPicker:(AlarmPickerViewController *)alarmPicker didSelectAlarm:(EKAlarm *)alarm
+- (void)alarmPicker:(AlarmPickerViewController *)alarmPicker didSelectAlarm:(EKAlarm *)alarm canceled:(BOOL)canceled
 {
-    if (alarm)
-    {
-        NSIndexPath *alarmPath     = [NSIndexPath indexPathForRow:0 inSection:SECTION_ALARM];
+    if (!canceled) {
+        NSIndexPath *alarmPath     = [NSIndexPath indexPathForRow:self.selectedAlarmRow inSection:SECTION_ALARM];
         UITableViewCell *alarmCell = [self.tableView cellForRowAtIndexPath:alarmPath];
         
-        self.shift.alarm = alarm;
+        BOOL shouldUpdateFirstAlarm = (self.selectedAlarmRow == 0);
+        
+        if (shouldUpdateFirstAlarm)
+        {
+            [self setFirstAlarm:alarm];
+        }
+        else
+        {
+            self.shift.secondAlarm = alarm;
+        }
         
         [self displayAlarmInCell:alarmCell];
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)setFirstAlarm:(EKAlarm *)alarm
+{
+    NSIndexPath *secondAlarmIndexPath = [NSIndexPath indexPathForRow:1 inSection:SECTION_ALARM];
+    
+    BOOL hasSecondAlarm = (self.shift.secondAlarm != nil);
+    BOOL isSecondAlarmRowVisible = ([self.tableView numberOfRowsInSection:SECTION_ALARM] == 2);
+    BOOL shouldRemoveAlarm = (alarm == nil);
+
+    if (hasSecondAlarm && shouldRemoveAlarm)
+    {
+        UITableViewCell *secondAlarmCell = [self.tableView cellForRowAtIndexPath:secondAlarmIndexPath];
+        
+        // Pop first entry, clear second alarm
+        self.shift.alarm = self.shift.secondAlarm;
+        self.shift.secondAlarm = nil;
+        
+        // Update second cell, too
+        [self displayAlarmInCell:secondAlarmCell];
+    }
+    else
+    {
+        self.shift.alarm = alarm;
+        
+        if (isSecondAlarmRowVisible && shouldRemoveAlarm)
+        {
+            // Only when there was an alarm before, remove 2nd cell upon unsetting 1st alarm
+            [self.tableView deleteRowsAtIndexPaths:@[secondAlarmIndexPath]
+                                  withRowAnimation:UITableViewRowAnimationTop];
+        }
+        else if (!isSecondAlarmRowVisible && !shouldRemoveAlarm)
+        {
+            [self.tableView insertRowsAtIndexPaths:@[secondAlarmIndexPath]
+                                  withRowAnimation:UITableViewRowAnimationTop];
+        }
+    }
 }
 
 #pragma mark - Save and Cancel
