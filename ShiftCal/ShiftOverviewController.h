@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "ShiftAddDelegate.h"
 
-@interface ShiftOverviewController : UIViewController <ShiftAddDelegate>
+@interface ShiftOverviewController : UITableViewController <ShiftAddDelegate>
 
 @end

@@ -8,31 +8,64 @@
 
 #import "ShiftOverviewController.h"
 #import "ShiftAddViewController.h"
+#import "ShiftTemplate.h"
 
 @interface ShiftOverviewController ()
+{
+    // private instance variables
+    NSMutableArray *_shifts;
+}
 
-// forward declarations
+// private properties
+@property (nonatomic, assign) NSMutableArray *shifts;
+
+// private methods
 - (void)addAction:(id)sender;
-
 @end
 
 @implementation ShiftOverviewController
 
-- (void)dealloc
+@synthesize shifts = _shifts;
+
+- (id)init
 {
-    [self.view release];
-    [super dealloc];
+    return [self initWithStyle:UITableViewStylePlain];
 }
 
-- (void)loadView
+- (id)initWithStyle:(UITableViewStyle)style
 {
-    // Never use same view objects with multiple controllers! -> copy?
-    self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    self = [super initWithStyle:style];
     
+    if (self)
+    {
+        self.shifts = [[NSMutableArray alloc] init];
+        
+        [self loadModel];
+    }
     
+    return self;
+}
+
+- (void)loadModel
+{
+    ShiftTemplate *shift = nil;
     
-    self.title = @"Shifts";
+    for (NSInteger i = 0; i < 5; i++)
+    {
+        shift = [[ShiftTemplate alloc] init];
+        shift.title = [NSString stringWithFormat:@"Test %d", i];
+        
+        [self.shifts addObject:shift];
+        
+        [shift release];
+    }
+}
+
+- (void)dealloc
+{
+    [self.shifts release];
+    
+    [super dealloc];
 }
 
 
@@ -64,6 +97,8 @@
     self.navigationItem.rightBarButtonItem = addButtonItem;
     
     [addButtonItem release];
+    
+    self.title = @"Shifts";
 }
 
 - (void)viewDidUnload
@@ -75,11 +110,73 @@
 
 #pragma mark - manipulating Shifts
 
-- (void)shiftAddViewController:(ShiftAddViewController *)shiftAddViewController didAddShift:(id)shift
+- (void)shiftAddViewController:(ShiftAddViewController *)shiftAddViewController didAddShift:(ShiftTemplate *)shift
 {
-    // TODO add shift
+    if (shift)
+    {
+        NSInteger count = [self.tableView numberOfRowsInSection:0];;
+        count++;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:5 inSection:0];
+
+        [self.shifts addObject:shift];
+        NSLog(@"title %@", shift.title);
+        
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    }
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark - TableView data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section != 0)
+    {
+        StupidError(@"only one section allowed:  section=%d", section);
+    }
+    
+    return [self.shifts count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *kCellIdentifier = @"shiftcell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
+    NSInteger row = [indexPath row];
+    
+    if (!cell)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellIdentifier];
+    }
+    
+    ShiftTemplate *shift = [self.shifts objectAtIndex:row];
+    
+    cell.textLabel.text = shift.title;
+    
+    return cell;
+}
+
+
+#pragma mark TableView delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NSInteger row = [indexPath row];
+    ShiftTemplate *shift = [self.shifts objectAtIndex:row];
+    
+    // TODO assign shift
+    NSLog(@"%@ selected", shift.title);
+}
+
 
 #pragma mark - UI Actions
 
