@@ -129,6 +129,9 @@
     
     if (_firstAppearance)
     {
+        // Prevent save until title could have been entered
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+        
         UITextField *defaultTextField = (UITextField *)[self.tableView viewWithTag:TAG_TEXTFIELD_TITLE];
         [defaultTextField becomeFirstResponder];
         
@@ -150,7 +153,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (section) {
+    switch (section)
+    {
         case SECTION_TITLE_LOCATION:
             return 2;
         case SECTION_ALARM:
@@ -180,7 +184,8 @@
     
     UITableViewCell *cell = nil;
     
-    switch (section) {
+    switch (section)
+    {
         case SECTION_TITLE_LOCATION:
         {
             cell = [tableView dequeueReusableCellWithIdentifier:CELL_TEXT_FIELD];
@@ -395,7 +400,8 @@
     NSInteger section = [indexPath section];
     UIViewController *modalController = nil;
     
-    switch (section) {
+    switch (section)
+    {
         case SECTION_DURATION:
         {
             DurationPickerController *durationController = [[DurationPickerController alloc] initWithHours:self.shift.hours andMinutes:self.shift.minutes];
@@ -485,11 +491,27 @@
 
 #pragma mark TextField delegate
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField.tag == TAG_TEXTFIELD_TITLE)
+    {
+        // Enable saving
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    }
+    
+    return YES;
+}
+
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    switch (textField.tag) {
+    switch (textField.tag)
+    {
         case TAG_TEXTFIELD_TITLE:
             self.shift.title = textField.text;
+            
+            // Enable saving
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+            
             break;
         case TAG_TEXTFIELD_LOCATION:
             self.shift.location = textField.text;
@@ -553,7 +575,8 @@
 
 - (void)alarmPicker:(AlarmPickerViewController *)alarmPicker didSelectAlarm:(EKAlarm *)alarm canceled:(BOOL)canceled
 {
-    if (!canceled) {
+    if (!canceled)
+    {
         NSIndexPath *alarmPath     = [NSIndexPath indexPathForRow:self.selectedAlarmRow inSection:SECTION_ALARM];
         UITableViewCell *alarmCell = [self.tableView cellForRowAtIndexPath:alarmPath];
         
@@ -615,16 +638,23 @@
 
 - (void)save:(id)sender
 {
-    if (self.additionDelegate) {
-        ShiftTemplate *shift = nil;
+    if (self.additionDelegate)
+    {
+        // Default internally to a meaningful title
+        if ([self.shift.title length] == 0)
+        {
+            self.shift.title = @"New Shift";
+        }
+
         
-        [self.additionDelegate shiftAddViewController:self didAddShift:shift];
+        [self.additionDelegate shiftAddViewController:self didAddShift:self.shift];
     }
 }
 
 - (void)cancel:(id)sender
 {
-    if (self.additionDelegate) {
+    if (self.additionDelegate)
+    {
         [self.additionDelegate shiftAddViewController:self didAddShift:nil];
     }
 }
