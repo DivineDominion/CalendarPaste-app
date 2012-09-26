@@ -10,6 +10,28 @@
 #import "ShiftAddViewController.h"
 #import "ShiftTemplate.h"
 
+// via http://www.icab.de/blog/2009/11/15/moving-objects-within-an-nsmutablearray/
+@interface NSMutableArray (MoveArray)
+- (void)moveObjectFromIndex:(NSUInteger)from toIndex:(NSUInteger)to;
+@end
+
+@implementation NSMutableArray (MoveArray)
+- (void)moveObjectFromIndex:(NSUInteger)from toIndex:(NSUInteger)to
+{
+    if (to != from) {
+        id obj = [self objectAtIndex:from];
+        [obj retain];
+        [self removeObjectAtIndex:from];
+        if (to >= [self count]) {
+            [self addObject:obj];
+        } else {
+            [self insertObject:obj atIndex:to];
+        }
+        [obj release];
+    }
+}
+@end
+
 @interface ShiftOverviewController ()
 {
     // private instance variables
@@ -107,26 +129,6 @@
     // Release any retained subviews of the main view.
 }
 
-
-#pragma mark - manipulating Shifts
-
-- (void)shiftAddViewController:(ShiftAddViewController *)shiftAddViewController didAddShift:(ShiftTemplate *)shift
-{
-    if (shift)
-    {
-        NSInteger count = [self.tableView numberOfRowsInSection:0];;
-        count++;
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:5 inSection:0];
-
-        [self.shifts addObject:shift];
-        NSLog(@"title %@", shift.title);
-        
-        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-    }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 #pragma mark - TableView data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -163,6 +165,14 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    NSUInteger sourceRow      = [sourceIndexPath row];
+    NSUInteger destinationRow = [destinationIndexPath row];
+    
+    [self.shifts moveObjectFromIndex:sourceRow toIndex:destinationRow];
+}
+
 
 #pragma mark TableView delegate
 
@@ -177,6 +187,39 @@
     NSLog(@"%@ selected", shift.title);
 }
 
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSUInteger row = [indexPath row];
+
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        [self.shifts removeObjectAtIndex:row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
+    }
+}
+
+#pragma mark - manipulating Shifts
+
+- (void)shiftAddViewController:(ShiftAddViewController *)shiftAddViewController didAddShift:(ShiftTemplate *)shift
+{
+    if (shift)
+    {
+        NSInteger count = [self.tableView numberOfRowsInSection:0];;
+        count++;
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:5 inSection:0];
+        
+        [self.shifts addObject:shift];
+        
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 #pragma mark - UI Actions
 
@@ -191,6 +234,13 @@
     
     [additionController release];
     [additionNavController release];
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    [super setEditing:editing animated:animated];
+    
+    [self.tableView setEditing:editing animated:animated];
 }
 
 @end
