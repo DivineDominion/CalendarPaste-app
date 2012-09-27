@@ -27,6 +27,7 @@
 		60BB96BC15C08EB900801105 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A315C08EB900801105 /* Foundation.framework */; };
 		60BB96C415C08EB900801105 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 60BB96C215C08EB900801105 /* InfoPlist.strings */; };
 		60BB96C715C08EB900801105 /* ShiftCalTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60BB96C615C08EB900801105 /* ShiftCalTests.m */; };
+		60DC7E241614C45D009C8723 /* NSMutableArray+MoveArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 60DC7E231614C45D009C8723 /* NSMutableArray+MoveArray.m */; };
 		60F1603415DD1447005834B3 /* ShiftModificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1603315DD1447005834B3 /* ShiftModificationViewController.m */; };
 		60FBA82315F10443008B48A1 /* DurationPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82215F10443008B48A1 /* DurationPickerController.m */; };
 		60FBA82D15F4FE2C008B48A1 /* ShiftTemplateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82C15F4FE2B008B48A1 /* ShiftTemplateController.m */; };
@@ -78,6 +79,8 @@
 		60BB96C515C08EB900801105 /* ShiftCalTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShiftCalTests.h; sourceTree = "<group>"; };
 		60BB96C615C08EB900801105 /* ShiftCalTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShiftCalTests.m; sourceTree = "<group>"; };
 		60DC7E201614B277009C8723 /* ShiftModificationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftModificationDelegate.h; sourceTree = "<group>"; };
+		60DC7E221614C45D009C8723 /* NSMutableArray+MoveArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+MoveArray.h"; sourceTree = "<group>"; };
+		60DC7E231614C45D009C8723 /* NSMutableArray+MoveArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+MoveArray.m"; sourceTree = "<group>"; };
 		60F1603215DD1447005834B3 /* ShiftModificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftModificationViewController.h; sourceTree = "<group>"; };
 		60F1603315DD1447005834B3 /* ShiftModificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftModificationViewController.m; sourceTree = "<group>"; };
 		60FBA82115F10443008B48A1 /* DurationPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurationPickerController.h; sourceTree = "<group>"; };
@@ -175,6 +178,8 @@
 				60AAB7C715C09243002114B9 /* ShiftTemplate.m */,
 				60FBA82B15F4FE2B008B48A1 /* ShiftTemplateController.h */,
 				60FBA82C15F4FE2B008B48A1 /* ShiftTemplateController.m */,
+				60DC7E221614C45D009C8723 /* NSMutableArray+MoveArray.h */,
+				60DC7E231614C45D009C8723 /* NSMutableArray+MoveArray.m */,
 				60BB96B015C08EB900801105 /* AppDelegate.h */,
 				60BB96B115C08EB900801105 /* AppDelegate.m */,
 				60BB96A815C08EB900801105 /* Supporting Files */,
@@ -356,6 +361,7 @@
 				60FBA83015F66C4C008B48A1 /* CalendarPickerController.m in Sources */,
 				600E119F160373F3009A7E24 /* AlarmPickerViewController.m in Sources */,
 				605AC42616086B5800E02F16 /* DateIntervalTranslator.m in Sources */,
+				60DC7E241614C45D009C8723 /* NSMutableArray+MoveArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
