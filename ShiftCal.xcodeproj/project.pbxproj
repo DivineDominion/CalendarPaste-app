@@ -168,7 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				608F6FDD15FF78AD001C8217 /* Images */,
-				60FBA83115F66C59008B48A1 /* Add Shift */,
+				60FBA83115F66C59008B48A1 /* Modify Shift */,
 				60AAB81115C13297002114B9 /* ShiftOverviewController.h */,
 				60AAB81215C13297002114B9 /* ShiftOverviewController.m */,
 				60AAB7C615C09243002114B9 /* ShiftTemplate.h */,
@@ -215,7 +215,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		60FBA83115F66C59008B48A1 /* Add Shift */ = {
+		60FBA83115F66C59008B48A1 /* Modify Shift */ = {
 			isa = PBXGroup;
 			children = (
 				60FBA82115F10443008B48A1 /* DurationPickerController.h */,
@@ -233,7 +233,7 @@
 				60F1603315DD1447005834B3 /* ShiftAddViewController.m */,
 				60F1603615DD1B16005834B3 /* ShiftAddDelegate.h */,
 			);
-			name = "Add Shift";
+			name = "Modify Shift";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -19,12 +19,12 @@
 
 @interface ShiftAddViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, DurationPickerDelegate, CalendarPickerDelegate, AlarmPickerDelegate>
 {
-    id <ShiftAddDelegate> _additionDelegate;
+    id<ShiftAddDelegate> _additionDelegate;
 
     ShiftTemplate *_shift;
 }
 
-@property (nonatomic, assign) id <ShiftAddDelegate> additionDelegate;
+@property (nonatomic, weak) id<ShiftAddDelegate> additionDelegate;
 @property (nonatomic, retain) ShiftTemplate *shift;
 
 - (void)save:(id)sender;

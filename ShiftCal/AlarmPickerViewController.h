@@ -16,7 +16,7 @@
     id<AlarmPickerDelegate> _delegate;
 }
 
-@property (weak) id<AlarmPickerDelegate> delegate;
+@property (nonatomic, weak) id<AlarmPickerDelegate> delegate;
 
 - (id)initWithAlarm:(EKAlarm *)alarm;
 - (id)initWithStyle:(UITableViewStyle)style selectedAlarm:(EKAlarm *)alarm;
