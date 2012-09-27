@@ -44,6 +44,35 @@
     return nil;
 }
 
+- (void)dealloc
+{
+    [self.calendar release];
+    [self.alarm release];
+    [self.secondAlarm release];
+    
+    [super dealloc];
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    ShiftTemplate *copy = [[ShiftTemplate alloc] init];
+    
+    copy.title = [self.title copy];
+    copy.hours = self.hours;
+    copy.minutes = self.minutes;
+    copy.location = [self.location copy];
+    copy.url = [self.url copy];
+    
+    EKEventStore *eventStore = [[EKEventStore alloc] init];
+    copy.calendar = [eventStore calendarWithIdentifier:self.calendar.calendarIdentifier];
+    [eventStore release];
+    
+    copy.alarm = [self.alarm copy];
+    copy.secondAlarm = [self.secondAlarm copy];
+    
+    return copy;
+}
+
 - (EKCalendar *)userDefaultCalendar
 {
     EKCalendar *defaultCalendar = nil;

@@ -7,7 +7,7 @@
 //
 
 #import "ShiftOverviewController.h"
-#import "ShiftAddViewController.h"
+#import "ShiftModificationViewController.h"
 #import "ShiftTemplate.h"
 
 // via http://www.icab.de/blog/2009/11/15/moving-objects-within-an-nsmutablearray/
@@ -32,22 +32,39 @@
 }
 @end
 
+#define ROW_NONE -1
+
+typedef enum {
+    CTModificationNone,
+    CTModificationEdit,
+    CTModificationAdd
+} CTModificationMode;
+
 @interface ShiftOverviewController ()
 {
     // private instance variables
     NSMutableArray *_shifts;
+    
+    CTModificationMode _currentModificationMode;
+    NSInteger _editedShiftRow;
 }
 
 // private properties
 @property (nonatomic, assign) NSMutableArray *shifts;
+@property (nonatomic, assign) CTModificationMode currentModificationMode;
+@property (nonatomic, assign) NSInteger editedShiftRow;
 
 // private methods
+- (void)loadModel;
+- (void)calloutCell:(NSIndexPath *)indexPath;
 - (void)addAction:(id)sender;
 @end
 
 @implementation ShiftOverviewController
 
 @synthesize shifts = _shifts;
+@synthesize currentModificationMode = _currentModificationMode;
+@synthesize editedShiftRow = _editedShiftRow;
 
 - (id)init
 {
@@ -61,6 +78,7 @@
     if (self)
     {
         self.shifts = [[NSMutableArray alloc] init];
+        self.currentModificationMode = CTModificationNone;
         
         [self loadModel];
     }
@@ -121,6 +139,8 @@
     [addButtonItem release];
     
     self.title = @"Shifts";
+    
+    self.tableView.allowsSelectionDuringEditing = YES;
 }
 
 - (void)viewDidUnload
@@ -159,7 +179,7 @@
     }
     
     ShiftTemplate *shift = [self.shifts objectAtIndex:row];
-    
+    NSLog(@"!");
     cell.textLabel.text = shift.title;
     
     return cell;
@@ -182,8 +202,26 @@
     NSInteger row = [indexPath row];
     ShiftTemplate *shift = [self.shifts objectAtIndex:row];
     
-    // TODO assign shift
-    NSLog(@"%@ selected", shift.title);
+    if (self.editing)
+    {
+        ShiftModificationViewController *editController = [[ShiftModificationViewController alloc] initWithShift:shift];
+        UINavigationController *editNavController = [[UINavigationController alloc] initWithRootViewController:editController];
+        
+        editController.modificationDelegate = self;
+        
+        self.currentModificationMode = CTModificationEdit;
+        self.editedShiftRow = row;
+        
+        [[self navigationController] presentModalViewController:editNavController animated:YES];
+        
+        [editController release];
+        [editNavController release];
+    }
+    else
+    {
+        // TODO assign shift
+        NSLog(@"%@ selected", shift.title);
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
@@ -209,30 +247,58 @@
 
 #pragma mark - manipulating Shifts
 
-- (void)shiftAddViewController:(ShiftAddViewController *)shiftAddViewController didAddShift:(ShiftTemplate *)shift
+- (void)shiftModificationViewController:(ShiftModificationViewController *)shiftAddViewController modifiedShift:(ShiftTemplate *)shift
 {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
     if (shift)
     {
-        NSInteger count = [self.tableView numberOfRowsInSection:0];;
-        count++;
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:5 inSection:0];
+        if (self.currentModificationMode == CTModificationAdd)
+        {
+            NSInteger count        = [self.tableView numberOfRowsInSection:0];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:count inSection:0];
+            
+            [self.shifts insertObject:shift atIndex:count];
+            
+            [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        }
+        else if (self.currentModificationMode == CTModificationEdit)
+        {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.editedShiftRow inSection:0];
+            
+            [self.shifts replaceObjectAtIndex:self.editedShiftRow withObject:shift];
+            
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self calloutCell:indexPath];
+        }
         
-        [self.shifts addObject:shift];
-        
-        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        self.currentModificationMode = CTModificationNone;
+        self.editedShiftRow = ROW_NONE;
     }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)calloutCell:(NSIndexPath *)indexPath
+{
+    [UIView animateWithDuration:0.0
+                          delay:0.0
+                        options:UIViewAnimationOptionAllowUserInteraction
+                     animations:^void() {
+                         [[self.tableView cellForRowAtIndexPath:indexPath] setHighlighted:YES animated:YES];
+                     }
+                     completion:^(BOOL finished) {
+                         [[self.tableView cellForRowAtIndexPath:indexPath] setHighlighted:NO animated:YES];
+                     }];
 }
 
 #pragma mark - UI Actions
 
 - (void)addAction:(id)sender
 {
-    ShiftAddViewController *additionController = [[ShiftAddViewController alloc] init];
+    ShiftModificationViewController *additionController = [[ShiftModificationViewController alloc] init];
     UINavigationController *additionNavController = [[UINavigationController alloc] initWithRootViewController:additionController];
     
-    additionController.additionDelegate = self;
+    additionController.modificationDelegate = self;
+    self.currentModificationMode = CTModificationAdd;
     
     [[self navigationController] presentModalViewController:additionNavController animated:YES];
     

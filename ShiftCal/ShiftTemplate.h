@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <EventKit/EventKit.h>
 
-@interface ShiftTemplate : NSObject
+@interface ShiftTemplate : NSObject <NSCopying>
 {
     NSString *_title;
     NSString *_location;

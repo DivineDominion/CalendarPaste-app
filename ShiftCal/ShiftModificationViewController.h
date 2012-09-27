@@ -15,17 +15,19 @@
 #import "CalendarPickerDelegate.h"
 #import "AlarmPickerDelegate.h"
 
-#import "ShiftAddDelegate.h"
+#import "ShiftModificationDelegate.h"
 
-@interface ShiftAddViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, DurationPickerDelegate, CalendarPickerDelegate, AlarmPickerDelegate>
+@interface ShiftModificationViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, DurationPickerDelegate, CalendarPickerDelegate, AlarmPickerDelegate>
 {
-    id<ShiftAddDelegate> _additionDelegate;
+    id<ShiftModificationDelegate> _modificationDelegate;
 
     ShiftTemplate *_shift;
 }
 
-@property (nonatomic, weak) id<ShiftAddDelegate> additionDelegate;
+@property (nonatomic, weak) id<ShiftModificationDelegate> modificationDelegate;
 @property (nonatomic, retain) ShiftTemplate *shift;
+
+- (id)initWithShift:(ShiftTemplate *)shift;
 
 - (void)save:(id)sender;
 - (void)cancel:(id)sender;

@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Christian Tietze. All rights reserved.
 //
 
-#import "ShiftAddViewController.h"
+#import "ShiftModificationViewController.h"
 
 #import "DurationPickerController.h"
 #import "CalendarPickerController.h"
@@ -38,7 +38,7 @@
 #define TAG_TEXTVIEW_EDITING     106
 #define TAG_TEXTVIEW_PLACEHOLDER 107
 
-@interface ShiftAddViewController ()
+@interface ShiftModificationViewController ()
 {
     // private instance variables
     BOOL _firstAppearance;
@@ -58,24 +58,37 @@
 - (void)setFirstAlarm:(EKAlarm *)alarm;
 @end
 
-@implementation ShiftAddViewController
+@implementation ShiftModificationViewController
 
 @synthesize dateTranslator = _dateTranslator;
 @synthesize selectedAlarmRow = _selectedAlarmRow;
 
 @synthesize shift = _shift;
-@synthesize additionDelegate = _additionDelegate;
+@synthesize modificationDelegate = _modificationDelegate;
 
 - (id)init
+{
+    return [self initWithShift:nil];
+}
+
+- (id)initWithShift:(ShiftTemplate *)shift
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     
     if (self)
     {
-        self.shift = [[ShiftTemplate alloc] init];
-        self.dateTranslator = [[DateIntervalTranslator alloc] init];
+        if (shift)
+        {
+            self.shift = [shift copy];
+            _firstAppearance = NO;
+        }
+        else
+        {
+            self.shift = [[[ShiftTemplate alloc] init] autorelease];
+            _firstAppearance = YES;
+        }
         
-        _firstAppearance = YES;
+        self.dateTranslator = [[DateIntervalTranslator alloc] init];
     }
     
     return self;
@@ -116,6 +129,12 @@
     [cancelItem release];
     
     self.title = @"Add Shift";
+
+    // Enable custom title when editing
+    if (self.shift.title.length > 0)
+    {
+        self.title = self.shift.title;
+    }
     
     self.tableView.sectionHeaderHeight = 5.0f;
     self.tableView.sectionFooterHeight = 5.0f;
@@ -214,11 +233,13 @@
                 textField.placeholder = @"Title";
                 textField.returnKeyType = UIReturnKeyNext;
                 textField.tag = TAG_TEXTFIELD_TITLE;
+                textField.text = self.shift.title;
             }
             else if (row == 1)
             {
                 textField.placeholder = @"Location";
                 textField.tag = TAG_TEXTFIELD_LOCATION;
+                textField.text = self.shift.location;
             }
             else {
                 StupidError(@"no placeholder for row %d", row);
@@ -504,6 +525,7 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    NSLog(@"end");
     switch (textField.tag)
     {
         case TAG_TEXTFIELD_TITLE:
@@ -544,6 +566,8 @@
 
 - (void)durationPicker:(id)durationPicker didSelectHours:(NSInteger)hours andMinutes:(NSInteger)minutes
 {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
     // means "Done";  both equal 0 on "Cancel"
     if (hours > 0 || minutes > 0)
     {
@@ -554,12 +578,12 @@
         
         [self displayDurationInCell:durationCell];
     }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)calendarPicker:(CalendarPickerController *)calendarPicker didSelectCalendar:(EKCalendar *)calendar
 {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
     if (calendar)
     {
         NSIndexPath *calendarPath     = [NSIndexPath indexPathForRow:0 inSection:SECTION_CALENDAR];
@@ -569,12 +593,12 @@
         
         [self displayCalendarInCell:calendarCell];
     }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)alarmPicker:(AlarmPickerViewController *)alarmPicker didSelectAlarm:(EKAlarm *)alarm canceled:(BOOL)canceled
 {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
     if (!canceled)
     {
         NSIndexPath *alarmPath     = [NSIndexPath indexPathForRow:self.selectedAlarmRow inSection:SECTION_ALARM];
@@ -593,8 +617,6 @@
         
         [self displayAlarmInCell:alarmCell];
     }
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)setFirstAlarm:(EKAlarm *)alarm
@@ -638,24 +660,23 @@
 
 - (void)save:(id)sender
 {
-    if (self.additionDelegate)
+    if (self.modificationDelegate)
     {
         // Default internally to a meaningful title
         if ([self.shift.title length] == 0)
         {
             self.shift.title = @"New Shift";
         }
-
         
-        [self.additionDelegate shiftAddViewController:self didAddShift:self.shift];
+        [self.modificationDelegate shiftModificationViewController:self modifiedShift:self.shift];
     }
 }
 
 - (void)cancel:(id)sender
 {
-    if (self.additionDelegate)
+    if (self.modificationDelegate)
     {
-        [self.additionDelegate shiftAddViewController:self didAddShift:nil];
+        [self.modificationDelegate shiftModificationViewController:self modifiedShift:nil];
     }
 }
 
