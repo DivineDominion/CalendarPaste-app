@@ -14,23 +14,23 @@
 #define ROW_NONE -1
 
 typedef enum {
-    CTModificationNone,
-    CTModificationEdit,
-    CTModificationAdd
-} CTModificationMode;
+    SCModificationNone,
+    SCModificationEdit,
+    SCModificationAdd
+} SCModificationMode;
 
 @interface ShiftOverviewController ()
 {
     // private instance variables
     NSMutableArray *_shifts;
     
-    CTModificationMode _currentModificationMode;
+    SCModificationMode _currentModificationMode;
     NSInteger _editedShiftRow;
 }
 
 // private properties
 @property (nonatomic, assign) NSMutableArray *shifts;
-@property (nonatomic, assign) CTModificationMode currentModificationMode;
+@property (nonatomic, assign) SCModificationMode currentModificationMode;
 @property (nonatomic, assign) NSInteger editedShiftRow;
 
 // private methods
@@ -57,7 +57,7 @@ typedef enum {
     if (self)
     {
         self.shifts = [[NSMutableArray alloc] init];
-        self.currentModificationMode = CTModificationNone;
+        self.currentModificationMode = SCModificationNone;
         
         [self loadModel];
     }
@@ -187,7 +187,7 @@ typedef enum {
         
         editController.modificationDelegate = self;
         
-        self.currentModificationMode = CTModificationEdit;
+        self.currentModificationMode = SCModificationEdit;
         self.editedShiftRow = row;
         
         [[self navigationController] presentModalViewController:editNavController animated:YES];
@@ -231,7 +231,7 @@ typedef enum {
     
     if (shift)
     {
-        if (self.currentModificationMode == CTModificationAdd)
+        if (self.currentModificationMode == SCModificationAdd)
         {
             NSInteger count        = [self.tableView numberOfRowsInSection:0];
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:count inSection:0];
@@ -240,7 +240,7 @@ typedef enum {
             
             [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
         }
-        else if (self.currentModificationMode == CTModificationEdit)
+        else if (self.currentModificationMode == SCModificationEdit)
         {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.editedShiftRow inSection:0];
             
@@ -250,7 +250,7 @@ typedef enum {
             [self calloutCell:indexPath];
         }
         
-        self.currentModificationMode = CTModificationNone;
+        self.currentModificationMode = SCModificationNone;
         self.editedShiftRow = ROW_NONE;
     }
 }
@@ -276,7 +276,7 @@ typedef enum {
     UINavigationController *additionNavController = [[UINavigationController alloc] initWithRootViewController:additionController];
     
     additionController.modificationDelegate = self;
-    self.currentModificationMode = CTModificationAdd;
+    self.currentModificationMode = SCModificationAdd;
     
     [[self navigationController] presentModalViewController:additionNavController animated:YES];
     

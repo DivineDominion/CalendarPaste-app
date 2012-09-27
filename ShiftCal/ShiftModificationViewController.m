@@ -525,7 +525,6 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    NSLog(@"end");
     switch (textField.tag)
     {
         case TAG_TEXTFIELD_TITLE:
