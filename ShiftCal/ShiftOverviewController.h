@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ShiftModificationDelegate.h"
+#import "ShiftTemplate.h"
 
-@interface ShiftOverviewController : UITableViewController <ShiftModificationDelegate>
+@class ModificationCommand;
 
+@interface ShiftOverviewController : UITableViewController
+
+- (void)modificationCommandFinished:(ModificationCommand *)modificationCommand;
+
+- (void)addShift:(ShiftTemplate *)shift;
+- (void)replaceShiftAtRow:(NSInteger)row withShift:(ShiftTemplate *)shift;
 @end

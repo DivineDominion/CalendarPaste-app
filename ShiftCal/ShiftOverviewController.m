@@ -8,42 +8,121 @@
 
 #import "ShiftOverviewController.h"
 #import "ShiftModificationViewController.h"
+#import "ShiftModificationDelegate.h"
+#import "ShiftTemplateController.h"
 #import "ShiftTemplate.h"
-#import "NSMutableArray+MoveArray.h"
 
-#define ROW_NONE -1
+@interface ModificationCommand : NSObject <ShiftModificationDelegate>
+{
+    ShiftOverviewController *_target;
+    ShiftTemplate *_shift;
+}
 
-typedef enum {
-    SCModificationNone,
-    SCModificationEdit,
-    SCModificationAdd
-} SCModificationMode;
+@property (nonatomic, weak) ShiftOverviewController *target;
+@property (nonatomic, retain) ShiftTemplate *shift;
+
+- (id)initWithTarget:(ShiftOverviewController *)target;
+- (void)execute;
+@end
+
+
+@implementation ModificationCommand
+
+@synthesize shift = _shift;
+@synthesize target = _target;
+
+- (id)initWithTarget:(ShiftOverviewController *)target;
+{
+    self = [super init];
+    
+    if (self)
+    {
+        self.target = target;
+    }
+    
+    return self;
+}
+
+- (void)shiftModificationViewController:(ShiftModificationViewController *)shiftAddViewController modifiedShift:(ShiftTemplate *)shift
+{
+    [self.target dismissViewControllerAnimated:YES completion:nil]; // TODO refactor high coupling
+    
+    if (shift)
+    {
+        self.shift = shift;
+        [self execute];
+    }
+}
+
+- (void)execute
+{
+    // Do nothing;  override in implementation
+}
+@end
+
+@interface EditCommand : ModificationCommand
+{
+    NSUInteger _row;
+}
+
+@property (nonatomic, assign) NSUInteger row;
+
+-(id)initWithTarget:(ShiftOverviewController *)target forRow:(NSUInteger)row;
+@end
+
+@implementation EditCommand
+@synthesize row = _row;
+
+- (id)initWithTarget:(ShiftOverviewController *)target forRow:(NSUInteger)row
+{
+    self = [super initWithTarget:target];
+    
+    if (self)
+    {
+        self.row = row;
+    }
+    
+    return self;
+}
+
+- (void)execute
+{
+    [self.target replaceShiftAtRow:self.row withShift:self.shift];
+    [self.target modificationCommandFinished:self];
+}
+@end
+
+@interface AddCommand : ModificationCommand
+@end
+
+@implementation AddCommand
+- (void)execute
+{
+    [self.target addShift:self.shift];
+    [self.target modificationCommandFinished:self];
+}
+@end
 
 @interface ShiftOverviewController ()
 {
     // private instance variables
-    NSMutableArray *_shifts;
-    
-    SCModificationMode _currentModificationMode;
-    NSInteger _editedShiftRow;
+    ModificationCommand *_modificationCommand;
+    ShiftTemplateController *_shiftTemplateController;
 }
 
 // private properties
-@property (nonatomic, assign) NSMutableArray *shifts;
-@property (nonatomic, assign) SCModificationMode currentModificationMode;
-@property (nonatomic, assign) NSInteger editedShiftRow;
+@property (nonatomic, retain) ModificationCommand *modificationCommand;
+@property (nonatomic, retain) ShiftTemplateController *shiftTemplateController;
 
 // private methods
-- (void)loadModel;
 - (void)calloutCell:(NSIndexPath *)indexPath;
 - (void)addAction:(id)sender;
 @end
 
 @implementation ShiftOverviewController
 
-@synthesize shifts = _shifts;
-@synthesize currentModificationMode = _currentModificationMode;
-@synthesize editedShiftRow = _editedShiftRow;
+@synthesize modificationCommand = _modificationCommand;
+@synthesize shiftTemplateController = _shiftTemplateController;
 
 - (id)init
 {
@@ -56,33 +135,17 @@ typedef enum {
     
     if (self)
     {
-        self.shifts = [[NSMutableArray alloc] init];
-        self.currentModificationMode = SCModificationNone;
-        
-        [self loadModel];
+        self.shiftTemplateController = [[ShiftTemplateController alloc] init];
     }
     
     return self;
 }
 
-- (void)loadModel
-{
-    ShiftTemplate *shift = nil;
-    
-    for (NSInteger i = 0; i < 5; i++)
-    {
-        shift = [[ShiftTemplate alloc] init];
-        shift.title = [NSString stringWithFormat:@"Test %d", i];
-        
-        [self.shifts addObject:shift];
-        
-        [shift release];
-    }
-}
 
 - (void)dealloc
 {
-    [self.shifts release];
+    [self.modificationCommand release];
+    [self.shiftTemplateController release];
     
     [super dealloc];
 }
@@ -142,7 +205,7 @@ typedef enum {
         StupidError(@"only one section allowed:  section=%d", section);
     }
     
-    return [self.shifts count];
+    return [self.shiftTemplateController countOfShifts];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -157,7 +220,7 @@ typedef enum {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellIdentifier];
     }
     
-    ShiftTemplate *shift = [self.shifts objectAtIndex:row];
+    ShiftTemplate *shift = [self.shiftTemplateController shiftAtIndex:row];
     cell.textLabel.text = shift.title;
     
     return cell;
@@ -168,7 +231,7 @@ typedef enum {
     NSUInteger sourceRow      = [sourceIndexPath row];
     NSUInteger destinationRow = [destinationIndexPath row];
     
-    [self.shifts moveObjectFromIndex:sourceRow toIndex:destinationRow];
+    [self.shiftTemplateController moveObjectFromIndex:sourceRow toIndex:destinationRow];
 }
 
 #pragma mark TableView delegate
@@ -178,22 +241,16 @@ typedef enum {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     NSInteger row = [indexPath row];
-    ShiftTemplate *shift = [self.shifts objectAtIndex:row];
+    ShiftTemplate *shift = [self.shiftTemplateController shiftAtIndex:row];
     
     if (self.editing)
     {
-        ShiftModificationViewController *editController = [[ShiftModificationViewController alloc] initWithShift:shift];
-        UINavigationController *editNavController = [[UINavigationController alloc] initWithRootViewController:editController];
+        EditCommand *editCommand = [[EditCommand alloc] initWithTarget:self forRow:row];
+        self.modificationCommand = editCommand;
         
-        editController.modificationDelegate = self;
+        [self presentModificationViewControllerWithShift:shift];
         
-        self.currentModificationMode = SCModificationEdit;
-        self.editedShiftRow = row;
-        
-        [[self navigationController] presentModalViewController:editNavController animated:YES];
-        
-        [editController release];
-        [editNavController release];
+        [editCommand release];
     }
     else
     {
@@ -218,41 +275,60 @@ typedef enum {
 
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [self.shifts removeObjectAtIndex:row];
+        [self.shiftTemplateController removeShiftAtIndex:row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
     }
 }
 
+#pragma mark - presented views
+
+- (void)presentModificationViewController
+{
+    [self presentModificationViewControllerWithShift:nil];
+}
+
+- (void)presentModificationViewControllerWithShift:(ShiftTemplate *)shift
+{
+    ShiftModificationViewController *modificationController = [[ShiftModificationViewController alloc] initWithShift:shift];
+        
+    UINavigationController *modificationNavController = [[UINavigationController alloc] initWithRootViewController:modificationController];
+    
+    modificationController.modificationDelegate = self.modificationCommand;
+    
+    [[self navigationController] presentModalViewController:modificationNavController animated:YES];
+    
+    [modificationController release];
+    [modificationNavController release];
+}
+
 #pragma mark - manipulating Shifts
 
-- (void)shiftModificationViewController:(ShiftModificationViewController *)shiftAddViewController modifiedShift:(ShiftTemplate *)shift
+- (void)modificationCommandFinished:(ModificationCommand *)modificationCommand
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
-    if (shift)
+    if (modificationCommand == self.modificationCommand)
     {
-        if (self.currentModificationMode == SCModificationAdd)
-        {
-            NSInteger count        = [self.tableView numberOfRowsInSection:0];
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:count inSection:0];
-            
-            [self.shifts insertObject:shift atIndex:count];
-            
-            [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-        }
-        else if (self.currentModificationMode == SCModificationEdit)
-        {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.editedShiftRow inSection:0];
-            
-            [self.shifts replaceObjectAtIndex:self.editedShiftRow withObject:shift];
-            
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self calloutCell:indexPath];
-        }
-        
-        self.currentModificationMode = SCModificationNone;
-        self.editedShiftRow = ROW_NONE;
+        self.modificationCommand = nil;
     }
+}
+
+- (void)addShift:(ShiftTemplate *)shift
+{
+    NSInteger row = [self.shiftTemplateController addShift:shift];
+    
+    // TODO refactor into notification
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+}
+
+- (void)replaceShiftAtRow:(NSInteger)row withShift:(ShiftTemplate *)shift
+{
+    [self.shiftTemplateController replaceShiftAtIndex:row withShift:shift];
+
+    // TODO refactor into notifications
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [self calloutCell:indexPath];
 }
 
 - (void)calloutCell:(NSIndexPath *)indexPath
@@ -272,16 +348,12 @@ typedef enum {
 
 - (void)addAction:(id)sender
 {
-    ShiftModificationViewController *additionController = [[ShiftModificationViewController alloc] init];
-    UINavigationController *additionNavController = [[UINavigationController alloc] initWithRootViewController:additionController];
+    AddCommand *addCommand = [[AddCommand alloc] initWithTarget:self];
+    self.modificationCommand = addCommand;
     
-    additionController.modificationDelegate = self;
-    self.currentModificationMode = SCModificationAdd;
+    [self presentModificationViewController];
     
-    [[self navigationController] presentModalViewController:additionNavController animated:YES];
-    
-    [additionController release];
-    [additionNavController release];
+    [addCommand release];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
