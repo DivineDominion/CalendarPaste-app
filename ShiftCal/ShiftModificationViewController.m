@@ -79,7 +79,7 @@
     {
         if (shift)
         {
-            self.shift = [shift copy];
+            self.shift = [[shift copy] autorelease];
             _firstAppearance = NO;
         }
         else
@@ -88,7 +88,7 @@
             _firstAppearance = YES;
         }
         
-        self.dateTranslator = [[DateIntervalTranslator alloc] init];
+        self.dateTranslator = [[[DateIntervalTranslator alloc] init] autorelease];
     }
     
     return self;

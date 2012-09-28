@@ -111,7 +111,7 @@
 
 - (void)loadModel
 {
-    self.dateTranslator = [[DateIntervalTranslator alloc] init];
+    self.dateTranslator = [[[DateIntervalTranslator alloc] init] autorelease];
 
     NSArray *intervals = @[
         @0.0,

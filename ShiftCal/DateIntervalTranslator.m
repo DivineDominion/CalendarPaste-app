@@ -34,8 +34,8 @@
     
     if (self)
     {
-        self.calendar = [[NSCalendar currentCalendar] retain];
-        self.referenceDate = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:0.0];
+        self.calendar = [NSCalendar currentCalendar];
+        self.referenceDate = [[[NSDate alloc] initWithTimeIntervalSinceReferenceDate:0.0] autorelease];
     }
     
     return self;
@@ -94,13 +94,13 @@
 
 - (NSString *)humanReadableFormOf:(NSDateComponents *)dateComponents
 {
-    NSMutableArray *textParts = [[NSMutableArray alloc] initWithCapacity:3];
-    NSString *text = nil;
-    
     if ([dateComponents day] == 0 && [dateComponents hour] == 0 && [dateComponents minute] == 0)
     {
         return @"At time of event";
     }
+    
+    NSMutableArray *textParts = [[NSMutableArray alloc] initWithCapacity:3];
+    NSString *text = nil;
     
     if ([dateComponents day] > 1 || [dateComponents day] < -1)
     {   
