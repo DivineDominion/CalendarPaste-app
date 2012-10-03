@@ -7,22 +7,26 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import "NSMutableArray+MoveArray.h"
 #import "ShiftTemplate.h"
 
 @interface ShiftTemplateController : NSObject
 {
-    NSMutableArray *_shifts;
+    NSPersistentStoreCoordinator *_persistentStoreCoordinator;
+    NSManagedObjectModel         *_managedObjectModel;
+    NSManagedObjectContext       *_managedObjectContext;
 }
 
-@property (nonatomic, assign) NSMutableArray *shifts;
+@property (nonatomic, readonly, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, readonly, retain) NSManagedObjectModel         *managedObjectModel;
+@property (nonatomic, readonly, retain) NSManagedObjectContext       *managedObjectContext;
 
 + (NSString *)durationTextForHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
 
-- (NSUInteger)countOfShifts;
-- (ShiftTemplate *)shiftAtIndex:(NSUInteger)index;
-- (NSUInteger)addShift:(ShiftTemplate *)shift;
-- (void)removeShiftAtIndex:(NSUInteger)index;
-- (void)replaceShiftAtIndex:(NSUInteger)index withShift:(ShiftTemplate *)shift;
-- (void)moveObjectFromIndex:(NSUInteger)from toIndex:(NSUInteger)to;
+- (ShiftTemplate *)createShift;
+- (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift;
+- (ShiftTemplate *)shiftWithId:(NSManagedObjectID *)shiftId;
+- (NSArray *)shifts;
+
 @end

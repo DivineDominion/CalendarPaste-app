@@ -21,11 +21,12 @@
 #define ACTION_PANEL_CORNER_RADIUS 8.0f
 #define ACTION_PANEL_HEIGHT 43.0f
 
-#define CELL_ID @"calendarcell"
 
 #pragma mark - Custom Table Cell: prevents auto layout and uses custom checkmarks
 
-@interface CTCalendarCell : UITableViewCell
+#define CELL_ID @"calendarcell"
+
+@interface SCCalendarCell : UITableViewCell
 {
     // private instance variables
     BOOL _checked;
@@ -35,7 +36,7 @@
 @property (nonatomic, assign, getter = isChecked) BOOL checked;
 @end
 
-@implementation CTCalendarCell
+@implementation SCCalendarCell
 
 @synthesize checked = _checked;
 
@@ -112,7 +113,7 @@
 }
 @end
 
-#pragma mark CalendarPickerController
+#pragma mark - CalendarPickerController
 @interface CalendarPickerController ()
 {
     NSIndexPath *_defaultCellIndexPath;
@@ -152,43 +153,63 @@
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    return [self initWithSelectedCalendar:nil withStyle:style];
+    return [self initWithSelectedCalendarIdentifier:nil withStyle:style];
 }
 
-- (id)initWithSelectedCalendar:(EKCalendar *)calendar
+- (id)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier
 {
-    return [self initWithSelectedCalendar:calendar withStyle:UITableViewStyleGrouped];
+    return [self initWithSelectedCalendarIdentifier:calendarIdentifier withStyle:UITableViewStyleGrouped];
 }
 
-- (id)initWithSelectedCalendar:(EKCalendar *)calendar withStyle:(UITableViewStyle)style
+- (id)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier withStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     
     if (self)
     {
+        // Controller model equals `self.eventStore.calendars`: amount and order are used
         self.eventStore = [[EKEventStore alloc] init];
         
-        // Read user defaults
-        NSUserDefaults *prefs       = [NSUserDefaults standardUserDefaults];
-        NSString *defaultIdentifier = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
-        EKCalendar *defaultCalendar = [self.eventStore calendarWithIdentifier:defaultIdentifier];
-        NSInteger defaultIndex      = [self.eventStore.calendars indexOfObject:defaultCalendar];
-
-        self.defaultCellIndexPath = [NSIndexPath indexPathForRow:defaultIndex inSection:0];
-
-        // Fallback to first row
-        NSIndexPath *selectionPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self loadUserDefaultCellIndexPath];
         
-        if (calendar)
+        if (calendarIdentifier)
         {
-            NSInteger index = [self.eventStore.calendars indexOfObject:calendar];
-            selectionPath = [NSIndexPath indexPathForRow:index inSection:0];
+            self.selectedCellIndexPath = [self indexPathForCalendarWithIdentifier:calendarIdentifier];
         }
-                
-        self.selectedCellIndexPath = selectionPath;
+        else
+        {
+            StupidError(@"calendarIdentifier required");
+            [self release];
+            self = nil;
+            return nil;
+        }
     }
-    
+
     return self;
+}
+
+- (void)loadUserDefaultCellIndexPath
+{
+    // Read user defaults
+    NSUserDefaults *prefs       = [NSUserDefaults standardUserDefaults];
+    NSString *defaultIdentifier = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
+    EKCalendar *defaultCalendar = [self.eventStore calendarWithIdentifier:defaultIdentifier];
+    NSInteger defaultIndex      = [self.eventStore.calendars indexOfObject:defaultCalendar];
+    
+    self.defaultCellIndexPath = [NSIndexPath indexPathForRow:defaultIndex inSection:0];
+}
+
+- (NSIndexPath *)indexPathForCalendarWithIdentifier:(NSString *)calendarIdentifier
+{
+    NSIndexPath *selectionPath = nil;
+    NSInteger index = [self.eventStore.calendars indexOfObjectPassingTest:^BOOL(id obj, NSUInteger index, BOOL *stop) {
+        EKCalendar *calendar = (EKCalendar *)obj;
+        return [calendar.calendarIdentifier isEqualToString:calendarIdentifier];
+    }];
+    
+    selectionPath = [NSIndexPath indexPathForRow:index inSection:0];
+    
+    return selectionPath;
 }
 
 #pragma mark - View callbacks
@@ -348,11 +369,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CTCalendarCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_ID];
+    SCCalendarCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_ID];
     
     if (!cell)
     {
-        cell = [[[CTCalendarCell alloc] init] autorelease];
+        cell = [[[SCCalendarCell alloc] init] autorelease];
     }
     
     EKCalendar *calendar = [self calendarForIndexPath:indexPath];
@@ -413,8 +434,8 @@
     }
     
     // Update accessory views
-    CTCalendarCell *oldCell = (CTCalendarCell *)[tableView cellForRowAtIndexPath:self.selectedCellIndexPath];
-    CTCalendarCell *newCell = (CTCalendarCell *)[tableView cellForRowAtIndexPath:indexPath];
+    SCCalendarCell *oldCell = (SCCalendarCell *)[tableView cellForRowAtIndexPath:self.selectedCellIndexPath];
+    SCCalendarCell *newCell = (SCCalendarCell *)[tableView cellForRowAtIndexPath:indexPath];
     
     [tableView beginUpdates];
     oldCell.checked = NO;
@@ -466,12 +487,12 @@
 {
     EKCalendar *selectedCalendar = [self calendarForIndexPath:self.selectedCellIndexPath];
     
-    [self.delegate calendarPicker:self didSelectCalendar:selectedCalendar];
+    [self.delegate calendarPicker:self didSelectCalendarWithIdentifier:selectedCalendar.calendarIdentifier];
 }
 
 - (void)cancel:(id)sender
 {
-    [self.delegate calendarPicker:self didSelectCalendar:nil];
+    [self.delegate calendarPicker:self didSelectCalendarWithIdentifier:nil];
 }
 
 @end

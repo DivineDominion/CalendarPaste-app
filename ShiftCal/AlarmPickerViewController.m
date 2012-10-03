@@ -25,7 +25,7 @@
 
 // private properties
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
-@property (nonatomic, copy) NSArray *alarms;
+@property (nonatomic, copy)   NSArray *alarms;
 @property (nonatomic, retain, readonly) UIColor *selectionColor;
 @property (nonatomic, retain) DateIntervalTranslator *dateTranslator;
 
@@ -44,20 +44,20 @@
 
 - (id)init
 {
-    return [self initWithAlarm:nil];
+    return [self initWithAlarmOffset:nil];
 }
 
-- (id)initWithAlarm:(EKAlarm *)alarm
+- (id)initWithAlarmOffset:(NSNumber *)alarmOffset
 {
-    return [self initWithStyle:UITableViewStyleGrouped selectedAlarm:alarm];
+    return [self initWithStyle:UITableViewStyleGrouped selectedAlarmOffset:alarmOffset];
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    return [self initWithStyle:style selectedAlarm:nil];
+    return [self initWithStyle:style selectedAlarmOffset:nil];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style selectedAlarm:(EKAlarm *)alarm
+- (id)initWithStyle:(UITableViewStyle)style selectedAlarmOffset:(NSNumber *)alarmOffset
 {
     self = [super initWithStyle:style];
     
@@ -70,9 +70,9 @@
         // Corresponds to checkmark color
         _selectionColor = [[UIColor colorWithRed:45/255.0 green:65/255.0 blue:115/255.0 alpha:1.0] retain];
         
-        if (alarm)
+        if (alarmOffset)
         {
-            NSInteger row = [self rowForInterval:alarm.relativeOffset];
+            NSInteger row = [self rowForInterval:[alarmOffset doubleValue]];
             
             self.selectedIndexPath = [NSIndexPath indexPathForRow:row inSection:0];
         }
@@ -231,22 +231,20 @@
 
 - (void)save:(id)sender
 {
-    EKAlarm *alarm = nil;
+    NSNumber *alarmOffset = nil;
     NSInteger row = [self.selectedIndexPath row];
     
     if (row != ROW_NONE)
     {
-        NSTimeInterval offset = [[[self.alarms objectAtIndex:INDEX_OFFSET] objectAtIndex:row] doubleValue];
-        
-        alarm = [EKAlarm alarmWithRelativeOffset:offset];
+        alarmOffset = [[self.alarms objectAtIndex:INDEX_OFFSET] objectAtIndex:row];
     }
     
-    [self.delegate alarmPicker:self didSelectAlarm:alarm canceled:NO];
+    [self.delegate alarmPicker:self didSelectAlarmOffset:alarmOffset canceled:NO];
 }
 
 - (void)cancel:(id)sender
 {
-    [self.delegate alarmPicker:self didSelectAlarm:nil canceled:YES];
+    [self.delegate alarmPicker:self didSelectAlarmOffset:nil canceled:YES];
 }
 
 @end

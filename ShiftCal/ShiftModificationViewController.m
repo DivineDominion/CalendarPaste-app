@@ -44,18 +44,20 @@
     BOOL _firstAppearance;
     DateIntervalTranslator *_dateTranslator;
     NSInteger _selectedAlarmRow;
+    ShiftTemplateController *_shiftTemplateController;
 }
 
 // private properties
 @property (nonatomic, retain) DateIntervalTranslator *dateTranslator;
 @property (nonatomic, assign) NSInteger selectedAlarmRow;
+@property (nonatomic, readonly) ShiftTemplateController *shiftTemplateController;
 
 // private methods
 - (void)resetTextViewToPlaceholder:(UITextView *)textView;
 - (void)displayDurationInCell:(UITableViewCell *)cell;
 - (void)displayCalendarInCell:(UITableViewCell *)cell;
 - (void)displayAlarmInCell:(UITableViewCell *)cell;
-- (void)setFirstAlarm:(EKAlarm *)alarm;
+- (void)setFirstAlarmOffset:(NSNumber *)alarmOffset;
 @end
 
 @implementation ShiftModificationViewController
@@ -77,15 +79,18 @@
     
     if (self)
     {
+        _firstAppearance = YES;
+        
         if (shift)
         {
-            self.shift = [[shift copy] autorelease];
+            NSManagedObjectID *shiftID = shift.objectID;
+            self.shift = [self.shiftTemplateController shiftWithId:shiftID];
+            
             _firstAppearance = NO;
         }
         else
         {
-            self.shift = [[[ShiftTemplate alloc] init] autorelease];
-            _firstAppearance = YES;
+            self.shift = [self.shiftTemplateController createShift];
         }
         
         self.dateTranslator = [[[DateIntervalTranslator alloc] init] autorelease];
@@ -103,10 +108,22 @@
 
 - (void)dealloc
 {
-    [self.shift release];
-    [self.dateTranslator release];
+    [_shift release];
+    [_dateTranslator release];
+    [_shiftTemplateController release];
     
     [super dealloc];
+}
+
+- (ShiftTemplateController *)shiftTemplateController
+{
+    if (_shiftTemplateController)
+    {
+        return _shiftTemplateController;
+    }
+    
+    _shiftTemplateController = [[ShiftTemplateController alloc] init];
+    return _shiftTemplateController;
 }
 
 #pragma mark - View callbacks
@@ -177,7 +194,7 @@
         case SECTION_TITLE_LOCATION:
             return 2;
         case SECTION_ALARM:
-            if (self.shift.alarm)
+            if (self.shift.alarmFirstInterval)
             {
                 return 2;
             }
@@ -378,35 +395,33 @@
 
 - (void)displayDurationInCell:(UITableViewCell *)cell
 {
-    NSString *theText = [ShiftTemplateController durationTextForHours:self.shift.hours andMinutes:self.shift.minutes];
+    NSString *theText = [ShiftTemplateController durationTextForHours:[self.shift.durHours integerValue] andMinutes:[self.shift.durMinutes integerValue]];
     
     cell.detailTextLabel.text = theText;
 }
 
 - (void)displayCalendarInCell:(UITableViewCell *)cell
 {
-    cell.detailTextLabel.text = self.shift.calendar.title;
+    cell.detailTextLabel.text = [self.shift calendarTitle];
 }
 
 - (void)displayAlarmInCell:(UITableViewCell *)cell
 {
     NSString *text = @"None";
-    EKAlarm *alarm = nil;
+    NSNumber *alarmOffset = nil;
     
     if (TAG_ALARM_FIRST == cell.tag)
     {
-        alarm = self.shift.alarm;
+        alarmOffset = self.shift.alarmFirstInterval;
     }
     else if (TAG_ALARM_SECOND == cell.tag)
     {
-        alarm = self.shift.secondAlarm;
+        alarmOffset = self.shift.alarmSecondInterval;
     }
 
-    if (alarm)
+    if (alarmOffset)
     {
-        NSTimeInterval interval = alarm.relativeOffset;
-        
-        text = [self.dateTranslator humanReadableFormOfInterval:interval];
+        text = [self.dateTranslator humanReadableFormOfInterval:[alarmOffset doubleValue]];
         
         // TODO refactor: dont ask model, tell it to return text!
     }
@@ -425,7 +440,7 @@
     {
         case SECTION_DURATION:
         {
-            DurationPickerController *durationController = [[DurationPickerController alloc] initWithHours:self.shift.hours andMinutes:self.shift.minutes];
+            DurationPickerController *durationController = [[DurationPickerController alloc] initWithHours:[self.shift.durHours integerValue] andMinutes:[self.shift.durMinutes integerValue]];
             durationController.delegate = self;
             
             modalController = durationController;
@@ -434,8 +449,7 @@
         }
         case SECTION_CALENDAR:
         {
-            EKCalendar *calendar = self.shift.calendar;
-            CalendarPickerController *calendarController = [[CalendarPickerController alloc] initWithSelectedCalendar:calendar];
+            CalendarPickerController *calendarController = [[CalendarPickerController alloc] initWithSelectedCalendarIdentifier:self.shift.calendarIdentifier];
             calendarController.delegate = self;
             
             modalController = calendarController;
@@ -444,18 +458,18 @@
         }
         case SECTION_ALARM:
         {
-            EKAlarm *alarm = nil;
+            NSNumber *alarmOffset = nil;
             
             if ([indexPath row] == 0)
             {
-                alarm = self.shift.alarm;
+                alarmOffset = self.shift.alarmFirstInterval;
             }
             else
             {
-                alarm = self.shift.secondAlarm;
+                alarmOffset = self.shift.alarmSecondInterval;
             }
             
-            AlarmPickerViewController *alarmController = [[AlarmPickerViewController alloc] initWithAlarm:alarm];
+            AlarmPickerViewController *alarmController = [[AlarmPickerViewController alloc] initWithAlarmOffset:alarmOffset];
             alarmController.delegate = self;
             
             modalController = alarmController;
@@ -579,22 +593,22 @@
     }
 }
 
-- (void)calendarPicker:(CalendarPickerController *)calendarPicker didSelectCalendar:(EKCalendar *)calendar
+- (void)calendarPicker:(CalendarPickerController *)calendarPicker didSelectCalendarWithIdentifier:(NSString *)calendarIdentifier
 {
     [self dismissViewControllerAnimated:YES completion:nil];
     
-    if (calendar)
+    if (calendarIdentifier)
     {
         NSIndexPath *calendarPath     = [NSIndexPath indexPathForRow:0 inSection:SECTION_CALENDAR];
         UITableViewCell *calendarCell = [self.tableView cellForRowAtIndexPath:calendarPath];
         
-        self.shift.calendar = calendar;
+        self.shift.calendarIdentifier = calendarIdentifier;
         
         [self displayCalendarInCell:calendarCell];
     }
 }
 
-- (void)alarmPicker:(AlarmPickerViewController *)alarmPicker didSelectAlarm:(EKAlarm *)alarm canceled:(BOOL)canceled
+- (void)alarmPicker:(AlarmPickerViewController *)alarmPicker didSelectAlarmOffset:(NSNumber *)alarmOffset canceled:(BOOL)canceled
 {
     [self dismissViewControllerAnimated:YES completion:nil];
     
@@ -607,39 +621,39 @@
         
         if (shouldUpdateFirstAlarm)
         {
-            [self setFirstAlarm:alarm];
+            [self setFirstAlarmOffset:alarmOffset];
         }
         else
         {
-            self.shift.secondAlarm = alarm;
+            self.shift.alarmSecondInterval = alarmOffset;
         }
         
         [self displayAlarmInCell:alarmCell];
     }
 }
 
-- (void)setFirstAlarm:(EKAlarm *)alarm
+- (void)setFirstAlarmOffset:(NSNumber *)alarmOffset
 {
     NSIndexPath *secondAlarmIndexPath = [NSIndexPath indexPathForRow:1 inSection:SECTION_ALARM];
     
-    BOOL hasSecondAlarm = (self.shift.secondAlarm != nil);
+    BOOL hasSecondAlarm          = (self.shift.alarmSecondInterval != nil);
     BOOL isSecondAlarmRowVisible = ([self.tableView numberOfRowsInSection:SECTION_ALARM] == 2);
-    BOOL shouldRemoveAlarm = (alarm == nil);
+    BOOL shouldRemoveAlarm       = (alarmOffset == nil);
 
     if (hasSecondAlarm && shouldRemoveAlarm)
     {
         UITableViewCell *secondAlarmCell = [self.tableView cellForRowAtIndexPath:secondAlarmIndexPath];
         
         // Pop first entry, clear second alarm
-        self.shift.alarm = self.shift.secondAlarm;
-        self.shift.secondAlarm = nil;
+        self.shift.alarmFirstInterval = self.shift.alarmSecondInterval;
+        self.shift.alarmSecondInterval = nil;
         
         // Update second cell, too
         [self displayAlarmInCell:secondAlarmCell];
     }
     else
     {
-        self.shift.alarm = alarm;
+        self.shift.alarmFirstInterval = alarmOffset;
         
         if (isSecondAlarmRowVisible && shouldRemoveAlarm)
         {

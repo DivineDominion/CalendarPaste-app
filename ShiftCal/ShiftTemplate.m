@@ -2,96 +2,91 @@
 //  ShiftTemplate.m
 //  ShiftCal
 //
-//  Created by Christian Tietze on 25.07.12.
+//  Created by Christian Tietze on 29.09.12.
 //  Copyright (c) 2012 Christian Tietze. All rights reserved.
 //
 
 #import "ShiftTemplate.h"
 
 @interface ShiftTemplate ()
+{
+    // private instance variables
+    EKEventStore *_eventStore;
+}
 
-//private methods
-- (EKCalendar *)userDefaultCalendar;
+// private properties
+@property (nonatomic, readonly) EKEventStore *eventStore;
 
+// private methods
++ (NSString *)userDefaultCalendarIdentifier;
 @end
 
 @implementation ShiftTemplate
 
-@synthesize title = _title;
-@synthesize hours = _hours;
-@synthesize minutes = _minutes;
-@synthesize location = _location;
-@synthesize url = _url;
-@synthesize calendar = _calendar;
-@synthesize alarm = _alarm;
-@synthesize secondAlarm = _secondAlarm;
+@dynamic title;
+@dynamic location;
+@dynamic durHours;
+@dynamic durMinutes;
+@dynamic calendarIdentifier;
+@dynamic alarmFirstInterval;
+@dynamic alarmSecondInterval;
+@dynamic url;
+@dynamic note;
 
-- (id)init
+@synthesize eventStore = _eventStore;
+
+- (void)awakeFromInsert
 {
-    self = [super init];
+    [super awakeFromInsert];
+    [self setPrimitiveValue:[ShiftTemplate userDefaultCalendarIdentifier] forKey:@"calendarIdentifier"];
+}
+
+- (void)dealloc
+{
+    [_eventStore release];
     
-    if (self)
+    [super dealloc];
+}
+
+- (EKEventStore *)eventStore
+{
+    if (_eventStore)
     {
-        self.title = nil;
-        self.hours = 1;
-        self.minutes = 0;
-                
-        self.calendar = [self userDefaultCalendar];
-        
-        return self;
+        return _eventStore;
+    }
+    
+    _eventStore = [[EKEventStore alloc] init];
+    
+    return _eventStore;
+}
+
+- (EKCalendar *)calendar
+{
+    if (self.calendarIdentifier)
+    {
+        return [self.eventStore calendarWithIdentifier:self.calendarIdentifier];
     }
     
     return nil;
 }
 
-- (void)dealloc
+- (NSString *)calendarTitle
 {
-    [self.calendar release];
-    [self.alarm release];
-    [self.secondAlarm release];
-    
-    [super dealloc];
+    return self.calendar.title;
 }
 
-- (id)copyWithZone:(NSZone *)zone
++ (NSString *)userDefaultCalendarIdentifier
 {
-    ShiftTemplate *copy = [[ShiftTemplate alloc] init];
-    
-    copy.title = [self.title copy];
-    copy.hours = self.hours;
-    copy.minutes = self.minutes;
-    copy.location = [self.location copy];
-    copy.url = [self.url copy];
-    
-    EKEventStore *eventStore = [[EKEventStore alloc] init];
-    copy.calendar = [eventStore calendarWithIdentifier:self.calendar.calendarIdentifier];
-    [eventStore release];
-    
-    copy.alarm = [self.alarm copy];
-    copy.secondAlarm = [self.secondAlarm copy];
-    
-    return copy;
-}
-
-- (EKCalendar *)userDefaultCalendar
-{
-    EKCalendar *defaultCalendar = nil;
-    
-    EKEventStore *eventStore = [[EKEventStore alloc] init];
-    NSUserDefaults *prefs    = [NSUserDefaults standardUserDefaults];
-    
+    NSUserDefaults *prefs       = [NSUserDefaults standardUserDefaults];
     NSString *defaultCalendarId = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
-    defaultCalendar             = [eventStore calendarWithIdentifier:defaultCalendarId];
     
-    [eventStore release];
-    
-    return defaultCalendar;
+    return defaultCalendarId;
 }
 
-- (void)setDurationHours:(NSInteger)hours andMinutes:(NSInteger)minutes
+- (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes
 {
-    self.hours = hours;
-    self.minutes = minutes;
+    self.durHours   = [NSNumber numberWithInteger:hours];
+    self.durMinutes = [NSNumber numberWithInteger:minutes];
 }
 
 @end

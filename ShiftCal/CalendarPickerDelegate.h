@@ -9,11 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @class CalendarPickerController;
-@class EKCalendar;
 
 @protocol CalendarPickerDelegate <NSObject>
 
 @required
 // calendar == nil on cancel
-- (void)calendarPicker:(CalendarPickerController *)calendarPicker didSelectCalendar:(EKCalendar *)calendar;
+- (void)calendarPicker:(CalendarPickerController *)calendarPicker didSelectCalendarWithIdentifier:(NSString *)calendarIdentifier;
 @end

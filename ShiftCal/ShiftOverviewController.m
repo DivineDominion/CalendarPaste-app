@@ -7,9 +7,11 @@
 //
 
 #import "ShiftOverviewController.h"
+
 #import "ShiftModificationViewController.h"
 #import "ShiftModificationDelegate.h"
-#import "ShiftTemplateController.h"
+
+#import "ShiftTemplateCollection.h"
 #import "ShiftTemplate.h"
 
 @interface ModificationCommand : NSObject <ShiftModificationDelegate>
@@ -103,16 +105,18 @@
 }
 @end
 
+#pragma mark - ShiftOverviewController
+
 @interface ShiftOverviewController ()
 {
     // private instance variables
     ModificationCommand *_modificationCommand;
-    ShiftTemplateController *_shiftTemplateController;
+    ShiftTemplateCollection *_shiftCollection;
 }
 
 // private properties
 @property (nonatomic, retain) ModificationCommand *modificationCommand;
-@property (nonatomic, retain) ShiftTemplateController *shiftTemplateController;
+@property (nonatomic, retain) ShiftTemplateCollection *shiftCollection;
 
 // private methods
 - (void)calloutCell:(NSIndexPath *)indexPath;
@@ -120,9 +124,8 @@
 @end
 
 @implementation ShiftOverviewController
-
 @synthesize modificationCommand = _modificationCommand;
-@synthesize shiftTemplateController = _shiftTemplateController;
+@synthesize shiftCollection = _shiftCollection;
 
 - (id)init
 {
@@ -135,21 +138,19 @@
     
     if (self)
     {
-        self.shiftTemplateController = [[ShiftTemplateController alloc] init];
+        self.shiftCollection = [[[ShiftTemplateCollection alloc] init] autorelease];
     }
     
     return self;
 }
 
-
 - (void)dealloc
 {
-    [self.modificationCommand release];
-    [self.shiftTemplateController release];
+    [_modificationCommand release];
+    [_shiftCollection release];
     
     [super dealloc];
 }
-
 
 #pragma mark - View callbacks
 
@@ -205,7 +206,7 @@
         StupidError(@"only one section allowed:  section=%d", section);
     }
     
-    return [self.shiftTemplateController countOfShifts];
+    return [self.shiftCollection countOfShifts];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -220,7 +221,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellIdentifier];
     }
     
-    ShiftTemplate *shift = [self.shiftTemplateController shiftAtIndex:row];
+    ShiftTemplate *shift = [self.shiftCollection shiftAtIndex:row];
     cell.textLabel.text = shift.title;
     
     return cell;
@@ -231,7 +232,7 @@
     NSUInteger sourceRow      = [sourceIndexPath row];
     NSUInteger destinationRow = [destinationIndexPath row];
     
-    [self.shiftTemplateController moveObjectFromIndex:sourceRow toIndex:destinationRow];
+    [self.shiftCollection moveObjectFromIndex:sourceRow toIndex:destinationRow];
 }
 
 #pragma mark TableView delegate
@@ -241,7 +242,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     NSInteger row = [indexPath row];
-    ShiftTemplate *shift = [self.shiftTemplateController shiftAtIndex:row];
+    ShiftTemplate *shift = [self.shiftCollection shiftAtIndex:row];
     
     if (self.editing)
     {
@@ -275,7 +276,7 @@
 
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [self.shiftTemplateController removeShiftAtIndex:row];
+        [self.shiftCollection removeShiftAtIndex:row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
     }
 }
@@ -301,7 +302,7 @@
     [modificationNavController release];
 }
 
-#pragma mark - manipulating Shifts
+#pragma mark - ShiftModificationController callbacks
 
 - (void)modificationCommandFinished:(ModificationCommand *)modificationCommand
 {
@@ -313,7 +314,7 @@
 
 - (void)addShift:(ShiftTemplate *)shift
 {
-    NSInteger row = [self.shiftTemplateController addShift:shift];
+    NSInteger row = [self.shiftCollection importShift:shift];
     
     // TODO refactor into notification
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
@@ -322,7 +323,7 @@
 
 - (void)replaceShiftAtRow:(NSInteger)row withShift:(ShiftTemplate *)shift
 {
-    [self.shiftTemplateController replaceShiftAtIndex:row withShift:shift];
+    [self.shiftCollection replaceShiftAtIndex:row withShift:shift];
 
     // TODO refactor into notifications
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];

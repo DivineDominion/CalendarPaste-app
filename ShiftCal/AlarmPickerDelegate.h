@@ -14,5 +14,5 @@
 @protocol AlarmPickerDelegate <NSObject>
 
 @required
-- (void)alarmPicker:(AlarmPickerViewController *)alarmPicker didSelectAlarm:(EKAlarm *)alarm canceled:(BOOL)canceled;
+- (void)alarmPicker:(AlarmPickerViewController *)alarmPicker didSelectAlarmOffset:(NSNumber *)alarmOffset canceled:(BOOL)canceled;
 @end

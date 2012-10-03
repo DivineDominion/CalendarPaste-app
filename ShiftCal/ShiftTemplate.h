@@ -2,45 +2,33 @@
 //  ShiftTemplate.h
 //  ShiftCal
 //
-//  Created by Christian Tietze on 25.07.12.
+//  Created by Christian Tietze on 29.09.12.
 //  Copyright (c) 2012 Christian Tietze. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import <EventKit/EventKit.h>
 
-@interface ShiftTemplate : NSObject <NSCopying>
-{
-    NSString *_title;
-    NSString *_location;
-    
-    NSInteger _hours;
-    NSInteger _minutes;
-    
-    NSString *_url;
-    
-    NSString *_note;
-    
-    EKCalendar *_calendar;
-    EKAlarm *_alarm;
-    EKAlarm *_secondAlarm;
-    // TODO _reminder;
-}
+@interface ShiftTemplate : NSManagedObject
 
-@property (nonatomic, copy,   readwrite) NSString *title;
-@property (nonatomic, assign, readwrite) NSInteger hours;
-@property (nonatomic, assign, readwrite) NSInteger minutes;
-@property (nonatomic, copy,   readwrite) NSString *location;
-@property (nonatomic, copy,   readwrite) NSString *url;
-@property (nonatomic, retain, readwrite) EKCalendar *calendar;
-@property (nonatomic, retain, readwrite) EKAlarm *alarm;
-@property (nonatomic, retain, readwrite) EKAlarm *secondAlarm;
+@property (nonatomic, retain) NSString *title;
+@property (nonatomic, retain) NSString *location;
 
-//@property (nonatomic, copy, readwrite) NSDate   *from;
-//@property (nonatomic, copy, readwrite) NSDate   *until;
+@property (nonatomic, retain) NSNumber *durHours;
+@property (nonatomic, retain) NSNumber *durMinutes;
 
-//- (id)initWithTitle:(NSString *)title from:(NSDate *)from until:(NSDate *)until;
-//- (id)initWithTitle:(NSString *)title duration:(NSTimeInterval *)duration;
+@property (nonatomic, retain) NSString *calendarIdentifier;
 
-- (void)setDurationHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
+@property (nonatomic, retain) NSNumber *alarmFirstInterval;
+@property (nonatomic, retain) NSNumber *alarmSecondInterval;
+
+@property (nonatomic, retain) NSString *url;
+@property (nonatomic, retain) NSString *note;
+
+@property (nonatomic, readonly) EKCalendar *calendar;
+
+- (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes;
+
+- (NSString *)calendarTitle;
 @end

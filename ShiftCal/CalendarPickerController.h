@@ -17,7 +17,7 @@
 
 @property (weak) id<CalendarPickerDelegate> delegate;
 
-- (id)initWithSelectedCalendar:(EKCalendar *)calendar;
-- (id)initWithSelectedCalendar:(EKCalendar *)calendar withStyle:(UITableViewStyle)style;
+- (id)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier;
+- (id)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier withStyle:(UITableViewStyle)style;
 
 @end
