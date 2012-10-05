@@ -4,6 +4,7 @@
         <attribute name="alarmFirstInterval" optional="YES" attributeType="Integer 32" syncable="YES"/>
         <attribute name="alarmSecondInterval" optional="YES" attributeType="Integer 32" syncable="YES"/>
         <attribute name="calendarIdentifier" attributeType="String" syncable="YES"/>
+        <attribute name="displayOrder" attributeType="Integer 32" syncable="YES"/>
         <attribute name="durHours" attributeType="Integer 32" defaultValueString="1" syncable="YES"/>
         <attribute name="durMinutes" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
@@ -12,6 +13,6 @@
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="ShiftTemplate" positionX="160" positionY="192" width="128" height="178"/>
+        <element name="ShiftTemplate" positionX="160" positionY="192" width="128" height="195"/>
     </elements>
 </model>

@@ -25,5 +25,7 @@
 - (void)removeShiftAtIndex:(NSUInteger)index;
 - (void)replaceShiftAtIndex:(NSUInteger)index withShift:(ShiftTemplate *)shift;
 - (void)moveObjectFromIndex:(NSUInteger)from toIndex:(NSUInteger)to;
+- (void)persistOrder;
+
 @end
 

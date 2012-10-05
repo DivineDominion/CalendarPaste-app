@@ -12,6 +12,8 @@
 
 @interface ShiftTemplate : NSManagedObject
 
+@property (nonatomic, retain) NSNumber *displayOrder;
+
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSString *location;
 
@@ -29,6 +31,6 @@
 @property (nonatomic, readonly) EKCalendar *calendar;
 
 - (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes;
-
 - (NSString *)calendarTitle;
+
 @end

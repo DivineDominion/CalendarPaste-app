@@ -227,6 +227,11 @@
     return cell;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
     NSUInteger sourceRow      = [sourceIndexPath row];
@@ -256,13 +261,8 @@
     else
     {
         // TODO assign shift
-        NSLog(@"%@ selected", shift.title);
+        NSLog(@"%@ selected, #%d", shift.title, [shift.displayOrder integerValue]);
     }
-}
-
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return YES;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -371,6 +371,8 @@
     else
     {
         addButton.enabled = YES;
+        
+        [self.shiftCollection persistOrder];
     }
 }
 

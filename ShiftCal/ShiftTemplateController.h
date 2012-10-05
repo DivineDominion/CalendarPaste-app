@@ -27,6 +27,8 @@
 - (ShiftTemplate *)createShift;
 - (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift;
 - (ShiftTemplate *)shiftWithId:(NSManagedObjectID *)shiftId;
+- (void)deleteShift:(ShiftTemplate *)shift;
 - (NSArray *)shifts;
+- (BOOL)saveManagedObjectContext;
 
 @end

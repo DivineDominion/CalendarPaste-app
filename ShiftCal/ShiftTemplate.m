@@ -23,6 +23,7 @@
 
 @implementation ShiftTemplate
 
+@dynamic displayOrder;
 @dynamic title;
 @dynamic location;
 @dynamic durHours;

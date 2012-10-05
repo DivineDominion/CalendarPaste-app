@@ -77,9 +77,10 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
         shift = (ShiftTemplate *)[NSEntityDescription insertNewObjectForEntityForName:kShiftEntityName
                                                                inManagedObjectContext:self.managedObjectContext];
         
-        shift.title      = [NSString stringWithFormat:@"Test %d", i];
-        shift.durHours   = [NSNumber numberWithInt:2];
-        shift.durMinutes = [NSNumber numberWithInt:34];
+        shift.title        = [NSString stringWithFormat:@"Test %d", i];
+        shift.durHours     = [NSNumber numberWithInt:2];
+        shift.durMinutes   = [NSNumber numberWithInt:34];
+        shift.displayOrder = [NSNumber numberWithInt:i];
     }
     
     NSError *error = nil;
@@ -111,10 +112,6 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     NSDictionary *attributes = [foreignShift dictionaryWithValuesForKeys:attKeys];
     [shift setValuesForKeysWithDictionary:attributes];
     
-    NSError *error = nil;
-    BOOL success = [self.managedObjectContext save:&error];
-    NSAssert(success, @"Could not import, error: %@", error);
-    
     return [shift autorelease];
 }
 
@@ -128,6 +125,11 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     return shift;
 }
 
+- (void)deleteShift:(ShiftTemplate *)shift
+{
+    [self.managedObjectContext deleteObject:shift];
+}
+
 - (NSArray *)shifts
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -136,7 +138,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
                                               inManagedObjectContext:self.managedObjectContext];
     [request setEntity:entity];
     
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"displayOrder" ascending:YES];
     [request setSortDescriptors:@[sortDescriptor]];
     
     NSError *error = nil;
@@ -146,6 +148,14 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
 
     [request release];
     return fetchResults;
+}
+
+- (BOOL)saveManagedObjectContext
+{
+    NSError *error = nil;
+    BOOL success = [self.managedObjectContext save:&error];
+    NSAssert(success, @"Could not persist changes, error: %@", error);
+    return success;
 }
 
 #pragma mark - Core Data wrapper

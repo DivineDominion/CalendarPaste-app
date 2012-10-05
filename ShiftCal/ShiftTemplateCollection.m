@@ -51,6 +51,13 @@
     
     [self.shifts insertObject:shift atIndex:index];
     
+    // Assigns a displayOrder value to the new object
+    ShiftTemplate *lastShift = [self shiftAtIndex:(index - 1)];
+    NSUInteger oldMaxOrder   = [lastShift.displayOrder integerValue];
+    shift.displayOrder       = [NSNumber numberWithInt:oldMaxOrder + 1];
+    
+    [self.shiftTemplateController saveManagedObjectContext];
+    
     return index;
 }
 
@@ -61,6 +68,12 @@
 
 - (void)removeShiftAtIndex:(NSUInteger)index
 {
+    ShiftTemplate *shift = [self shiftAtIndex:index];
+    NSAssert(shift, @"Could retrieve shift before deletion");
+    
+    [self.shiftTemplateController deleteShift:shift];
+    [self.shiftTemplateController saveManagedObjectContext];
+    
     [self.shifts removeObjectAtIndex:index];
 }
 
@@ -72,6 +85,18 @@
 - (void)moveObjectFromIndex:(NSUInteger)from toIndex:(NSUInteger)to
 {
     [self.shifts moveObjectFromIndex:from toIndex:to];
+}
+
+- (void)persistOrder
+{
+    int i = 0;
+    
+    for (ShiftTemplate *shift in self.shifts)
+    {
+        shift.displayOrder = [NSNumber numberWithInt:i++];
+    }
+    
+    [self.shiftTemplateController saveManagedObjectContext];
 }
 
 
