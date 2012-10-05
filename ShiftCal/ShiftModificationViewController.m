@@ -41,7 +41,7 @@
 @interface ShiftModificationViewController ()
 {
     // private instance variables
-    BOOL _firstAppearance;
+    BOOL _isNewEntry;
     DateIntervalTranslator *_dateTranslator;
     NSInteger _selectedAlarmRow;
     ShiftTemplateController *_shiftTemplateController;
@@ -79,18 +79,20 @@
     
     if (self)
     {
-        _firstAppearance = YES;
-        
         if (shift)
         {
+            // Loads an existing shift into the scratchpad context
             NSManagedObjectID *shiftID = shift.objectID;
             self.shift = [self.shiftTemplateController shiftWithId:shiftID];
             
-            _firstAppearance = NO;
+            _isNewEntry = NO;
         }
         else
         {
+            // Creates a temporary shift into the scratchpad context
             self.shift = [self.shiftTemplateController createShift];
+
+            _isNewEntry = YES;
         }
         
         self.dateTranslator = [[[DateIntervalTranslator alloc] init] autorelease];
@@ -163,7 +165,7 @@
 {
     [super viewDidAppear:animated];
     
-    if (_firstAppearance)
+    if (_isNewEntry)
     {
         // Prevent save until title could have been entered
         self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -171,7 +173,7 @@
         UITextField *defaultTextField = (UITextField *)[self.tableView viewWithTag:TAG_TEXTFIELD_TITLE];
         [defaultTextField becomeFirstResponder];
         
-        _firstAppearance = NO;
+        _isNewEntry = NO;
     }
 }
 
