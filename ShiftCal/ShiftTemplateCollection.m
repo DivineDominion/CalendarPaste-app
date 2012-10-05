@@ -61,15 +61,22 @@
     return index;
 }
 
-- (void)replaceShiftAtIndex:(NSUInteger)index withShift:(ShiftTemplate *)shift
+- (void)replaceShiftAtIndex:(NSUInteger)index withShift:(ShiftTemplate *)tempShift
 {
+    ShiftTemplate *shift    = [self.shiftTemplateController importShift:tempShift];
+    ShiftTemplate *oldShift = [self shiftAtIndex:index];
+    
+    shift.displayOrder = oldShift.displayOrder;
+    
+    [self.shiftTemplateController deleteShift:oldShift];
+    [self.shiftTemplateController saveManagedObjectContext];
+    
     [self.shifts replaceObjectAtIndex:index withObject:shift];
 }
 
 - (void)removeShiftAtIndex:(NSUInteger)index
 {
     ShiftTemplate *shift = [self shiftAtIndex:index];
-    NSAssert(shift, @"Could retrieve shift before deletion");
     
     [self.shiftTemplateController deleteShift:shift];
     [self.shiftTemplateController saveManagedObjectContext];
