@@ -24,11 +24,13 @@
 
 + (NSString *)durationTextForHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
 
-- (ShiftTemplate *)createShift;
 - (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift;
 - (ShiftTemplate *)importShiftByAttributeDictionary:(NSDictionary *)attributes;
 - (NSMutableDictionary *)attributeDictionaryForShift:(ShiftTemplate *)shift;
 - (NSMutableDictionary *)attributeDictionary;
+- (NSMutableDictionary *)defaultAttributeDictionary;
+
+- (ShiftTemplate *)createShift;
 - (ShiftTemplate *)shiftWithId:(NSManagedObjectID *)shiftId;
 - (void)deleteShift:(ShiftTemplate *)shift;
 - (NSArray *)shifts;

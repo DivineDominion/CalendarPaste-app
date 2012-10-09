@@ -303,7 +303,7 @@
         else
         {
             // Creates a temporary shift into the scratchpad context
-            self.shiftData = [[ShiftData alloc] initWithAttributes:[self.shiftTemplateController attributeDictionary]];
+            self.shiftData = [[ShiftData alloc] initWithAttributes:[self.shiftTemplateController defaultAttributeDictionary]];
 
             _isNewEntry = YES;
         }

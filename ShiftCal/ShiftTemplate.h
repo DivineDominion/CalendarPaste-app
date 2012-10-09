@@ -33,4 +33,6 @@
 - (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes;
 - (NSString *)calendarTitle;
 
++ (NSDictionary*)defaultAttributes;
+
 @end

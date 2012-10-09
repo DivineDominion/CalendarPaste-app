@@ -88,55 +88,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     NSAssert(success, @"Could not save shift, error: %@", error);
 }
 
-#pragma mark - Data
-
-- (ShiftTemplate *)createShift
-{
-    ShiftTemplate *shift = nil;
-    
-    NSManagedObjectContext *context = self.managedObjectContext;
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kShiftEntityName inManagedObjectContext:context];
-    
-    shift = [[ShiftTemplate alloc] initWithEntity:entityDescription
-                    insertIntoManagedObjectContext:context];
-    
-    return [shift autorelease];
-}
-
-- (ShiftTemplate *)importShiftByAttributeDictionary:(NSDictionary *)attributes
-{
-    ShiftTemplate *shift = [[self createShift] retain];
-    
-    [shift setValuesForKeysWithDictionary:attributes];
-    
-    return [shift autorelease];
-}
-
-- (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift
-{
-    ShiftTemplate *shift = [[self createShift] retain];
-    
-    NSArray *attKeys         = [[[foreignShift entity] attributesByName] allKeys];
-    NSDictionary *attributes = [foreignShift dictionaryWithValuesForKeys:attKeys];
-    [shift setValuesForKeysWithDictionary:attributes];
-    
-    return [shift autorelease];
-}
-
-- (ShiftTemplate *)shiftWithId:(NSManagedObjectID *)shiftId
-{
-    NSError *error = nil;
-    ShiftTemplate *shift = (ShiftTemplate *)[self.managedObjectContext existingObjectWithID:shiftId error:&error];
-    
-    NSAssert(shift, @"Could not retrieve object by ID, error: %@", error);
-    
-    return shift;
-}
-
-- (void)deleteShift:(ShiftTemplate *)shift
-{
-    [self.managedObjectContext deleteObject:shift];
-}
+#pragma mark - Import/export utilities
 
 - (NSMutableDictionary *)attributeDictionaryForShift:(ShiftTemplate *)shift
 {
@@ -161,6 +113,66 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     }
     
     return [attributes autorelease];
+}
+
+- (NSMutableDictionary *)defaultAttributeDictionary
+{
+    NSMutableDictionary *attributes = [self attributeDictionary];
+    NSDictionary *defaultAttributes = [ShiftTemplate defaultAttributes];
+    
+    [attributes setValuesForKeysWithDictionary:defaultAttributes];
+    
+    return attributes;
+}
+
+- (ShiftTemplate *)importShiftByAttributeDictionary:(NSDictionary *)attributes
+{
+    ShiftTemplate *shift = [[self createShift] retain];
+    
+    [shift setValuesForKeysWithDictionary:attributes];
+    
+    return [shift autorelease];
+}
+
+- (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift
+{
+    ShiftTemplate *shift = [[self createShift] retain];
+    
+    NSArray *attKeys         = [[[foreignShift entity] attributesByName] allKeys];
+    NSDictionary *attributes = [foreignShift dictionaryWithValuesForKeys:attKeys];
+    [shift setValuesForKeysWithDictionary:attributes];
+    
+    return [shift autorelease];
+}
+
+#pragma mark - CR(U)D
+
+- (ShiftTemplate *)createShift
+{
+    ShiftTemplate *shift = nil;
+    
+    NSManagedObjectContext *context = self.managedObjectContext;
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kShiftEntityName inManagedObjectContext:context];
+    
+    shift = [[ShiftTemplate alloc] initWithEntity:entityDescription
+                    insertIntoManagedObjectContext:context];
+    
+    return [shift autorelease];
+}
+
+- (ShiftTemplate *)shiftWithId:(NSManagedObjectID *)shiftId
+{
+    NSError *error = nil;
+    ShiftTemplate *shift = (ShiftTemplate *)[self.managedObjectContext existingObjectWithID:shiftId error:&error];
+    
+    NSAssert(shift, @"Could not retrieve object by ID, error: %@", error);
+    
+    return shift;
+}
+
+- (void)deleteShift:(ShiftTemplate *)shift
+{
+    [self.managedObjectContext deleteObject:shift];
 }
 
 - (NSArray *)shifts

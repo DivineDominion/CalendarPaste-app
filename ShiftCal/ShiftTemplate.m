@@ -39,7 +39,12 @@
 - (void)awakeFromInsert
 {
     [super awakeFromInsert];
-    [self setPrimitiveValue:[ShiftTemplate userDefaultCalendarIdentifier] forKey:@"calendarIdentifier"];
+    
+    // Adopt default template values manually to invoke setPrimitiveValue:forKey:
+    // instead of setValue:forKey:
+    [[ShiftTemplate defaultAttributes] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self setPrimitiveValue:obj forKey:key];
+    }];
 }
 
 - (void)dealloc
@@ -76,6 +81,14 @@
     return self.calendar.title;
 }
 
+- (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes
+{
+    self.durHours   = [NSNumber numberWithInteger:hours];
+    self.durMinutes = [NSNumber numberWithInteger:minutes];
+}
+
+# pragma mark - Class-level utility methods
+
 + (NSString *)userDefaultCalendarIdentifier
 {
     NSUserDefaults *prefs       = [NSUserDefaults standardUserDefaults];
@@ -84,10 +97,11 @@
     return defaultCalendarId;
 }
 
-- (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes
++ (NSDictionary*)defaultAttributes
 {
-    self.durHours   = [NSNumber numberWithInteger:hours];
-    self.durMinutes = [NSNumber numberWithInteger:minutes];
+    return @{ @"calendarIdentifier" : [ShiftTemplate userDefaultCalendarIdentifier],
+    @"durHours" : @1,
+    @"durMinutes" : @0 };
 }
 
 @end
