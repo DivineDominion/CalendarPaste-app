@@ -18,14 +18,17 @@
     NSManagedObjectContext       *_managedObjectContext;
 }
 
-@property (nonatomic, readonly, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, readonly, retain) NSManagedObjectModel         *managedObjectModel;
-@property (nonatomic, readonly, retain) NSManagedObjectContext       *managedObjectContext;
+@property (nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, readonly) NSManagedObjectModel         *managedObjectModel;
+@property (nonatomic, readonly) NSManagedObjectContext       *managedObjectContext;
 
 + (NSString *)durationTextForHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
 
 - (ShiftTemplate *)createShift;
 - (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift;
+- (ShiftTemplate *)importShiftByAttributeDictionary:(NSDictionary *)attributes;
+- (NSMutableDictionary *)attributeDictionaryForShift:(ShiftTemplate *)shift;
+- (NSMutableDictionary *)attributeDictionary;
 - (ShiftTemplate *)shiftWithId:(NSManagedObjectID *)shiftId;
 - (void)deleteShift:(ShiftTemplate *)shift;
 - (NSArray *)shifts;

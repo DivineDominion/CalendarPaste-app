@@ -17,11 +17,11 @@
 @interface ModificationCommand : NSObject <ShiftModificationDelegate>
 {
     ShiftOverviewController *_target;
-    ShiftTemplate *_shift;
+    NSDictionary *_shiftAttributes;
 }
 
 @property (nonatomic, weak) ShiftOverviewController *target;
-@property (nonatomic, retain) ShiftTemplate *shift;
+@property (nonatomic, retain) NSDictionary *shiftAttributes;
 
 - (id)initWithTarget:(ShiftOverviewController *)target;
 - (void)execute;
@@ -30,7 +30,7 @@
 
 @implementation ModificationCommand
 
-@synthesize shift = _shift;
+@synthesize shiftAttributes = _shiftAttributes;
 @synthesize target = _target;
 
 - (id)initWithTarget:(ShiftOverviewController *)target;
@@ -45,13 +45,13 @@
     return self;
 }
 
-- (void)shiftModificationViewController:(ShiftModificationViewController *)shiftAddViewController modifiedShift:(ShiftTemplate *)shift
+- (void)shiftModificationViewController:(ShiftModificationViewController *)shiftAddViewController modifiedShiftAttributes:(NSDictionary *)shiftAttributes
 {
     [self.target dismissViewControllerAnimated:YES completion:nil]; // TODO refactor high coupling
     
-    if (shift)
+    if (shiftAttributes)
     {
-        self.shift = shift;
+        self.shiftAttributes = shiftAttributes;
         [self execute];
     }
 }
@@ -89,7 +89,7 @@
 
 - (void)execute
 {
-    [self.target replaceShiftAtRow:self.row withShift:self.shift];
+    [self.target replaceShiftAtRow:self.row withShiftWithAttributes:self.shiftAttributes];
     [self.target modificationCommandFinished:self];
 }
 @end
@@ -100,7 +100,7 @@
 @implementation AddCommand
 - (void)execute
 {
-    [self.target addShift:self.shift];
+    [self.target addShiftWithAttributs:self.shiftAttributes];
     [self.target modificationCommandFinished:self];
 }
 @end
@@ -290,7 +290,18 @@
 
 - (void)presentModificationViewControllerWithShift:(ShiftTemplate *)shift
 {
-    ShiftModificationViewController *modificationController = [[ShiftModificationViewController alloc] initWithShift:shift];
+    /*
+     NSDictionary *shiftAttributes = nil;
+    if (shift)
+    {
+        shiftAttributes = [self.shiftCollection.shiftTemplateController attributeDictionaryForShift:shift];
+    }
+    else
+    {
+        shiftAttributes = [self.shiftCollection.shiftTemplateController attributeDictionary];
+    }
+    */
+    ShiftModificationViewController *modificationController = [[ShiftModificationViewController alloc] initWithShift:shift];//shiftAttributes];
         
     UINavigationController *modificationNavController = [[UINavigationController alloc] initWithRootViewController:modificationController];
     
@@ -312,18 +323,18 @@
     }
 }
 
-- (void)addShift:(ShiftTemplate *)shift
+- (void)addShiftWithAttributs:(NSDictionary *)shiftAttributes
 {
-    NSInteger row = [self.shiftCollection importShift:shift];
-    
     // TODO refactor into notification
+    NSInteger row = [self.shiftCollection addShiftWithAttributs:shiftAttributes];
+    
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 }
 
-- (void)replaceShiftAtRow:(NSInteger)row withShift:(ShiftTemplate *)shift
+- (void)replaceShiftAtRow:(NSInteger)row withShiftWithAttributes:(NSDictionary *)shiftAttributes
 {
-    [self.shiftCollection replaceShiftAtIndex:row withShift:shift];
+    [self.shiftCollection replaceShiftAtIndex:row withShiftWithAttributs:shiftAttributes];
 
     // TODO refactor into notifications
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];

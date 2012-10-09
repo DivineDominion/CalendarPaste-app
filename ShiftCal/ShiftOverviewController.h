@@ -15,6 +15,6 @@
 
 - (void)modificationCommandFinished:(ModificationCommand *)modificationCommand;
 
-- (void)addShift:(ShiftTemplate *)shift;
-- (void)replaceShiftAtRow:(NSInteger)row withShift:(ShiftTemplate *)shift;
+- (void)addShiftWithAttributs:(NSDictionary *)shiftAttributes;
+- (void)replaceShiftAtRow:(NSInteger)row withShiftWithAttributes:(NSDictionary *)shiftAttributes;
 @end

@@ -19,12 +19,9 @@
 @interface ShiftModificationViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, DurationPickerDelegate, CalendarPickerDelegate, AlarmPickerDelegate>
 {
     id<ShiftModificationDelegate> _modificationDelegate;
-
-    ShiftTemplate *_shift;
 }
 
 @property (nonatomic, weak) id<ShiftModificationDelegate> modificationDelegate;
-@property (nonatomic, retain) ShiftTemplate *shift;
 
 - (id)initWithShift:(ShiftTemplate *)shift;
 

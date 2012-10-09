@@ -43,9 +43,9 @@
     return [self.shifts count];
 }
 
-- (NSUInteger)importShift:(ShiftTemplate *)tempShift
+- (NSInteger)addShiftWithAttributs:(NSDictionary *)shiftAttributes
 {
-    ShiftTemplate *shift = [self.shiftTemplateController importShift:tempShift];
+    ShiftTemplate *shift = [self.shiftTemplateController importShiftByAttributeDictionary:shiftAttributes];
     
     NSUInteger index = [self countOfShifts];
     
@@ -61,17 +61,13 @@
     return index;
 }
 
-- (void)replaceShiftAtIndex:(NSUInteger)index withShift:(ShiftTemplate *)tempShift
+- (void)replaceShiftAtIndex:(NSUInteger)index withShiftWithAttributs:(NSDictionary *)shiftAttributes
 {
-    ShiftTemplate *shift    = [self.shiftTemplateController importShift:tempShift];
-    ShiftTemplate *oldShift = [self shiftAtIndex:index];
+    ShiftTemplate *shift = [self shiftAtIndex:index];
     
-    shift.displayOrder = oldShift.displayOrder;
+    [shift setValuesForKeysWithDictionary:shiftAttributes];
     
-    [self.shiftTemplateController deleteShift:oldShift];
     [self.shiftTemplateController saveManagedObjectContext];
-    
-    [self.shifts replaceObjectAtIndex:index withObject:shift];
 }
 
 - (void)removeShiftAtIndex:(NSUInteger)index

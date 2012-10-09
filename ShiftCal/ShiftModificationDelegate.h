@@ -9,12 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @class ShiftModificationViewController;
-@class ShiftTemplate;
 
 @protocol ShiftModificationDelegate <NSObject>
 
 @required
 // shift == nil on cancel
-- (void)shiftModificationViewController:(ShiftModificationViewController*)shiftAddViewController modifiedShift:(ShiftTemplate *)shift;
+- (void)shiftModificationViewController:(ShiftModificationViewController*)shiftAddViewController modifiedShiftAttributes:(NSDictionary *)shiftAttributes;
 
 @end

@@ -38,9 +38,222 @@
 #define TAG_TEXTVIEW_EDITING     106
 #define TAG_TEXTVIEW_PLACEHOLDER 107
 
+@interface ShiftData : NSObject
+{
+    EKEventStore *_eventStore;
+    NSDictionary *_shiftAttributes;
+}
+
+@property (nonatomic, retain) NSDictionary *shiftAttributes;
+
+@property (nonatomic, retain) NSString *title;
+@property (nonatomic, retain) NSString *location;
+@property (nonatomic, retain) NSNumber *alarmFirstInterval;
+@property (nonatomic, retain) NSNumber *alarmSecondInterval;
+@property (nonatomic, retain) NSString *calendarIdentifier;
+@property (nonatomic, retain) NSString *url;
+@property (nonatomic, retain) NSString *note;
+
+- (id)initWithAttributes:(NSDictionary *)attributes;
+
+- (NSInteger)durationHours;
+- (NSInteger)durationMinutes;
+- (void)setDurationHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
+- (NSString *)calendarTitle;
+@end
+
+@implementation ShiftData
+@synthesize shiftAttributes = _shiftAttributes;
+
+- (id)initWithAttributes:(NSDictionary *)attributes
+{
+    NSAssert(attributes, @"attributes required");
+    
+    self = [super init];
+    if (self)
+    {
+        self.shiftAttributes = attributes;
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [_eventStore release];
+    [_shiftAttributes release];
+    
+    [super dealloc];
+}
+
+- (NSString *)title
+{
+    NSString *title = [self.shiftAttributes objectForKey:@"title"];
+    if ([title isKindOfClass:[NSNull class]])
+    {
+        return nil;
+    }
+    return title;
+}
+
+- (void)setTitle:(NSString *)title
+{
+    [self.shiftAttributes setValue:title forKey:@"title"];
+}
+
+- (NSString *)location
+{
+    NSString *location = [self.shiftAttributes objectForKey:@"location"];
+    if ([location isKindOfClass:[NSNull class]])
+    {
+        return nil;
+    }
+    return location;
+}
+
+- (void)setLocation:(NSString *)location
+{
+    [self.shiftAttributes setValue:location forKey:@"location"];
+}
+
+- (NSInteger)durationHours
+{
+    NSNumber *durHours = [self.shiftAttributes objectForKey:@"durHours"];
+    if ([durHours isKindOfClass:[NSNull class]])
+    {
+        return 0;
+    }
+    return [durHours integerValue];
+}
+
+- (NSInteger)durationMinutes
+{
+    NSNumber *durMinutes = [self.shiftAttributes objectForKey:@"durMinutes"];
+    if ([durMinutes isKindOfClass:[NSNull class]])
+    {
+        return 0;
+    }
+    return [durMinutes integerValue];
+}
+
+- (void)setDurationHours:(NSInteger)hours andMinutes:(NSInteger)minutes
+{
+    [self.shiftAttributes setValue:[NSNumber numberWithInt:hours] forKey:@"durHours"];
+    [self.shiftAttributes setValue:[NSNumber numberWithInt:minutes] forKey:@"durMinutes"];
+}
+
+- (NSNumber *)alarmFirstInterval
+{
+    NSNumber *alarmFirstInterval = [self.shiftAttributes objectForKey:@"alarmFirstInterval"];
+    if ([alarmFirstInterval isKindOfClass:[NSNull class]])
+    {
+        return nil;
+    }
+    return alarmFirstInterval;
+}
+
+- (void)setAlarmFirstInterval:(NSNumber *)alarmFirstInterval
+{
+    [self.shiftAttributes setValue:alarmFirstInterval forKey:@"alarmFirstInterval"];
+}
+
+- (NSNumber *)alarmSecondInterval
+{
+    NSNumber *alarmSecondInterval = [self.shiftAttributes objectForKey:@"alarmSecondInterval"];
+    if ([alarmSecondInterval isKindOfClass:[NSNull class]])
+    {
+        return nil;
+    }
+    return alarmSecondInterval;
+}
+
+- (void)setAlarmSecondInterval:(NSNumber *)alarmSecondInterval
+{
+    [self.shiftAttributes setValue:alarmSecondInterval forKey:@"alarmSecondInterval"];
+}
+
+- (BOOL)hasFirstAlarm
+{
+    return ([self alarmFirstInterval] != nil);
+}
+
+- (NSString *)calendarIdentifier
+{
+    NSString *calendarIdentifier = [self.shiftAttributes objectForKey:@"calendarIdentifier"];
+    if ([calendarIdentifier isKindOfClass:[NSNull class]])
+    {
+        return nil;
+    }
+    return calendarIdentifier;
+}
+
+- (void)setCalendarIdentifier:(NSString *)calendarIdentifier
+{
+    [self.shiftAttributes setValue:calendarIdentifier forKey:@"calendarIdentifier"];
+}
+
+- (EKEventStore *)eventStore
+{
+    if (_eventStore)
+    {
+        return _eventStore;
+    }
+    
+    _eventStore = [[EKEventStore alloc] init];
+    
+    return _eventStore;
+}
+
+- (EKCalendar *)calendar
+{
+    if (self.calendarIdentifier)
+    {
+        return [self.eventStore calendarWithIdentifier:self.calendarIdentifier];
+    }
+    
+    return nil;
+}
+
+- (NSString *)calendarTitle
+{
+    return self.calendar.title;
+}
+
+- (NSString *)url
+{
+    NSString *url = [self.shiftAttributes objectForKey:@"url"];
+    if ([url isKindOfClass:[NSNull class]])
+    {
+        return nil;
+    }
+    return url;
+}
+
+- (void)setUrl:(NSString *)url
+{
+    [self.shiftAttributes setValue:url forKey:@"url"];
+}
+
+- (NSString *)note
+{
+    NSString *note = [self.shiftAttributes objectForKey:@"note"];
+    if ([note isKindOfClass:[NSNull class]])
+    {
+        return nil;
+    }
+    return note;
+}
+
+- (void)setNote:(NSString *)note
+{
+    [self.shiftAttributes setValue:note forKey:@"note"];
+}
+
+@end
+
 @interface ShiftModificationViewController ()
 {
     // private instance variables
+    ShiftData *_shiftData;
     BOOL _isNewEntry;
     DateIntervalTranslator *_dateTranslator;
     NSInteger _selectedAlarmRow;
@@ -48,6 +261,7 @@
 }
 
 // private properties
+@property (nonatomic, retain) ShiftData *shiftData;
 @property (nonatomic, retain) DateIntervalTranslator *dateTranslator;
 @property (nonatomic, assign) NSInteger selectedAlarmRow;
 @property (nonatomic, readonly) ShiftTemplateController *shiftTemplateController;
@@ -65,7 +279,7 @@
 @synthesize dateTranslator = _dateTranslator;
 @synthesize selectedAlarmRow = _selectedAlarmRow;
 
-@synthesize shift = _shift;
+@synthesize shiftData = _shiftData;
 @synthesize modificationDelegate = _modificationDelegate;
 
 - (id)init
@@ -82,15 +296,14 @@
         if (shift)
         {
             // Loads an existing shift into the scratchpad context
-            NSManagedObjectID *shiftID = shift.objectID;
-            self.shift = [self.shiftTemplateController shiftWithId:shiftID];
+            self.shiftData = [[ShiftData alloc] initWithAttributes:[self.shiftTemplateController attributeDictionaryForShift:shift]];
             
             _isNewEntry = NO;
         }
         else
         {
             // Creates a temporary shift into the scratchpad context
-            self.shift = [self.shiftTemplateController createShift];
+            self.shiftData = [[ShiftData alloc] initWithAttributes:[self.shiftTemplateController attributeDictionary]];
 
             _isNewEntry = YES;
         }
@@ -110,7 +323,7 @@
 
 - (void)dealloc
 {
-    [_shift release];
+    [_shiftData release];
     [_dateTranslator release];
     [_shiftTemplateController release];
     
@@ -150,9 +363,9 @@
     self.title = @"Add Shift";
 
     // Enable custom title when editing
-    if (self.shift.title.length > 0)
+    if (self.shiftData.title.length > 0)
     {
-        self.title = self.shift.title;
+        self.title = self.shiftData.title;
     }
     
     self.tableView.sectionHeaderHeight = 5.0f;
@@ -196,7 +409,7 @@
         case SECTION_TITLE_LOCATION:
             return 2;
         case SECTION_ALARM:
-            if (self.shift.alarmFirstInterval)
+            if ([self.shiftData hasFirstAlarm])
             {
                 return 2;
             }
@@ -252,13 +465,13 @@
                 textField.placeholder = @"Title";
                 textField.returnKeyType = UIReturnKeyNext;
                 textField.tag = TAG_TEXTFIELD_TITLE;
-                textField.text = self.shift.title;
+                textField.text = self.shiftData.title;
             }
             else if (row == 1)
             {
                 textField.placeholder = @"Location";
                 textField.tag = TAG_TEXTFIELD_LOCATION;
-                textField.text = self.shift.location;
+                textField.text = self.shiftData.location;
             }
             else {
                 StupidError(@"no placeholder for row %d", row);
@@ -397,14 +610,15 @@
 
 - (void)displayDurationInCell:(UITableViewCell *)cell
 {
-    NSString *theText = [ShiftTemplateController durationTextForHours:[self.shift.durHours integerValue] andMinutes:[self.shift.durMinutes integerValue]];
+    NSString *theText = [ShiftTemplateController durationTextForHours:self.shiftData.durationHours
+                                                           andMinutes:self.shiftData.durationMinutes];
     
     cell.detailTextLabel.text = theText;
 }
 
 - (void)displayCalendarInCell:(UITableViewCell *)cell
 {
-    cell.detailTextLabel.text = [self.shift calendarTitle];
+    cell.detailTextLabel.text = [self.shiftData calendarTitle];
 }
 
 - (void)displayAlarmInCell:(UITableViewCell *)cell
@@ -414,18 +628,18 @@
     
     if (TAG_ALARM_FIRST == cell.tag)
     {
-        alarmOffset = self.shift.alarmFirstInterval;
+        alarmOffset = self.shiftData.alarmFirstInterval;
     }
     else if (TAG_ALARM_SECOND == cell.tag)
     {
-        alarmOffset = self.shift.alarmSecondInterval;
+        alarmOffset = self.shiftData.alarmSecondInterval;
     }
 
     if (alarmOffset)
     {
         text = [self.dateTranslator humanReadableFormOfInterval:[alarmOffset doubleValue]];
         
-        // TODO refactor: dont ask model, tell it to return text!
+        // TODO refactor: dont ask model, tell it to return text! -- (consider this a Helper, it's ok!)
     }
     
     cell.detailTextLabel.text = text;
@@ -442,7 +656,8 @@
     {
         case SECTION_DURATION:
         {
-            DurationPickerController *durationController = [[DurationPickerController alloc] initWithHours:[self.shift.durHours integerValue] andMinutes:[self.shift.durMinutes integerValue]];
+            DurationPickerController *durationController = [[DurationPickerController alloc] initWithHours:self.shiftData.durationHours
+                                                                                                andMinutes:self.shiftData.durationMinutes];
             durationController.delegate = self;
             
             modalController = durationController;
@@ -451,7 +666,7 @@
         }
         case SECTION_CALENDAR:
         {
-            CalendarPickerController *calendarController = [[CalendarPickerController alloc] initWithSelectedCalendarIdentifier:self.shift.calendarIdentifier];
+            CalendarPickerController *calendarController = [[CalendarPickerController alloc] initWithSelectedCalendarIdentifier:self.shiftData.calendarIdentifier];
             calendarController.delegate = self;
             
             modalController = calendarController;
@@ -464,11 +679,11 @@
             
             if ([indexPath row] == 0)
             {
-                alarmOffset = self.shift.alarmFirstInterval;
+                alarmOffset = self.shiftData.alarmFirstInterval;
             }
             else
             {
-                alarmOffset = self.shift.alarmSecondInterval;
+                alarmOffset = self.shiftData.alarmSecondInterval;
             }
             
             AlarmPickerViewController *alarmController = [[AlarmPickerViewController alloc] initWithAlarmOffset:alarmOffset];
@@ -544,17 +759,17 @@
     switch (textField.tag)
     {
         case TAG_TEXTFIELD_TITLE:
-            self.shift.title = textField.text;
+            self.shiftData.title = textField.text;
             
             // Enable saving
             self.navigationItem.rightBarButtonItem.enabled = YES;
             
             break;
         case TAG_TEXTFIELD_LOCATION:
-            self.shift.location = textField.text;
+            self.shiftData.location = textField.text;
             break;
         case TAG_TEXTFIELD_URL:
-            self.shift.url = textField.text;
+            self.shiftData.url = textField.text;
             break;
         default:
             StupidError(@"unhandled textField ended editing: %@", textField);
@@ -589,7 +804,7 @@
         NSIndexPath *durationPath     = [NSIndexPath indexPathForRow:0 inSection:SECTION_DURATION];
         UITableViewCell *durationCell = [self.tableView cellForRowAtIndexPath:durationPath];
         
-        [self.shift setDurationHours:hours andMinutes:minutes];
+        [self.shiftData setDurationHours:hours andMinutes:minutes];
         
         [self displayDurationInCell:durationCell];
     }
@@ -604,7 +819,7 @@
         NSIndexPath *calendarPath     = [NSIndexPath indexPathForRow:0 inSection:SECTION_CALENDAR];
         UITableViewCell *calendarCell = [self.tableView cellForRowAtIndexPath:calendarPath];
         
-        self.shift.calendarIdentifier = calendarIdentifier;
+        self.shiftData.calendarIdentifier = calendarIdentifier;
         
         [self displayCalendarInCell:calendarCell];
     }
@@ -627,7 +842,7 @@
         }
         else
         {
-            self.shift.alarmSecondInterval = alarmOffset;
+            self.shiftData.alarmSecondInterval = alarmOffset;
         }
         
         [self displayAlarmInCell:alarmCell];
@@ -638,7 +853,7 @@
 {
     NSIndexPath *secondAlarmIndexPath = [NSIndexPath indexPathForRow:1 inSection:SECTION_ALARM];
     
-    BOOL hasSecondAlarm          = (self.shift.alarmSecondInterval != nil);
+    BOOL hasSecondAlarm          = (self.shiftData.alarmSecondInterval != nil);
     BOOL isSecondAlarmRowVisible = ([self.tableView numberOfRowsInSection:SECTION_ALARM] == 2);
     BOOL shouldRemoveAlarm       = (alarmOffset == nil);
 
@@ -647,15 +862,15 @@
         UITableViewCell *secondAlarmCell = [self.tableView cellForRowAtIndexPath:secondAlarmIndexPath];
         
         // Pop first entry, clear second alarm
-        self.shift.alarmFirstInterval = self.shift.alarmSecondInterval;
-        self.shift.alarmSecondInterval = nil;
+        self.shiftData.alarmFirstInterval = self.shiftData.alarmSecondInterval;
+        self.shiftData.alarmSecondInterval = nil;
         
         // Update second cell, too
         [self displayAlarmInCell:secondAlarmCell];
     }
     else
     {
-        self.shift.alarmFirstInterval = alarmOffset;
+        self.shiftData.alarmFirstInterval = alarmOffset;
         
         if (isSecondAlarmRowVisible && shouldRemoveAlarm)
         {
@@ -678,12 +893,12 @@
     if (self.modificationDelegate)
     {
         // Default internally to a meaningful title
-        if ([self.shift.title length] == 0)
+        if (self.shiftData.title.length == 0)
         {
-            self.shift.title = @"New Shift";
+            self.shiftData.title = @"New Shift";
         }
         
-        [self.modificationDelegate shiftModificationViewController:self modifiedShift:self.shift];
+        [self.modificationDelegate shiftModificationViewController:self modifiedShiftAttributes:self.shiftData.shiftAttributes];
     }
 }
 
@@ -691,7 +906,7 @@
 {
     if (self.modificationDelegate)
     {
-        [self.modificationDelegate shiftModificationViewController:self modifiedShift:nil];
+        [self.modificationDelegate shiftModificationViewController:self modifiedShiftAttributes:nil];
     }
 }
 

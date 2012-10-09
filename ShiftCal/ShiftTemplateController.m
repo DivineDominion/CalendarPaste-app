@@ -103,9 +103,17 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     return [shift autorelease];
 }
 
+- (ShiftTemplate *)importShiftByAttributeDictionary:(NSDictionary *)attributes
+{
+    ShiftTemplate *shift = [[self createShift] retain];
+    
+    [shift setValuesForKeysWithDictionary:attributes];
+    
+    return [shift autorelease];
+}
+
 - (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift
 {
-    // TODO find out appropriate position
     ShiftTemplate *shift = [[self createShift] retain];
     
     NSArray *attKeys         = [[[foreignShift entity] attributesByName] allKeys];
@@ -128,6 +136,31 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
 - (void)deleteShift:(ShiftTemplate *)shift
 {
     [self.managedObjectContext deleteObject:shift];
+}
+
+- (NSMutableDictionary *)attributeDictionaryForShift:(ShiftTemplate *)shift
+{
+    NSMutableDictionary *attributes = nil;
+    
+    NSArray *attributeKeys = [[[shift entity] attributesByName] allKeys];
+    attributes = [NSMutableDictionary dictionaryWithDictionary:[shift dictionaryWithValuesForKeys:attributeKeys]];
+    
+    return attributes;
+}
+
+- (NSMutableDictionary *)attributeDictionary
+{
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:kShiftEntityName
+                                              inManagedObjectContext:self.managedObjectContext];
+    NSArray *attributeKeys = [[entity attributesByName] allKeys];
+    
+    for (NSString *key in attributeKeys)
+    {
+        [attributes setValue:nil forKey:key];
+    }
+    
+    return [attributes autorelease];
 }
 
 - (NSArray *)shifts
