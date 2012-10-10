@@ -8,6 +8,10 @@
 
 #import "ShiftAssignmentViewController.h"
 
+#define SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.width
+#define SCREEN_HEIGHT [[UIScreen mainScreen] bounds].size.height
+#define PICKER_HEIGHT 216.0f
+
 #define SECTION_TITLE 0
 #define SECTION_STARTS_ENDS 1
 
@@ -18,11 +22,14 @@
 {
     NSDate *_startDate;
     NSDateFormatter *_dateFormatter;
+    
+    UIDatePicker *_datePicker;
 }
 
 @property (nonatomic, retain, readwrite) ShiftTemplate *shift;
 @property (nonatomic, retain) NSDate *startDate;
 @property (nonatomic, retain, readonly) NSDateFormatter *dateFormatter;
+@property (nonatomic, retain, readonly) UIDatePicker *datePicker;
 
 - (void)save:(id)sender;
 - (void)cancel:(id)sender;
@@ -67,8 +74,26 @@
     [_shift release];
     [_startDate release];
     [_dateFormatter release];
+    [_datePicker release];
     
     [super dealloc];
+}
+
+- (void)loadView
+{
+    [super loadView];
+    
+    self.tableView.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.tableView.scrollEnabled    = NO;
+    self.tableView.sectionHeaderHeight = 5.0f;
+    self.tableView.sectionFooterHeight = 5.0f;
+    
+    // top margin:  22px = 1/2 200px (visible content height) - 1/2 146px (cell's heights) - 5px section top margin
+    CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, SCREEN_WIDTH, 22.0f);
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:tableHeaderFrame];
+    
+    [self.datePicker setDate:self.startDate];
+    [self.tableView addSubview:self.datePicker];
 }
 
 - (void)viewDidLoad
@@ -91,6 +116,18 @@
     self.title = @"Assign";
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    CGRect frame   = self.datePicker.frame;
+    frame.origin.y = frame.origin.y - PICKER_HEIGHT - 64.0f; // Navbar + status bar height: 64px
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.datePicker.frame = frame;
+    }];
+}
+
 - (NSDateFormatter *)dateFormatter
 {
     if (_dateFormatter)
@@ -102,6 +139,19 @@
     [_dateFormatter setDateFormat:@"EEE, d MMM  HH:mm"];
     
     return _dateFormatter;
+}
+
+- (UIDatePicker *)datePicker
+{
+    if (_datePicker)
+    {
+        return _datePicker;
+    }
+    
+    CGRect pickerFrame   = CGRectMake(0.0f, SCREEN_HEIGHT, SCREEN_WIDTH, PICKER_HEIGHT);
+    _datePicker = [[UIDatePicker alloc] initWithFrame:pickerFrame];
+    
+    return _datePicker;
 }
 
 #pragma mark - Table view data source
@@ -142,7 +192,8 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    switch (section) {
+    switch (section)
+    {
         case SECTION_TITLE:
             cell.textLabel.text = @"Title";
             cell.detailTextLabel.text = self.shift.title;
