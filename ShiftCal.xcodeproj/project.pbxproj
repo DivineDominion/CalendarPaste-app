@@ -63,6 +63,7 @@
 		605AC42516086B5800E02F16 /* DateIntervalTranslator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateIntervalTranslator.m; sourceTree = "<group>"; };
 		6060426016245AB000BA5EEC /* ShiftAssignmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftAssignmentViewController.h; sourceTree = "<group>"; };
 		6060426116245AB000BA5EEC /* ShiftAssignmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftAssignmentViewController.m; sourceTree = "<group>"; };
+		606042641625CC1D00BA5EEC /* ShiftAssignmentViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftAssignmentViewDelegate.h; sourceTree = "<group>"; };
 		608F6FDF15FF78C4001C8217 /* UIPreferencesBlueCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesBlueCheck.png; sourceTree = "<group>"; };
 		608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPreferencesBlueCheck@2x.png"; sourceTree = "<group>"; };
 		608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesWhiteCheck.png; sourceTree = "<group>"; };
@@ -155,6 +156,7 @@
 			children = (
 				6060426016245AB000BA5EEC /* ShiftAssignmentViewController.h */,
 				6060426116245AB000BA5EEC /* ShiftAssignmentViewController.m */,
+				606042641625CC1D00BA5EEC /* ShiftAssignmentViewDelegate.h */,
 			);
 			name = "Assign Shift";
 			sourceTree = "<group>";

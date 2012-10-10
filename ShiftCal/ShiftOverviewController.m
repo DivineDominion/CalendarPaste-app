@@ -264,6 +264,8 @@
     {
         ShiftAssignmentViewController *assignController = [[ShiftAssignmentViewController alloc] initWithShift:shift];
         
+        assignController.delegate = self;
+        
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:assignController];
         
         [self presentViewController:navigationController animated:YES completion:nil];
@@ -289,7 +291,7 @@
     }
 }
 
-#pragma mark - presented views
+#pragma mark - Presented Views
 
 - (void)presentModificationViewController
 {
@@ -310,7 +312,20 @@
     [modificationNavController release];
 }
 
-#pragma mark - ShiftModificationController callbacks
+#pragma mark ShiftAssignmentViewController callbacks
+
+- (void)shiftAssignmentViewController:(ShiftAssignmentViewController *)shiftAssignmentViewController didCompleteWithAction:(SCAssignmentViewAction)action
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    if (action == SCAssignmentViewActionSaved)
+    {
+        // TODO display HUD
+        NSLog(@"success!");
+    }
+}
+
+#pragma mark ShiftModificationController callbacks
 
 - (void)modificationCommandFinished:(ModificationCommand *)modificationCommand
 {

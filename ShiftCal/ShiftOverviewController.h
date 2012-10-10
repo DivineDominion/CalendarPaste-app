@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "ShiftTemplate.h"
 
+#import "ShiftAssignmentViewDelegate.h"
+
 @class ModificationCommand;
 
-@interface ShiftOverviewController : UITableViewController
+@interface ShiftOverviewController : UITableViewController <ShiftAssignmentViewDelegate>
 
 - (void)modificationCommandFinished:(ModificationCommand *)modificationCommand;
 

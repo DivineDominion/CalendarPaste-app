@@ -20,13 +20,16 @@
     NSDateFormatter *_dateFormatter;
 }
 
-// private properties
 @property (nonatomic, retain, readwrite) ShiftTemplate *shift;
 @property (nonatomic, retain) NSDate *startDate;
 @property (nonatomic, retain, readonly) NSDateFormatter *dateFormatter;
+
+- (void)save:(id)sender;
+- (void)cancel:(id)sender;
 @end
 
 @implementation ShiftAssignmentViewController
+@synthesize delegate = _delegate;
 @synthesize shift = _shift;
 @synthesize startDate = _startDate;
 
@@ -71,6 +74,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIBarButtonItem *saveItem   = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                                target:self
+                                                                                action:@selector(save:)];
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                target:self
+                                                                                action:@selector(cancel:)];
+    
+    self.navigationItem.rightBarButtonItem = saveItem;
+    self.navigationItem.leftBarButtonItem  = cancelItem;
+    
+    [saveItem release];
+    [cancelItem release];
     
     self.title = @"Assign";
 }
@@ -166,6 +182,18 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - Navigation Buttons
+
+- (void)save:(id)sender
+{
+    [self.delegate shiftAssignmentViewController:self didCompleteWithAction:SCAssignmentViewActionSaved];
+}
+
+- (void)cancel:(id)sender
+{
+    [self.delegate shiftAssignmentViewController:self didCompleteWithAction:SCAssignmentViewActionCanceled];
 }
 
 @end
