@@ -38,6 +38,11 @@
 
 
 @interface DurationPickerController ()
+{
+    UIPickerView *_pickerView;
+    UIView *_pickerWrap;
+}
+
 // private methods
 + (UILabel *)createLabelForComponet:(NSInteger)component;
 

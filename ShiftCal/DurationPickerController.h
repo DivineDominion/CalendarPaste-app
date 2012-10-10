@@ -10,10 +10,7 @@
 #import "DurationPickerDelegate.h"
 
 @interface DurationPickerController : UITableViewController <UIPickerViewDataSource, UIPickerViewDelegate>
-{
-    UIPickerView *_pickerView;
-    UIView *_pickerWrap;
-    
+{    
     NSInteger _hours;
     NSInteger _minutes;
     
