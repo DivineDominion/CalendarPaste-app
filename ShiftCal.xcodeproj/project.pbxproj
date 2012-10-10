@@ -15,6 +15,7 @@
 		605A96BA161B27E10008B1C6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 605A96B9161B27E10008B1C6 /* CoreData.framework */; };
 		605A96BD161CAC660008B1C6 /* ShiftTemplateCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 605A96BC161CAC660008B1C6 /* ShiftTemplateCollection.m */; };
 		605AC42616086B5800E02F16 /* DateIntervalTranslator.m in Sources */ = {isa = PBXBuildFile; fileRef = 605AC42516086B5800E02F16 /* DateIntervalTranslator.m */; };
+		6060426216245AB000BA5EEC /* ShiftAssignmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6060426116245AB000BA5EEC /* ShiftAssignmentViewController.m */; };
 		608F6FE315FF78C4001C8217 /* UIPreferencesBlueCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FDF15FF78C4001C8217 /* UIPreferencesBlueCheck.png */; };
 		608F6FE415FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */; };
 		608F6FE515FF78C4001C8217 /* UIPreferencesWhiteCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */; };
@@ -60,6 +61,8 @@
 		605A96BC161CAC660008B1C6 /* ShiftTemplateCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplateCollection.m; sourceTree = "<group>"; };
 		605AC42416086B5800E02F16 /* DateIntervalTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateIntervalTranslator.h; sourceTree = "<group>"; };
 		605AC42516086B5800E02F16 /* DateIntervalTranslator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateIntervalTranslator.m; sourceTree = "<group>"; };
+		6060426016245AB000BA5EEC /* ShiftAssignmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftAssignmentViewController.h; sourceTree = "<group>"; };
+		6060426116245AB000BA5EEC /* ShiftAssignmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftAssignmentViewController.m; sourceTree = "<group>"; };
 		608F6FDF15FF78C4001C8217 /* UIPreferencesBlueCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesBlueCheck.png; sourceTree = "<group>"; };
 		608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPreferencesBlueCheck@2x.png"; sourceTree = "<group>"; };
 		608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesWhiteCheck.png; sourceTree = "<group>"; };
@@ -147,6 +150,15 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		6060425E16245A8E00BA5EEC /* Assign Shift */ = {
+			isa = PBXGroup;
+			children = (
+				6060426016245AB000BA5EEC /* ShiftAssignmentViewController.h */,
+				6060426116245AB000BA5EEC /* ShiftAssignmentViewController.m */,
+			);
+			name = "Assign Shift";
+			sourceTree = "<group>";
+		};
 		608F6FDD15FF78AD001C8217 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -197,6 +209,7 @@
 			children = (
 				608F6FDD15FF78AD001C8217 /* Images */,
 				60FBA83115F66C59008B48A1 /* Modify Shift */,
+				6060425E16245A8E00BA5EEC /* Assign Shift */,
 				605A96B616171D980008B1C6 /* Model */,
 				60AAB81115C13297002114B9 /* ShiftOverviewController.h */,
 				60AAB81215C13297002114B9 /* ShiftOverviewController.m */,
@@ -384,6 +397,7 @@
 				605A96B7161B1EC30008B1C6 /* ShiftTemplateController.m in Sources */,
 				605A96B8161B1FE10008B1C6 /* ShiftModificationViewController.m in Sources */,
 				605A96BD161CAC660008B1C6 /* ShiftTemplateCollection.m in Sources */,
+				6060426216245AB000BA5EEC /* ShiftAssignmentViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

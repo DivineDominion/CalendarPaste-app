@@ -81,6 +81,11 @@
     return self.calendar.title;
 }
 
+- (NSTimeInterval)durationAsTimeInterval
+{
+    return 60 * ([self.durHours integerValue] * 60 + [self.durMinutes integerValue]);
+}
+
 - (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes
 {
     self.durHours   = [NSNumber numberWithInteger:hours];

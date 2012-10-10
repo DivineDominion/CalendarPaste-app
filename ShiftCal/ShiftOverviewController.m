@@ -11,6 +11,8 @@
 #import "ShiftModificationViewController.h"
 #import "ShiftModificationDelegate.h"
 
+#import "ShiftAssignmentViewController.h"
+
 #import "ShiftTemplateCollection.h"
 #import "ShiftTemplate.h"
 
@@ -260,8 +262,14 @@
     }
     else
     {
-        // TODO assign shift
-        NSLog(@"%@ selected, #%d", shift.title, [shift.displayOrder integerValue]);
+        ShiftAssignmentViewController *assignController = [[ShiftAssignmentViewController alloc] initWithShift:shift];
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:assignController];
+        
+        [self presentViewController:navigationController animated:YES completion:nil];
+        
+        [assignController release];
+        [navigationController release];
     }
 }
 
@@ -290,24 +298,13 @@
 
 - (void)presentModificationViewControllerWithShift:(ShiftTemplate *)shift
 {
-    /*
-     NSDictionary *shiftAttributes = nil;
-    if (shift)
-    {
-        shiftAttributes = [self.shiftCollection.shiftTemplateController attributeDictionaryForShift:shift];
-    }
-    else
-    {
-        shiftAttributes = [self.shiftCollection.shiftTemplateController attributeDictionary];
-    }
-    */
     ShiftModificationViewController *modificationController = [[ShiftModificationViewController alloc] initWithShift:shift];//shiftAttributes];
         
     UINavigationController *modificationNavController = [[UINavigationController alloc] initWithRootViewController:modificationController];
     
     modificationController.modificationDelegate = self.modificationCommand;
     
-    [[self navigationController] presentModalViewController:modificationNavController animated:YES];
+    [[self navigationController] presentViewController:modificationNavController animated:YES completion:nil];
     
     [modificationController release];
     [modificationNavController release];
