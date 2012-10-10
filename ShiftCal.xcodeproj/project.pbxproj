@@ -16,6 +16,9 @@
 		605A96BD161CAC660008B1C6 /* ShiftTemplateCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 605A96BC161CAC660008B1C6 /* ShiftTemplateCollection.m */; };
 		605AC42616086B5800E02F16 /* DateIntervalTranslator.m in Sources */ = {isa = PBXBuildFile; fileRef = 605AC42516086B5800E02F16 /* DateIntervalTranslator.m */; };
 		6060426216245AB000BA5EEC /* ShiftAssignmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6060426116245AB000BA5EEC /* ShiftAssignmentViewController.m */; };
+		606042661625D12D00BA5EEC /* hud-checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 606042651625D12D00BA5EEC /* hud-checkmark.png */; };
+		606042AA1625D2A000BA5EEC /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 606042A91625D2A000BA5EEC /* MBProgressHUD.m */; };
+		606042AC1625D52E00BA5EEC /* hud-checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 606042AB1625D52E00BA5EEC /* hud-checkmark@2x.png */; };
 		608F6FE315FF78C4001C8217 /* UIPreferencesBlueCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FDF15FF78C4001C8217 /* UIPreferencesBlueCheck.png */; };
 		608F6FE415FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */; };
 		608F6FE515FF78C4001C8217 /* UIPreferencesWhiteCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */; };
@@ -64,6 +67,10 @@
 		6060426016245AB000BA5EEC /* ShiftAssignmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftAssignmentViewController.h; sourceTree = "<group>"; };
 		6060426116245AB000BA5EEC /* ShiftAssignmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftAssignmentViewController.m; sourceTree = "<group>"; };
 		606042641625CC1D00BA5EEC /* ShiftAssignmentViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftAssignmentViewDelegate.h; sourceTree = "<group>"; };
+		606042651625D12D00BA5EEC /* hud-checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hud-checkmark.png"; sourceTree = "<group>"; };
+		606042A81625D2A000BA5EEC /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = MBProgressHUD/MBProgressHUD.h; sourceTree = SOURCE_ROOT; };
+		606042A91625D2A000BA5EEC /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = MBProgressHUD/MBProgressHUD.m; sourceTree = SOURCE_ROOT; };
+		606042AB1625D52E00BA5EEC /* hud-checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hud-checkmark@2x.png"; sourceTree = "<group>"; };
 		608F6FDF15FF78C4001C8217 /* UIPreferencesBlueCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesBlueCheck.png; sourceTree = "<group>"; };
 		608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPreferencesBlueCheck@2x.png"; sourceTree = "<group>"; };
 		608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesWhiteCheck.png; sourceTree = "<group>"; };
@@ -164,6 +171,8 @@
 		608F6FDD15FF78AD001C8217 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				606042651625D12D00BA5EEC /* hud-checkmark.png */,
+				606042AB1625D52E00BA5EEC /* hud-checkmark@2x.png */,
 				608F6FDF15FF78C4001C8217 /* UIPreferencesBlueCheck.png */,
 				608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */,
 				608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */,
@@ -215,6 +224,8 @@
 				605A96B616171D980008B1C6 /* Model */,
 				60AAB81115C13297002114B9 /* ShiftOverviewController.h */,
 				60AAB81215C13297002114B9 /* ShiftOverviewController.m */,
+				606042A81625D2A000BA5EEC /* MBProgressHUD.h */,
+				606042A91625D2A000BA5EEC /* MBProgressHUD.m */,
 				60BB96B015C08EB900801105 /* AppDelegate.h */,
 				60BB96B115C08EB900801105 /* AppDelegate.m */,
 				60BB96A815C08EB900801105 /* Supporting Files */,
@@ -352,6 +363,8 @@
 				608F6FE415FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png in Resources */,
 				608F6FE515FF78C4001C8217 /* UIPreferencesWhiteCheck.png in Resources */,
 				608F6FE615FF78C4001C8217 /* UIPreferencesWhiteCheck@2x.png in Resources */,
+				606042661625D12D00BA5EEC /* hud-checkmark.png in Resources */,
+				606042AC1625D52E00BA5EEC /* hud-checkmark@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +413,7 @@
 				605A96B8161B1FE10008B1C6 /* ShiftModificationViewController.m in Sources */,
 				605A96BD161CAC660008B1C6 /* ShiftTemplateCollection.m in Sources */,
 				6060426216245AB000BA5EEC /* ShiftAssignmentViewController.m in Sources */,
+				606042AA1625D2A000BA5EEC /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

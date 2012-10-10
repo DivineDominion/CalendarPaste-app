@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "ShiftTemplate.h"
-
+#import "../MBProgressHUD/MBProgressHUD.h"
 #import "ShiftAssignmentViewDelegate.h"
 
 @class ModificationCommand;
 
-@interface ShiftOverviewController : UITableViewController <ShiftAssignmentViewDelegate>
+@interface ShiftOverviewController : UITableViewController <ShiftAssignmentViewDelegate, MBProgressHUDDelegate>
 
 - (void)modificationCommandFinished:(ModificationCommand *)modificationCommand;
 

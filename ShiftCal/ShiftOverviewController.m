@@ -123,6 +123,7 @@
 // private methods
 - (void)calloutCell:(NSIndexPath *)indexPath;
 - (void)addAction:(id)sender;
+- (void)showHud;
 @end
 
 @implementation ShiftOverviewController
@@ -320,9 +321,30 @@
     
     if (action == SCAssignmentViewActionSaved)
     {
-        // TODO display HUD
-        NSLog(@"success!");
+        [self showHud];
     }
+}
+
+- (void)showHud
+{
+    // To center vertically, select navigationController.view instead of self.view
+    UIView *parentView = self.navigationController.view;
+    
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:parentView];
+    [parentView addSubview:hud];
+    
+    hud.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"hud-checkmark.png"]] autorelease];
+    hud.mode       = MBProgressHUDModeCustomView;
+    hud.delegate   = self;
+    
+    [hud show:YES];
+    [hud hide:YES afterDelay:0.4];
+}
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [hud removeFromSuperview];
+    [hud release];
 }
 
 #pragma mark ShiftModificationController callbacks
