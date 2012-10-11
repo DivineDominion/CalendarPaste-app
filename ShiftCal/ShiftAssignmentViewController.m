@@ -31,7 +31,7 @@
 @property (nonatomic, retain, readonly) NSDateFormatter *dateFormatter;
 @property (nonatomic, retain, readonly) UIDatePicker *datePicker;
 
-- (void)save:(id)sender;
+- (void)done:(id)sender;
 - (void)cancel:(id)sender;
 @end
 
@@ -100,9 +100,9 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *saveItem   = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+    UIBarButtonItem *saveItem   = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                 target:self
-                                                                                action:@selector(save:)];
+                                                                                action:@selector(done:)];
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                 target:self
                                                                                 action:@selector(cancel:)];
@@ -237,7 +237,7 @@
 
 #pragma mark - Navigation Buttons
 
-- (void)save:(id)sender
+- (void)done:(id)sender
 {
     [self.delegate shiftAssignmentViewController:self didCompleteWithAction:SCAssignmentViewActionSaved];
 }
