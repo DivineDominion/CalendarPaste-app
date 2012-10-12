@@ -22,4 +22,6 @@
 
 - (id)initWithShift:(ShiftTemplate *)shift;
 - (id)initWithStyle:(UITableViewStyle)style andShift:(ShiftTemplate *)shift;
+
+- (void)datePickerChanged:(id)sender;
 @end

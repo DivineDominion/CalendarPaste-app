@@ -29,7 +29,6 @@
 @property (nonatomic, retain, readwrite) ShiftTemplate *shift;
 @property (nonatomic, retain) NSDate *startDate;
 @property (nonatomic, retain, readonly) NSDateFormatter *dateFormatter;
-@property (nonatomic, retain, readonly) UIDatePicker *datePicker;
 
 - (void)done:(id)sender;
 - (void)cancel:(id)sender;
@@ -92,8 +91,13 @@
     CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, SCREEN_WIDTH, 22.0f);
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:tableHeaderFrame];
     
-    [self.datePicker setDate:self.startDate];
-    [self.tableView addSubview:self.datePicker];
+    CGRect pickerFrame = CGRectMake(0.0f, SCREEN_HEIGHT, SCREEN_WIDTH, PICKER_HEIGHT);
+    _datePicker = [[UIDatePicker alloc] initWithFrame:pickerFrame];
+    [_datePicker addTarget:self action:@selector(datePickerChanged:) forControlEvents:UIControlEventValueChanged];
+    
+    [_datePicker setDate:self.startDate];
+    
+    [self.tableView addSubview:_datePicker];
 }
 
 - (void)viewDidLoad
@@ -120,11 +124,11 @@
 {
     [super viewDidAppear:animated];
     
-    CGRect frame   = self.datePicker.frame;
+    CGRect frame   = _datePicker.frame;
     frame.origin.y = frame.origin.y - PICKER_HEIGHT - 64.0f; // Navbar + status bar height: 64px
     
     [UIView animateWithDuration:0.3 animations:^{
-        self.datePicker.frame = frame;
+        _datePicker.frame = frame;
     }];
 }
 
@@ -135,23 +139,12 @@
         return _dateFormatter;
     }
     
+    NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"EdMMM  jm" options:0
+                                                              locale:[NSLocale currentLocale]];    
     _dateFormatter = [[NSDateFormatter alloc] init];
-    [_dateFormatter setDateFormat:@"EEE, d MMM  HH:mm"];
+    [_dateFormatter setDateFormat:formatString];
     
     return _dateFormatter;
-}
-
-- (UIDatePicker *)datePicker
-{
-    if (_datePicker)
-    {
-        return _datePicker;
-    }
-    
-    CGRect pickerFrame   = CGRectMake(0.0f, SCREEN_HEIGHT, SCREEN_WIDTH, PICKER_HEIGHT);
-    _datePicker = [[UIDatePicker alloc] initWithFrame:pickerFrame];
-    
-    return _datePicker;
 }
 
 #pragma mark - Table view data source
@@ -187,10 +180,11 @@
     if (!cell)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-        cell.textLabel.textColor = [UIColor grayColor];
-        cell.detailTextLabel.textColor = [UIColor grayColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    
+    cell.textLabel.textColor = [UIColor grayColor];
+    cell.detailTextLabel.textColor = [UIColor grayColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     switch (section)
     {
@@ -235,7 +229,17 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark - Navigation Buttons
+#pragma mark - UI Interaction
+
+- (void)datePickerChanged:(id)sender
+{
+    self.startDate = _datePicker.date;
+    
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_STARTS_ENDS]
+                  withRowAnimation:UITableViewRowAnimationNone];
+}
+
+#pragma mark Navigation Buttons
 
 - (void)done:(id)sender
 {
