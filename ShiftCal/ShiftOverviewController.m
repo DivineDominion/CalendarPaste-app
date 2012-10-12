@@ -379,14 +379,15 @@
 
 - (void)calloutCell:(NSIndexPath *)indexPath
 {
+    ShiftOverviewController *__unsafe_unretained weakSelf = self;
     [UIView animateWithDuration:0.0
                           delay:0.0
                         options:UIViewAnimationOptionAllowUserInteraction
                      animations:^void() {
-                         [[self.tableView cellForRowAtIndexPath:indexPath] setHighlighted:YES animated:YES];
+                         [[weakSelf.tableView cellForRowAtIndexPath:indexPath] setHighlighted:YES animated:YES];
                      }
                      completion:^(BOOL finished) {
-                         [[self.tableView cellForRowAtIndexPath:indexPath] setHighlighted:NO animated:YES];
+                         [[weakSelf.tableView cellForRowAtIndexPath:indexPath] setHighlighted:NO animated:YES];
                      }];
 }
 
