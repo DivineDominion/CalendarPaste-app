@@ -9,14 +9,6 @@
 #import "ShiftTemplate.h"
 
 @interface ShiftTemplate ()
-{
-    // private instance variables
-    EKEventStore *_eventStore;
-}
-
-// private properties
-@property (nonatomic, readonly) EKEventStore *eventStore;
-
 // private methods
 + (NSString *)userDefaultCalendarIdentifier;
 @end
@@ -65,6 +57,29 @@
     _eventStore = [[EKEventStore alloc] init];
     
     return _eventStore;
+}
+
+- (EKEvent *)event
+{
+    EKEvent* event = [EKEvent eventWithEventStore:self.eventStore];
+    
+    event.title = self.title;
+    event.location = self.location;
+    event.calendar = self.calendar;
+    event.URL = [NSURL URLWithString:self.url];
+    event.notes = self.note;
+    
+    if (self.alarmFirstInterval)
+    {
+        [event addAlarm:[EKAlarm alarmWithRelativeOffset:[self.alarmFirstInterval doubleValue]]];
+        
+        if (self.alarmSecondInterval)
+        {
+            [event addAlarm:[EKAlarm alarmWithRelativeOffset:[self.alarmSecondInterval doubleValue]]];
+        }
+    }
+    
+    return event;
 }
 
 - (EKCalendar *)calendar

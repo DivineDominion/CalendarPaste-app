@@ -11,6 +11,9 @@
 #import <EventKit/EventKit.h>
 
 @interface ShiftTemplate : NSManagedObject
+{
+    EKEventStore *_eventStore;
+}
 
 @property (nonatomic, retain) NSNumber *displayOrder;
 
@@ -28,9 +31,12 @@
 @property (nonatomic, retain) NSString *url;
 @property (nonatomic, retain) NSString *note;
 
+@property (nonatomic, readonly) EKEventStore *eventStore;
 @property (nonatomic, readonly) EKCalendar *calendar;
 
 - (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes;
+
+- (EKEvent *)event;
 - (NSString *)calendarTitle;
 - (NSTimeInterval)durationAsTimeInterval;
 

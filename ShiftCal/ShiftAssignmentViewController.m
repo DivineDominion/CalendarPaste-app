@@ -30,6 +30,8 @@
 @property (nonatomic, retain) NSDate *startDate;
 @property (nonatomic, retain, readonly) NSDateFormatter *dateFormatter;
 
+- (NSDate *)endDate;
+
 - (void)done:(id)sender;
 - (void)cancel:(id)sender;
 @end
@@ -147,6 +149,12 @@
     return _dateFormatter;
 }
 
+- (NSDate *)endDate
+{
+    return [NSDate dateWithTimeInterval:self.shift.durationAsTimeInterval
+                              sinceDate:self.startDate];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -208,10 +216,7 @@
             {
                 cell.textLabel.text = @"Ends";
                 
-                NSTimeInterval interval = self.shift.durationAsTimeInterval;
-                NSDate *endDate = [NSDate dateWithTimeInterval:interval sinceDate:self.startDate];
-                
-                cell.detailTextLabel.text = [self.dateFormatter stringFromDate:endDate];
+                cell.detailTextLabel.text = [self.dateFormatter stringFromDate:[self endDate]];
             }
             break;
         }
@@ -243,6 +248,17 @@
 
 - (void)done:(id)sender
 {
+    EKEventStore *eventStore = self.shift.eventStore;
+    EKEvent *event           = [[self.shift event] retain];
+    
+    event.startDate = self.startDate;
+    event.endDate   = [self endDate];
+    
+    NSError *error = nil;
+    
+    BOOL success = [eventStore saveEvent:event span:EKSpanThisEvent commit:YES error:&error];
+    NSAssert(success, @"saving the event failed: %@", error);
+    
     [self.delegate shiftAssignmentViewController:self didCompleteWithAction:SCAssignmentViewActionSaved];
 }
 

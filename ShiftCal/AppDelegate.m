@@ -14,23 +14,38 @@
 
 // private properties
 @property (nonatomic, retain, readwrite) UINavigationController *navController;
+@property (nonatomic, retain, readwrite) EKEventStore *eventStore;
 
 @end
 
 
 @implementation AppDelegate
+@synthesize eventStore = _eventStore;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [self registerPreferenceDefaults];
+    self.eventStore = [[EKEventStore alloc] init];
     
+    // TODO display 'grant access' screen
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = [[[UIViewController alloc] init] autorelease];
     
-    ShiftOverviewController *viewController = [[ShiftOverviewController alloc] init];
-    self.navController  = [[UINavigationController alloc] initWithRootViewController:viewController];
-    [viewController release];
-    
-    self.window.rootViewController = self.navController;
+    [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+        if (granted)
+        {
+            [self registerPreferenceDefaults];
+            
+            ShiftOverviewController *viewController = [[ShiftOverviewController alloc] init];
+            self.navController  = [[UINavigationController alloc] initWithRootViewController:viewController];
+            [viewController release];
+            
+            self.window.rootViewController = self.navController;
+        }
+        else
+        {
+            NSLog(@"access (still) denied");
+        }
+    }];
     
     [self.window makeKeyAndVisible];
     return YES;
@@ -38,7 +53,9 @@
 
 - (void)dealloc
 {
-    [self.navController release];
+    [_navController release];
+    [_eventStore release];
+    
     [super dealloc];
 }
 
@@ -46,15 +63,12 @@
 
 - (void)registerPreferenceDefaults
 {
-    EKEventStore *eventStore = [[EKEventStore alloc] init];
-    
-    NSString *defaultCalendarIdentifier = [eventStore defaultCalendarForNewEvents].calendarIdentifier;
+    NSString *defaultCalendarIdentifier = [self.eventStore defaultCalendarForNewEvents].calendarIdentifier;
     NSDictionary *calendarDefaults      = [NSDictionary dictionaryWithObject:defaultCalendarIdentifier
                                                                       forKey:PREFS_DEFAULT_CALENDAR_KEY];
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:calendarDefaults];
 
-    [eventStore release];
 }
 
 

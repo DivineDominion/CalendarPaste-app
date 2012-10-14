@@ -12,8 +12,12 @@
 @class ShiftOverviewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
+{
+    EKEventStore *_eventStore;
+}
 
 // public properties
 @property (nonatomic, retain) UIWindow *window;
+@property (nonatomic, retain, readonly) EKEventStore *eventStore;
 
 @end
