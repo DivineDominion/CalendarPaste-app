@@ -28,27 +28,41 @@
     
     // TODO display 'grant access' screen
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = [[[UIViewController alloc] init] autorelease];
-    
-    [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-        if (granted)
-        {
-            [self registerPreferenceDefaults];
-            
-            ShiftOverviewController *viewController = [[ShiftOverviewController alloc] init];
-            self.navController  = [[UINavigationController alloc] initWithRootViewController:viewController];
-            [viewController release];
-            
-            self.window.rootViewController = self.navController;
-        }
-        else
-        {
-            NSLog(@"access (still) denied");
-        }
-    }];
-    
+
+    if ([EKEventStore instancesRespondToSelector:@selector(requestAccessToEntityType:completion:)])
+    {
+        // TODO fallback to "please grant access" screen
+        self.window.rootViewController = [[[UIViewController alloc] init] autorelease];
+        
+        [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+            if (granted)
+            {
+                [self setupOverviewController];
+            }
+            else
+            {
+                NSLog(@"access (still) denied");
+            }
+        }];
+    }
+    else
+    {
+        [self setupOverviewController];
+    }
+
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)setupOverviewController
+{
+    [self registerPreferenceDefaults];
+    
+    ShiftOverviewController *viewController = [[ShiftOverviewController alloc] init];
+    self.navController  = [[UINavigationController alloc] initWithRootViewController:viewController];
+    [viewController release];
+    
+    self.window.rootViewController = self.navController;    
 }
 
 - (void)dealloc
