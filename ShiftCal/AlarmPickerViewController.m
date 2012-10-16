@@ -103,8 +103,8 @@
     [_alarms release];
     [_selectionColor release];
     
-    [self.selectedIndexPath release];
-    [self.dateTranslator release];
+    [_selectedIndexPath release];
+    [_dateTranslator release];
     
     [super dealloc];
 }

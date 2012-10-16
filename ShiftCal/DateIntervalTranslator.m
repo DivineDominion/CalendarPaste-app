@@ -43,8 +43,8 @@
 
 - (void)dealloc
 {
-    [self.calendar release];
-    [self.referenceDate release];
+    [_calendar release];
+    [_referenceDate release];
     
     [super dealloc];
 }

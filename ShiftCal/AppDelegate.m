@@ -16,6 +16,7 @@
 @property (nonatomic, retain, readwrite) UINavigationController *navController;
 @property (nonatomic, retain, readwrite) EKEventStore *eventStore;
 
+- (void)setupOverviewController;
 @end
 
 
