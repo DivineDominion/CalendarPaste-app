@@ -89,8 +89,8 @@
     self.tableView.sectionHeaderHeight = 5.0f;
     self.tableView.sectionFooterHeight = 5.0f;
     
-    // top margin:  22px = 1/2 200px (visible content height) - 1/2 146px (cell's heights) - 5px section top margin
-    CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, SCREEN_WIDTH, 22.0f);
+    // top margin:  15px = 1/2 200px (visible content height) - 1/2 160px (cell's heights) - 5px section top margin
+    CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, SCREEN_WIDTH, 15.0f);
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:tableHeaderFrame];
     
     CGRect pickerFrame = CGRectMake(0.0f, SCREEN_HEIGHT, SCREEN_WIDTH, PICKER_HEIGHT);
@@ -176,6 +176,16 @@
     return 0;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (SECTION_TITLE == [indexPath section])
+    {
+        return 62.0;
+    }
+    
+    return 42.0;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -197,8 +207,12 @@
     switch (section)
     {
         case SECTION_TITLE:
-            cell.textLabel.text = @"Title";
-            cell.detailTextLabel.text = self.shift.title;
+            cell.textLabel.numberOfLines = 2;
+            cell.textLabel.text = @"Title\nCalendar";
+            
+            cell.detailTextLabel.numberOfLines = 2;
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\n%@", self.shift.title, self.shift.calendarTitle];
+            
             break;
         case SECTION_STARTS_ENDS:
         {
