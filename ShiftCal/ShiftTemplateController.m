@@ -72,16 +72,39 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
 {
     ShiftTemplate *shift = nil;
     
-    for (NSInteger i = 0; i < 5; i++)
-    {
-        shift = (ShiftTemplate *)[NSEntityDescription insertNewObjectForEntityForName:kShiftEntityName
-                                                               inManagedObjectContext:self.managedObjectContext];
-        
-        shift.title        = [NSString stringWithFormat:@"Test %d", i];
-        shift.durHours     = [NSNumber numberWithInt:2];
-        shift.durMinutes   = [NSNumber numberWithInt:34];
-        shift.displayOrder = [NSNumber numberWithInt:i];
-    }
+    shift = (ShiftTemplate *)[NSEntityDescription insertNewObjectForEntityForName:kShiftEntityName
+                                                           inManagedObjectContext:self.managedObjectContext];
+    
+    shift.title        = @"Work Shift";
+    shift.durHours     = [NSNumber numberWithInt:4];
+    shift.durMinutes   = [NSNumber numberWithInt:30];
+    shift.displayOrder = [NSNumber numberWithInt:0];
+    shift.location     = @"Baker Street 15, London";
+    
+    shift = (ShiftTemplate *)[NSEntityDescription insertNewObjectForEntityForName:kShiftEntityName
+                                                           inManagedObjectContext:self.managedObjectContext];
+    
+    shift.title        = @"Team Meeting";
+    shift.durHours     = [NSNumber numberWithInt:2];
+    shift.durMinutes   = [NSNumber numberWithInt:0];
+    shift.displayOrder = [NSNumber numberWithInt:1];
+    
+    shift = (ShiftTemplate *)[NSEntityDescription insertNewObjectForEntityForName:kShiftEntityName
+                                                           inManagedObjectContext:self.managedObjectContext];
+    
+    shift.title        = @"Training";
+    shift.durHours     = [NSNumber numberWithInt:1];
+    shift.durMinutes   = [NSNumber numberWithInt:30];
+    shift.displayOrder = [NSNumber numberWithInt:2];
+    shift.location     = @"Baker Street 15, London";
+    
+    shift = (ShiftTemplate *)[NSEntityDescription insertNewObjectForEntityForName:kShiftEntityName
+                                                           inManagedObjectContext:self.managedObjectContext];
+    
+    shift.title        = @"Carwash";
+    shift.durHours     = [NSNumber numberWithInt:0];
+    shift.durMinutes   = [NSNumber numberWithInt:30];
+    shift.displayOrder = [NSNumber numberWithInt:3];
     
     NSError *error = nil;
     BOOL success   = [self.managedObjectContext save:&error];
