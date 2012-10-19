@@ -31,6 +31,9 @@
 @property (nonatomic, retain) UILabel *minutesCaptionLabel;
 
 - (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes;
+
++ (UILabel *)timeLabelWithLeftIndent:(float)leftIndent;
++ (UILabel *)captionLabel:(NSString *)caption leftIndent:(float)leftIndent;
 @end
 
 @implementation DurationLabel
@@ -52,11 +55,11 @@
             leftIndent = 5.0f;
         }
         
-        self.hoursLabel   = [self timeLabelWithLeftIndent:leftIndent];
-        self.minutesLabel = [self timeLabelWithLeftIndent:SECOND_LABEL_X];
+        self.hoursLabel   = [DurationLabel timeLabelWithLeftIndent:leftIndent];
+        self.minutesLabel = [DurationLabel timeLabelWithLeftIndent:SECOND_LABEL_X];
         
-        self.hoursCaptionLabel   = [self captionLabel:@"hrs" leftIndent:leftIndent];
-        self.minutesCaptionLabel = [self captionLabel:@"min" leftIndent:SECOND_LABEL_X];
+        self.hoursCaptionLabel   = [DurationLabel captionLabel:@"hrs" leftIndent:leftIndent];
+        self.minutesCaptionLabel = [DurationLabel captionLabel:@"min" leftIndent:SECOND_LABEL_X];
         
         [self addSubview:self.hoursLabel];
         [self addSubview:self.hoursCaptionLabel];
@@ -66,37 +69,6 @@
     
     return self;
 }
-
-- (UILabel *)timeLabelWithLeftIndent:(float)leftIndent
-{
-    UILabel *label         = [[UILabel alloc] initWithFrame:CGRectMake(leftIndent, TIME_LABEL_Y, LABEL_WIDTH, TIME_LABEL_HEIGHT)];
-    UIFont *durationFont   = [UIFont boldSystemFontOfSize:32.0];
-    UIColor *durationColor = [UIColor colorWithRed:128.0/256 green:151.0/256 blue:185.0/256 alpha:1.0];
-    
-    label.backgroundColor = [UIColor clearColor];
-    label.font            = durationFont;
-    label.textColor       = durationColor;
-    label.textAlignment   = NSTextAlignmentCenter;
-    
-    return [label autorelease];
-}
-
-- (UILabel *)captionLabel:(NSString *)caption leftIndent:(float)leftIndent
-{
-    UILabel *label      = [[UILabel alloc] initWithFrame:CGRectMake(leftIndent, CAPTION_LABEL_Y, LABEL_WIDTH, CAPTION_LABEL_HEIGHT)];
-    UIFont *labelFont   = [UIFont boldSystemFontOfSize:16.0];
-    UIColor *labelColor = [UIColor grayColor];
-    
-    label.backgroundColor = [UIColor clearColor];
-    label.font            = labelFont;
-    label.textColor       = labelColor;
-    label.textAlignment   = NSTextAlignmentCenter;
-    
-    label.text = caption;
-    
-    return [label autorelease];
-}
-
 
 - (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes
 {
@@ -113,6 +85,36 @@
     }
     
     [self setNeedsLayout]; // TODO call only when 2-digit hours appear/disappear
+}
+
++ (UILabel *)timeLabelWithLeftIndent:(float)leftIndent
+{
+    UILabel *label         = [[UILabel alloc] initWithFrame:CGRectMake(leftIndent, TIME_LABEL_Y, LABEL_WIDTH, TIME_LABEL_HEIGHT)];
+    UIFont *durationFont   = [UIFont boldSystemFontOfSize:32.0];
+    UIColor *durationColor = [UIColor colorWithRed:128.0/256 green:151.0/256 blue:185.0/256 alpha:1.0];
+    
+    label.backgroundColor = [UIColor clearColor];
+    label.font            = durationFont;
+    label.textColor       = durationColor;
+    label.textAlignment   = NSTextAlignmentCenter;
+    
+    return [label autorelease];
+}
+
++ (UILabel *)captionLabel:(NSString *)caption leftIndent:(float)leftIndent
+{
+    UILabel *label      = [[UILabel alloc] initWithFrame:CGRectMake(leftIndent, CAPTION_LABEL_Y, LABEL_WIDTH, CAPTION_LABEL_HEIGHT)];
+    UIFont *labelFont   = [UIFont boldSystemFontOfSize:16.0];
+    UIColor *labelColor = [UIColor grayColor];
+    
+    label.backgroundColor = [UIColor clearColor];
+    label.font            = labelFont;
+    label.textColor       = labelColor;
+    label.textAlignment   = NSTextAlignmentCenter;
+    
+    label.text = caption;
+    
+    return [label autorelease];
 }
 
 @end
