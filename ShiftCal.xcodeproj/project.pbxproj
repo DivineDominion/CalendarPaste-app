@@ -23,6 +23,7 @@
 		608F6FE415FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */; };
 		608F6FE515FF78C4001C8217 /* UIPreferencesWhiteCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */; };
 		608F6FE615FF78C4001C8217 /* UIPreferencesWhiteCheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 608F6FE215FF78C4001C8217 /* UIPreferencesWhiteCheck@2x.png */; };
+		609EF760163188DA003E4BB3 /* ShiftOverviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */; };
 		60AAB7CC15C0926D002114B9 /* ShiftTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */; };
 		60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB81215C13297002114B9 /* ShiftOverviewController.m */; };
 		60BB96A215C08EB900801105 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A115C08EB900801105 /* UIKit.framework */; };
@@ -75,6 +76,8 @@
 		608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPreferencesBlueCheck@2x.png"; sourceTree = "<group>"; };
 		608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesWhiteCheck.png; sourceTree = "<group>"; };
 		608F6FE215FF78C4001C8217 /* UIPreferencesWhiteCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPreferencesWhiteCheck@2x.png"; sourceTree = "<group>"; };
+		609EF75E163188DA003E4BB3 /* ShiftOverviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftOverviewCell.h; sourceTree = "<group>"; };
+		609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftOverviewCell.m; sourceTree = "<group>"; };
 		60AAB7CA15C0926D002114B9 /* ShiftTemplateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplateTests.h; sourceTree = "<group>"; };
 		60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplateTests.m; sourceTree = "<group>"; };
 		60AAB81115C13297002114B9 /* ShiftOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftOverviewController.h; sourceTree = "<group>"; };
@@ -224,6 +227,8 @@
 				605A96B616171D980008B1C6 /* Model */,
 				60AAB81115C13297002114B9 /* ShiftOverviewController.h */,
 				60AAB81215C13297002114B9 /* ShiftOverviewController.m */,
+				609EF75E163188DA003E4BB3 /* ShiftOverviewCell.h */,
+				609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */,
 				606042A81625D2A000BA5EEC /* MBProgressHUD.h */,
 				606042A91625D2A000BA5EEC /* MBProgressHUD.m */,
 				60BB96B015C08EB900801105 /* AppDelegate.h */,
@@ -414,6 +419,7 @@
 				605A96BD161CAC660008B1C6 /* ShiftTemplateCollection.m in Sources */,
 				6060426216245AB000BA5EEC /* ShiftAssignmentViewController.m in Sources */,
 				606042AA1625D2A000BA5EEC /* MBProgressHUD.m in Sources */,
+				609EF760163188DA003E4BB3 /* ShiftOverviewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
