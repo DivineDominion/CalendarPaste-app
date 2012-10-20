@@ -34,6 +34,8 @@
 
 - (void)done:(id)sender;
 - (void)cancel:(id)sender;
+
++ (NSDate *)roundedDate;
 @end
 
 @implementation ShiftAssignmentViewController
@@ -64,7 +66,7 @@
     
     if (self) {
         self.shift = shift;
-        self.startDate = [NSDate date]; // TODO round to quarter hours
+        self.startDate = [ShiftAssignmentViewController roundedDate];
     }
     
     return self;
@@ -281,4 +283,36 @@
     [self.delegate shiftAssignmentViewController:self didCompleteWithAction:SCAssignmentViewActionCanceled];
 }
 
+#pragma mark Utility methods
+
++ (NSDate *)roundedDate
+{
+    static NSUInteger kDateComponents = (NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSEraCalendarUnit | NSYearCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit);
+    
+    NSCalendar *calendar   = [NSCalendar currentCalendar];
+    NSDate *now            = [NSDate date];
+    NSDateComponents *comp = [calendar components:kDateComponents fromDate:now];
+    
+    [comp setSecond:0];
+    
+    if (comp.minute >= 45)
+    {
+        [comp setMinute:0];
+        [comp setHour:comp.hour + 1];
+    }
+    else if (comp.minute >= 30)
+    {
+        [comp setMinute:45];
+    }
+    else if (comp.minute >= 15)
+    {
+        [comp setMinute:30];
+    }
+    else if (comp.minute >= 0)
+    {
+        [comp setMinute:15];
+    }
+    
+    return [calendar dateFromComponents:comp];
+}
 @end
