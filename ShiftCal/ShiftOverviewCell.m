@@ -98,6 +98,8 @@
     label.textColor       = durationColor;
     label.textAlignment   = NSTextAlignmentCenter;
     
+    label.highlightedTextColor = [UIColor whiteColor];
+    
     return [label autorelease];
 }
 
@@ -111,6 +113,8 @@
     label.font            = labelFont;
     label.textColor       = labelColor;
     label.textAlignment   = NSTextAlignmentCenter;
+    
+    label.highlightedTextColor = [UIColor whiteColor];
     
     label.text = caption;
     
@@ -147,6 +151,8 @@
     
     if (self)
     {
+        self.backgroundColor = [UIColor darkGrayColor];
+        
         self.durationLabel = [[[DurationLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0, 80.0f, CELL_HEIGHT)] autorelease];
         
         self.textLabel.font = [UIFont boldSystemFontOfSize:22.0];
@@ -155,9 +161,12 @@
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
         
         self.calendarLabel = [[[UILabel alloc] initWithFrame:CGRectMake(215.0f, 0.0, 100.0f, 18.0f)] autorelease];
+        self.calendarLabel.backgroundColor = [UIColor clearColor];
+        self.calendarLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         self.calendarLabel.textAlignment = NSTextAlignmentRight;
         self.calendarLabel.font = [UIFont boldSystemFontOfSize:12.0];
         self.calendarLabel.textColor = [UIColor colorWithRed:120.0/256 green:120.0/256 blue:170.0/256 alpha:1.0];
+        self.calendarLabel.highlightedTextColor = [UIColor whiteColor];
         
         [self.contentView addSubview:self.durationLabel];
         [self.contentView addSubview:self.calendarLabel];
@@ -194,18 +203,24 @@
     
     [super layoutSubviews];
     
-    CGRect textFrame = CGRectMake(100.0f, 8.0f, kTextWidth, 30.0f);
-    self.textLabel.frame = textFrame;
+    if (self.editing)
+    {
+        [UIView animateWithDuration:0.5 animations:^{
+            self.calendarLabel.alpha = 0.0;
+            self.detailTextLabel.alpha = 0.0;
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.5 animations:^{
+            self.calendarLabel.alpha = 1.0;
+            self.detailTextLabel.alpha = 1.0;
+        }];
+    }
     
-    CGRect detailFrame = CGRectMake(100.0f, 32.0f, kTextWidth, 18.0f);
-    self.detailTextLabel.frame = detailFrame;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-    
-    // TODO Configure the view for the selected state
+    // Override default frame
+    self.textLabel.frame       = CGRectMake(100.0f,  8.0f, kTextWidth, 30.0f);
+    self.detailTextLabel.frame = CGRectMake(100.0f, 32.0f, kTextWidth, 18.0f);
 }
 
 + (float)cellHeight
