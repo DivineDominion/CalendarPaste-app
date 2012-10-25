@@ -21,9 +21,9 @@
 
 - (NSUInteger)countOfShifts;
 - (ShiftTemplate *)shiftAtIndex:(NSUInteger)index;
-- (NSInteger)addShiftWithAttributs:(NSDictionary *)shiftAttributes;
+- (NSInteger)addShiftWithAttributes:(NSDictionary *)shiftAttributes;
 - (void)removeShiftAtIndex:(NSUInteger)index;
-- (void)replaceShiftAtIndex:(NSUInteger)index withShiftWithAttributs:(NSDictionary *)shiftAttributes;
+- (void)replaceShiftAtIndex:(NSUInteger)index withShiftWithAttributes:(NSDictionary *)shiftAttributes;
 - (void)moveObjectFromIndex:(NSUInteger)from toIndex:(NSUInteger)to;
 - (void)persistOrder;
 

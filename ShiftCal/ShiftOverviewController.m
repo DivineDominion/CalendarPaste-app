@@ -366,7 +366,7 @@
 - (void)addShiftWithAttributs:(NSDictionary *)shiftAttributes
 {
     // TODO refactor into notification
-    NSInteger row = [self.shiftCollection addShiftWithAttributs:shiftAttributes];
+    NSInteger row = [self.shiftCollection addShiftWithAttributes:shiftAttributes];
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
@@ -374,7 +374,7 @@
 
 - (void)replaceShiftAtRow:(NSInteger)row withShiftWithAttributes:(NSDictionary *)shiftAttributes
 {
-    [self.shiftCollection replaceShiftAtIndex:row withShiftWithAttributs:shiftAttributes];
+    [self.shiftCollection replaceShiftAtIndex:row withShiftWithAttributes:shiftAttributes];
 
     // TODO refactor into notifications
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];

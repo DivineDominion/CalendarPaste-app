@@ -185,21 +185,21 @@
 
 - (void)setShift:(ShiftTemplate *)shift
 {
-    if (shift != _shift)
-    {
-        [_shift release];
-        _shift = [shift retain];
-        
-        self.textLabel.text = shift.title;
-        self.detailTextLabel.text = shift.location;
-        self.calendarLabel.text = shift.calendarTitle;
-        
-        [self.durationLabel setDurationHours:[shift.durHours integerValue] andMinutes:[shift.durMinutes integerValue]];
-    }
+    [_shift release];
+    _shift = [shift retain];
+    
+    self.textLabel.text = shift.title;
+    self.detailTextLabel.text = shift.location;
+    self.calendarLabel.text = shift.calendarTitle;
+    
+    [self.durationLabel setDurationHours:[shift.durHours integerValue] andMinutes:[shift.durMinutes integerValue]];
 }
 
 - (void)layoutSubviews {
-    static double kTextWidth = 200.0f;
+    static double kTextWidth = 210.0f;
+    static double kTextWidthShort = 150.0f;
+    
+    double currentTextWidth = kTextWidth;
     
     [super layoutSubviews];
     
@@ -209,6 +209,8 @@
             self.calendarLabel.alpha = 0.0;
             self.detailTextLabel.alpha = 0.0;
         }];
+        
+        currentTextWidth = kTextWidthShort;
     }
     else
     {
@@ -219,8 +221,8 @@
     }
     
     // Override default frame
-    self.textLabel.frame       = CGRectMake(100.0f,  8.0f, kTextWidth, 30.0f);
-    self.detailTextLabel.frame = CGRectMake(100.0f, 32.0f, kTextWidth, 18.0f);
+    self.textLabel.frame       = CGRectMake(100.0f,  8.0f, currentTextWidth, 30.0f);
+    self.detailTextLabel.frame = CGRectMake(100.0f, 32.0f, currentTextWidth, 18.0f);
 }
 
 + (float)cellHeight

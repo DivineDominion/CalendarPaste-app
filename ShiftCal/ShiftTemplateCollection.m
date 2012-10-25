@@ -43,7 +43,7 @@
     return [self.shifts count];
 }
 
-- (NSInteger)addShiftWithAttributs:(NSDictionary *)shiftAttributes
+- (NSInteger)addShiftWithAttributes:(NSDictionary *)shiftAttributes
 {
     ShiftTemplate *shift = [self.shiftTemplateController importShiftByAttributeDictionary:shiftAttributes];
     
@@ -61,7 +61,7 @@
     return index;
 }
 
-- (void)replaceShiftAtIndex:(NSUInteger)index withShiftWithAttributs:(NSDictionary *)shiftAttributes
+- (void)replaceShiftAtIndex:(NSUInteger)index withShiftWithAttributes:(NSDictionary *)shiftAttributes
 {
     ShiftTemplate *shift = [self shiftAtIndex:index];
     
