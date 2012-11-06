@@ -168,7 +168,7 @@
     if (self)
     {
         // Controller model equals `self.eventStore.calendars`: amount and order are used
-        self.eventStore = [[EKEventStore alloc] init];
+        self.eventStore = [[[EKEventStore alloc] init] autorelease];
         
         [self loadUserDefaultCellIndexPath];
         
@@ -345,7 +345,7 @@
         view.frame = frame;
     }
     
-    return view;
+    return [view autorelease];
 }
 
 - (EKCalendar *)calendarForIndexPath:(NSIndexPath *)indexPath

@@ -56,6 +56,8 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
     NSAssert(count != NSNotFound, @"Could not count shifts, error: %@", error);
     
+    [request release];
+    
     return count;
 }
 
@@ -79,7 +81,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     shift.durHours     = [NSNumber numberWithInt:4];
     shift.durMinutes   = [NSNumber numberWithInt:30];
     shift.displayOrder = [NSNumber numberWithInt:0];
-    shift.location     = @"Baker Street 15, London";
+    shift.location     = @"23 Savile Row, London";
     
     shift = (ShiftTemplate *)[NSEntityDescription insertNewObjectForEntityForName:kShiftEntityName
                                                            inManagedObjectContext:self.managedObjectContext];
@@ -96,7 +98,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     shift.durHours     = [NSNumber numberWithInt:1];
     shift.durMinutes   = [NSNumber numberWithInt:30];
     shift.displayOrder = [NSNumber numberWithInt:2];
-    shift.location     = @"Baker Street 15, London";
+    shift.location     = @"15 Baker Street, London";
     
     shift = (ShiftTemplate *)[NSEntityDescription insertNewObjectForEntityForName:kShiftEntityName
                                                            inManagedObjectContext:self.managedObjectContext];

@@ -93,7 +93,7 @@
     
     // top margin:  15px = 1/2 200px (visible content height) - 1/2 160px (cell's heights) - 5px section top margin
     CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, SCREEN_WIDTH, 15.0f);
-    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:tableHeaderFrame];
+    self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:tableHeaderFrame] autorelease];
     
     CGRect pickerFrame = CGRectMake(0.0f, SCREEN_HEIGHT, SCREEN_WIDTH, PICKER_HEIGHT);
     _datePicker = [[UIDatePicker alloc] initWithFrame:pickerFrame];
@@ -199,7 +199,7 @@
     
     if (!cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
     }
     
     cell.textLabel.textColor = [UIColor grayColor];
@@ -274,6 +274,8 @@
     
     BOOL success = [eventStore saveEvent:event span:EKSpanThisEvent commit:YES error:&error];
     NSAssert(success, @"saving the event failed: %@", error);
+    
+    [event release];
     
     [self.delegate shiftAssignmentViewController:self didCompleteWithAction:SCAssignmentViewActionSaved];
 }

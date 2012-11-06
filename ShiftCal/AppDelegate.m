@@ -25,10 +25,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.eventStore = [[EKEventStore alloc] init];
+    self.eventStore = [[[EKEventStore alloc] init] autorelease];
     
     // TODO display 'grant access' screen
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
 
     if ([EKEventStore instancesRespondToSelector:@selector(requestAccessToEntityType:completion:)])
     {
@@ -60,7 +60,7 @@
     [self registerPreferenceDefaults];
     
     ShiftOverviewController *viewController = [[ShiftOverviewController alloc] init];
-    self.navController  = [[UINavigationController alloc] initWithRootViewController:viewController];
+    self.navController  = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
     [viewController release];
     
     self.window.rootViewController = self.navController;    

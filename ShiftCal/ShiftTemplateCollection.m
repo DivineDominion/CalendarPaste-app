@@ -18,7 +18,7 @@
     
     if (self)
     {
-        self.shiftTemplateController = [[ShiftTemplateController alloc] init];
+        self.shiftTemplateController = [[[ShiftTemplateController alloc] init] autorelease];
         
         NSMutableArray *mutableShifts = [[self.shiftTemplateController shifts] mutableCopy];
         self.shifts = mutableShifts;

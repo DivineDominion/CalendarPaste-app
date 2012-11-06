@@ -112,8 +112,6 @@
     [_pickerWrap addSubview:hourLabel];
     [_pickerWrap addSubview:minLabel];
     
-    [hourLabel release];
-    [minLabel release];
     
     [self.tableView addSubview:_pickerWrap];
 }
@@ -142,7 +140,7 @@
     theLabel.backgroundColor = [UIColor clearColor];
     theLabel.userInteractionEnabled = NO;
 
-    return theLabel;
+    return [theLabel autorelease];
 }
 
 - (void)dealloc

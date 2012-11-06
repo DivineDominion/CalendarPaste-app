@@ -296,14 +296,14 @@
         if (shift)
         {
             // Loads an existing shift into the scratchpad context
-            self.shiftData = [[ShiftData alloc] initWithAttributes:[self.shiftTemplateController attributeDictionaryForShift:shift]];
+            self.shiftData = [[[ShiftData alloc] initWithAttributes:[self.shiftTemplateController attributeDictionaryForShift:shift]] autorelease];
             
             _isNewEntry = NO;
         }
         else
         {
             // Creates a temporary shift into the scratchpad context
-            self.shiftData = [[ShiftData alloc] initWithAttributes:[self.shiftTemplateController defaultAttributeDictionary]];
+            self.shiftData = [[[ShiftData alloc] initWithAttributes:[self.shiftTemplateController defaultAttributeDictionary]] autorelease];
 
             _isNewEntry = YES;
         }
@@ -370,8 +370,8 @@
     
     self.tableView.sectionHeaderHeight = 5.0f;
     self.tableView.sectionFooterHeight = 5.0f;
-    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 5.0)];
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 5.0)];
+    self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 5.0)] autorelease];
+    self.tableView.tableFooterView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 5.0)] autorelease];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -890,10 +890,14 @@
 
 - (void)save:(id)sender
 {
+    // Safely unfocus title text field so it doesn't reset
+    // the title again upon view disposal
+    [[self.tableView viewWithTag:TAG_TEXTFIELD_TITLE] endEditing:YES];
+    
     if (self.modificationDelegate)
     {
         // Default internally to a meaningful title
-        if (self.shiftData.title.length == 0)
+        if (self.shiftData.title == nil || self.shiftData.title.length == 0)
         {
             self.shiftData.title = @"New Shift";
         }
