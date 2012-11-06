@@ -17,6 +17,8 @@
 #define CAPTION_LABEL_Y (TIME_LABEL_Y + TIME_LABEL_HEIGHT - 5.0f)
 #define CAPTION_LABEL_HEIGHT 20.0f
 
+BOOL _enableTwoDigits = NO;
+
 @interface DurationLabel : UIView
 {
     UILabel *_hoursLabel;
@@ -34,6 +36,12 @@
 
 + (UILabel *)timeLabelWithLeftIndent:(float)leftIndent;
 + (UILabel *)captionLabel:(NSString *)caption leftIndent:(float)leftIndent;
+
+- (void)compact;
+- (void)expand;
+
++ (void)setEnableLayoutTwoDigits:(BOOL)enable;
++ (BOOL)hasTwoDigits;
 @end
 
 @implementation DurationLabel
@@ -48,18 +56,17 @@
     
     if (self)
     {
-        float leftIndent = 0.0;
-        BOOL oneDigitHoursOnly = YES; // TODO find out whether any value has 2 digits
-        if (oneDigitHoursOnly)
+        float leftOffset = 0.0;
+        if ([DurationLabel hasTwoDigits])
         {
-            leftIndent = 5.0f;
+            leftOffset = 5.0f;
         }
+
+        self.hoursLabel   = [DurationLabel timeLabelWithLeftIndent:5.0f];
+        self.minutesLabel = [DurationLabel timeLabelWithLeftIndent:SECOND_LABEL_X + leftOffset];
         
-        self.hoursLabel   = [DurationLabel timeLabelWithLeftIndent:leftIndent];
-        self.minutesLabel = [DurationLabel timeLabelWithLeftIndent:SECOND_LABEL_X];
-        
-        self.hoursCaptionLabel   = [DurationLabel captionLabel:@"hrs" leftIndent:leftIndent];
-        self.minutesCaptionLabel = [DurationLabel captionLabel:@"min" leftIndent:SECOND_LABEL_X];
+        self.hoursCaptionLabel   = [DurationLabel captionLabel:@"hrs" leftIndent:5.0f];
+        self.minutesCaptionLabel = [DurationLabel captionLabel:@"min" leftIndent:SECOND_LABEL_X + leftOffset];
         
         [self addSubview:self.hoursLabel];
         [self addSubview:self.hoursCaptionLabel];
@@ -121,6 +128,68 @@
     return [label autorelease];
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+//    // Nudge second label to the right when hours become wider
+//    float leftOffset = 0.0;
+//    if ([DurationLabel hasTwoDigits])
+//    {
+//        leftOffset = 5.0f;
+//    }
+//    
+//    CGRect minutesLabelFrame = self.minutesLabel.frame;
+//    minutesLabelFrame.origin.x = SECOND_LABEL_X + leftOffset;
+//    self.minutesLabel.frame = minutesLabelFrame;
+//    
+//    CGRect minutesCaptionLabelFrame = self.minutesCaptionLabel.frame;
+//    minutesCaptionLabelFrame.origin.x = SECOND_LABEL_X + leftOffset;
+//    self.minutesCaptionLabel.frame = minutesCaptionLabelFrame;
+}
+
+- (void)compact
+{
+    // Nudge second label to the right when hours become wider
+    float leftOffset = 0.0;
+    
+    [UIView animateWithDuration:0.5f animations:^{
+        CGRect minutesLabelFrame = self.minutesLabel.frame;
+        minutesLabelFrame.origin.x = SECOND_LABEL_X + leftOffset;
+        self.minutesLabel.frame = minutesLabelFrame;
+        
+        CGRect minutesCaptionLabelFrame = self.minutesCaptionLabel.frame;
+        minutesCaptionLabelFrame.origin.x = SECOND_LABEL_X + leftOffset;
+        self.minutesCaptionLabel.frame = minutesCaptionLabelFrame;
+    }];
+}
+
+- (void)expand
+{
+    // Nudge second label to the right when hours become wider
+    float leftOffset = 5.0;
+    
+    [UIView animateWithDuration:0.5f animations:^{
+        CGRect minutesLabelFrame = self.minutesLabel.frame;
+        minutesLabelFrame.origin.x = SECOND_LABEL_X + leftOffset;
+        self.minutesLabel.frame = minutesLabelFrame;
+        
+        CGRect minutesCaptionLabelFrame = self.minutesCaptionLabel.frame;
+        minutesCaptionLabelFrame.origin.x = SECOND_LABEL_X + leftOffset;
+        self.minutesCaptionLabel.frame = minutesCaptionLabelFrame;
+    }];
+}
+
++ (BOOL)hasTwoDigits
+{
+    return _enableTwoDigits;
+}
+
++ (void)setEnableLayoutTwoDigits:(BOOL)enable
+{
+    _enableTwoDigits = enable;
+}
+
 @end
 
 @interface ShiftOverviewCell ()
@@ -139,6 +208,26 @@
 @synthesize shift = _shift;
 @synthesize durationLabel = _durationLabel;
 @synthesize calendarLabel = _calendarLabel;
+
++ (void)enableLayoutTwoDigits
+{
+    [DurationLabel setEnableLayoutTwoDigits:YES];
+}
+
++ (void)disableLayoutTwoDigits
+{
+    [DurationLabel setEnableLayoutTwoDigits:NO];
+}
+
+- (void)compactLabels
+{
+    [self.durationLabel compact];
+}
+
+- (void)expandLabels
+{
+    [self.durationLabel expand];
+}
 
 - (id)initAndReuseIdentifier:(NSString *)reuseIdentifier
 {

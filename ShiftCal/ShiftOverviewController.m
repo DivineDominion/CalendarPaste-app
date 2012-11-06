@@ -103,7 +103,7 @@
 @implementation AddCommand
 - (void)execute
 {
-    [self.target addShiftWithAttributs:self.shiftAttributes];
+    [self.target addShiftWithAttributes:self.shiftAttributes];
     [self.target modificationCommandFinished:self];
 }
 @end
@@ -115,11 +115,13 @@
     // private instance variables
     ModificationCommand *_modificationCommand;
     ShiftTemplateCollection *_shiftCollection;
+    NSUInteger _longHoursCount;
 }
 
 // private properties
 @property (nonatomic, retain) ModificationCommand *modificationCommand;
 @property (nonatomic, retain) ShiftTemplateCollection *shiftCollection;
+@property (nonatomic, assign) NSUInteger longHoursCount;
 
 // private methods
 - (void)calloutCell:(NSIndexPath *)indexPath;
@@ -130,6 +132,7 @@
 @implementation ShiftOverviewController
 @synthesize modificationCommand = _modificationCommand;
 @synthesize shiftCollection = _shiftCollection;
+@synthesize longHoursCount = _longHoursCount;
 
 - (id)init
 {
@@ -143,6 +146,17 @@
     if (self)
     {
         self.shiftCollection = [[[ShiftTemplateCollection alloc] init] autorelease];
+        
+        // Count hour values with 2 digits
+        self.longHoursCount = 0;
+        
+        [self.shiftCollection.shifts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            ShiftTemplate *shift = obj;
+            if ([shift.durHours integerValue] >= 10)
+            {
+                self.longHoursCount++;
+            }
+        }];
     }
     
     return self;
@@ -154,6 +168,37 @@
     [_shiftCollection release];
     
     [super dealloc];
+}
+
+- (void)setLongHoursCount:(NSUInteger)countLongHours
+{
+    // Update the labels on edge cases
+    if (_longHoursCount == 0 && countLongHours > 0)
+    {
+        [ShiftOverviewCell enableLayoutTwoDigits];
+        [self changeCellLabels:NO];
+    }
+    else if (countLongHours == 0 && _longHoursCount > 0)
+    {
+        [ShiftOverviewCell disableLayoutTwoDigits];
+        [self changeCellLabels:YES];
+    }
+    
+    _longHoursCount = countLongHours;
+}
+
+- (void)changeCellLabels:(BOOL)compact
+{
+    for (ShiftOverviewCell* cell in [self.tableView visibleCells])
+    {
+        if (compact)
+        {
+            [cell compactLabels];
+        }
+        else {
+            [cell expandLabels];
+        }
+    }
 }
 
 #pragma mark - View callbacks
@@ -227,7 +272,7 @@
     
     if (!cell)
     {
-        cell = [[ShiftOverviewCell alloc] initAndReuseIdentifier:kCellIdentifier];
+        cell = [[[ShiftOverviewCell alloc] initAndReuseIdentifier:kCellIdentifier] autorelease];
     }
     
     ShiftTemplate *shift = [self.shiftCollection shiftAtIndex:row];
@@ -293,8 +338,7 @@
 
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [self.shiftCollection removeShiftAtIndex:row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        [self deleteShiftAtRow:row];
     }
 }
 
@@ -363,8 +407,13 @@
     }
 }
 
-- (void)addShiftWithAttributs:(NSDictionary *)shiftAttributes
+- (void)addShiftWithAttributes:(NSDictionary *)shiftAttributes
 {
+    if ([[shiftAttributes objectForKey:@"durHours"] integerValue] >= 10)
+    {
+        self.longHoursCount++;
+    }
+    
     // TODO refactor into notification
     NSInteger row = [self.shiftCollection addShiftWithAttributes:shiftAttributes];
     
@@ -372,8 +421,30 @@
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 }
 
+- (void)deleteShiftAtRow:(NSInteger)row
+{
+    if ([[self.shiftCollection shiftAtIndex:row].durHours integerValue] >= 10)
+    {
+        self.longHoursCount--;
+    }
+    
+    [self.shiftCollection removeShiftAtIndex:row];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
+}
+
 - (void)replaceShiftAtRow:(NSInteger)row withShiftWithAttributes:(NSDictionary *)shiftAttributes
 {
+    if ([[shiftAttributes objectForKey:@"durHours"] integerValue] >= 10)
+    {
+        self.longHoursCount++;
+    }
+    if ([[self.shiftCollection shiftAtIndex:row].durHours integerValue] >= 10)
+    {
+        self.longHoursCount--;
+    }
+    
     [self.shiftCollection replaceShiftAtIndex:row withShiftWithAttributes:shiftAttributes];
 
     // TODO refactor into notifications

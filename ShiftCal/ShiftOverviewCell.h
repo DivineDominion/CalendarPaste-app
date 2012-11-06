@@ -20,4 +20,10 @@
 
 + (float)cellHeight;
 - (id)initAndReuseIdentifier:(NSString *)reuseIdentifer;
+
+- (void)compactLabels;
+- (void)expandLabels;
+
++ (void)enableLayoutTwoDigits;
++ (void)disableLayoutTwoDigits;
 @end
