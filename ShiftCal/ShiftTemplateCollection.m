@@ -61,7 +61,7 @@
     return index;
 }
 
-- (void)replaceShiftAtIndex:(NSUInteger)index withShiftWithAttributes:(NSDictionary *)shiftAttributes
+- (void)updateShiftAtIndex:(NSUInteger)index withAttributes:(NSDictionary *)shiftAttributes
 {
     ShiftTemplate *shift = [self shiftAtIndex:index];
     

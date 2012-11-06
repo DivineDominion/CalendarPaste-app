@@ -84,8 +84,6 @@ BOOL _enableTwoDigits = NO;
     {
         self.hoursCaptionLabel.text = @"hrs";
     }
-    
-    [self setNeedsLayout]; // TODO call only when 2-digit hours appear/disappear
 }
 
 + (UILabel *)timeLabelWithLeftIndent:(float)leftIndent
@@ -132,6 +130,27 @@ BOOL _enableTwoDigits = NO;
         leftOffset = 5.0f;
     }
 
+    [self reframeMinuteLabelsUsingOffset:leftOffset];
+}
+
+- (void)compact
+{
+    // Nudge second label to the left again
+    [UIView animateWithDuration:0.5f animations:^{
+        [self reframeMinuteLabelsUsingOffset:0.0f];
+    }];
+}
+
+- (void)expand
+{
+    // Nudge second label to the right when hours become wider
+    [UIView animateWithDuration:0.5f animations:^{
+        [self reframeMinuteLabelsUsingOffset:5.0f];
+    }];
+}
+
+- (void)reframeMinuteLabelsUsingOffset:(float)leftOffset
+{
     CGRect minutesLabelFrame = self.minutesLabel.frame;
     minutesLabelFrame.origin.x = SECOND_LABEL_X + leftOffset;
     self.minutesLabel.frame = minutesLabelFrame;
@@ -139,38 +158,6 @@ BOOL _enableTwoDigits = NO;
     CGRect minutesCaptionLabelFrame = self.minutesCaptionLabel.frame;
     minutesCaptionLabelFrame.origin.x = SECOND_LABEL_X + leftOffset;
     self.minutesCaptionLabel.frame = minutesCaptionLabelFrame;
-}
-
-- (void)compact
-{
-    // Nudge second label to the left again
-    float leftOffset = 0.0;
-    
-    [UIView animateWithDuration:0.5f animations:^{
-        CGRect minutesLabelFrame = self.minutesLabel.frame;
-        minutesLabelFrame.origin.x = SECOND_LABEL_X + leftOffset;
-        self.minutesLabel.frame = minutesLabelFrame;
-        
-        CGRect minutesCaptionLabelFrame = self.minutesCaptionLabel.frame;
-        minutesCaptionLabelFrame.origin.x = SECOND_LABEL_X + leftOffset;
-        self.minutesCaptionLabel.frame = minutesCaptionLabelFrame;
-    }];
-}
-
-- (void)expand
-{
-    // Nudge second label to the right when hours become wider
-    float leftOffset = 5.0;
-    
-    [UIView animateWithDuration:0.5f animations:^{
-        CGRect minutesLabelFrame = self.minutesLabel.frame;
-        minutesLabelFrame.origin.x = SECOND_LABEL_X + leftOffset;
-        self.minutesLabel.frame = minutesLabelFrame;
-        
-        CGRect minutesCaptionLabelFrame = self.minutesCaptionLabel.frame;
-        minutesCaptionLabelFrame.origin.x = SECOND_LABEL_X + leftOffset;
-        self.minutesCaptionLabel.frame = minutesCaptionLabelFrame;
-    }];
 }
 
 + (BOOL)hasTwoDigits

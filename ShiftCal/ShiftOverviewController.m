@@ -92,7 +92,7 @@
 
 - (void)execute
 {
-    [self.target replaceShiftAtRow:self.row withShiftWithAttributes:self.shiftAttributes];
+    [self.target updateShiftAtRow:self.row withAttributes:self.shiftAttributes];
     [self.target modificationCommandFinished:self];
 }
 @end
@@ -429,24 +429,41 @@
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
 }
 
-- (void)replaceShiftAtRow:(NSInteger)row withShiftWithAttributes:(NSDictionary *)shiftAttributes
+- (void)updateShiftAtRow:(NSInteger)row withAttributes:(NSDictionary *)shiftAttributes
 {
-    if ([[shiftAttributes objectForKey:@"durHours"] integerValue] >= 10)
+    // Compute a `longHoursCount` difference before/after the update
+    NSInteger longHoursCountDifference = 0;
+    
+    BOOL newCellHasTwoDigits = [[shiftAttributes objectForKey:@"durHours"] integerValue] >= 10;
+    BOOL oldCellHasTwoDigits = [[self.shiftCollection shiftAtIndex:row].durHours integerValue] >= 10;
+    BOOL bothCellsHaveSameDigitAmount = newCellHasTwoDigits == oldCellHasTwoDigits;
+    
+    if (!bothCellsHaveSameDigitAmount)
     {
-        self.longHoursCount++;
-    }
-    if ([[self.shiftCollection shiftAtIndex:row].durHours integerValue] >= 10)
-    {
-        self.longHoursCount--;
+        if (newCellHasTwoDigits)
+        {
+            longHoursCountDifference += 1;
+        }
+            
+        if (oldCellHasTwoDigits)
+        {
+            longHoursCountDifference -= 1;
+        }
     }
     
-    [self.shiftCollection replaceShiftAtIndex:row withShiftWithAttributes:shiftAttributes];
+    // Update cell data
+    [self.shiftCollection updateShiftAtIndex:row withAttributes:shiftAttributes];
+    
+    // Display new data
+    NSIndexPath *indexPath  = [NSIndexPath indexPathForRow:row inSection:0];
+    ShiftOverviewCell *cell = (ShiftOverviewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
 
-    // TODO refactor into notifications
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    cell.shift = [self.shiftCollection shiftAtIndex:row];
     
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [self calloutCell:indexPath];
+    
+    // Update Cell label's width
+    self.longHoursCount += longHoursCountDifference;
 }
 
 - (void)calloutCell:(NSIndexPath *)indexPath

@@ -19,5 +19,5 @@
 
 - (void)addShiftWithAttributes:(NSDictionary *)shiftAttributes;
 - (void)deleteShiftAtRow:(NSInteger)row;
-- (void)replaceShiftAtRow:(NSInteger)row withShiftWithAttributes:(NSDictionary *)shiftAttributes;
+- (void)updateShiftAtRow:(NSInteger)row withAttributes:(NSDictionary *)shiftAttributes;
 @end

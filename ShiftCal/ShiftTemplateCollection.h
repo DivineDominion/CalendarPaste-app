@@ -23,7 +23,7 @@
 - (ShiftTemplate *)shiftAtIndex:(NSUInteger)index;
 - (NSInteger)addShiftWithAttributes:(NSDictionary *)shiftAttributes;
 - (void)removeShiftAtIndex:(NSUInteger)index;
-- (void)replaceShiftAtIndex:(NSUInteger)index withShiftWithAttributes:(NSDictionary *)shiftAttributes;
+- (void)updateShiftAtIndex:(NSUInteger)index withAttributes:(NSDictionary *)shiftAttributes;
 - (void)moveObjectFromIndex:(NSUInteger)from toIndex:(NSUInteger)to;
 - (void)persistOrder;
 
