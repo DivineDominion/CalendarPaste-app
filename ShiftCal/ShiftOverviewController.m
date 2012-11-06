@@ -235,11 +235,6 @@
     self.tableView.allowsSelectionDuringEditing = YES;
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
 
 #pragma mark - TableView data source
 
@@ -418,7 +413,7 @@
     NSInteger row = [self.shiftCollection addShiftWithAttributes:shiftAttributes];
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
 }
 
 - (void)deleteShiftAtRow:(NSInteger)row
