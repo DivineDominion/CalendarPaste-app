@@ -242,15 +242,24 @@
 #pragma mark PickerView delegate
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{    
-    // Update data
-    if (component == COMPONENT_HOUR)
+{
+    self.hours   = [pickerView selectedRowInComponent:COMPONENT_HOUR];
+    self.minutes = [pickerView selectedRowInComponent:COMPONENT_MIN];
+    
+    // Don't allow both 0h and 0min -- select '1' for the opposite component
+    if (self.hours == 0 && self.minutes == 0)
     {
-        self.hours = row;
-    }
-    if (component == COMPONENT_MIN)
-    {
-        self.minutes = row;
+        if (component == COMPONENT_HOUR)
+        {
+            self.minutes = 1;
+            [_pickerView selectRow:self.minutes inComponent:COMPONENT_MIN animated:YES];
+        }
+        else if (component == COMPONENT_MIN)
+        {
+            self.hours = 1;
+            [_pickerView selectRow:self.hours inComponent:COMPONENT_HOUR animated:YES];
+        }
+        
     }
     
     // Update view
