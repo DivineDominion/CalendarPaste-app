@@ -60,7 +60,7 @@
         [self.shifts insertObject:shift atIndex:index];
         
         // Assigns a displayOrder value to the new object
-        ShiftTemplate *lastShift = [self shiftAtIndex:(index - 1)];
+        ShiftTemplate *lastShift = [self.shifts lastObject];
         NSUInteger oldMaxOrder   = [lastShift.displayOrder integerValue];
         shift.displayOrder       = [NSNumber numberWithInt:oldMaxOrder + 1];
     }

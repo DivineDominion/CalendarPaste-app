@@ -21,11 +21,13 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
 - (id)init
 {
     self = [super init];
-    
+
+#ifdef DEVELOPMENT
     if (self)
     {
         [self loadModel];
     }
+#endif
     
     return self;
 }
@@ -61,6 +63,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     return count;
 }
 
+#ifdef DEVELOPMENT
 - (void)loadModel
 {
     // Populate DB on first start
@@ -103,15 +106,16 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     shift = (ShiftTemplate *)[NSEntityDescription insertNewObjectForEntityForName:kShiftEntityName
                                                            inManagedObjectContext:self.managedObjectContext];
     
-    shift.title        = @"Carwash";
+    shift.title        = @"Pomodoro";
     shift.durHours     = [NSNumber numberWithInt:0];
-    shift.durMinutes   = [NSNumber numberWithInt:30];
+    shift.durMinutes   = [NSNumber numberWithInt:45];
     shift.displayOrder = [NSNumber numberWithInt:3];
     
     NSError *error = nil;
     BOOL success   = [self.managedObjectContext save:&error];
     NSAssert(success, @"Could not save shift, error: %@", error);
 }
+#endif
 
 #pragma mark - Import/export utilities
 

@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Christian Tietze. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "ShiftOverviewController.h"
 
 #import "ShiftModificationViewController.h"
@@ -110,6 +111,8 @@
 
 #pragma mark - ShiftOverviewController
 
+#define TAG_EMPTY_LIST_VIEW 101
+
 @interface ShiftOverviewController ()
 {
     // private instance variables
@@ -127,6 +130,9 @@
 - (void)calloutCell:(NSIndexPath *)indexPath;
 - (void)addAction:(id)sender;
 - (void)showHud;
+
+- (void)hideEmptyListView;
+- (UIView *)emptyListView;
 @end
 
 @implementation ShiftOverviewController
@@ -176,42 +182,62 @@
     if (_longHoursCount == 0 && countLongHours > 0)
     {
         [ShiftOverviewCell enableLayoutTwoDigits];
-        [self changeCellLabels:NO];
+        [self resizeCellLabels:SCCellLabelWidthWide];
     }
     else if (countLongHours == 0 && _longHoursCount > 0)
     {
         [ShiftOverviewCell disableLayoutTwoDigits];
-        [self changeCellLabels:YES];
+        [self resizeCellLabels:SCCellLabelWidthSmall];
     }
     
     _longHoursCount = countLongHours;
 }
 
-- (void)changeCellLabels:(BOOL)compact
+- (void)resizeCellLabels:(SCCellLabelWidth)cellLabelWidth
 {
-    for (ShiftOverviewCell* cell in [self.tableView visibleCells])
+    if (cellLabelWidth == SCCellLabelWidthSmall)
     {
-        if (compact)
+        for (ShiftOverviewCell* cell in [self.tableView visibleCells])
         {
             [cell compactLabels];
         }
-        else {
+    }
+    else if (cellLabelWidth == SCCellLabelWidthWide)
+    {
+        for (ShiftOverviewCell* cell in [self.tableView visibleCells])
+        {
             [cell expandLabels];
         }
     }
 }
 
+- (UIView *)emptyListView
+{
+    UIView *view = nil;
+    
+    UIColor *backgroundColor = [UIColor colorWithRed:200.0/256 green:200.0/256 blue:210.0/256 alpha:1.0];
+    CGRect frame = CGRectMake(0, 0, 320, 416);
+    
+    view = [[UIView alloc] initWithFrame:frame];
+    view.backgroundColor = backgroundColor;
+    view.tag = TAG_EMPTY_LIST_VIEW;
+    
+    frame = CGRectMake(20, 120, 300, 100);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.numberOfLines = 2;
+    label.text = @"No Event Templates\nadded, yet.";
+    label.font = [UIFont boldSystemFontOfSize:28.0f];
+    label.textColor = [UIColor colorWithWhite:0.3 alpha:0.6];
+    label.backgroundColor = backgroundColor;
+    label.shadowColor = [UIColor lightTextColor];
+    label.shadowOffset = CGSizeMake(0.5, 1);
+    
+    [view addSubview:label];
+
+    return [view autorelease];
+}
+
 #pragma mark - View callbacks
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
 
 - (void)viewDidLoad
 {
@@ -230,9 +256,23 @@
     
     [addButtonItem release];
     
-    self.title = @"Shifts";
+    self.title = @"Templates";
     
     self.tableView.allowsSelectionDuringEditing = YES;
+    self.tableView.rowHeight = [ShiftOverviewCell cellHeight];
+    
+    // Cover table view on start when list is empty
+    if ([self.shiftCollection countOfShifts] == 0)
+    {
+        UIView *emptyListView = [self emptyListView];
+        
+        [self.view addSubview:emptyListView];
+        emptyListView.layer.zPosition = 100;
+        self.tableView.scrollEnabled = NO;
+        
+        // Disable "Edit" when devoid of items
+        [self.navigationItem.leftBarButtonItem setEnabled:NO];
+    }
 }
 
 
@@ -245,17 +285,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section != 0)
-    {
-        StupidError(@"only one section allowed:  section=%d", section);
-    }
-    
     return [self.shiftCollection countOfShifts];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [ShiftOverviewCell cellHeight];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -346,7 +376,7 @@
 
 - (void)presentModificationViewControllerWithShift:(ShiftTemplate *)shift
 {
-    ShiftModificationViewController *modificationController = [[ShiftModificationViewController alloc] initWithShift:shift];//shiftAttributes];
+    ShiftModificationViewController *modificationController = [[ShiftModificationViewController alloc] initWithShift:shift];
         
     UINavigationController *modificationNavController = [[UINavigationController alloc] initWithRootViewController:modificationController];
     
@@ -404,6 +434,11 @@
 
 - (void)addShiftWithAttributes:(NSDictionary *)shiftAttributes
 {
+    // Hide "Empty List" view and enable previously disabled edit button
+    [self hideEmptyListView];
+    UIBarButtonItem *editButton = self.navigationItem.leftBarButtonItem;
+    [editButton setEnabled:YES];
+    
     if ([[shiftAttributes objectForKey:@"durHours"] integerValue] >= 10)
     {
         self.longHoursCount++;
@@ -427,6 +462,14 @@
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
+}
+
+- (void)hideEmptyListView
+{
+    UIView *emptyListView = [self.view viewWithTag:TAG_EMPTY_LIST_VIEW];
+    [emptyListView removeFromSuperview];
+    
+    self.tableView.scrollEnabled = YES;
 }
 
 - (void)updateShiftAtRow:(NSInteger)row withAttributes:(NSDictionary *)shiftAttributes

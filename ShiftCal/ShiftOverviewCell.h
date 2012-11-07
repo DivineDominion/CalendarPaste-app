@@ -11,6 +11,11 @@
 
 @class DurationLabel;
 
+typedef enum {
+    SCCellLabelWidthSmall,
+    SCCellLabelWidthWide
+} SCCellLabelWidth;
+
 @interface ShiftOverviewCell : UITableViewCell
 {
     ShiftTemplate *_shift;
