@@ -49,12 +49,22 @@
     
     NSUInteger index = [self countOfShifts];
     
-    [self.shifts insertObject:shift atIndex:index];
+    // TODO is display Order out of sync with index possible?
+    if (index == 0)
+    {
+        [self.shifts addObject:shift];
+        shift.displayOrder = [NSNumber numberWithInt:0];
+    }
+    else
+    {
+        [self.shifts insertObject:shift atIndex:index];
+        
+        // Assigns a displayOrder value to the new object
+        ShiftTemplate *lastShift = [self shiftAtIndex:(index - 1)];
+        NSUInteger oldMaxOrder   = [lastShift.displayOrder integerValue];
+        shift.displayOrder       = [NSNumber numberWithInt:oldMaxOrder + 1];
+    }
     
-    // Assigns a displayOrder value to the new object
-    ShiftTemplate *lastShift = [self shiftAtIndex:(index - 1)];
-    NSUInteger oldMaxOrder   = [lastShift.displayOrder integerValue];
-    shift.displayOrder       = [NSNumber numberWithInt:oldMaxOrder + 1];
     
     [self.shiftTemplateController saveManagedObjectContext];
     
