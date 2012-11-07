@@ -185,8 +185,8 @@
         _pickerWrap.frame = frame;
     }];
     
-    [_pickerView selectRow:self.hours   inComponent:COMPONENT_HOUR animated:YES];
-    [_pickerView selectRow:self.minutes inComponent:COMPONENT_MIN  animated:YES];
+    [_pickerView selectRow:self.hours   inComponent:COMPONENT_HOUR animated:NO];
+    [_pickerView selectRow:self.minutes inComponent:COMPONENT_MIN  animated:NO];
 }
 
 #pragma mark - TableView data
