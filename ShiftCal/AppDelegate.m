@@ -26,14 +26,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.eventStore = [[[EKEventStore alloc] init] autorelease];
-    
-    // TODO display 'grant access' screen
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    self.window     = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
 
     if ([EKEventStore instancesRespondToSelector:@selector(requestAccessToEntityType:completion:)])
     {
-        // TODO fallback to "please grant access" screen
-        self.window.rootViewController = [[[UIViewController alloc] init] autorelease];
+        self.window.rootViewController = [self grantCalendarAccessViewController];
         
         [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
             if (granted)
@@ -64,6 +61,36 @@
     [viewController release];
     
     self.window.rootViewController = self.navController;    
+}
+
+- (UIViewController *)grantCalendarAccessViewController
+{
+    UIViewController *grantCalendarAccessViewController = [[[UIViewController alloc] init] autorelease];
+    
+    UIColor *backgroundColor = [UIColor colorWithRed:210.0/256 green:210.0/256 blue:230.0/256 alpha:1.0];
+    CGRect frame = [[UIScreen mainScreen] bounds];
+    
+    UIView *view = [[UIView alloc] initWithFrame:frame];
+    view.backgroundColor = backgroundColor;
+    
+    frame = CGRectMake(20, 120, 300, 100);
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.numberOfLines = 2;
+    label.text = @"Please grant Calendar Access\nin your device's Settings\nfor this app to work.";
+    label.font = [UIFont boldSystemFontOfSize:28.0f];
+    label.textColor = [UIColor colorWithWhite:0.3 alpha:0.6];
+    label.backgroundColor = backgroundColor;
+    label.shadowColor = [UIColor lightTextColor];
+    label.shadowOffset = CGSizeMake(0.5, 1);
+    
+    [view addSubview:label];
+
+    
+    [view addSubview:label];
+    
+    grantCalendarAccessViewController.view = [view autorelease];
+    
+    return grantCalendarAccessViewController;
 }
 
 - (void)dealloc
@@ -109,6 +136,9 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    // TODO check access privileges
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

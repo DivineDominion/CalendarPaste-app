@@ -439,16 +439,18 @@
     UIBarButtonItem *editButton = self.navigationItem.leftBarButtonItem;
     [editButton setEnabled:YES];
     
-    if ([[shiftAttributes objectForKey:@"durHours"] integerValue] >= 10)
-    {
-        self.longHoursCount++;
-    }
-    
     // TODO refactor into notification
     NSInteger row = [self.shiftCollection addShiftWithAttributes:shiftAttributes];
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
+    
+    // Increment count afterwards to have the row added before, so
+    // it's modified, too.
+    if ([[shiftAttributes objectForKey:@"durHours"] integerValue] >= 10)
+    {
+        self.longHoursCount++;
+    }
 }
 
 - (void)deleteShiftAtRow:(NSInteger)row
