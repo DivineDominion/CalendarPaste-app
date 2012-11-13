@@ -16,82 +16,13 @@
 @property (nonatomic, retain, readwrite) UINavigationController *navController;
 @property (nonatomic, retain, readwrite) EKEventStore *eventStore;
 
-- (void)setupOverviewController;
+- (void)showOverviewViewControllerAnimated:(BOOL)animated;
+- (UIViewController *)grantCalendarAccessViewController;
 @end
 
 
 @implementation AppDelegate
 @synthesize eventStore = _eventStore;
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    self.eventStore = [[[EKEventStore alloc] init] autorelease];
-    self.window     = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-
-    if ([EKEventStore instancesRespondToSelector:@selector(requestAccessToEntityType:completion:)])
-    {
-        self.window.rootViewController = [self grantCalendarAccessViewController];
-        
-        [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-            if (granted)
-            {
-                [self setupOverviewController];
-            }
-            else
-            {
-                NSLog(@"access (still) denied");
-            }
-        }];
-    }
-    else
-    {
-        [self setupOverviewController];
-    }
-
-    [self.window makeKeyAndVisible];
-    return YES;
-}
-
-- (void)setupOverviewController
-{
-    [self registerPreferenceDefaults];
-    
-    ShiftOverviewController *viewController = [[ShiftOverviewController alloc] init];
-    self.navController  = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
-    [viewController release];
-    
-    self.window.rootViewController = self.navController;    
-}
-
-- (UIViewController *)grantCalendarAccessViewController
-{
-    UIViewController *grantCalendarAccessViewController = [[[UIViewController alloc] init] autorelease];
-    
-    UIColor *backgroundColor = [UIColor colorWithRed:210.0/256 green:210.0/256 blue:230.0/256 alpha:1.0];
-    CGRect frame = [[UIScreen mainScreen] bounds];
-    
-    UIView *view = [[UIView alloc] initWithFrame:frame];
-    view.backgroundColor = backgroundColor;
-    
-    frame = CGRectMake(20, 120, 300, 100);
-    UILabel *label = [[UILabel alloc] initWithFrame:frame];
-    label.numberOfLines = 2;
-    label.text = @"Please grant Calendar Access\nin your device's Settings\nfor this app to work.";
-    label.font = [UIFont boldSystemFontOfSize:28.0f];
-    label.textColor = [UIColor colorWithWhite:0.3 alpha:0.6];
-    label.backgroundColor = backgroundColor;
-    label.shadowColor = [UIColor lightTextColor];
-    label.shadowOffset = CGSizeMake(0.5, 1);
-    
-    [view addSubview:label];
-
-    
-    [view addSubview:label];
-    
-    grantCalendarAccessViewController.view = [view autorelease];
-    
-    return grantCalendarAccessViewController;
-}
 
 - (void)dealloc
 {
@@ -99,6 +30,113 @@
     [_eventStore release];
     
     [super dealloc];
+}
+
+#pragma mark - Launch and Set-Up
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.eventStore    = [[[EKEventStore alloc] init] autorelease];
+    self.window        = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    self.navController = [[[UINavigationController alloc] init] autorelease];
+    
+    if ([EKEventStore instancesRespondToSelector:@selector(requestAccessToEntityType:completion:)])
+    {
+        [self.navController pushViewController:[self grantCalendarAccessViewController] animated:NO];
+        
+        EKAuthorizationStatus status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
+        
+        switch (status) {
+            case EKAuthorizationStatusAuthorized:
+                [self showOverviewViewControllerAnimated:NO];
+                break;
+                
+            case EKAuthorizationStatusDenied:
+            case EKAuthorizationStatusNotDetermined:
+            case EKAuthorizationStatusRestricted:
+            default:
+                [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+                    if (granted)
+                    {
+                        SEL selector = @selector(showOverviewViewControllerAnimated:);
+                        BOOL animated = YES;
+                        
+                        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
+                        [inv setSelector:selector];
+                        [inv setTarget:self];
+                        [inv setArgument:&animated atIndex:2]; // 0 and 1 are preoccupied by default
+                        
+                        [inv performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];
+                    }
+                }];
+                
+                break;
+        }
+        
+        self.window.rootViewController = self.navController;
+    }
+    else
+    {
+        [self showOverviewViewControllerAnimated:NO];
+        self.window.rootViewController = self.navController;
+    }
+
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+
+- (void)showOverviewViewControllerAnimated:(BOOL)animated
+{
+    [self registerPreferenceDefaults];
+    
+    [self.navController pushViewController:[[[ShiftOverviewController alloc] init] autorelease]
+                                  animated:animated];
+}
+
+- (UIViewController *)grantCalendarAccessViewController
+{
+    UIViewController *grantCalendarAccessViewController = [[UIViewController alloc] init];
+    
+    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    view.backgroundColor = [UIColor whiteColor];
+    
+    // Lock Icon
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"lock.png"]];
+    imageView.center = CGPointMake(160.0, 160.0);
+    
+    //Labels
+    UIColor *textColor = [UIColor colorWithRed:0.5 green:0.53 blue:0.58 alpha:1.0];
+    
+    static float kXOffset = 10.0f;
+    static float kYOffset = 280.0f;
+    static float kWidth   = 300.0f; // 320 - 2 * x-offset
+    static float kHeight  = 40.0f;
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(kXOffset, kYOffset, kWidth, kHeight)];
+    label.numberOfLines = 2;
+    label.text          = @"This app needs Calendar access\nto work.";
+    label.font          = [UIFont boldSystemFontOfSize:18.0f];
+    label.textColor     = textColor;
+    label.textAlignment = NSTextAlignmentCenter;
+    
+    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(kXOffset, kYOffset + kHeight, kWidth, kHeight)];
+    detailLabel.text          = @"You can enable access\nin Privacy Settings.";
+    detailLabel.font          = [UIFont systemFontOfSize:15.0f];
+    detailLabel.textColor     = textColor;
+    detailLabel.textAlignment = NSTextAlignmentCenter;
+
+    [view addSubview:imageView];
+    [view addSubview:label];
+    [view addSubview:detailLabel];
+    
+    [imageView release];
+    [label release];
+    [detailLabel release];
+
+    grantCalendarAccessViewController.view = view;
+    [view release];
+    
+    return [grantCalendarAccessViewController autorelease];
 }
 
 #pragma mark User preferences
@@ -136,9 +174,6 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    
-    // TODO check access privileges
-    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
