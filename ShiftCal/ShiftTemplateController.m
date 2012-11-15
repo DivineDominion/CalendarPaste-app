@@ -22,7 +22,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
 {
     self = [super init];
 
-#ifdef DEVELOPMENT
+#ifdef ADD_PRESET_SHIFTS
     if (self)
     {
         [self loadModel];
@@ -63,7 +63,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     return count;
 }
 
-#ifdef DEVELOPMENT
+#ifdef ADD_PRESET_SHIFTS
 - (void)loadModel
 {
     // Populate DB on first start
