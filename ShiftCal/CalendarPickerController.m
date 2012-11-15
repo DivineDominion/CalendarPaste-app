@@ -450,6 +450,7 @@
 - (void)makeDefault:(id)sender
 {
     UIButton *actionButton = (UIButton *)sender;
+    
     if (actionButton)
     {
         NSInteger row = actionButton.tag;
@@ -478,6 +479,9 @@
         NSString *calendarIdentifier = calendar.calendarIdentifier;
         
         [prefs setObject:calendarIdentifier forKey:PREFS_DEFAULT_CALENDAR_KEY];
+#ifdef DEVELOPMENT
+        [prefs synchronize];
+#endif
     }
 }
 

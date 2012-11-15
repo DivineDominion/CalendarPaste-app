@@ -18,6 +18,7 @@
 
 - (void)showOverviewViewControllerAnimated:(BOOL)animated;
 - (UIViewController *)grantCalendarAccessViewController;
+- (void)eventStoreChanged:(id)sender;
 @end
 
 
@@ -39,6 +40,11 @@
     self.eventStore    = [[[EKEventStore alloc] init] autorelease];
     self.window        = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.navController = [[[UINavigationController alloc] init] autorelease];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventStoreChanged:)
+                                                 name:EKEventStoreChangedNotification
+                                               object:self.eventStore];
     
     if ([EKEventStore instancesRespondToSelector:@selector(requestAccessToEntityType:completion:)])
     {
@@ -141,14 +147,46 @@
 
 #pragma mark User preferences
 
+- (void)eventStoreChanged:(id)sender
+{
+    NSLog(@"-- appdelegate: store changed");
+    
+    [self registerPreferenceDefaults];
+}
+
 - (void)registerPreferenceDefaults
 {
-    NSString *defaultCalendarIdentifier = [self.eventStore defaultCalendarForNewEvents].calendarIdentifier;
-    NSDictionary *calendarDefaults      = [NSDictionary dictionaryWithObject:defaultCalendarIdentifier
-                                                                      forKey:PREFS_DEFAULT_CALENDAR_KEY];
+    NSLog(@"registering default calendar");
     
-    [[NSUserDefaults standardUserDefaults] registerDefaults:calendarDefaults];
+    NSUserDefaults *prefs               = [NSUserDefaults standardUserDefaults];
+    NSString *defaultCalendarIdentifier = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
+    
+    if (defaultCalendarIdentifier == nil)
+    {
+        NSLog(@"first launch");
+        defaultCalendarIdentifier      = [self.eventStore defaultCalendarForNewEvents].calendarIdentifier;
 
+        [prefs setObject:defaultCalendarIdentifier forKey:PREFS_DEFAULT_CALENDAR_KEY];
+#ifdef DEVELOPMENT
+        [prefs synchronize];
+#endif
+    }
+    else
+    {
+        NSLog(@"defaults sanity check (startup or invocation)");
+        // Sanity Check
+        EKCalendar *defaultCalendar = [self.eventStore calendarWithIdentifier:defaultCalendarIdentifier];
+        
+        if (defaultCalendar == nil)
+        {
+            NSLog(@"resetting default calendar");
+            defaultCalendarIdentifier = [self.eventStore defaultCalendarForNewEvents].calendarIdentifier;
+            [prefs setObject:defaultCalendarIdentifier forKey:PREFS_DEFAULT_CALENDAR_KEY];
+#ifdef DEVELOPMENT
+            [prefs synchronize];
+#endif
+        }
+    }
 }
 
 
