@@ -27,6 +27,8 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [_navController release];
     [_eventStore release];
     
@@ -147,11 +149,19 @@
 
 #pragma mark User preferences
 
-- (void)eventStoreChanged:(id)sender
+- (void)eventStoreChanged:(NSNotification *)notification
 {
     NSLog(@"-- appdelegate: store changed");
     
     [self registerPreferenceDefaults];
+    
+    // Inform observers to change calendars if necessary
+    NSString *defaultCalendarIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
+    NSDictionary *userInfo = @{@"defaultCalendarIdentifier" : defaultCalendarIdentifier}; // TODO extract key as const
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SCStoreChangedNotification
+                                                        object:self
+                                                      userInfo:userInfo];
 }
 
 - (void)registerPreferenceDefaults

@@ -16,4 +16,5 @@
 
     #define PREFS_DEFAULT_CALENDAR_KEY @"DefaultCalendar"
 
+    static NSString *SCStoreChangedNotification = @"SCStoreChanged";
 #endif

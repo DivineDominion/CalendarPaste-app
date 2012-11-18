@@ -8,7 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import <EventKit/EventKit.h>
+#import "UITableViewController+CalloutCell.h"
 #import "CalendarPickerDelegate.h"
+
+typedef struct _SCCellSelection {
+    NSIndexPath *indexPath;
+    NSString    *calendarIdentifier;
+} SCCellSelection;
 
 @interface CalendarPickerController : UITableViewController
 {
