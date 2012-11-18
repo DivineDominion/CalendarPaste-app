@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ShiftTemplate.h"
+#import "UITableViewController+CalloutCell.h"
 #import "../MBProgressHUD/MBProgressHUD.h"
 #import "ShiftAssignmentViewDelegate.h"
 

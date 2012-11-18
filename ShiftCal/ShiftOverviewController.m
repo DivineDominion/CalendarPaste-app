@@ -127,7 +127,6 @@
 @property (nonatomic, assign) NSUInteger longHoursCount;
 
 // private methods
-- (void)calloutCell:(NSIndexPath *)indexPath;
 - (void)addAction:(id)sender;
 - (void)showHud;
 
@@ -534,20 +533,6 @@
     
     // Update Cell label's width
     self.longHoursCount += longHoursCountDifference;
-}
-
-- (void)calloutCell:(NSIndexPath *)indexPath
-{
-    ShiftOverviewController *__unsafe_unretained weakSelf = self;
-    [UIView animateWithDuration:0.0
-                          delay:0.0
-                        options:UIViewAnimationOptionAllowUserInteraction
-                     animations:^void() {
-                         [[weakSelf.tableView cellForRowAtIndexPath:indexPath] setHighlighted:YES animated:YES];
-                     }
-                     completion:^(BOOL finished) {
-                         [[weakSelf.tableView cellForRowAtIndexPath:indexPath] setHighlighted:NO animated:YES];
-                     }];
 }
 
 #pragma mark - UI Actions

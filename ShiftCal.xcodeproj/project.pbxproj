@@ -27,6 +27,7 @@
 		609167B7165284A9006C33EE /* lock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609167B6165284A9006C33EE /* lock@2x.png */; };
 		609167BA16529ACE006C33EE /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 609167B816529ACE006C33EE /* plus.png */; };
 		609167BB16529ACE006C33EE /* plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609167B916529ACE006C33EE /* plus@2x.png */; };
+		609167BF1658F45A006C33EE /* UITableViewController+CalloutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 609167BE1658F45A006C33EE /* UITableViewController+CalloutCell.m */; };
 		609EF760163188DA003E4BB3 /* ShiftOverviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */; };
 		60AAB7CC15C0926D002114B9 /* ShiftTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */; };
 		60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB81215C13297002114B9 /* ShiftOverviewController.m */; };
@@ -84,6 +85,8 @@
 		609167B6165284A9006C33EE /* lock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock@2x.png"; sourceTree = "<group>"; };
 		609167B816529ACE006C33EE /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
 		609167B916529ACE006C33EE /* plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus@2x.png"; sourceTree = "<group>"; };
+		609167BD1658F45A006C33EE /* UITableViewController+CalloutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewController+CalloutCell.h"; sourceTree = "<group>"; };
+		609167BE1658F45A006C33EE /* UITableViewController+CalloutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewController+CalloutCell.m"; sourceTree = "<group>"; };
 		609EF75E163188DA003E4BB3 /* ShiftOverviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftOverviewCell.h; sourceTree = "<group>"; };
 		609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftOverviewCell.m; sourceTree = "<group>"; };
 		60AAB7CA15C0926D002114B9 /* ShiftTemplateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplateTests.h; sourceTree = "<group>"; };
@@ -245,6 +248,8 @@
 				606042A91625D2A000BA5EEC /* MBProgressHUD.m */,
 				60BB96B015C08EB900801105 /* AppDelegate.h */,
 				60BB96B115C08EB900801105 /* AppDelegate.m */,
+				609167BD1658F45A006C33EE /* UITableViewController+CalloutCell.h */,
+				609167BE1658F45A006C33EE /* UITableViewController+CalloutCell.m */,
 				60BB96A815C08EB900801105 /* Supporting Files */,
 			);
 			path = ShiftCal;
@@ -436,6 +441,7 @@
 				6060426216245AB000BA5EEC /* ShiftAssignmentViewController.m in Sources */,
 				606042AA1625D2A000BA5EEC /* MBProgressHUD.m in Sources */,
 				609EF760163188DA003E4BB3 /* ShiftOverviewCell.m in Sources */,
+				609167BF1658F45A006C33EE /* UITableViewController+CalloutCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
