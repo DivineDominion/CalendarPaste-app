@@ -16,7 +16,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
 
 @implementation ShiftTemplateController
 
-# pragma mark - Instance methods
+#pragma mark - Instance methods
 
 - (id)init
 {
@@ -66,7 +66,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
 #ifdef ADD_PRESET_SHIFTS
 - (void)loadModel
 {
-    // Populate DB on first start
+    // Populate DB on first/empty starts 
     if ([self countOfShiftEntities] == 0)
     {
         [self generateTestObjects];

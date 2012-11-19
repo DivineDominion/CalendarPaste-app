@@ -23,6 +23,7 @@
         NSMutableArray *mutableShifts = [[self.shiftTemplateController shifts] mutableCopy];
         self.shifts = mutableShifts;
         [mutableShifts release];
+        
     }
     
     return self;
@@ -112,6 +113,33 @@
     [self.shiftTemplateController saveManagedObjectContext];
 }
 
+#pragma mark Collection validation
+
+- (void)resetInvalidCalendarsTo:(NSString *)defaultCalendarIdentifier
+{
+    [self resetInvalidCalendarsTo:defaultCalendarIdentifier onChanges:nil];
+}
+
+- (void)resetInvalidCalendarsTo:(NSString *)defaultCalendarIdentifier onChanges:(void (^)(void))changeBlock
+{
+    __block BOOL changesMade = NO;
+    
+    [self.shifts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        ShiftTemplate *shift = (ShiftTemplate *)obj;
+        
+        if ([shift hasInvalidCalendar])
+        {
+            shift.calendarIdentifier = defaultCalendarIdentifier;
+            
+            changesMade = YES;
+        }
+    }];
+    
+    if (changesMade && changeBlock != nil)
+    {
+        changeBlock();
+    }
+}
 
 @end
 

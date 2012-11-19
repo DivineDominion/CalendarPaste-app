@@ -27,5 +27,8 @@
 - (void)moveObjectFromIndex:(NSUInteger)from toIndex:(NSUInteger)to;
 - (void)persistOrder;
 
+- (void)resetInvalidCalendarsTo:(NSString *)defaultCalendarIdentifier;
+- (void)resetInvalidCalendarsTo:(NSString *)defaultCalendarIdentifier onChanges:(void (^)(void))changeBlock;
+
 @end
 

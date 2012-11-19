@@ -97,6 +97,11 @@
     return self.calendar.title;
 }
 
+- (BOOL)hasInvalidCalendar
+{
+    return ([self calendar] == nil);
+}
+
 - (NSTimeInterval)durationAsTimeInterval
 {
     return 60 * ([self.durHours integerValue] * 60 + [self.durMinutes integerValue]);

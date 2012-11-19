@@ -129,6 +129,7 @@
 // private methods
 - (void)addAction:(id)sender;
 - (void)showHud;
+- (void)invalidateCalendars:(NSNotification *)notification;
 
 - (void)hideEmptyListView;
 - (UIView *)emptyListView;
@@ -162,13 +163,29 @@
                 self.longHoursCount++;
             }
         }];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(invalidateCalendars:)
+                                                     name:SCStoreChangedNotification
+                                                   object:[[UIApplication sharedApplication] delegate]];
     }
     
     return self;
 }
 
+- (void)invalidateCalendars:(NSNotification *)notification
+{
+    NSString *defaultCalendarIdentifer = [notification.userInfo objectForKey:NOTIFICATION_DEFAULT_CALENDAR_KEY];
+    
+    [self.shiftCollection resetInvalidCalendarsTo:defaultCalendarIdentifer onChanges:^{
+        [self.tableView reloadData];
+    }];
+}
+
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [_modificationCommand release];
     [_shiftCollection release];
     
@@ -298,7 +315,6 @@
         [self.navigationItem.leftBarButtonItem setEnabled:NO];
     }
 }
-
 
 #pragma mark - TableView data source
 

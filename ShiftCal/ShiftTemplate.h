@@ -38,6 +38,7 @@
 
 - (EKEvent *)event;
 - (NSString *)calendarTitle;
+- (BOOL)hasInvalidCalendar;
 - (NSTimeInterval)durationAsTimeInterval;
 
 + (NSDictionary*)defaultAttributes;
