@@ -60,6 +60,7 @@
 - (NSInteger)durationMinutes;
 - (void)setDurationHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
 - (NSString *)calendarTitle;
+- (BOOL)hasInvalidCalendar;
 @end
 
 @implementation ShiftData
@@ -179,16 +180,23 @@
 - (NSString *)calendarIdentifier
 {
     NSString *calendarIdentifier = [self.shiftAttributes objectForKey:@"calendarIdentifier"];
+    
     if ([calendarIdentifier isKindOfClass:[NSNull class]])
     {
         return nil;
     }
+    
     return calendarIdentifier;
 }
 
 - (void)setCalendarIdentifier:(NSString *)calendarIdentifier
 {
     [self.shiftAttributes setValue:calendarIdentifier forKey:@"calendarIdentifier"];
+}
+
+- (BOOL)hasInvalidCalendar
+{
+    return ([self calendar] == nil);
 }
 
 - (EKEventStore *)eventStore
@@ -205,9 +213,11 @@
 
 - (EKCalendar *)calendar
 {
-    if (self.calendarIdentifier)
+    NSString *calendarIdentifier = self.calendarIdentifier;
+    
+    if (calendarIdentifier)
     {
-        return [self.eventStore calendarWithIdentifier:self.calendarIdentifier];
+        return [self.eventStore calendarWithIdentifier:calendarIdentifier];
     }
     
     return nil;
@@ -267,6 +277,7 @@
 @property (nonatomic, readonly) ShiftTemplateController *shiftTemplateController;
 
 // private methods
+- (void)invalidateCalendar:(NSNotification *)notification;
 - (void)resetTextViewToPlaceholder:(UITextView *)textView;
 - (void)displayDurationInCell:(UITableViewCell *)cell;
 - (void)displayCalendarInCell:(UITableViewCell *)cell;
@@ -309,6 +320,11 @@
         }
         
         self.dateTranslator = [[[DateIntervalTranslator alloc] init] autorelease];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(invalidateCalendar:)
+                                                     name:SCStoreChangedNotification
+                                                   object:[[UIApplication sharedApplication] delegate]];
     }
     
     return self;
@@ -323,6 +339,8 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [_shiftData release];
     [_dateTranslator release];
     [_shiftTemplateController release];
@@ -390,9 +408,20 @@
     }
 }
 
-- (void)viewDidUnload
+#pragma mark Notification callbacks
+
+- (void)invalidateCalendar:(NSNotification *)notification
 {
-    [super viewDidUnload];
+    if ([self.shiftData hasInvalidCalendar])
+    {
+        NSString *defaultCalendarIdentifer = [notification.userInfo objectForKey:NOTIFICATION_DEFAULT_CALENDAR_KEY];
+        
+        self.shiftData.calendarIdentifier = defaultCalendarIdentifer;
+        
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_CALENDAR]
+                      withRowAnimation:UITableViewRowAnimationNone];
+        [self calloutCell:[NSIndexPath indexPathForRow:0 inSection:SECTION_CALENDAR]];
+    }
 }
 
 #pragma mark - Table View callbacks

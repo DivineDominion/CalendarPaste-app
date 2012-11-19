@@ -151,13 +151,11 @@
 
 - (void)eventStoreChanged:(NSNotification *)notification
 {
-    NSLog(@"-- appdelegate: store changed");
-    
     [self registerPreferenceDefaults];
     
     // Inform observers to change calendars if necessary
     NSString *defaultCalendarIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
-    NSDictionary *userInfo = @{@"defaultCalendarIdentifier" : defaultCalendarIdentifier}; // TODO extract key as const
+    NSDictionary *userInfo = @{ NOTIFICATION_DEFAULT_CALENDAR_KEY : defaultCalendarIdentifier };
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SCStoreChangedNotification
                                                         object:self
@@ -166,14 +164,11 @@
 
 - (void)registerPreferenceDefaults
 {
-    NSLog(@"registering default calendar");
-    
     NSUserDefaults *prefs               = [NSUserDefaults standardUserDefaults];
     NSString *defaultCalendarIdentifier = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
     
     if (defaultCalendarIdentifier == nil)
     {
-        NSLog(@"first launch");
         defaultCalendarIdentifier      = [self.eventStore defaultCalendarForNewEvents].calendarIdentifier;
 
         [prefs setObject:defaultCalendarIdentifier forKey:PREFS_DEFAULT_CALENDAR_KEY];
@@ -183,13 +178,11 @@
     }
     else
     {
-        NSLog(@"defaults sanity check (startup or invocation)");
         // Sanity Check
         EKCalendar *defaultCalendar = [self.eventStore calendarWithIdentifier:defaultCalendarIdentifier];
         
         if (defaultCalendar == nil)
         {
-            NSLog(@"resetting default calendar");
             defaultCalendarIdentifier = [self.eventStore defaultCalendarForNewEvents].calendarIdentifier;
             [prefs setObject:defaultCalendarIdentifier forKey:PREFS_DEFAULT_CALENDAR_KEY];
 #ifdef DEVELOPMENT
