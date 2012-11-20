@@ -133,7 +133,6 @@
 @property (nonatomic, retain, readonly) NSString *selectedCellCalendarIdentifier;
 
 // private methods
-- (UIImage *)actionPanelBackground;
 - (UIView *)actionPanelForIndexPath:(NSIndexPath *)indexPath andTableView:(UITableView *)tableView;
 - (NSString *)defaultTextForCellAt:(NSIndexPath *)indexPath;
 
@@ -301,27 +300,10 @@
     return self.eventStore.calendars.count;
 }
 
-- (UIImage *)actionPanelBackground
-{
-    UIImage *backgroundImage = nil;
-    
-    CGRect rect = CGRectMake(0, 0, 1, 1);
-    UIGraphicsBeginImageContext(rect.size);
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context, [[UIColor grayColor] CGColor]);
-    CGContextFillRect(context, rect);
-    
-    backgroundImage = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return backgroundImage;
-}
-
 - (UIView *)actionPanelForIndexPath:(NSIndexPath *)indexPath andTableView:(UITableView *)tableView
 {
     NSInteger row     = [indexPath row];
+    NSInteger section = [indexPath section];
     BOOL hideToolView = ![self.selectedCellIndexPath isEqual:indexPath] || [self.defaultCellIndexPath isEqual:indexPath];
 
     CGRect actionButtonFrame   = CGRectMake(0.0f, 0.0f, CELL_WIDTH, ACTION_PANEL_HEIGHT);
@@ -340,12 +322,12 @@
     actionButton.tag                 = row;
     actionButton.autoresizingMask    = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     actionButton.layer.masksToBounds = YES;
-    
-    UIImage *background = [[self actionPanelBackground] retain];
-    [actionButton setBackgroundImage:background forState:UIControlStateNormal];
-    [actionButton setBackgroundImage:background forState:UIControlStateSelected];
-    [actionButton setBackgroundImage:background forState:UIControlStateSelected | UIControlStateHighlighted];
-    [background release];
+
+    UIEdgeInsets buttonInsets = UIEdgeInsetsMake(0, 3, 0, 3);
+    UIImage *buttonImage = [[UIImage imageNamed:@"makedefault.png"] resizableImageWithCapInsets:buttonInsets resizingMode:UIImageResizingModeTile];
+    UIImage *buttonPressedImage = [[UIImage imageNamed:@"makedefault_pressed.png"] resizableImageWithCapInsets:buttonInsets resizingMode:UIImageResizingModeTile];
+    [actionButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    [actionButton setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
     
     [actionButton setTitle:@"make default" forState:UIControlStateNormal];
     actionButton.titleLabel.font      = [UIFont boldSystemFontOfSize:actionButton.titleLabel.font.pointSize];
@@ -354,7 +336,7 @@
     [actionButton addTarget:self action:@selector(makeDefault:) forControlEvents:UIControlEventTouchDown];
     
     // Round bottom corners when in last cell's row
-    if (row == [self numberOfSectionsInTableView:tableView])
+    if (row == [self.tableView numberOfRowsInSection:section] - 1)
     {
         CGRect frame              = actionButton.bounds;
         UIBezierPath *roundedPath = nil;
