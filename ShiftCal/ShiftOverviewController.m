@@ -151,7 +151,10 @@
     
     if (self)
     {
-        self.shiftCollection = [[[ShiftTemplateCollection alloc] init] autorelease];
+        NSUserDefaults *prefs               = [NSUserDefaults standardUserDefaults];
+        NSString *defaultCalendarIdentifier = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
+
+        self.shiftCollection = [[[ShiftTemplateCollection alloc] initWithFallbackCalendarIdentifier:defaultCalendarIdentifier] autorelease];
         
         // Count hour values with 2 digits
         self.longHoursCount = 0;

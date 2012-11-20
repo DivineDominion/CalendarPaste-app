@@ -14,6 +14,11 @@
 
 - (id)init
 {
+    return [self initWithFallbackCalendarIdentifier:nil];
+}
+
+- (id)initWithFallbackCalendarIdentifier:(NSString *)fallbackCalendarIdentifier
+{
     self = [super init];
     
     if (self)
@@ -24,6 +29,10 @@
         self.shifts = mutableShifts;
         [mutableShifts release];
         
+        if (fallbackCalendarIdentifier)
+        {
+            [self resetInvalidCalendarsTo:fallbackCalendarIdentifier];
+        }
     }
     
     return self;

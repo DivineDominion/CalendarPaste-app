@@ -19,6 +19,8 @@
 @property (nonatomic, retain) ShiftTemplateController *shiftTemplateController;
 @property (nonatomic, retain) NSMutableArray *shifts;
 
+- (id)initWithFallbackCalendarIdentifier:(NSString *)fallbackCalendarIdentifier;
+
 - (NSUInteger)countOfShifts;
 - (ShiftTemplate *)shiftAtIndex:(NSUInteger)index;
 - (NSInteger)addShiftWithAttributes:(NSDictionary *)shiftAttributes;
