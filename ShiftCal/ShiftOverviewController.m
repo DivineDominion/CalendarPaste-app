@@ -238,11 +238,13 @@
     view.tag = TAG_EMPTY_LIST_VIEW;
     
     // Plus Icon
-    UIImage *addImage   = [UIImage imageNamed:@"plus.png"];
+    UIImage *addImage        = [UIImage imageNamed:@"plus.png"];
+    UIImage *addImagePressed = [UIImage imageNamed:@"plus_pressed.png"];
+    
     UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, addImage.size.width, addImage.size.height)];
     addButton.center = CGPointMake(160.0, 160.0);
     [addButton setImage:addImage forState:UIControlStateNormal];
-    [addButton setImage:addImage forState:UIControlStateHighlighted];
+    [addButton setImage:addImagePressed forState:UIControlStateHighlighted];
     [addButton addTarget:self action:@selector(addAction:) forControlEvents:UIControlEventTouchUpInside];
     
     //Labels
