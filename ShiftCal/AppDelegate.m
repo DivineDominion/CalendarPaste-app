@@ -16,6 +16,7 @@
 @property (nonatomic, retain, readwrite) UINavigationController *navController;
 @property (nonatomic, retain, readwrite) EKEventStore *eventStore;
 
+- (void)requestCalendarAccessForOverviewViewController;
 - (void)showOverviewViewControllerAnimated:(BOOL)animated;
 - (UIViewController *)grantCalendarAccessViewController;
 - (void)eventStoreChanged:(id)sender;
@@ -43,58 +44,63 @@
     self.window        = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.navController = [[[UINavigationController alloc] init] autorelease];
     
+    if ([EKEventStore instancesRespondToSelector:@selector(requestAccessToEntityType:completion:)])
+    {
+        [self requestCalendarAccessForOverviewViewController];
+    }
+    else
+    {
+        [self showOverviewViewControllerAnimated:NO];
+    }
+
+    self.window.rootViewController = self.navController;
+    
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+
+- (void)requestCalendarAccessForOverviewViewController
+{
+    [self.navController pushViewController:[self grantCalendarAccessViewController] animated:NO];
+    
+    EKAuthorizationStatus status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
+    
+    switch (status) {
+        case EKAuthorizationStatusAuthorized:
+            [self showOverviewViewControllerAnimated:NO];
+            break;
+            
+        case EKAuthorizationStatusDenied:
+        case EKAuthorizationStatusNotDetermined:
+        case EKAuthorizationStatusRestricted:
+        default:
+            [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+                if (granted)
+                {
+                    SEL selector = @selector(showOverviewViewControllerAnimated:);
+                    BOOL animated = YES;
+                    
+                    NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
+                    [inv setSelector:selector];
+                    [inv setTarget:self];
+                    [inv setArgument:&animated atIndex:2]; // 0 and 1 are preoccupied by default
+                    
+                    [inv performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];
+                }
+            }];
+            
+            break;
+    }
+}
+
+- (void)showOverviewViewControllerAnimated:(BOOL)animated
+{
+    // Register just now because calendar access, if necessary, is granted
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(eventStoreChanged:)
                                                  name:EKEventStoreChangedNotification
                                                object:self.eventStore];
     
-    if ([EKEventStore instancesRespondToSelector:@selector(requestAccessToEntityType:completion:)])
-    {
-        [self.navController pushViewController:[self grantCalendarAccessViewController] animated:NO];
-        
-        EKAuthorizationStatus status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
-        
-        switch (status) {
-            case EKAuthorizationStatusAuthorized:
-                [self showOverviewViewControllerAnimated:NO];
-                break;
-                
-            case EKAuthorizationStatusDenied:
-            case EKAuthorizationStatusNotDetermined:
-            case EKAuthorizationStatusRestricted:
-            default:
-                [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-                    if (granted)
-                    {
-                        SEL selector = @selector(showOverviewViewControllerAnimated:);
-                        BOOL animated = YES;
-                        
-                        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
-                        [inv setSelector:selector];
-                        [inv setTarget:self];
-                        [inv setArgument:&animated atIndex:2]; // 0 and 1 are preoccupied by default
-                        
-                        [inv performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];
-                    }
-                }];
-                
-                break;
-        }
-        
-        self.window.rootViewController = self.navController;
-    }
-    else
-    {
-        [self showOverviewViewControllerAnimated:NO];
-        self.window.rootViewController = self.navController;
-    }
-
-    [self.window makeKeyAndVisible];
-    return YES;
-}
-
-- (void)showOverviewViewControllerAnimated:(BOOL)animated
-{
     [self registerPreferenceDefaults];
     
     [self.navController pushViewController:[[[ShiftOverviewController alloc] init] autorelease]
