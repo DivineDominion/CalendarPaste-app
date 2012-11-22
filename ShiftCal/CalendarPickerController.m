@@ -268,7 +268,7 @@
     [saveItem release];
     [cancelItem release];
     
-    self.title = @"Duration";
+    self.title = @"Calendar";
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
