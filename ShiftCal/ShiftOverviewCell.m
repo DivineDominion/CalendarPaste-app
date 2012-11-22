@@ -8,14 +8,17 @@
 
 #import "ShiftOverviewCell.h"
 
-#define CELL_HEIGHT 52.0f
-
 #define LABEL_WIDTH 40.0f
 #define SECOND_LABEL_X LABEL_WIDTH
 #define TIME_LABEL_Y 5.0f
 #define TIME_LABEL_HEIGHT 30.0f
 #define CAPTION_LABEL_Y (TIME_LABEL_Y + TIME_LABEL_HEIGHT - 5.0f)
 #define CAPTION_LABEL_HEIGHT 20.0f
+
+#define IS_4INCH_DISPLAY [[UIScreen mainScreen] bounds].size.height == 568.0f
+
+#define SUBTITLE_TOP_MARGIN_4INCH 7.0f
+#define BASELINE_TOP_MARGIN_4INCH 4.0f
 
 BOOL _enableTwoDigits = NO;
 
@@ -88,7 +91,13 @@ BOOL _enableTwoDigits = NO;
 
 + (UILabel *)timeLabelWithLeftIndent:(float)leftIndent
 {
-    UILabel *label         = [[UILabel alloc] initWithFrame:CGRectMake(leftIndent, TIME_LABEL_Y, LABEL_WIDTH, TIME_LABEL_HEIGHT)];
+    float timeLabelY = TIME_LABEL_Y;
+    if (IS_4INCH_DISPLAY)
+    {
+        timeLabelY += BASELINE_TOP_MARGIN_4INCH;
+    }
+    
+    UILabel *label         = [[UILabel alloc] initWithFrame:CGRectMake(leftIndent, timeLabelY, LABEL_WIDTH, TIME_LABEL_HEIGHT)];
     UIFont *durationFont   = [UIFont boldSystemFontOfSize:32.0];
     UIColor *durationColor = [UIColor colorWithRed:128.0/256 green:151.0/256 blue:185.0/256 alpha:1.0];
     
@@ -104,7 +113,13 @@ BOOL _enableTwoDigits = NO;
 
 + (UILabel *)captionLabel:(NSString *)caption leftIndent:(float)leftIndent
 {
-    UILabel *label      = [[UILabel alloc] initWithFrame:CGRectMake(leftIndent, CAPTION_LABEL_Y, LABEL_WIDTH, CAPTION_LABEL_HEIGHT)];
+    float captionLabelY = CAPTION_LABEL_Y;
+    if (IS_4INCH_DISPLAY)
+    {
+        captionLabelY += SUBTITLE_TOP_MARGIN_4INCH;
+    }
+    
+    UILabel *label      = [[UILabel alloc] initWithFrame:CGRectMake(leftIndent, captionLabelY, LABEL_WIDTH, CAPTION_LABEL_HEIGHT)];
     UIFont *labelFont   = [UIFont boldSystemFontOfSize:16.0];
     UIColor *labelColor = [UIColor grayColor];
     
@@ -222,7 +237,7 @@ BOOL _enableTwoDigits = NO;
     {
         self.backgroundColor = [UIColor darkGrayColor];
         
-        self.durationLabel = [[[DurationLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0, 80.0f, CELL_HEIGHT)] autorelease];
+        self.durationLabel = [[[DurationLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0, 80.0f, [ShiftOverviewCell cellHeight])] autorelease];
         
         self.textLabel.font = [UIFont boldSystemFontOfSize:22.0];
         self.textLabel.backgroundColor = [UIColor clearColor];
@@ -290,13 +305,21 @@ BOOL _enableTwoDigits = NO;
     }
     
     // Override default frame
-    self.textLabel.frame       = CGRectMake(100.0f,  8.0f, currentTextWidth, 30.0f);
-    self.detailTextLabel.frame = CGRectMake(100.0f, 32.0f, currentTextWidth, 18.0f);
+    float textLabelYOffset   = 0.0f;
+    float detailLabelYOffset = 0.0f;
+    if (IS_4INCH_DISPLAY)
+    {
+        textLabelYOffset   = BASELINE_TOP_MARGIN_4INCH;
+        detailLabelYOffset = SUBTITLE_TOP_MARGIN_4INCH;
+    }
+    
+    self.textLabel.frame       = CGRectMake(100.0f,  8.0f + textLabelYOffset,   currentTextWidth, 30.0f);
+    self.detailTextLabel.frame = CGRectMake(100.0f, 32.0f + detailLabelYOffset, currentTextWidth, 18.0f);
 }
 
 + (float)cellHeight
 {
-    return CELL_HEIGHT;
+    return ([[UIScreen mainScreen] bounds].size.height - 64.0f) / 8;
 }
 
 @end

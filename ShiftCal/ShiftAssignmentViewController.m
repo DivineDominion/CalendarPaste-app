@@ -8,8 +8,6 @@
 
 #import "ShiftAssignmentViewController.h"
 
-#define SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.width
-#define SCREEN_HEIGHT [[UIScreen mainScreen] bounds].size.height
 #define PICKER_HEIGHT 216.0f
 
 #define SECTION_TITLE 0
@@ -86,16 +84,26 @@
 {
     [super loadView];
     
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    float screenWidth   = screenBounds.size.width;
+    float screenHeight  = screenBounds.size.height;
+    
     self.tableView.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.tableView.scrollEnabled    = NO;
     self.tableView.sectionHeaderHeight = 5.0f;
     self.tableView.sectionFooterHeight = 5.0f;
     
     // top margin:  15px = 1/2 200px (visible content height) - 1/2 160px (cell's heights) - 5px section top margin
-    CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, SCREEN_WIDTH, 15.0f);
+    float topMargin = 15.0f;
+    if (screenHeight == 568.0f)
+    {
+        topMargin += 44.0f; // center on iPhone 4-inch
+    }
+    
+    CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, screenWidth, topMargin);
     self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:tableHeaderFrame] autorelease];
     
-    CGRect pickerFrame = CGRectMake(0.0f, SCREEN_HEIGHT, SCREEN_WIDTH, PICKER_HEIGHT);
+    CGRect pickerFrame = CGRectMake(0.0f, screenHeight, screenWidth, PICKER_HEIGHT);
     _datePicker = [[UIDatePicker alloc] initWithFrame:pickerFrame];
     [_datePicker addTarget:self action:@selector(datePickerChanged:) forControlEvents:UIControlEventValueChanged];
     

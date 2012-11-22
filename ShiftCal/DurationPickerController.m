@@ -12,9 +12,6 @@
 #define CELL_ID @"duration"
 #define CELL_LABEL_TAG 104
 
-#define SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.width
-#define SCREEN_HEIGHT [[UIScreen mainScreen] bounds].size.height
-
 #define PICKER_WIDTH (COMPONENT_HOUR_WIDTH + COMPONENT_MIN_WIDTH)
 #define PICKER_HEIGHT 216.0f
 #define COMPONENT_LABEL_OFFSET 10.0f
@@ -88,16 +85,26 @@
 - (void)loadView
 {
     [super loadView];
-        
+    
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    float screenWidth   = screenBounds.size.width;
+    float screenHeight  = screenBounds.size.height;
+    
     // top margin:  67px = 1/2 200px (visible content height) - 1/2 46px (cell height) - 10px table margin
-    CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, SCREEN_WIDTH, 67.0f);
+    float topMargin = 67.0f;
+    if (screenHeight == 568.0f)
+    {
+        topMargin += 44.0f; // iPhone 4-inch
+    }
+    
+    CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, screenWidth, topMargin);
     
     self.tableView.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.tableView.tableHeaderView  = [[[UIView alloc] initWithFrame:tableHeaderFrame] autorelease];
     self.tableView.scrollEnabled    = NO;
     
     // Visually hide down below screen bounds
-    _pickerWrap = [[UIView alloc] initWithFrame:CGRectMake(0.0f, SCREEN_HEIGHT, SCREEN_WIDTH, PICKER_HEIGHT)];
+    _pickerWrap = [[UIView alloc] initWithFrame:CGRectMake(0.0f, screenHeight, screenWidth, PICKER_HEIGHT)];
     
     _pickerView = [[UIPickerView alloc] init];
     _pickerView.delegate = self;
