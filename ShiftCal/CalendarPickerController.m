@@ -128,7 +128,7 @@
 @property (nonatomic, retain) NSIndexPath *defaultCellIndexPath;
 @property (nonatomic, retain) NSString *preselectedCalendarIdentifier;
 @property (nonatomic, retain) EKEventStore *eventStore;
-@property (nonatomic, retain) NSArray *calendars;
+@property (nonatomic, copy)   NSArray *calendars;
 
 @property (nonatomic, assign, readonly) SCCellSelection selectedCell;
 @property (nonatomic, retain, readonly) NSIndexPath *selectedCellIndexPath;
@@ -246,6 +246,7 @@
     
     [_defaultCellIndexPath release];
     [_eventStore release];
+    [_calendars release];
     
     [_selectedCell.indexPath release];
     [_selectedCell.calendarIdentifier release];
@@ -573,7 +574,7 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.allowsContentModifications == YES"];
     [mutableCalendars filterUsingPredicate:predicate];
     
-    self.calendars = [NSArray arrayWithArray:mutableCalendars];
+    self.calendars = mutableCalendars;
     
     [mutableCalendars release];
 }
