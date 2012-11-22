@@ -121,12 +121,14 @@
     SCCellSelection _selectedCell;
     
     EKEventStore *_eventStore;
+    NSArray *_calendars;
 }
 
 // private properties
 @property (nonatomic, retain) NSIndexPath *defaultCellIndexPath;
 @property (nonatomic, retain) NSString *preselectedCalendarIdentifier;
 @property (nonatomic, retain) EKEventStore *eventStore;
+@property (nonatomic, retain) NSArray *calendars;
 
 @property (nonatomic, assign, readonly) SCCellSelection selectedCell;
 @property (nonatomic, retain, readonly) NSIndexPath *selectedCellIndexPath;
@@ -139,6 +141,7 @@
 - (NSIndexPath *)indexPathForCalendarWithIdentifier:(NSString *)calendarIdentifier;
 - (EKCalendar *)calendarForIndexPath:(NSIndexPath *)indexPath;
 
+- (void)loadCalendars;
 - (void)loadUserDefaultCellIndexPath;
 - (void)invalidateCalendars:(NSNotification *)notification;
 - (void)setSelectedCellForIndexPath:(NSIndexPath *)indexPath;
@@ -152,6 +155,7 @@
 @implementation CalendarPickerController
 
 @synthesize eventStore = _eventStore;
+@synthesize calendars = _calendars;
 @synthesize defaultCellIndexPath = _defaultCellIndexPath;
 @synthesize preselectedCalendarIdentifier = _preselectedCalendarIdentifier;
 @synthesize delegate = _delegate;
@@ -178,9 +182,9 @@
     
     if (self)
     {
-        // Controller model equals `self.eventStore.calendars`: amount and order are used
         self.eventStore = [[[EKEventStore alloc] init] autorelease];
         
+        [self loadCalendars];
         [self loadUserDefaultCellIndexPath];
         
         if (calendarIdentifier)
@@ -297,7 +301,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.eventStore.calendars.count;
+    return self.calendars.count;
 }
 
 - (UIView *)actionPanelForIndexPath:(NSIndexPath *)indexPath andTableView:(UITableView *)tableView
@@ -336,7 +340,7 @@
     [actionButton addTarget:self action:@selector(makeDefault:) forControlEvents:UIControlEventTouchDown];
     
     // Round bottom corners when in last cell's row
-    if (row == [self.tableView numberOfRowsInSection:section] - 1)
+    if (row == [self tableView:self.tableView numberOfRowsInSection:section] - 1)
     {
         CGRect frame              = actionButton.bounds;
         UIBezierPath *roundedPath = nil;
@@ -399,6 +403,7 @@
     }
     
     UIView *actionPanelView = [self actionPanelForIndexPath:indexPath andTableView:tableView];
+    [[cell.contentView viewWithTag:TAG_ACTIONPANEL] removeFromSuperview]; // Remove old one if there was any
     [cell.contentView addSubview:actionPanelView];
     
     return cell;
@@ -500,6 +505,7 @@
 
 - (void)invalidateCalendars:(NSNotification *)notification
 {
+    [self loadCalendars];
     [self loadUserDefaultCellIndexPath];
     
     // Update user selection
@@ -538,13 +544,34 @@
     }
 }
 
+- (void)loadCalendars
+{
+    NSMutableArray *mutableCalendars = nil;
+    
+    if ([self.eventStore respondsToSelector:@selector(calendarsForEntityType:)])
+    {
+        mutableCalendars = [[self.eventStore calendarsForEntityType:EKEntityTypeEvent] mutableCopy];
+    }
+    else
+    {
+        mutableCalendars = [[self.eventStore calendars] mutableCopy];
+    }
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.allowsContentModifications == YES"];
+    [mutableCalendars filterUsingPredicate:predicate];
+    
+    self.calendars = [NSArray arrayWithArray:mutableCalendars];
+    
+    [mutableCalendars release];
+}
+
 - (void)loadUserDefaultCellIndexPath
 {
     // Read user defaults
     NSUserDefaults *prefs       = [NSUserDefaults standardUserDefaults];
     NSString *defaultIdentifier = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
     EKCalendar *defaultCalendar = [self.eventStore calendarWithIdentifier:defaultIdentifier];
-    NSInteger defaultIndex      = [self.eventStore.calendars indexOfObject:defaultCalendar];
+    NSInteger defaultIndex      = [self.calendars indexOfObject:defaultCalendar];
     
     self.defaultCellIndexPath = [NSIndexPath indexPathForRow:defaultIndex inSection:0];
 }
@@ -552,7 +579,7 @@
 - (EKCalendar *)calendarForIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-    EKCalendar *calendar = [self.eventStore.calendars objectAtIndex:row];
+    EKCalendar *calendar = [self.calendars objectAtIndex:row];
     
     return calendar;
 }
@@ -560,7 +587,7 @@
 - (NSIndexPath *)indexPathForCalendarWithIdentifier:(NSString *)calendarIdentifier
 {
     NSIndexPath *selectionPath = nil;
-    NSInteger index = [self.eventStore.calendars indexOfObjectPassingTest:^BOOL(id obj, NSUInteger index, BOOL *stop) {
+    NSInteger index = [self.calendars indexOfObjectPassingTest:^BOOL(id obj, NSUInteger index, BOOL *stop) {
         EKCalendar *calendar = (EKCalendar *)obj;
         return [calendar.calendarIdentifier isEqualToString:calendarIdentifier];
     }];
