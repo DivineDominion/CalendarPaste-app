@@ -11,9 +11,6 @@
 #import <EventKit/EventKit.h>
 
 @interface ShiftTemplate : NSManagedObject
-{
-    EKEventStore *_eventStore;
-}
 
 @property (nonatomic, retain) NSNumber *displayOrder;
 

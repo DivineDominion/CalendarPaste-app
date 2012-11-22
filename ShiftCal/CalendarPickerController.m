@@ -7,6 +7,7 @@
 //
 
 #import "CalendarPickerController.h"
+#import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 #import <CoreGraphics/CoreGraphics.h>
 
@@ -120,14 +121,13 @@
     NSString *_preselectedCalendarIdentifier;
     SCCellSelection _selectedCell;
     
-    EKEventStore *_eventStore;
     NSArray *_calendars;
 }
 
 // private properties
 @property (nonatomic, retain) NSIndexPath *defaultCellIndexPath;
 @property (nonatomic, retain) NSString *preselectedCalendarIdentifier;
-@property (nonatomic, retain) EKEventStore *eventStore;
+@property (nonatomic, readonly) EKEventStore *eventStore;
 @property (nonatomic, copy)   NSArray *calendars;
 
 @property (nonatomic, assign, readonly) SCCellSelection selectedCell;
@@ -154,7 +154,6 @@
 
 @implementation CalendarPickerController
 
-@synthesize eventStore = _eventStore;
 @synthesize calendars = _calendars;
 @synthesize defaultCellIndexPath = _defaultCellIndexPath;
 @synthesize preselectedCalendarIdentifier = _preselectedCalendarIdentifier;
@@ -182,8 +181,6 @@
     
     if (self)
     {
-        self.eventStore = [[[EKEventStore alloc] init] autorelease];
-        
         [self loadCalendars];
         [self loadUserDefaultCellIndexPath];
         
@@ -211,6 +208,11 @@
     return self;
 }
 
+- (EKEventStore *)eventStore
+{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    return appDelegate.eventStore;
+}
 - (NSString *)selectedCellCalendarIdentifier
 {
     return self.selectedCell.calendarIdentifier;
@@ -245,7 +247,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [_defaultCellIndexPath release];
-    [_eventStore release];
     [_calendars release];
     
     [_selectedCell.indexPath release];

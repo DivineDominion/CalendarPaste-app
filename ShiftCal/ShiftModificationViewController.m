@@ -7,6 +7,7 @@
 //
 
 #import "ShiftModificationViewController.h"
+#import "AppDelegate.h"
 
 #import "DurationPickerController.h"
 #import "CalendarPickerController.h"
@@ -40,19 +41,18 @@
 
 @interface ShiftData : NSObject
 {
-    EKEventStore *_eventStore;
-    NSDictionary *_shiftAttributes;
+    NSMutableDictionary *_shiftAttributes;
 }
 
-@property (nonatomic, retain) NSDictionary *shiftAttributes;
+@property (nonatomic, retain) NSMutableDictionary *shiftAttributes;
 
-@property (nonatomic, retain) NSString *title;
-@property (nonatomic, retain) NSString *location;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *location;
 @property (nonatomic, retain) NSNumber *alarmFirstInterval;
 @property (nonatomic, retain) NSNumber *alarmSecondInterval;
-@property (nonatomic, retain) NSString *calendarIdentifier;
-@property (nonatomic, retain) NSString *url;
-@property (nonatomic, retain) NSString *note;
+@property (nonatomic, copy) NSString *calendarIdentifier;
+@property (nonatomic, copy) NSString *url;
+@property (nonatomic, copy) NSString *note;
 
 - (id)initWithAttributes:(NSDictionary *)attributes;
 
@@ -73,14 +73,13 @@
     self = [super init];
     if (self)
     {
-        self.shiftAttributes = attributes;
+        self.shiftAttributes = [[attributes mutableCopy] autorelease];
     }
     return self;
 }
 
 - (void)dealloc
 {
-    [_eventStore release];
     [_shiftAttributes release];
     
     [super dealloc];
@@ -98,7 +97,7 @@
 
 - (void)setTitle:(NSString *)title
 {
-    [self.shiftAttributes setValue:title forKey:@"title"];
+    [self.shiftAttributes setValue:[[title copy] autorelease] forKey:@"title"];
 }
 
 - (NSString *)location
@@ -113,7 +112,7 @@
 
 - (void)setLocation:(NSString *)location
 {
-    [self.shiftAttributes setValue:location forKey:@"location"];
+    [self.shiftAttributes setValue:[[location copy] autorelease] forKey:@"location"];
 }
 
 - (NSInteger)durationHours
@@ -154,7 +153,7 @@
 
 - (void)setAlarmFirstInterval:(NSNumber *)alarmFirstInterval
 {
-    [self.shiftAttributes setValue:alarmFirstInterval forKey:@"alarmFirstInterval"];
+    [self.shiftAttributes setValue:[[alarmFirstInterval copy] autorelease] forKey:@"alarmFirstInterval"];
 }
 
 - (NSNumber *)alarmSecondInterval
@@ -169,7 +168,7 @@
 
 - (void)setAlarmSecondInterval:(NSNumber *)alarmSecondInterval
 {
-    [self.shiftAttributes setValue:alarmSecondInterval forKey:@"alarmSecondInterval"];
+    [self.shiftAttributes setValue:[[alarmSecondInterval copy] autorelease] forKey:@"alarmSecondInterval"];
 }
 
 - (BOOL)hasFirstAlarm
@@ -191,7 +190,7 @@
 
 - (void)setCalendarIdentifier:(NSString *)calendarIdentifier
 {
-    [self.shiftAttributes setValue:calendarIdentifier forKey:@"calendarIdentifier"];
+    [self.shiftAttributes setValue:[[calendarIdentifier copy] autorelease] forKey:@"calendarIdentifier"];
 }
 
 - (BOOL)hasInvalidCalendar
@@ -201,14 +200,8 @@
 
 - (EKEventStore *)eventStore
 {
-    if (_eventStore)
-    {
-        return _eventStore;
-    }
-    
-    _eventStore = [[EKEventStore alloc] init];
-    
-    return _eventStore;
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    return appDelegate.eventStore;
 }
 
 - (EKCalendar *)calendar
@@ -240,7 +233,7 @@
 
 - (void)setUrl:(NSString *)url
 {
-    [self.shiftAttributes setValue:url forKey:@"url"];
+    [self.shiftAttributes setValue:[[url copy] autorelease] forKey:@"url"];
 }
 
 - (NSString *)note
@@ -255,7 +248,7 @@
 
 - (void)setNote:(NSString *)note
 {
-    [self.shiftAttributes setValue:note forKey:@"note"];
+    [self.shiftAttributes setValue:[[note copy] autorelease] forKey:@"note"];
 }
 
 @end
@@ -316,7 +309,7 @@
             // Creates a temporary shift into the scratchpad context
             self.shiftData = [[[ShiftData alloc] initWithAttributes:[self.shiftTemplateController defaultAttributeDictionary]] autorelease];
 
-            _isNewEntry = YES;
+            _isNewEntry = NO;
         }
         
         self.dateTranslator = [[[DateIntervalTranslator alloc] init] autorelease];
@@ -586,6 +579,7 @@
             textField.placeholder = @"URL";
             textField.tag = TAG_TEXTFIELD_URL;
             textField.delegate = self;
+            textField.text = self.shiftData.url;
             
             break;
         }
@@ -606,13 +600,21 @@
 
                 [textView setDelegate:self];
                 
-                [self resetTextViewToPlaceholder:textView];
-                
                 [cell.contentView addSubview:textView];
                 
                 [textView release];
             }
-                        
+            
+            UITextView *textView = [[cell.contentView subviews] lastObject];
+            NSString *noteText   = self.shiftData.note;
+            
+            textView.text = noteText;
+            
+            if (!noteText || noteText.length == 0)
+            {
+                [self resetTextViewToPlaceholder:textView];
+            }
+            
             break;
         }
         default:
@@ -748,9 +750,14 @@
         
         [[textView viewWithTag:TAG_TEXTVIEW_PLACEHOLDER] removeFromSuperview];
     }
-    else if ([textView.text length] == 0)
+    else
     {
-        [self resetTextViewToPlaceholder:textView];
+        if ([textView.text length] == 0)
+        {
+            [self resetTextViewToPlaceholder:textView];
+        }
+        
+        self.shiftData.note = textView.text;
     }
 }
 
@@ -930,6 +937,8 @@
         {
             self.shiftData.title = @"New Shift";
         }
+        
+        NSLog(@"%@", self.shiftData.shiftAttributes);
         
         [self.modificationDelegate shiftModificationViewController:self modifiedShiftAttributes:self.shiftData.shiftAttributes];
     }

@@ -7,6 +7,7 @@
 //
 
 #import "ShiftTemplate.h"
+#import "AppDelegate.h"
 
 @interface ShiftTemplate ()
 // private methods
@@ -26,8 +27,6 @@
 @dynamic url;
 @dynamic note;
 
-@synthesize eventStore = _eventStore;
-
 - (void)awakeFromInsert
 {
     [super awakeFromInsert];
@@ -42,21 +41,13 @@
 
 - (void)dealloc
 {
-    [_eventStore release];
-    
     [super dealloc];
 }
 
 - (EKEventStore *)eventStore
 {
-    if (_eventStore)
-    {
-        return _eventStore;
-    }
-    
-    _eventStore = [[EKEventStore alloc] init];
-    
-    return _eventStore;
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    return appDelegate.eventStore;
 }
 
 - (EKEvent *)event

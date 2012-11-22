@@ -49,13 +49,20 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [_shiftAttributes release];
+    
+    [super dealloc];
+}
+
 - (void)shiftModificationViewController:(ShiftModificationViewController *)shiftAddViewController modifiedShiftAttributes:(NSDictionary *)shiftAttributes
 {
     [self.target dismissViewControllerAnimated:YES completion:nil]; // TODO refactor high coupling
     
     if (shiftAttributes)
     {
-        self.shiftAttributes = shiftAttributes;
+        self.shiftAttributes = [[shiftAttributes copy] autorelease];
         [self execute];
     }
 }
