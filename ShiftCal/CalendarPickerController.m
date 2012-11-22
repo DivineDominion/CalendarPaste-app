@@ -327,9 +327,22 @@
     actionButton.autoresizingMask    = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     actionButton.layer.masksToBounds = YES;
 
-    UIEdgeInsets buttonInsets = UIEdgeInsetsMake(0, 3, 0, 3);
-    UIImage *buttonImage = [[UIImage imageNamed:@"makedefault.png"] resizableImageWithCapInsets:buttonInsets resizingMode:UIImageResizingModeTile];
-    UIImage *buttonPressedImage = [[UIImage imageNamed:@"makedefault_pressed.png"] resizableImageWithCapInsets:buttonInsets resizingMode:UIImageResizingModeTile];
+    UIImage *buttonImage        = [UIImage imageNamed:@"makedefault.png"];
+    UIImage *buttonPressedImage = [UIImage imageNamed:@"makedefault_pressed.png"];
+    
+    if ([buttonImage respondsToSelector:@selector(resizableImageWithCapInsets:resizingMode:)])
+    {
+        UIEdgeInsets buttonInsets = UIEdgeInsetsMake(0, 4, 0, 4);
+        
+        buttonImage        = [buttonImage resizableImageWithCapInsets:buttonInsets resizingMode:UIImageResizingModeTile];
+        buttonPressedImage = [buttonPressedImage resizableImageWithCapInsets:buttonInsets resizingMode:UIImageResizingModeTile];
+    }
+    else
+    {
+        buttonImage        = [buttonImage stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        buttonPressedImage = [buttonPressedImage stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+    }
+    
     [actionButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
     [actionButton setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
     
