@@ -285,7 +285,14 @@
     
     [event release];
     
-    [self.delegate shiftAssignmentViewController:self didCompleteWithAction:SCAssignmentViewActionSaved];
+    if (success)
+    {
+        [self.delegate shiftAssignmentViewController:self didCompleteWithAction:SCAssignmentViewActionSaved];
+    }
+    else
+    {
+        [self.delegate shiftAssignmentViewController:self didCompleteWithAction:SCAssignmentViewActionCanceled];
+    }
 }
 
 - (void)cancel:(id)sender
