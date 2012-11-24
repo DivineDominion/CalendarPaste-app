@@ -37,6 +37,8 @@
 		609167D3165D6A32006C33EE /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 609167D1165D6A32006C33EE /* Default.png */; };
 		609167D4165D6A32006C33EE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609167D2165D6A32006C33EE /* Default@2x.png */; };
 		609167D6165E0D2D006C33EE /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609167D5165E0D2D006C33EE /* Default-568h@2x.png */; };
+		6091680B165EEDE4006C33EE /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6091680A165EEDE3006C33EE /* icon@2x.png */; };
+		6091680D165EEE22006C33EE /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6091680C165EEE22006C33EE /* icon.png */; };
 		609EF760163188DA003E4BB3 /* ShiftOverviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */; };
 		60AAB7CC15C0926D002114B9 /* ShiftTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */; };
 		60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB81215C13297002114B9 /* ShiftOverviewController.m */; };
@@ -105,13 +107,15 @@
 		609167D1165D6A32006C33EE /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		609167D2165D6A32006C33EE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		609167D5165E0D2D006C33EE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		6091680A165EEDE3006C33EE /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "../icon@2x.png"; sourceTree = "<group>"; };
+		6091680C165EEE22006C33EE /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../icon.png; sourceTree = "<group>"; };
 		609EF75E163188DA003E4BB3 /* ShiftOverviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftOverviewCell.h; sourceTree = "<group>"; };
 		609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftOverviewCell.m; sourceTree = "<group>"; };
 		60AAB7CA15C0926D002114B9 /* ShiftTemplateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplateTests.h; sourceTree = "<group>"; };
 		60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplateTests.m; sourceTree = "<group>"; };
 		60AAB81115C13297002114B9 /* ShiftOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftOverviewController.h; sourceTree = "<group>"; };
 		60AAB81215C13297002114B9 /* ShiftOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftOverviewController.m; sourceTree = "<group>"; };
-		60BB969D15C08EB900801105 /* ShiftCal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftCal.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		60BB969D15C08EB900801105 /* Cal Paste.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cal Paste.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		60BB96A115C08EB900801105 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		60BB96A315C08EB900801105 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		60BB96A515C08EB900801105 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -222,6 +226,8 @@
 				609167D1165D6A32006C33EE /* Default.png */,
 				609167D2165D6A32006C33EE /* Default@2x.png */,
 				609167D5165E0D2D006C33EE /* Default-568h@2x.png */,
+				6091680C165EEE22006C33EE /* icon.png */,
+				6091680A165EEDE3006C33EE /* icon@2x.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -239,7 +245,7 @@
 		60BB969E15C08EB900801105 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				60BB969D15C08EB900801105 /* ShiftCal.app */,
+				60BB969D15C08EB900801105 /* Cal Paste.app */,
 				60BB96B815C08EB900801105 /* ShiftCalTests.octest */,
 			);
 			name = Products;
@@ -353,7 +359,7 @@
 			);
 			name = ShiftCal;
 			productName = ShiftCal;
-			productReference = 60BB969D15C08EB900801105 /* ShiftCal.app */;
+			productReference = 60BB969D15C08EB900801105 /* Cal Paste.app */;
 			productType = "com.apple.product-type.application";
 		};
 		60BB96B715C08EB900801105 /* ShiftCalTests */ = {
@@ -427,6 +433,8 @@
 				609167D3165D6A32006C33EE /* Default.png in Resources */,
 				609167D4165D6A32006C33EE /* Default@2x.png in Resources */,
 				609167D6165E0D2D006C33EE /* Default-568h@2x.png in Resources */,
+				6091680B165EEDE4006C33EE /* icon@2x.png in Resources */,
+				6091680D165EEE22006C33EE /* icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -576,7 +584,7 @@
 				GCC_PREFIX_HEADER = "ShiftCal/ShiftCal-Prefix.pch";
 				INFOPLIST_FILE = "ShiftCal/ShiftCal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Cal Paste";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -588,7 +596,7 @@
 				GCC_PREFIX_HEADER = "ShiftCal/ShiftCal-Prefix.pch";
 				INFOPLIST_FILE = "ShiftCal/ShiftCal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Cal Paste";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

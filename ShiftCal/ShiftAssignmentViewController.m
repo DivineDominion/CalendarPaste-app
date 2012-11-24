@@ -129,7 +129,7 @@
     [saveItem release];
     [cancelItem release];
     
-    self.title = @"Assign";
+    self.title = @"Paste";
 }
 
 - (void)viewDidAppear:(BOOL)animated

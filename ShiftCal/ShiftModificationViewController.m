@@ -371,7 +371,7 @@
     [saveItem release];
     [cancelItem release];
     
-    self.title = @"Add Shift";
+    self.title = @"Add Template";
 
     // Enable custom title when editing
     if (self.shiftData.title.length > 0)
