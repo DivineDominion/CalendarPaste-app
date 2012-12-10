@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		600BFE7615FB5ADF008B03CA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A515C08EB900801105 /* CoreGraphics.framework */; };
 		600E119F160373F3009A7E24 /* AlarmPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 600E119E160373F3009A7E24 /* AlarmPickerViewController.m */; };
+		601D131E167655E900B820B8 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 601D131C167655E900B820B8 /* icon.png */; };
+		601D131F167655E900B820B8 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 601D131D167655E900B820B8 /* icon@2x.png */; };
 		605A96B516171D160008B1C6 /* ShiftTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 605A96B416171D160008B1C6 /* ShiftTemplate.m */; };
 		605A96B7161B1EC30008B1C6 /* ShiftTemplateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82C15F4FE2B008B48A1 /* ShiftTemplateController.m */; };
 		605A96B8161B1FE10008B1C6 /* ShiftModificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1603315DD1447005834B3 /* ShiftModificationViewController.m */; };
@@ -37,8 +39,6 @@
 		609167D3165D6A32006C33EE /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 609167D1165D6A32006C33EE /* Default.png */; };
 		609167D4165D6A32006C33EE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609167D2165D6A32006C33EE /* Default@2x.png */; };
 		609167D6165E0D2D006C33EE /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609167D5165E0D2D006C33EE /* Default-568h@2x.png */; };
-		6091680B165EEDE4006C33EE /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6091680A165EEDE3006C33EE /* icon@2x.png */; };
-		6091680D165EEE22006C33EE /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6091680C165EEE22006C33EE /* icon.png */; };
 		609EF760163188DA003E4BB3 /* ShiftOverviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */; };
 		60AAB7CC15C0926D002114B9 /* ShiftTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */; };
 		60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB81215C13297002114B9 /* ShiftOverviewController.m */; };
@@ -74,6 +74,8 @@
 		600E1199160369BF009A7E24 /* AlarmPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerViewController.h; sourceTree = "<group>"; };
 		600E119E160373F3009A7E24 /* AlarmPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmPickerViewController.m; sourceTree = "<group>"; };
 		600E11A216038973009A7E24 /* AlarmPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerDelegate.h; sourceTree = "<group>"; };
+		601D131C167655E900B820B8 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		601D131D167655E900B820B8 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		605A96B316171D160008B1C6 /* ShiftTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplate.h; sourceTree = "<group>"; };
 		605A96B416171D160008B1C6 /* ShiftTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplate.m; sourceTree = "<group>"; };
 		605A96B9161B27E10008B1C6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -107,8 +109,6 @@
 		609167D1165D6A32006C33EE /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		609167D2165D6A32006C33EE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		609167D5165E0D2D006C33EE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		6091680A165EEDE3006C33EE /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "../icon@2x.png"; sourceTree = "<group>"; };
-		6091680C165EEE22006C33EE /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../icon.png; sourceTree = "<group>"; };
 		609EF75E163188DA003E4BB3 /* ShiftOverviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftOverviewCell.h; sourceTree = "<group>"; };
 		609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftOverviewCell.m; sourceTree = "<group>"; };
 		60AAB7CA15C0926D002114B9 /* ShiftTemplateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplateTests.h; sourceTree = "<group>"; };
@@ -207,6 +207,8 @@
 		608F6FDD15FF78AD001C8217 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				601D131C167655E900B820B8 /* icon.png */,
+				601D131D167655E900B820B8 /* icon@2x.png */,
 				609167B816529ACE006C33EE /* plus.png */,
 				609167B916529ACE006C33EE /* plus@2x.png */,
 				609167C4165BB626006C33EE /* plus_pressed.png */,
@@ -226,8 +228,6 @@
 				609167D1165D6A32006C33EE /* Default.png */,
 				609167D2165D6A32006C33EE /* Default@2x.png */,
 				609167D5165E0D2D006C33EE /* Default-568h@2x.png */,
-				6091680C165EEE22006C33EE /* icon.png */,
-				6091680A165EEDE3006C33EE /* icon@2x.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -433,8 +433,8 @@
 				609167D3165D6A32006C33EE /* Default.png in Resources */,
 				609167D4165D6A32006C33EE /* Default@2x.png in Resources */,
 				609167D6165E0D2D006C33EE /* Default-568h@2x.png in Resources */,
-				6091680B165EEDE4006C33EE /* icon@2x.png in Resources */,
-				6091680D165EEE22006C33EE /* icon.png in Resources */,
+				601D131E167655E900B820B8 /* icon.png in Resources */,
+				601D131F167655E900B820B8 /* icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
