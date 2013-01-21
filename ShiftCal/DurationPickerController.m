@@ -12,26 +12,28 @@
 #define CELL_ID @"duration"
 #define CELL_LABEL_TAG 104
 
-#define PICKER_WIDTH (COMPONENT_HOUR_WIDTH + COMPONENT_MIN_WIDTH)
+#define PICKER_WIDTH (2 * COMPONENT_WIDTH)
 #define PICKER_HEIGHT 216.0f
+#define COMPONENT_WIDTH 148.0f
 #define COMPONENT_LABEL_OFFSET 10.0f
+#define COMPONENT_ROW_WIDTH 42.0f
 #define COMPONENT_LABEL_Y 83.0f
 #define COMPONENT_LABEL_HEIGHT 50.0f
 #define COMPONENT_SUBLABEL_TAG 100
 
 #define COMPONENT_HOUR 0
 #define COMPONENT_HOUR_TAG 101
-#define COMPONENT_HOUR_WIDTH 80.0f
-#define COMPONENT_HOUR_X (160.0f - PICKER_WIDTH/2)
-#define COMPONENT_HOUR_LABEL_WIDTH 15.0f
-#define COMPONENT_HOUR_LABEL_X (COMPONENT_HOUR_X + COMPONENT_HOUR_WIDTH - COMPONENT_HOUR_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
+#define COMPONENT_HOUR_X (COMPONENT_WIDTH - COMPONENT_HOUR_LABEL_WIDTH - COMPONENT_LABEL_OFFSET - COMPONENT_ROW_WIDTH)
+#define COMPONENT_HOUR_LABEL_TAG 103
+#define COMPONENT_HOUR_LABEL_WIDTH 80.0f
+#define COMPONENT_HOUR_LABEL_X (160.0f - COMPONENT_HOUR_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
 
 #define COMPONENT_MIN 1
 #define COMPONENT_MIN_TAG 102
-#define COMPONENT_MIN_WIDTH 100.0f
-#define COMPONENT_MIN_X (COMPONENT_HOUR_X + COMPONENT_HOUR_WIDTH)
-#define COMPONENT_MIN_LABEL_WIDTH 46.0f
-#define COMPONENT_MIN_LABEL_X (COMPONENT_MIN_X + COMPONENT_MIN_WIDTH - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
+#define COMPONENT_MIN_X (COMPONENT_WIDTH - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET - COMPONENT_ROW_WIDTH)
+#define COMPONENT_MIN_LABEL_TAG 104
+#define COMPONENT_MIN_LABEL_WIDTH 76.0f
+#define COMPONENT_MIN_LABEL_X (160.0f + 2 + COMPONENT_WIDTH - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
 
 
 @interface DurationPickerController ()
@@ -128,22 +130,29 @@
     UILabel *theLabel = nil;
     CGRect labelFrame;
     NSString *labelText = nil;
+    NSInteger labelTag = 0;
     
     if (component == COMPONENT_HOUR)
     {
         labelFrame = CGRectMake(COMPONENT_HOUR_LABEL_X, COMPONENT_LABEL_Y, COMPONENT_HOUR_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT);
-        labelText  = @"h";
+        labelText  = @"hours";
+        labelTag   = COMPONENT_HOUR_LABEL_TAG;
     }
     else // assuming: component == COMPONENT_MIN
     {
         labelFrame = CGRectMake(COMPONENT_MIN_LABEL_X, COMPONENT_LABEL_Y, COMPONENT_MIN_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT);
-        labelText  = @"min";
+        labelText  = @"mins";
+        labelTag   = COMPONENT_MIN_LABEL_TAG;
     }
     
     theLabel = [[UILabel alloc] initWithFrame:labelFrame];
+    theLabel.tag = labelTag;
     theLabel.text = labelText;
-    theLabel.textAlignment = UITextAlignmentRight;
-    theLabel.font = [UIFont systemFontOfSize:24.0f];
+    theLabel.textAlignment = UITextAlignmentLeft;
+    theLabel.font = [UIFont boldSystemFontOfSize:24.0f];
+    theLabel.textColor = [UIColor colorWithWhite:0.25 alpha:1.0];
+    theLabel.shadowColor = [UIColor colorWithWhite:0.8 alpha:0.8];
+    theLabel.shadowOffset = CGSizeMake(0, 1.0f);
     theLabel.backgroundColor = [UIColor clearColor];
     theLabel.userInteractionEnabled = NO;
 
@@ -280,15 +289,9 @@
     return 2;
 }
 
-
-- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
+-(CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
 {
-    if (component == COMPONENT_HOUR)
-    {
-        return COMPONENT_HOUR_WIDTH;
-    }
-
-    return COMPONENT_MIN_WIDTH;
+    return COMPONENT_WIDTH;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
@@ -328,31 +331,30 @@
     UIView *rowView   = nil;
     UILabel *subLabel = nil;
 
-    CGFloat width;
     CGRect frame;
     
     if (component == COMPONENT_HOUR)
     {
-        width = COMPONENT_HOUR_WIDTH;
-        frame = CGRectMake(0, 0, width, 32.0f);
+        frame = CGRectMake(0, 0, COMPONENT_WIDTH, 32.0f);
         
         rowView = [[[UIView alloc] initWithFrame:frame] autorelease];
         rowView.tag = COMPONENT_HOUR_TAG;
         
         // offset for sublabel
-        frame.size.width = width - COMPONENT_HOUR_LABEL_WIDTH - COMPONENT_LABEL_OFFSET;
+        frame.origin.x = COMPONENT_HOUR_X;
     }
     else
     {
-        width = COMPONENT_MIN_WIDTH;
-        frame = CGRectMake(0, 0, width, 32.0f);
+        frame = CGRectMake(0, 0, COMPONENT_WIDTH, 32.0f);
         
         rowView = [[[UIView alloc] initWithFrame:frame] autorelease];
         rowView.tag = COMPONENT_MIN_TAG;
         
         // offset for sublabel
-        frame.size.width = width - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET;
+        frame.origin.x = COMPONENT_MIN_X;
     }
+    
+    frame.size.width = COMPONENT_ROW_WIDTH;
     
     subLabel = [[UILabel alloc] initWithFrame:frame];
     
