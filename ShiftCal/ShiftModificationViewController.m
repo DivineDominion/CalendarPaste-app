@@ -938,8 +938,6 @@
             self.shiftData.title = @"New Shift";
         }
         
-        NSLog(@"%@", self.shiftData.shiftAttributes);
-        
         [self.modificationDelegate shiftModificationViewController:self modifiedShiftAttributes:self.shiftData.shiftAttributes];
     }
 }

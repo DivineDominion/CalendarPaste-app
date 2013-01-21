@@ -116,9 +116,11 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *saveItem   = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                target:self
-                                                                                action:@selector(done:)];
+    
+    UIBarButtonItem *saveItem   = [[UIBarButtonItem alloc] initWithTitle:@"Paste"
+                                                                   style:UIBarButtonItemStyleDone
+                                                                  target:self
+                                                                  action:@selector(done:)];
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                 target:self
                                                                                 action:@selector(cancel:)];
@@ -129,7 +131,7 @@
     [saveItem release];
     [cancelItem release];
     
-    self.title = @"Paste";
+    self.title = @"Pick a Time";
 }
 
 - (void)viewDidAppear:(BOOL)animated
