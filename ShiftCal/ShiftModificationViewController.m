@@ -641,8 +641,7 @@
 
 - (void)displayDurationInCell:(UITableViewCell *)cell
 {
-    NSString *theText = [ShiftTemplateController durationTextForHours:self.shiftData.durationHours
-                                                           andMinutes:self.shiftData.durationMinutes];
+    NSString *theText = [self.dateTranslator humanReadableFormOfHours:self.shiftData.durationHours minutes:self.shiftData.durationMinutes];
     
     cell.detailTextLabel.text = theText;
 }

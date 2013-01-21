@@ -285,22 +285,4 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     return _managedObjectModel;
 }
 
-# pragma mark - class methods
-
-+ (NSString *)durationTextForHours:(NSInteger)hours andMinutes:(NSInteger)minutes
-{
-    NSString *minutesString = @"";
-    NSString *hoursString   = [NSString stringWithFormat:@"%dh", hours];
-    
-    if (minutes > 0) {
-        minutesString = [NSString stringWithFormat:@" %dmin", minutes];
-        
-        if (hours == 0) {
-            hoursString = @"";
-        }
-    }
-    
-    return [NSString stringWithFormat:@"%@%@", hoursString, minutesString];
-}
-
 @end

@@ -8,6 +8,7 @@
 
 #import "DurationPickerController.h"
 #import "ShiftTemplateController.h"
+#import "DateIntervalTranslator.h"
 
 #define CELL_ID @"duration"
 #define CELL_LABEL_TAG 104
@@ -40,9 +41,11 @@
 {
     UIPickerView *_pickerView;
     UIView *_pickerWrap;
+    DateIntervalTranslator *_dateIntervalTranslator;
 }
 
-// private methods
+@property (nonatomic, retain) DateIntervalTranslator *timeTranslator;
+
 + (UILabel *)createLabelForComponet:(NSInteger)component;
 
 - (UIView *)rowViewForComponent:(NSInteger)component;
@@ -55,6 +58,7 @@
 @synthesize hours    = _hours;
 @synthesize minutes  = _minutes;
 @synthesize delegate = _delegate;
+@synthesize timeTranslator = _dateIntervalTranslator;
 
 - (id)init
 {
@@ -79,6 +83,8 @@
     {
         self.hours = hours;
         self.minutes = minutes;
+        
+        self.timeTranslator = [[[DateIntervalTranslator alloc] init] autorelease];
     }
     
     return self;
@@ -134,13 +140,13 @@
     
     if (component == COMPONENT_HOUR)
     {
-        labelFrame = CGRectMake(COMPONENT_HOUR_LABEL_X, COMPONENT_LABEL_Y, COMPONENT_HOUR_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT);
+        labelFrame = CGRectMake(COMPONENT_HOUR_LABEL_X, COMPONENT_LABEL_Y+2, COMPONENT_HOUR_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT);
         labelText  = @"hours";
         labelTag   = COMPONENT_HOUR_LABEL_TAG;
     }
     else // assuming: component == COMPONENT_MIN
     {
-        labelFrame = CGRectMake(COMPONENT_MIN_LABEL_X, COMPONENT_LABEL_Y, COMPONENT_MIN_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT);
+        labelFrame = CGRectMake(COMPONENT_MIN_LABEL_X, COMPONENT_LABEL_Y+2, COMPONENT_MIN_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT);
         labelText  = @"mins";
         labelTag   = COMPONENT_MIN_LABEL_TAG;
     }
@@ -149,7 +155,7 @@
     theLabel.tag = labelTag;
     theLabel.text = labelText;
     theLabel.textAlignment = UITextAlignmentLeft;
-    theLabel.font = [UIFont boldSystemFontOfSize:24.0f];
+    theLabel.font = [UIFont boldSystemFontOfSize:20.0f];
     theLabel.textColor = [UIColor colorWithWhite:0.25 alpha:1.0];
     theLabel.shadowColor = [UIColor colorWithWhite:0.8 alpha:0.8];
     theLabel.shadowOffset = CGSizeMake(0, 1.0f);
@@ -166,6 +172,7 @@
     [_pickerView release];
     
     [_pickerWrap release];
+    [_dateIntervalTranslator release];
     
     [super dealloc];
 }
@@ -244,8 +251,8 @@
 }
 
 - (NSString *)textForUserSelection
-{   
-    return [ShiftTemplateController durationTextForHours:self.hours andMinutes:self.minutes];
+{
+    return [self.timeTranslator humanReadableFormOfHours:self.hours minutes:self.minutes];
 }
 
 - (void)updateCellForHoursAndMinutes
@@ -298,10 +305,10 @@
 {
     if (component == COMPONENT_HOUR)
     {
-        return 25;
+        return 24;
     }
     
-    return 61;
+    return 60;
 }
 
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view

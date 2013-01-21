@@ -22,8 +22,6 @@
 @property (nonatomic, readonly) NSManagedObjectModel         *managedObjectModel;
 @property (nonatomic, readonly) NSManagedObjectContext       *managedObjectContext;
 
-+ (NSString *)durationTextForHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
-
 - (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift;
 - (ShiftTemplate *)importShiftByAttributeDictionary:(NSDictionary *)attributes;
 - (NSMutableDictionary *)attributeDictionaryForShift:(ShiftTemplate *)shift;

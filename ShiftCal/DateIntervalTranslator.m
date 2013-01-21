@@ -147,6 +147,11 @@
     return [self humanReadableFormOf:[self dateComponentsForTimeInterval:interval]];
 }
 
+- (NSString *)humanReadableFormOfHours:(NSUInteger)hours minutes:(NSUInteger)mins
+{
+    return [self humanReadableFormOfDays:0 hours:hours minutes:mins];
+}
+
 - (NSString *)humanReadableFormOfDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins
 {
     return [self humanReadableFormOf:[self dateComponentsForDays:days hours:hours minutes:mins]];
