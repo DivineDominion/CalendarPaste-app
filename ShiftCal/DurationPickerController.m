@@ -15,7 +15,7 @@
 
 #define PICKER_WIDTH (2 * COMPONENT_WIDTH)
 #define PICKER_HEIGHT 216.0f
-#define COMPONENT_WIDTH 148.0f
+#define COMPONENT_WIDTH 130.0f
 #define COMPONENT_LABEL_OFFSET 10.0f
 #define COMPONENT_ROW_WIDTH 42.0f
 #define COMPONENT_LABEL_Y 83.0f
@@ -26,14 +26,14 @@
 #define COMPONENT_HOUR_TAG 101
 #define COMPONENT_HOUR_X (COMPONENT_WIDTH - COMPONENT_HOUR_LABEL_WIDTH - COMPONENT_LABEL_OFFSET - COMPONENT_ROW_WIDTH)
 #define COMPONENT_HOUR_LABEL_TAG 103
-#define COMPONENT_HOUR_LABEL_WIDTH 80.0f
+#define COMPONENT_HOUR_LABEL_WIDTH 65.0f
 #define COMPONENT_HOUR_LABEL_X (160.0f - COMPONENT_HOUR_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
 
 #define COMPONENT_MIN 1
 #define COMPONENT_MIN_TAG 102
 #define COMPONENT_MIN_X (COMPONENT_WIDTH - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET - COMPONENT_ROW_WIDTH)
 #define COMPONENT_MIN_LABEL_TAG 104
-#define COMPONENT_MIN_LABEL_WIDTH 76.0f
+#define COMPONENT_MIN_LABEL_WIDTH 58.0f
 #define COMPONENT_MIN_LABEL_X (160.0f + 2 + COMPONENT_WIDTH - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
 
 
@@ -127,8 +127,10 @@
     [_pickerWrap addSubview:hourLabel];
     [_pickerWrap addSubview:minLabel];
     
-    
     [self.tableView addSubview:_pickerWrap];
+    
+    // Update labels
+    [self pluralizeLabels];
 }
 
 + (UILabel *)createLabelForComponet:(NSInteger)component
@@ -264,10 +266,44 @@
 #pragma mark - PickerView
 #pragma mark PickerView delegate
 
+-(void)pluralizeLabels
+{
+    UILabel *label = (UILabel*)[self.tableView viewWithTag:COMPONENT_HOUR_LABEL_TAG];
+    NSString *text;
+    
+    if (self.hours == 1)
+    {
+        text = @"hour";
+    }
+    else
+    {
+        text = @"hours";
+    }
+
+    [label setText:text];
+    [label setNeedsDisplay];
+    
+    label = (UILabel*)[self.tableView viewWithTag:COMPONENT_MIN_LABEL_TAG];
+
+    if (self.minutes == 1)
+    {
+        text = @"min";
+    }
+    else
+    {
+        text = @"mins";
+    }
+    
+    [label setText:text];
+    [label setNeedsDisplay];
+}
+
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     self.hours   = [pickerView selectedRowInComponent:COMPONENT_HOUR];
     self.minutes = [pickerView selectedRowInComponent:COMPONENT_MIN];
+    
+    [self pluralizeLabels];
     
     // Don't allow both 0h and 0min -- select '1' for the opposite component
     if (self.hours == 0 && self.minutes == 0)
