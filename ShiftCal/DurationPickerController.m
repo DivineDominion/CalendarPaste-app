@@ -36,6 +36,11 @@
 #define COMPONENT_MIN_LABEL_WIDTH 58.0f
 #define COMPONENT_MIN_LABEL_X (160.0f + 2 + COMPONENT_WIDTH - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
 
+#define RESET_MINUTES self.minutes + (kMinuteItemsMinFactor * kMinuteItems)
+
+static const NSInteger kMinuteItems = 60;
+static const NSInteger kMinuteItemsMinFactor = 3;
+static const NSInteger kMinuteItemsMaxFactor = 4;
 
 @interface DurationPickerController ()
 {
@@ -211,7 +216,7 @@
     }];
     
     [_pickerView selectRow:self.hours   inComponent:COMPONENT_HOUR animated:NO];
-    [_pickerView selectRow:self.minutes inComponent:COMPONENT_MIN  animated:NO];
+    [_pickerView selectRow:RESET_MINUTES inComponent:COMPONENT_MIN  animated:NO];
 }
 
 #pragma mark - TableView data
@@ -301,9 +306,20 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     self.hours   = [pickerView selectedRowInComponent:COMPONENT_HOUR];
-    self.minutes = [pickerView selectedRowInComponent:COMPONENT_MIN];
+    self.minutes = [pickerView selectedRowInComponent:COMPONENT_MIN] % kMinuteItems;
     
     [self pluralizeLabels];
+    
+    // reset minute selection to 3rd or so interval
+    if (component == COMPONENT_MIN &&
+        (row < (kMinuteItemsMinFactor * kMinuteItems) ||
+         row >= (kMinuteItemsMaxFactor * kMinuteItems)))
+    {
+        row = row % kMinuteItems;
+        row += kMinuteItemsMinFactor * kMinuteItems;
+        
+        [pickerView selectRow:row inComponent:component animated:NO];
+    }
     
     // Don't allow both 0h and 0min -- select '1' for the opposite component
     if (self.hours == 0 && self.minutes == 0)
@@ -311,14 +327,13 @@
         if (component == COMPONENT_HOUR)
         {
             self.minutes = 1;
-            [_pickerView selectRow:self.minutes inComponent:COMPONENT_MIN animated:YES];
+            [pickerView selectRow:RESET_MINUTES inComponent:COMPONENT_MIN animated:YES];
         }
         else if (component == COMPONENT_MIN)
         {
             self.hours = 1;
-            [_pickerView selectRow:self.hours inComponent:COMPONENT_HOUR animated:YES];
+            [pickerView selectRow:self.hours inComponent:COMPONENT_HOUR animated:YES];
         }
-        
     }
     
     // Update view
@@ -344,12 +359,13 @@
         return 24;
     }
     
-    return 60;
+    return 7*kMinuteItems;
 }
 
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
 {
     UIView *rowView = nil;
+    NSString *theText = nil;
     
     if ((view.tag == COMPONENT_HOUR_TAG) || (view.tag == COMPONENT_MIN_TAG))
     {
@@ -360,8 +376,14 @@
         rowView = [self rowViewForComponent:component];
     }
 
-    // rows display just their own count
-    NSString *theText = [NSString stringWithFormat:@"%d", row];
+    if (view.tag == COMPONENT_HOUR_TAG)
+    {
+        theText = [NSString stringWithFormat:@"%d", row];
+    }
+    else // assuming COMPONENT_MIN_TAG
+    {
+        theText = [NSString stringWithFormat:@"%d", row % kMinuteItems];
+    }
     
     UILabel * theLabel = (UILabel *)[rowView viewWithTag:COMPONENT_SUBLABEL_TAG];
     theLabel.text = theText;
