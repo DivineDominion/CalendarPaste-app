@@ -20,7 +20,7 @@
 @property (nonatomic, retain) NSNumber *durHours;
 @property (nonatomic, retain) NSNumber *durMinutes;
 
-@property (nonatomic, retain) NSNumber *isAllDay;
+@property (nonatomic, retain) NSNumber *allDay;
 @property (nonatomic, retain) NSNumber *lastPasteHours;
 @property (nonatomic, retain) NSNumber *lastPasteMins;
 
@@ -39,6 +39,7 @@
 - (void)setLastPaste:(NSDate *)lastPaste;
 - (void)setLastPasteHour:(NSUInteger)hours andMinute:(NSUInteger)minutes;
 - (BOOL)wasAlreadyPasted;
+- (BOOL)isAllDay;
 
 - (EKEvent *)event;
 - (NSString *)calendarTitle;

@@ -10,8 +10,9 @@
 #import "AppDelegate.h"
 
 @interface ShiftTemplate ()
-// private methods
+
 + (NSString *)userDefaultCalendarIdentifier;
+
 @end
 
 @implementation ShiftTemplate
@@ -21,7 +22,7 @@
 @dynamic location;
 @dynamic durHours;
 @dynamic durMinutes;
-@dynamic isAllDay;
+@dynamic allDay;
 @dynamic lastPasteHours;
 @dynamic lastPasteMins;
 @dynamic calendarIdentifier;
@@ -125,6 +126,17 @@
 - (BOOL)wasAlreadyPasted
 {
     return self.lastPasteHours != nil;
+}
+
+- (BOOL)isAllDay
+{
+    NSNumber *allDay = nil;
+    
+    [self willAccessValueForKey:@"allDay"];
+    allDay = [self primitiveValueForKey:@"allDay"];
+    [self didAccessValueForKey:@"allDay"];
+    
+    return (allDay != nil) ? [allDay boolValue] : NO;
 }
 
 # pragma mark - Class-level utility methods

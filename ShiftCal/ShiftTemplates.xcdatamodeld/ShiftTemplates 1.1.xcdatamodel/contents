@@ -3,11 +3,11 @@
     <entity name="ShiftTemplate" representedClassName="ShiftTemplate" syncable="YES">
         <attribute name="alarmFirstInterval" optional="YES" attributeType="Integer 32" syncable="YES"/>
         <attribute name="alarmSecondInterval" optional="YES" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="allDay" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="calendarIdentifier" attributeType="String" syncable="YES"/>
         <attribute name="displayOrder" attributeType="Integer 32" syncable="YES"/>
         <attribute name="durHours" attributeType="Integer 32" syncable="YES"/>
         <attribute name="durMinutes" attributeType="Integer 32" syncable="YES"/>
-        <attribute name="isAllDay" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="lastPasteHours" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="lastPasteMins" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>

@@ -119,7 +119,7 @@
 
 - (BOOL)isAllDay
 {
-    NSNumber *allDay = [self.shiftAttributes objectForKey:@"isAllDay"];
+    NSNumber *allDay = [self.shiftAttributes objectForKey:@"allDay"];
     if ([allDay isKindOfClass:[NSNull class]])
     {
         return NO;
@@ -129,7 +129,7 @@
 
 - (void)setAllDay:(BOOL)allDay
 {
-    [self.shiftAttributes setValue:[NSNumber numberWithBool:allDay] forKey:@"isAllDay"];
+    [self.shiftAttributes setValue:[NSNumber numberWithBool:allDay] forKey:@"allDay"];
 }
 
 - (NSInteger)durationHours
