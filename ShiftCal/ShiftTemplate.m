@@ -21,6 +21,9 @@
 @dynamic location;
 @dynamic durHours;
 @dynamic durMinutes;
+@dynamic isAllDay;
+@dynamic lastPasteHours;
+@dynamic lastPasteMins;
 @dynamic calendarIdentifier;
 @dynamic alarmFirstInterval;
 @dynamic alarmSecondInterval;
@@ -102,6 +105,17 @@
 {
     self.durHours   = [NSNumber numberWithInteger:hours];
     self.durMinutes = [NSNumber numberWithInteger:minutes];
+}
+
+- (void)setLastPasteHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes
+{
+    self.lastPasteHours = [NSNumber numberWithInteger:hours];
+    self.lastPasteMins  = [NSNumber numberWithInteger:minutes];
+}
+
+- (BOOL)wasAlreadyPasted
+{
+    return self.lastPasteHours != nil;
 }
 
 # pragma mark - Class-level utility methods

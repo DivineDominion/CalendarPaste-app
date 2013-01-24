@@ -90,6 +90,7 @@
 		606042A81625D2A000BA5EEC /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = MBProgressHUD/MBProgressHUD.h; sourceTree = SOURCE_ROOT; };
 		606042A91625D2A000BA5EEC /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = MBProgressHUD/MBProgressHUD.m; sourceTree = SOURCE_ROOT; };
 		606042AB1625D52E00BA5EEC /* hud-checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hud-checkmark@2x.png"; sourceTree = "<group>"; };
+		6072513016B127DF00483239 /* ShiftTemplates 1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ShiftTemplates 1.1.xcdatamodel"; sourceTree = "<group>"; };
 		608F6FDF15FF78C4001C8217 /* UIPreferencesBlueCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesBlueCheck.png; sourceTree = "<group>"; };
 		608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPreferencesBlueCheck@2x.png"; sourceTree = "<group>"; };
 		608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesWhiteCheck.png; sourceTree = "<group>"; };
@@ -671,9 +672,10 @@
 		60DC7E2916170203009C8723 /* ShiftTemplates.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				6072513016B127DF00483239 /* ShiftTemplates 1.1.xcdatamodel */,
 				60DC7E2A16170204009C8723 /* ShiftTemplates.xcdatamodel */,
 			);
-			currentVersion = 60DC7E2A16170204009C8723 /* ShiftTemplates.xcdatamodel */;
+			currentVersion = 6072513016B127DF00483239 /* ShiftTemplates 1.1.xcdatamodel */;
 			path = ShiftTemplates.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

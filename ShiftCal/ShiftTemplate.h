@@ -20,6 +20,10 @@
 @property (nonatomic, retain) NSNumber *durHours;
 @property (nonatomic, retain) NSNumber *durMinutes;
 
+@property (nonatomic, retain) NSNumber *isAllDay;
+@property (nonatomic, retain) NSNumber *lastPasteHours;
+@property (nonatomic, retain) NSNumber *lastPasteMins;
+
 @property (nonatomic, retain) NSString *calendarIdentifier;
 
 @property (nonatomic, retain) NSNumber *alarmFirstInterval;
@@ -32,6 +36,8 @@
 @property (nonatomic, readonly) EKCalendar *calendar;
 
 - (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes;
+- (void)setLastPasteHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes;
+- (BOOL)wasAlreadyPasted;
 
 - (EKEvent *)event;
 - (NSString *)calendarTitle;
