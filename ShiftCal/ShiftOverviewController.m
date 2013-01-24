@@ -472,7 +472,7 @@
     hud.delegate   = self;
     
     [hud show:YES];
-    [hud hide:YES afterDelay:0.4];
+    [hud hide:YES afterDelay:0.6];
 }
 
 - (void)hudWasHidden:(MBProgressHUD *)hud

@@ -105,11 +105,22 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     
     shift = (ShiftTemplate *)[NSEntityDescription insertNewObjectForEntityForName:kShiftEntityName
                                                            inManagedObjectContext:self.managedObjectContext];
-    
+
     shift.title        = @"Pomodoro";
     shift.durHours     = [NSNumber numberWithInt:0];
     shift.durMinutes   = [NSNumber numberWithInt:45];
     shift.displayOrder = [NSNumber numberWithInt:3];
+
+    shift = (ShiftTemplate *)[NSEntityDescription insertNewObjectForEntityForName:kShiftEntityName
+                                                           inManagedObjectContext:self.managedObjectContext];
+    
+    shift.title        = @"On call";
+    shift.durHours     = [NSNumber numberWithInt:1];
+    shift.durMinutes   = [NSNumber numberWithInt:30];
+    shift.allDay       = [NSNumber numberWithBool:YES];
+    shift.displayOrder = [NSNumber numberWithInt:4];
+    shift.location     = @"Home";
+    
     
     NSError *error = nil;
     BOOL success   = [self.managedObjectContext save:&error];

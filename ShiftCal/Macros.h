@@ -12,7 +12,7 @@
     #define StupidError(...) [NSException raise:@"StudipError" format:__VA_ARGS__];
 
     #define DEVELOPMENT
-//    #define ADD_PRESET_SHIFTS
+    #define ADD_PRESET_SHIFTS
 
     #define PREFS_DEFAULT_CALENDAR_KEY @"DefaultCalendar"
     #define NOTIFICATION_DEFAULT_CALENDAR_KEY @"defaultCalendarIdentifier"
