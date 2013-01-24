@@ -126,12 +126,14 @@
     // private instance variables
     ModificationCommand *_modificationCommand;
     ShiftTemplateCollection *_shiftCollection;
+    ShiftTemplateController *_shiftTemplateController;
     NSUInteger _longHoursCount;
 }
 
 // private properties
 @property (nonatomic, retain) ModificationCommand *modificationCommand;
 @property (nonatomic, retain) ShiftTemplateCollection *shiftCollection;
+@property (nonatomic, retain) ShiftTemplateController *shiftTemplateController;
 @property (nonatomic, assign) NSUInteger longHoursCount;
 
 // private methods
@@ -146,6 +148,7 @@
 @implementation ShiftOverviewController
 @synthesize modificationCommand = _modificationCommand;
 @synthesize shiftCollection = _shiftCollection;
+@synthesize shiftTemplateController = _shiftTemplateController;
 @synthesize longHoursCount = _longHoursCount;
 
 - (id)init
@@ -162,7 +165,8 @@
         NSUserDefaults *prefs               = [NSUserDefaults standardUserDefaults];
         NSString *defaultCalendarIdentifier = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
 
-        self.shiftCollection = [[[ShiftTemplateCollection alloc] initWithFallbackCalendarIdentifier:defaultCalendarIdentifier] autorelease];
+        self.shiftTemplateController = [[[ShiftTemplateController alloc] init] autorelease];
+        self.shiftCollection = [[[ShiftTemplateCollection alloc] initWithFallbackCalendarIdentifier:defaultCalendarIdentifier shiftTemplateController:self.shiftTemplateController] autorelease];
         
         // Count hour values with 2 digits
         self.longHoursCount = 0;
@@ -199,6 +203,7 @@
     
     [_modificationCommand release];
     [_shiftCollection release];
+    [_shiftTemplateController release];
     
     [super dealloc];
 }
@@ -393,7 +398,7 @@
     }
     else
     {
-        ShiftAssignmentViewController *assignController = [[ShiftAssignmentViewController alloc] initWithShift:shift shiftTemplateController:self.shiftCollection.shiftTemplateController]; // TODO refactor
+        ShiftAssignmentViewController *assignController = [[ShiftAssignmentViewController alloc] initWithShift:shift shiftTemplateController:self.shiftTemplateController];
         
         assignController.delegate = self;
         

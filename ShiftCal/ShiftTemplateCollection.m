@@ -14,16 +14,23 @@
 
 - (id)init
 {
-    return [self initWithFallbackCalendarIdentifier:nil];
+    return [self initWithFallbackCalendarIdentifier:nil shiftTemplateController:nil];
 }
 
-- (id)initWithFallbackCalendarIdentifier:(NSString *)fallbackCalendarIdentifier
+- (id)initWithShiftTemplateController:(ShiftTemplateController *)shiftTemplateController
 {
+    return [self initWithFallbackCalendarIdentifier:nil shiftTemplateController:shiftTemplateController];
+}
+
+- (id)initWithFallbackCalendarIdentifier:(NSString *)fallbackCalendarIdentifier shiftTemplateController:(ShiftTemplateController *)shiftTemplateController
+{
+    NSAssert(shiftTemplateController, @"shiftTemplateController required");
+    
     self = [super init];
     
     if (self)
     {
-        self.shiftTemplateController = [[[ShiftTemplateController alloc] init] autorelease];
+        self.shiftTemplateController = shiftTemplateController;
         
         NSMutableArray *mutableShifts = [[self.shiftTemplateController shifts] mutableCopy];
         self.shifts = mutableShifts;
