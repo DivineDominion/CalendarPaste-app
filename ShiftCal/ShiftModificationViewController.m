@@ -27,6 +27,7 @@
 #define CELL_TEXT_FIELD @"textfield"
 #define CELL_SUBVIEW    @"sub"
 #define CELL_TEXT_AREA  @"textarea"
+#define CELL_TOGGLE     @"toggle"
 
 #define COLOR_GRAYSCALE_PLACEHOLDER 0.7
 
@@ -48,6 +49,7 @@
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *location;
+@property (nonatomic, assign) BOOL allDay;
 @property (nonatomic, retain) NSNumber *alarmFirstInterval;
 @property (nonatomic, retain) NSNumber *alarmSecondInterval;
 @property (nonatomic, copy) NSString *calendarIdentifier;
@@ -113,6 +115,21 @@
 - (void)setLocation:(NSString *)location
 {
     [self.shiftAttributes setValue:[[location copy] autorelease] forKey:@"location"];
+}
+
+- (BOOL)isAllDay
+{
+    NSNumber *allDay = [self.shiftAttributes objectForKey:@"isAllDay"];
+    if ([allDay isKindOfClass:[NSNull class]])
+    {
+        return NO;
+    }
+    return [allDay boolValue];
+}
+
+- (void)setAllDay:(BOOL)allDay
+{
+    [self.shiftAttributes setValue:[NSNumber numberWithBool:allDay] forKey:@"isAllDay"];
 }
 
 - (NSInteger)durationHours
@@ -255,7 +272,6 @@
 
 @interface ShiftModificationViewController ()
 {
-    // private instance variables
     ShiftData *_shiftData;
     BOOL _isNewEntry;
     DateIntervalTranslator *_dateTranslator;
@@ -263,19 +279,19 @@
     ShiftTemplateController *_shiftTemplateController;
 }
 
-// private properties
 @property (nonatomic, retain) ShiftData *shiftData;
 @property (nonatomic, retain) DateIntervalTranslator *dateTranslator;
 @property (nonatomic, assign) NSInteger selectedAlarmRow;
 @property (nonatomic, readonly) ShiftTemplateController *shiftTemplateController;
 
-// private methods
 - (void)invalidateCalendar:(NSNotification *)notification;
 - (void)resetTextViewToPlaceholder:(UITextView *)textView;
+- (void)displayAllDayInCell:(UITableViewCell *)cell;
 - (void)displayDurationInCell:(UITableViewCell *)cell;
 - (void)displayCalendarInCell:(UITableViewCell *)cell;
 - (void)displayAlarmInCell:(UITableViewCell *)cell;
 - (void)setFirstAlarmOffset:(NSNumber *)alarmOffset;
+- (void)allDayChanged:(id)sender;
 @end
 
 @implementation ShiftModificationViewController
@@ -430,6 +446,13 @@
     {
         case SECTION_TITLE_LOCATION:
             return 2;
+        case SECTION_DURATION:
+            if ([self.shiftData isAllDay])
+            {
+                return 1;
+            }
+            
+            return 2;
         case SECTION_ALARM:
             if ([self.shiftData hasFirstAlarm])
             {
@@ -437,7 +460,6 @@
             }
             
             return 1;
-        case SECTION_DURATION:
         case SECTION_CALENDAR:
         case SECTION_URL:
         case SECTION_NOTES:
@@ -502,19 +524,45 @@
             break;
         }
         case SECTION_DURATION:
-            cell = [tableView dequeueReusableCellWithIdentifier:CELL_SUBVIEW];
-            
-            if (!cell)
+        {
+            if (row == 0)
             {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                               reuseIdentifier:CELL_SUBVIEW] autorelease];
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell = [tableView dequeueReusableCellWithIdentifier:CELL_TOGGLE];
+                
+                if (!cell)
+                {
+                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                                   reuseIdentifier:CELL_TOGGLE] autorelease];
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    
+                    UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
+                    [switchView addTarget:self action:@selector(allDayChanged:) forControlEvents:UIControlEventValueChanged];
+                    
+                    cell.accessoryView = switchView;
+                    
+                    [switchView release];
+                }
+                
+                cell.textLabel.text = @"All-day";
+                [self displayAllDayInCell:cell];
+            }
+            else if (row == 1)
+            {
+                cell = [tableView dequeueReusableCellWithIdentifier:CELL_SUBVIEW];
+                
+                if (!cell)
+                {
+                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                                   reuseIdentifier:CELL_SUBVIEW] autorelease];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                }
+                
+                cell.textLabel.text = @"Duration";
+                [self displayDurationInCell:cell];
             }
             
-            cell.textLabel.text = @"Duration";
-            [self displayDurationInCell:cell];
-            
             break;
+        }
         case SECTION_CALENDAR:
             cell = [tableView dequeueReusableCellWithIdentifier:CELL_SUBVIEW];
             
@@ -639,6 +687,15 @@
     return 40.0f;
 }
 
+- (void)displayAllDayInCell:(UITableViewCell *)cell
+{
+    UISwitch *switchView = (UISwitch *)cell.accessoryView;
+    BOOL state = [self.shiftData isAllDay];
+    
+    [switchView setOn:state];
+    
+}
+
 - (void)displayDurationInCell:(UITableViewCell *)cell
 {
     NSString *theText = [self.dateTranslator humanReadableFormOfHours:self.shiftData.durationHours minutes:self.shiftData.durationMinutes];
@@ -680,17 +737,21 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger section = [indexPath section];
+    NSInteger row     = [indexPath row];
     UIViewController *modalController = nil;
     
     switch (section)
     {
         case SECTION_DURATION:
         {
-            DurationPickerController *durationController = [[DurationPickerController alloc] initWithHours:self.shiftData.durationHours
-                                                                                                andMinutes:self.shiftData.durationMinutes];
-            durationController.delegate = self;
-            
-            modalController = durationController;
+            if (row == 1)
+            {
+                DurationPickerController *durationController = [[DurationPickerController alloc] initWithHours:self.shiftData.durationHours
+                                                                                                    andMinutes:self.shiftData.durationMinutes];
+                durationController.delegate = self;
+                
+                modalController = durationController;
+            }
             
             break;
         }
@@ -707,7 +768,7 @@
         {
             NSNumber *alarmOffset = nil;
             
-            if ([indexPath row] == 0)
+            if (row == 0)
             {
                 alarmOffset = self.shiftData.alarmFirstInterval;
             }
@@ -735,6 +796,10 @@
         
         [modalController release];
         [navController release];
+    }
+    else
+    {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
 
@@ -836,7 +901,7 @@
     // means "Done";  both equal 0 on "Cancel"
     if (hours > 0 || minutes > 0)
     {
-        NSIndexPath *durationPath     = [NSIndexPath indexPathForRow:0 inSection:SECTION_DURATION];
+        NSIndexPath *durationPath     = [NSIndexPath indexPathForRow:1 inSection:SECTION_DURATION];
         UITableViewCell *durationCell = [self.tableView cellForRowAtIndexPath:durationPath];
         
         [self.shiftData setDurationHours:hours andMinutes:minutes];
@@ -918,6 +983,31 @@
             [self.tableView insertRowsAtIndexPaths:@[secondAlarmIndexPath]
                                   withRowAnimation:UITableViewRowAnimationTop];
         }
+    }
+}
+
+#pragma mark Switch
+
+- (void)allDayChanged:(id)sender
+{
+    NSAssert(sender, @"sender required");
+    NSAssert([sender isKindOfClass:[UISwitch class]], @"sender must be a UISwitch");
+    
+    UISwitch *switchView = (UISwitch *)sender;
+    
+    NSIndexPath *durationPath = [NSIndexPath indexPathForRow:1 inSection:SECTION_DURATION];
+    
+    if (switchView.on)
+    {
+        // TODO hide duration cell
+        [self.shiftData setAllDay:YES];
+        [self.tableView deleteRowsAtIndexPaths:@[durationPath] withRowAnimation:UITableViewRowAnimationTop];
+    }
+    else
+    {
+        // TODO show duration view
+        [self.shiftData setAllDay:NO];
+        [self.tableView insertRowsAtIndexPaths:@[durationPath] withRowAnimation:UITableViewRowAnimationTop];
     }
 }
 
