@@ -22,7 +22,7 @@
 @property (nonatomic, weak) id<ShiftAssignmentViewDelegate> delegate;
 
 - (id)initWithShift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
-- (id)initWithStyle:(UITableViewStyle)style andShift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
+- (id)initWithStyle:(UITableViewStyle)style shift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
 
 - (void)datePickerChanged:(id)sender;
 @end

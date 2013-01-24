@@ -11,6 +11,7 @@
 		600E119F160373F3009A7E24 /* AlarmPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 600E119E160373F3009A7E24 /* AlarmPickerViewController.m */; };
 		601D131E167655E900B820B8 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 601D131C167655E900B820B8 /* icon.png */; };
 		601D131F167655E900B820B8 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 601D131D167655E900B820B8 /* icon@2x.png */; };
+		6026C75F16B1AA4A00445709 /* NSDate+Tomorrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6026C75E16B1AA4A00445709 /* NSDate+Tomorrow.m */; };
 		605A96B516171D160008B1C6 /* ShiftTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 605A96B416171D160008B1C6 /* ShiftTemplate.m */; };
 		605A96B7161B1EC30008B1C6 /* ShiftTemplateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82C15F4FE2B008B48A1 /* ShiftTemplateController.m */; };
 		605A96B8161B1FE10008B1C6 /* ShiftModificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1603315DD1447005834B3 /* ShiftModificationViewController.m */; };
@@ -76,6 +77,8 @@
 		600E11A216038973009A7E24 /* AlarmPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerDelegate.h; sourceTree = "<group>"; };
 		601D131C167655E900B820B8 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		601D131D167655E900B820B8 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
+		6026C75D16B1AA4A00445709 /* NSDate+Tomorrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Tomorrow.h"; sourceTree = "<group>"; };
+		6026C75E16B1AA4A00445709 /* NSDate+Tomorrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Tomorrow.m"; sourceTree = "<group>"; };
 		605A96B316171D160008B1C6 /* ShiftTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplate.h; sourceTree = "<group>"; };
 		605A96B416171D160008B1C6 /* ShiftTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplate.m; sourceTree = "<group>"; };
 		605A96B9161B27E10008B1C6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -90,7 +93,7 @@
 		606042A81625D2A000BA5EEC /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = MBProgressHUD/MBProgressHUD.h; sourceTree = SOURCE_ROOT; };
 		606042A91625D2A000BA5EEC /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = MBProgressHUD/MBProgressHUD.m; sourceTree = SOURCE_ROOT; };
 		606042AB1625D52E00BA5EEC /* hud-checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hud-checkmark@2x.png"; sourceTree = "<group>"; };
-		6072513016B127DF00483239 /* ShiftTemplates 1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ShiftTemplates 1.1.xcdatamodel"; sourceTree = "<group>"; };
+		6072513016B127DF00483239 /* ShiftTemplates 1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ShiftTemplates 1.1.xcdatamodel"; sourceTree = "<group>"; };
 		608F6FDF15FF78C4001C8217 /* UIPreferencesBlueCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesBlueCheck.png; sourceTree = "<group>"; };
 		608F6FE015FF78C4001C8217 /* UIPreferencesBlueCheck@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIPreferencesBlueCheck@2x.png"; sourceTree = "<group>"; };
 		608F6FE115FF78C4001C8217 /* UIPreferencesWhiteCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIPreferencesWhiteCheck.png; sourceTree = "<group>"; };
@@ -201,6 +204,8 @@
 				6060426016245AB000BA5EEC /* ShiftAssignmentViewController.h */,
 				6060426116245AB000BA5EEC /* ShiftAssignmentViewController.m */,
 				606042641625CC1D00BA5EEC /* ShiftAssignmentViewDelegate.h */,
+				6026C75D16B1AA4A00445709 /* NSDate+Tomorrow.h */,
+				6026C75E16B1AA4A00445709 /* NSDate+Tomorrow.m */,
 			);
 			name = "Assign Shift";
 			sourceTree = "<group>";
@@ -487,6 +492,7 @@
 				606042AA1625D2A000BA5EEC /* MBProgressHUD.m in Sources */,
 				609EF760163188DA003E4BB3 /* ShiftOverviewCell.m in Sources */,
 				609167BF1658F45A006C33EE /* UITableViewController+CalloutCell.m in Sources */,
+				6026C75F16B1AA4A00445709 /* NSDate+Tomorrow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

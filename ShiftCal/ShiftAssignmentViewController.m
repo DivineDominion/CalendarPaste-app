@@ -7,6 +7,7 @@
 //
 
 #import "ShiftAssignmentViewController.h"
+#import "NSDate+Tomorrow.h"
 
 #define PICKER_HEIGHT 216.0f
 
@@ -15,6 +16,8 @@
 
 #define ROW_STARTS 0
 #define ROW_ENDS   1
+
+#define CELL_HEIGHT_STARTS_ENDS 42.0
 
 @interface ShiftAssignmentViewController ()
 {
@@ -53,15 +56,15 @@
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    return [self initWithStyle:style andShift:nil shiftTemplateController:nil];
+    return [self initWithStyle:style shift:nil shiftTemplateController:nil];
 }
 
 - (id)initWithShift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController
 {
-    return [self initWithStyle:UITableViewStyleGrouped andShift:shift shiftTemplateController:shiftTemplateController];
+    return [self initWithStyle:UITableViewStyleGrouped shift:shift shiftTemplateController:shiftTemplateController];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style andShift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController
+- (id)initWithStyle:(UITableViewStyle)style shift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController
 {
     NSAssert(shift, @"shift required");
     NSAssert(shiftTemplateController, @"shiftTemplateController required");
@@ -74,7 +77,11 @@
         
         NSDate *startDate = nil;
         
-        if ([shift wasAlreadyPasted])
+        if ([shift isAllDay])
+        {
+            startDate = [NSDate tomorrow];
+        }
+        else if ([shift wasAlreadyPasted])
         {
             startDate = [ShiftAssignmentViewController nextDateWithHour:[shift.lastPasteHours integerValue]
                                                               andMinute:[shift.lastPasteMins integerValue]];
@@ -117,9 +124,15 @@
     
     // top margin:  15px = 1/2 200px (visible content height) - 1/2 160px (cell's heights) - 5px section top margin
     float topMargin = 15.0f;
+    if ([self.shift isAllDay])
+    {
+        // nudge down half a cell if only one is shown
+        topMargin += CELL_HEIGHT_STARTS_ENDS / 2;
+    }
     if (screenHeight == 568.0f)
     {
-        topMargin += 44.0f; // center on iPhone 4-inch
+        // nudge down even further on iPhone 4-inch screens
+        topMargin += 44.0f;
     }
     
     CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, screenWidth, topMargin);
@@ -129,7 +142,15 @@
     _datePicker = [[UIDatePicker alloc] initWithFrame:pickerFrame];
     [_datePicker addTarget:self action:@selector(datePickerChanged:) forControlEvents:UIControlEventValueChanged];
     
+    UIDatePickerMode pickerMode = UIDatePickerModeDateAndTime;
+
+    if ([self.shift isAllDay])
+    {
+        pickerMode = UIDatePickerModeDate;
+    }
+    
     [_datePicker setDate:self.startDate];
+    _datePicker.datePickerMode = pickerMode;
     
     [self.tableView addSubview:_datePicker];
 }
@@ -175,7 +196,14 @@
         return _dateFormatter;
     }
     
-    NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"EdMMM  jm" options:0
+    NSString *template = @"EdMMM  jm";
+    
+    if ([self.shift isAllDay])
+    {
+        template = @"EdMMM";
+    }
+    
+    NSString *formatString = [NSDateFormatter dateFormatFromTemplate:template options:0
                                                               locale:[NSLocale currentLocale]];    
     _dateFormatter = [[NSDateFormatter alloc] init];
     [_dateFormatter setDateFormat:formatString];
@@ -204,6 +232,11 @@
     }
     else if (section == SECTION_STARTS_ENDS)
     {
+        if ([self.shift isAllDay])
+        {
+            return 1;
+        }
+        
         return 2;
     }
     
@@ -217,7 +250,7 @@
         return 62.0;
     }
     
-    return 42.0;
+    return CELL_HEIGHT_STARTS_ENDS;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -253,7 +286,16 @@
             if (row == ROW_STARTS)
             {
                 cell.textLabel.textColor = [UIColor darkTextColor];
-                cell.textLabel.text = @"Starts";
+                
+                if ([self.shift isAllDay])
+                {
+                    cell.textLabel.text = @"On";
+                }
+                else
+                {
+                    cell.textLabel.text = @"Starts";
+                }
+                
                 
                 cell.detailTextLabel.textColor = [UIColor darkTextColor];
                 cell.detailTextLabel.text = [self.dateFormatter stringFromDate:self.startDate];
@@ -299,6 +341,8 @@
     EKEventStore *eventStore = self.shift.eventStore;
     EKEvent *event           = [[self.shift event] retain];
     
+    event.allDay = [self.shift isAllDay];
+    
     event.startDate = self.startDate;
     event.endDate   = [self endDate];
     
@@ -311,8 +355,11 @@
     
     if (success)
     {
-        [self.shift setLastPaste:self.startDate];
-        [self.shiftTemplateController saveManagedObjectContext];
+        if ([self.shift isAllDay] == NO)
+        {
+            [self.shift setLastPaste:self.startDate];
+            [self.shiftTemplateController saveManagedObjectContext];
+        }
         
         [self.delegate shiftAssignmentViewController:self didCompleteWithAction:SCAssignmentViewActionSaved];
     }
