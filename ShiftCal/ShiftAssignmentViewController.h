@@ -10,6 +10,7 @@
 
 #import "ShiftTemplate.h"
 #import "ShiftAssignmentViewDelegate.h"
+#import "ShiftTemplateController.h"
 
 @interface ShiftAssignmentViewController : UITableViewController
 {
@@ -20,8 +21,8 @@
 @property (nonatomic, retain, readonly) ShiftTemplate *shift;
 @property (nonatomic, weak) id<ShiftAssignmentViewDelegate> delegate;
 
-- (id)initWithShift:(ShiftTemplate *)shift;
-- (id)initWithStyle:(UITableViewStyle)style andShift:(ShiftTemplate *)shift;
+- (id)initWithShift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
+- (id)initWithStyle:(UITableViewStyle)style andShift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
 
 - (void)datePickerChanged:(id)sender;
 @end

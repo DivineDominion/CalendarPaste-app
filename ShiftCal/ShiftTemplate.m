@@ -107,7 +107,16 @@
     self.durMinutes = [NSNumber numberWithInteger:minutes];
 }
 
-- (void)setLastPasteHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes
+- (void)setLastPaste:(NSDate *)lastPaste
+{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:(NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:lastPaste];
+    NSUInteger hour = [components hour];
+    NSUInteger minute = [components minute];
+    
+    [self setLastPasteHour:hour andMinute:minute];
+}
+- (void)setLastPasteHour:(NSUInteger)hours andMinute:(NSUInteger)minutes
 {
     self.lastPasteHours = [NSNumber numberWithInteger:hours];
     self.lastPasteMins  = [NSNumber numberWithInteger:minutes];

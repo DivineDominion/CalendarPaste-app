@@ -393,7 +393,7 @@
     }
     else
     {
-        ShiftAssignmentViewController *assignController = [[ShiftAssignmentViewController alloc] initWithShift:shift];
+        ShiftAssignmentViewController *assignController = [[ShiftAssignmentViewController alloc] initWithShift:shift shiftTemplateController:self.shiftCollection.shiftTemplateController]; // TODO refactor
         
         assignController.delegate = self;
         

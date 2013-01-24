@@ -22,49 +22,69 @@
     NSDateFormatter *_dateFormatter;
     
     UIDatePicker *_datePicker;
+    ShiftTemplateController *_shiftTemplateController;
 }
 
 @property (nonatomic, retain, readwrite) ShiftTemplate *shift;
 @property (nonatomic, retain) NSDate *startDate;
 @property (nonatomic, retain, readonly) NSDateFormatter *dateFormatter;
+@property (nonatomic, retain) ShiftTemplateController *shiftTemplateController;
 
 - (NSDate *)endDate;
 
 - (void)done:(id)sender;
 - (void)cancel:(id)sender;
 
++ (NSDateComponents *)dateComponentsForNowFrom:(NSCalendar *)calendar;
 + (NSDate *)roundedDate;
++ (NSDate *)nextDateWithHour:(NSUInteger)hour andMinute:(NSUInteger)minute;
 @end
 
 @implementation ShiftAssignmentViewController
 @synthesize delegate = _delegate;
 @synthesize shift = _shift;
+@synthesize shiftTemplateController = _shiftTemplateController;
 @synthesize startDate = _startDate;
 
 - (id)init
 {
-    return [self initWithShift:nil];
-}
-
-- (id)initWithShift:(ShiftTemplate *)shift
-{
-    return [self initWithStyle:UITableViewStyleGrouped andShift:shift];
+    return [self initWithShift:nil shiftTemplateController:nil];
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    return [self initWithStyle:style andShift:nil];
+    return [self initWithStyle:style andShift:nil shiftTemplateController:nil];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style andShift:(ShiftTemplate *)shift
+- (id)initWithShift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController
+{
+    return [self initWithStyle:UITableViewStyleGrouped andShift:shift shiftTemplateController:shiftTemplateController];
+}
+
+- (id)initWithStyle:(UITableViewStyle)style andShift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController
 {
     NSAssert(shift, @"shift required");
+    NSAssert(shiftTemplateController, @"shiftTemplateController required");
     
     self = [super initWithStyle:style];
     
     if (self) {
         self.shift = shift;
-        self.startDate = [ShiftAssignmentViewController roundedDate];
+        self.shiftTemplateController = shiftTemplateController;
+        
+        NSDate *startDate = nil;
+        
+        if ([shift wasAlreadyPasted])
+        {
+            startDate = [ShiftAssignmentViewController nextDateWithHour:[shift.lastPasteHours integerValue]
+                                                              andMinute:[shift.lastPasteMins integerValue]];
+        }
+        else
+        {
+            startDate = [ShiftAssignmentViewController roundedDate];
+        }
+        
+        self.startDate = startDate;
     }
     
     return self;
@@ -73,6 +93,8 @@
 - (void)dealloc
 {
     [_shift release];
+    [_shiftTemplateController release];
+    
     [_startDate release];
     [_dateFormatter release];
     [_datePicker release];
@@ -289,6 +311,9 @@
     
     if (success)
     {
+        [self.shift setLastPaste:self.startDate];
+        [self.shiftTemplateController saveManagedObjectContext];
+        
         [self.delegate shiftAssignmentViewController:self didCompleteWithAction:SCAssignmentViewActionSaved];
     }
     else
@@ -304,13 +329,37 @@
 
 #pragma mark Utility methods
 
-+ (NSDate *)roundedDate
++ (NSDateComponents *)dateComponentsForNowFrom:(NSCalendar *)calendar
 {
     static NSUInteger kDateComponents = (NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSEraCalendarUnit | NSYearCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit);
     
-    NSCalendar *calendar   = [NSCalendar currentCalendar];
     NSDate *now            = [NSDate date];
     NSDateComponents *comp = [calendar components:kDateComponents fromDate:now];
+    
+    return comp;
+}
+
++ (NSDate *)nextDateWithHour:(NSUInteger)hour andMinute:(NSUInteger)minute
+{
+    NSCalendar *calendar   = [NSCalendar currentCalendar];
+    NSDateComponents *comp = [ShiftAssignmentViewController dateComponentsForNowFrom:calendar];
+    
+    if (comp.hour > hour)
+    {
+        [comp setDay:comp.day + 1];
+    }
+    
+    [comp setHour:hour];
+    [comp setMinute:minute];
+    [comp setSecond:0];
+    
+    return [calendar dateFromComponents:comp];
+}
+
++ (NSDate *)roundedDate
+{
+    NSCalendar *calendar   = [NSCalendar currentCalendar];
+    NSDateComponents *comp = [ShiftAssignmentViewController dateComponentsForNowFrom:calendar];
     
     [comp setSecond:0];
     

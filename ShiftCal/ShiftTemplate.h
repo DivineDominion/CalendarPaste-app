@@ -36,7 +36,8 @@
 @property (nonatomic, readonly) EKCalendar *calendar;
 
 - (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes;
-- (void)setLastPasteHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes;
+- (void)setLastPaste:(NSDate *)lastPaste;
+- (void)setLastPasteHour:(NSUInteger)hours andMinute:(NSUInteger)minutes;
 - (BOOL)wasAlreadyPasted;
 
 - (EKEvent *)event;
