@@ -18,8 +18,9 @@
 
 #define IS_4INCH_DISPLAY [[UIScreen mainScreen] bounds].size.height == 568.0f
 
+#define CALENDAR_TOP_MARGIN_4INCH 2.0f
 #define SUBTITLE_TOP_MARGIN_4INCH 7.0f
-#define BASELINE_TOP_MARGIN_4INCH 4.0f
+#define BASELINE_TOP_MARGIN_4INCH 6.0f
 
 BOOL _enableTwoDigits = NO;
 
@@ -180,6 +181,11 @@ BOOL _enableTwoDigits = NO;
 {
     CGRect frame = CGRectMake(0, 0, (STD_LEFT_INDENT + 2 * LABEL_WIDTH), (CAPTION_LABEL_Y + CAPTION_LABEL_HEIGHT));
     
+    if (IS_4INCH_DISPLAY)
+    {
+        frame.size.height += SUBTITLE_TOP_MARGIN_4INCH;
+    }
+    
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
 
     UILabel *timeLabel = [DurationLabel timeLabelWithLeftIndent:STD_LEFT_INDENT];
@@ -306,14 +312,14 @@ BOOL _enableTwoDigits = NO;
     {
         self.backgroundColor = [UIColor darkGrayColor];
         
-        self.durationLabel = [[[DurationLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0, 80.0f, [ShiftOverviewCell cellHeight])] autorelease];
+        self.durationLabel = [[[DurationLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, [ShiftOverviewCell cellHeight])] autorelease];
         
         self.textLabel.font = [UIFont boldSystemFontOfSize:22.0];
         self.textLabel.backgroundColor = [UIColor clearColor];
         
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
         
-        self.calendarLabel = [[[UILabel alloc] initWithFrame:CGRectMake(215.0f, 0.0, 100.0f, 18.0f)] autorelease];
+        self.calendarLabel = [[[UILabel alloc] initWithFrame:CGRectMake(215.0f, 0.0f, 100.0f, 18.0f)] autorelease];
         self.calendarLabel.backgroundColor = [UIColor clearColor];
         self.calendarLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         self.calendarLabel.textAlignment = NSTextAlignmentRight;
@@ -381,6 +387,10 @@ BOOL _enableTwoDigits = NO;
     {
         textLabelYOffset   = BASELINE_TOP_MARGIN_4INCH;
         detailLabelYOffset = SUBTITLE_TOP_MARGIN_4INCH;
+        
+        CGRect frame = self.calendarLabel.frame;
+        frame.origin.y = CALENDAR_TOP_MARGIN_4INCH;
+        self.calendarLabel.frame = frame;
     }
     
     self.textLabel.frame       = CGRectMake(100.0f,  8.0f + textLabelYOffset,   currentTextWidth, 30.0f);
