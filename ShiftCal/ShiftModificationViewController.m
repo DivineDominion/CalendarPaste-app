@@ -325,7 +325,7 @@
             // Creates a temporary shift into the scratchpad context
             self.shiftData = [[[ShiftData alloc] initWithAttributes:[self.shiftTemplateController defaultAttributeDictionary]] autorelease];
 
-            _isNewEntry = NO;
+            _isNewEntry = YES;
         }
         
         self.dateTranslator = [[[DateIntervalTranslator alloc] init] autorelease];
@@ -380,6 +380,9 @@
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                 target:self
                                                                                 action:@selector(cancel:)];
+
+    // Prevent save until title could have been entered
+    saveItem.enabled = !_isNewEntry;
     
     self.navigationItem.rightBarButtonItem = saveItem;
     self.navigationItem.leftBarButtonItem  = cancelItem;
@@ -407,9 +410,6 @@
     
     if (_isNewEntry)
     {
-        // Prevent save until title could have been entered
-        self.navigationItem.rightBarButtonItem.enabled = NO;
-        
         UITextField *defaultTextField = (UITextField *)[self.tableView viewWithTag:TAG_TEXTFIELD_TITLE];
         [defaultTextField becomeFirstResponder];
         
