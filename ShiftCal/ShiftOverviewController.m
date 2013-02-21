@@ -147,6 +147,7 @@
 - (void)hideEmptyListView;
 - (UIView *)emptyListView;
 - (void)coverTable;
+- (void)fadeInCoverTable;
 @end
 
 @implementation ShiftOverviewController
@@ -294,6 +295,23 @@
     
     // Disable "Edit" when devoid of items
     [self.navigationItem.leftBarButtonItem setEnabled:NO];
+    
+    if ([self isEditing])
+    {
+        [self setEditing:NO];
+    }
+}
+
+- (void)fadeInCoverTable
+{
+    [self coverTable];
+    
+    UIView *emptyListView = [self.view viewWithTag:TAG_EMPTY_LIST_VIEW];
+    emptyListView.alpha = 0.0f;
+
+    [UIView animateWithDuration:0.6f animations:^{
+        emptyListView.alpha = 1.0f;
+    } completion:nil];
 }
 
 #pragma mark - TableView data source
@@ -484,6 +502,11 @@
     
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationRight];
+    
+    if ([self.shiftCollection isEmpty])
+    {
+        [self fadeInCoverTable];
+    }
 }
 
 - (void)hideEmptyListView
