@@ -113,48 +113,8 @@
 {
     UIViewController *grantCalendarAccessViewController = [[UIViewController alloc] init];
     
-    CGRect frame = [LayoutHelper contentFrame];
-    
-    UIView *view = [[UIView alloc] initWithFrame:frame];
-    view.backgroundColor = [UIColor whiteColor];
-    
-    float yBottomOffset = [LayoutHelper bottomOffsetModifiedFor4Inch:276.0f];
-    
-    // Lock Icon
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"lock.png"]];
-    imageView.center = CGPointMake(160.0, frame.size.height - yBottomOffset);
-    
-    //Labels
-    UIColor *textColor = [UIColor colorWithRed:0.5 green:0.53 blue:0.58 alpha:1.0];
-    
-    static float kXOffset = 10.0f;
-    float yOffset         = frame.size.height - [LayoutHelper bottomOffsetModifiedFor4Inch:146.0f];
-    static float kWidth   = 300.0f; // 320 - 2 * x-offset
-    static float kHeight  = 40.0f;
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(kXOffset, yOffset, kWidth, kHeight)];
-    label.numberOfLines = 2;
-    label.text          = @"This app needs Calendar access\nto work.";
-    label.font          = [UIFont boldSystemFontOfSize:18.0f];
-    label.textColor     = textColor;
-    label.textAlignment = NSTextAlignmentCenter;
-    
-    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(kXOffset, yOffset + kHeight, kWidth, kHeight)];
-    detailLabel.text          = @"You can enable access\nin Privacy Settings.";
-    detailLabel.font          = [UIFont systemFontOfSize:15.0f];
-    detailLabel.textColor     = textColor;
-    detailLabel.textAlignment = NSTextAlignmentCenter;
-
-    [view addSubview:imageView];
-    [view addSubview:label];
-    [view addSubview:detailLabel];
-    
-    [imageView release];
-    [label release];
-    [detailLabel release];
-
+    UIView *view = [LayoutHelper grantCalendarAccessView];
     grantCalendarAccessViewController.view = view;
-    [view release];
     
     return [grantCalendarAccessViewController autorelease];
 }

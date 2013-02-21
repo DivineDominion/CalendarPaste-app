@@ -249,56 +249,9 @@
 
 - (UIView *)emptyListView
 {
-    UIView *view = nil;
-    CGRect frame = [LayoutHelper contentFrame];
-    
-    view = [[UIView alloc] initWithFrame:frame];
-    view.backgroundColor = [UIColor whiteColor];
+    UIView *view = [LayoutHelper emptyListViewWithTarget:self action:@selector(addAction:)];
     view.tag = TAG_EMPTY_LIST_VIEW;
-    
-    // Plus Icon
-    UIImage *addImage        = [UIImage imageNamed:@"plus.png"];
-    UIImage *addImagePressed = [UIImage imageNamed:@"plus_pressed.png"];
-    
-    float yBottomOffset = [LayoutHelper bottomOffsetModifiedFor4Inch:276.0f];
-    
-    UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, addImage.size.width, addImage.size.height)];
-    addButton.center = CGPointMake(160.0, frame.size.height - yBottomOffset);
-    [addButton setImage:addImage forState:UIControlStateNormal];
-    [addButton setImage:addImagePressed forState:UIControlStateHighlighted];
-    [addButton addTarget:self action:@selector(addAction:) forControlEvents:UIControlEventTouchUpInside];
-    
-    //Labels
-    UIColor *textColor = [UIColor colorWithRed:0.5 green:0.53 blue:0.58 alpha:1.0];
-    
-    static float kXOffset       = 10.0f;
-    float yOffset               = frame.size.height - [LayoutHelper bottomOffsetModifiedFor4Inch:146.0f];
-    static float kWidth         = 300.0f; // 320 - 2 * x-offset
-    static float kHeight        = 40.0f;
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(kXOffset, yOffset, kWidth, kHeight)];
-    label.numberOfLines = 2;
-    label.text          = @"No Event Templates, yet.";
-    label.font          = [UIFont boldSystemFontOfSize:18.0f];
-    label.textColor     = textColor;
-    label.textAlignment = NSTextAlignmentCenter;
-    
-    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(kXOffset, yOffset + kHeight, kWidth, kHeight)];
-    detailLabel.numberOfLines = 2;
-    detailLabel.text          = @"Add templates and start\nto Paste Your Time!";
-    detailLabel.font          = [UIFont systemFontOfSize:15.0f];
-    detailLabel.textColor     = textColor;
-    detailLabel.textAlignment = NSTextAlignmentCenter;
-    
-    [view addSubview:addButton];
-    [view addSubview:label];
-    [view addSubview:detailLabel];
-    
-    [addButton release];
-    [label release];
-    [detailLabel release];
-    
-    return [view autorelease];
+    return view;
 }
 
 #pragma mark - View callbacks
