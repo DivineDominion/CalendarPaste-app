@@ -9,6 +9,8 @@
 #import "ShiftModificationViewController.h"
 #import "AppDelegate.h"
 
+#import "EventStoreConstants.h"
+
 #import "DurationPickerController.h"
 #import "CalendarPickerController.h"
 #import "ShiftTemplateController.h"

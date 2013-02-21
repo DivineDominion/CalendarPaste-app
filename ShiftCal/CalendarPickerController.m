@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import "EventStoreConstants.h"
 
 #define TAG_ACTIONPANEL 102
 

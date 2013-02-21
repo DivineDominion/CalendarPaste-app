@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "EventStoreConstants.h"
 
 #import "ShiftOverviewController.h"
 #import "LayoutHelper.h"

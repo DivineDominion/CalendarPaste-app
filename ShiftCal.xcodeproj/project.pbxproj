@@ -118,6 +118,7 @@
 		609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftOverviewCell.m; sourceTree = "<group>"; };
 		60A66EA016D60FFA0083BE95 /* LayoutHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutHelper.h; sourceTree = "<group>"; };
 		60A66EA116D60FFA0083BE95 /* LayoutHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LayoutHelper.m; sourceTree = "<group>"; };
+		60A66EA316D6165D0083BE95 /* EventStoreConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventStoreConstants.h; sourceTree = "<group>"; };
 		60AAB7CA15C0926D002114B9 /* ShiftTemplateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplateTests.h; sourceTree = "<group>"; };
 		60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplateTests.m; sourceTree = "<group>"; };
 		60AAB81115C13297002114B9 /* ShiftOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftOverviewController.h; sourceTree = "<group>"; };
@@ -303,6 +304,7 @@
 			isa = PBXGroup;
 			children = (
 				60FBA82515F10BCC008B48A1 /* Macros.h */,
+				60A66EA316D6165D0083BE95 /* EventStoreConstants.h */,
 				60BB96A915C08EB900801105 /* ShiftCal-Info.plist */,
 				60BB96AA15C08EB900801105 /* InfoPlist.strings */,
 				60BB96AD15C08EB900801105 /* main.m */,

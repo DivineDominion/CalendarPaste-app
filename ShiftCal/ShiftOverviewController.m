@@ -9,6 +9,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ShiftOverviewController.h"
 
+#import "EventStoreConstants.h"
+
 #import "ShiftModificationViewController.h"
 #import "ShiftModificationDelegate.h"
 #import "ShiftOverviewCell.h"
