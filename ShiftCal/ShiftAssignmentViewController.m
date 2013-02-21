@@ -32,6 +32,7 @@
 @property (nonatomic, retain) NSDate *startDate;
 @property (nonatomic, retain, readonly) NSDateFormatter *dateFormatter;
 @property (nonatomic, retain) ShiftTemplateController *shiftTemplateController;
+@property (nonatomic, retain) UIDatePicker *datePicker;
 
 - (NSDate *)endDate;
 
@@ -48,6 +49,7 @@
 @synthesize shift = _shift;
 @synthesize shiftTemplateController = _shiftTemplateController;
 @synthesize startDate = _startDate;
+@synthesize datePicker = _datePicker;
 
 - (id)init
 {
@@ -139,8 +141,8 @@
     self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:tableHeaderFrame] autorelease];
     
     CGRect pickerFrame = CGRectMake(0.0f, screenHeight, screenWidth, PICKER_HEIGHT);
-    _datePicker = [[UIDatePicker alloc] initWithFrame:pickerFrame];
-    [_datePicker addTarget:self action:@selector(datePickerChanged:) forControlEvents:UIControlEventValueChanged];
+    self.datePicker = [[[UIDatePicker alloc] initWithFrame:pickerFrame] autorelease];
+    [self.datePicker addTarget:self action:@selector(datePickerChanged:) forControlEvents:UIControlEventValueChanged];
     
     UIDatePickerMode pickerMode = UIDatePickerModeDateAndTime;
 
@@ -149,10 +151,10 @@
         pickerMode = UIDatePickerModeDate;
     }
     
-    [_datePicker setDate:self.startDate];
-    _datePicker.datePickerMode = pickerMode;
+    [self.datePicker setDate:self.startDate];
+    self.datePicker.datePickerMode = pickerMode;
     
-    [self.tableView addSubview:_datePicker];
+    [self.tableView addSubview:self.datePicker];
 }
 
 - (void)viewDidLoad
@@ -181,11 +183,11 @@
 {
     [super viewDidAppear:animated];
     
-    CGRect frame   = _datePicker.frame;
+    CGRect frame   = self.datePicker.frame;
     frame.origin.y = frame.origin.y - PICKER_HEIGHT - 64.0f; // Navbar + status bar height: 64px
     
     [UIView animateWithDuration:0.3 animations:^{
-        _datePicker.frame = frame;
+        self.datePicker.frame = frame;
     }];
 }
 
@@ -328,7 +330,7 @@
 
 - (void)datePickerChanged:(id)sender
 {
-    self.startDate = _datePicker.date;
+    self.startDate = self.datePicker.date;
     
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_STARTS_ENDS]
                   withRowAnimation:UITableViewRowAnimationNone];
