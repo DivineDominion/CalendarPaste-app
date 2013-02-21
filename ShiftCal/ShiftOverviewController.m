@@ -18,6 +18,8 @@
 #import "ShiftTemplateCollection.h"
 #import "ShiftTemplate.h"
 
+#import "LayoutHelper.h"
+
 @interface ModificationCommand : NSObject <ShiftModificationDelegate>
 {
     ShiftOverviewController *_target;
@@ -119,7 +121,6 @@
 #pragma mark - ShiftOverviewController
 
 #define TAG_EMPTY_LIST_VIEW 101
-#define TOP_BAR_HEIGHT 64
 
 @interface ShiftOverviewController ()
 {
@@ -143,6 +144,7 @@
 
 - (void)hideEmptyListView;
 - (UIView *)emptyListView;
+- (void)coverTable;
 @end
 
 @implementation ShiftOverviewController
@@ -246,8 +248,7 @@
 - (UIView *)emptyListView
 {
     UIView *view = nil;
-    CGRect frame = [UIScreen mainScreen].bounds;
-    frame.size = CGSizeMake(frame.size.width, frame.size.height - TOP_BAR_HEIGHT);
+    CGRect frame = [LayoutHelper contentFrame];
     
     view = [[UIView alloc] initWithFrame:frame];
     view.backgroundColor = [UIColor whiteColor];
@@ -257,8 +258,10 @@
     UIImage *addImage        = [UIImage imageNamed:@"plus.png"];
     UIImage *addImagePressed = [UIImage imageNamed:@"plus_pressed.png"];
     
+    float yBottomOffset = [LayoutHelper bottomOffsetModifiedFor4Inch:276.0f];
+    
     UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, addImage.size.width, addImage.size.height)];
-    addButton.center = CGPointMake(160.0, frame.size.height - 276.0);
+    addButton.center = CGPointMake(160.0, frame.size.height - yBottomOffset);
     [addButton setImage:addImage forState:UIControlStateNormal];
     [addButton setImage:addImagePressed forState:UIControlStateHighlighted];
     [addButton addTarget:self action:@selector(addAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -267,8 +270,7 @@
     UIColor *textColor = [UIColor colorWithRed:0.5 green:0.53 blue:0.58 alpha:1.0];
     
     static float kXOffset       = 10.0f;
-    static float kYBottomOffset = 146.0f;
-    float yOffset               = frame.size.height - kYBottomOffset;
+    float yOffset               = frame.size.height - [LayoutHelper bottomOffsetModifiedFor4Inch:146.0f];
     static float kWidth         = 300.0f; // 320 - 2 * x-offset
     static float kHeight        = 40.0f;
     
@@ -321,18 +323,22 @@
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.rowHeight = [ShiftOverviewCell cellHeight];
     
-    // Cover table view on start when list is empty
-    if ([self.shiftCollection countOfShifts] == 0)
+    if ([self.shiftCollection isEmpty])
     {
-        UIView *emptyListView = [self emptyListView];
-        
-        [self.view addSubview:emptyListView];
-        emptyListView.layer.zPosition = 100;
-        self.tableView.scrollEnabled = NO;
-        
-        // Disable "Edit" when devoid of items
-        [self.navigationItem.leftBarButtonItem setEnabled:NO];
+        [self coverTable];
     }
+}
+
+- (void)coverTable
+{
+    UIView *emptyListView = [self emptyListView];
+    
+    [self.view addSubview:emptyListView];
+    emptyListView.layer.zPosition = 100;
+    self.tableView.scrollEnabled = NO;
+    
+    // Disable "Edit" when devoid of items
+    [self.navigationItem.leftBarButtonItem setEnabled:NO];
 }
 
 #pragma mark - TableView data source

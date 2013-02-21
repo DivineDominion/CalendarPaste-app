@@ -16,8 +16,6 @@
 #define CAPTION_LABEL_Y (TIME_LABEL_Y + TIME_LABEL_HEIGHT - 5.0f)
 #define CAPTION_LABEL_HEIGHT 20.0f
 
-#define IS_4INCH_DISPLAY [[UIScreen mainScreen] bounds].size.height == 568.0f
-
 #define CALENDAR_TOP_MARGIN_4INCH 2.0f
 #define SUBTITLE_TOP_MARGIN_4INCH 7.0f
 #define BASELINE_TOP_MARGIN_4INCH 6.0f

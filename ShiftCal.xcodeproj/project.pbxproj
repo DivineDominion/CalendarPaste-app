@@ -41,6 +41,7 @@
 		609167D4165D6A32006C33EE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609167D2165D6A32006C33EE /* Default@2x.png */; };
 		609167D6165E0D2D006C33EE /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609167D5165E0D2D006C33EE /* Default-568h@2x.png */; };
 		609EF760163188DA003E4BB3 /* ShiftOverviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */; };
+		60A66EA216D60FFA0083BE95 /* LayoutHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A66EA116D60FFA0083BE95 /* LayoutHelper.m */; };
 		60AAB7CC15C0926D002114B9 /* ShiftTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */; };
 		60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60AAB81215C13297002114B9 /* ShiftOverviewController.m */; };
 		60BB96A215C08EB900801105 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A115C08EB900801105 /* UIKit.framework */; };
@@ -115,6 +116,8 @@
 		609167D5165E0D2D006C33EE /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		609EF75E163188DA003E4BB3 /* ShiftOverviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftOverviewCell.h; sourceTree = "<group>"; };
 		609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftOverviewCell.m; sourceTree = "<group>"; };
+		60A66EA016D60FFA0083BE95 /* LayoutHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutHelper.h; sourceTree = "<group>"; };
+		60A66EA116D60FFA0083BE95 /* LayoutHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LayoutHelper.m; sourceTree = "<group>"; };
 		60AAB7CA15C0926D002114B9 /* ShiftTemplateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplateTests.h; sourceTree = "<group>"; };
 		60AAB7CB15C0926D002114B9 /* ShiftTemplateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplateTests.m; sourceTree = "<group>"; };
 		60AAB81115C13297002114B9 /* ShiftOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftOverviewController.h; sourceTree = "<group>"; };
@@ -281,6 +284,8 @@
 				605A96B616171D980008B1C6 /* Model */,
 				60AAB81115C13297002114B9 /* ShiftOverviewController.h */,
 				60AAB81215C13297002114B9 /* ShiftOverviewController.m */,
+				60A66EA016D60FFA0083BE95 /* LayoutHelper.h */,
+				60A66EA116D60FFA0083BE95 /* LayoutHelper.m */,
 				609EF75E163188DA003E4BB3 /* ShiftOverviewCell.h */,
 				609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */,
 				606042A81625D2A000BA5EEC /* MBProgressHUD.h */,
@@ -493,6 +498,7 @@
 				609EF760163188DA003E4BB3 /* ShiftOverviewCell.m in Sources */,
 				609167BF1658F45A006C33EE /* UITableViewController+CalloutCell.m in Sources */,
 				6026C75F16B1AA4A00445709 /* NSDate+Tomorrow.m in Sources */,
+				60A66EA216D60FFA0083BE95 /* LayoutHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

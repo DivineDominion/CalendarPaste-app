@@ -60,6 +60,11 @@
     return [self.shifts count];
 }
 
+- (BOOL)isEmpty
+{
+    return [self countOfShifts] == 0;
+}
+
 - (NSInteger)addShiftWithAttributes:(NSDictionary *)shiftAttributes
 {
     ShiftTemplate *shift = [self.shiftTemplateController importShiftByAttributeDictionary:shiftAttributes];

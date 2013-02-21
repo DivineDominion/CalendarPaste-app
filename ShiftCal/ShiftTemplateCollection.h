@@ -23,6 +23,7 @@
 - (id)initWithFallbackCalendarIdentifier:(NSString *)fallbackCalendarIdentifier shiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
 
 - (NSUInteger)countOfShifts;
+- (BOOL)isEmpty;
 - (ShiftTemplate *)shiftAtIndex:(NSUInteger)index;
 - (NSInteger)addShiftWithAttributes:(NSDictionary *)shiftAttributes;
 - (void)removeShiftAtIndex:(NSUInteger)index;
