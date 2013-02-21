@@ -13,7 +13,4 @@
 + (UIView *)emptyListViewWithTarget:(id)target action:(SEL)selector;
 + (UIView *)grantCalendarAccessView;
 
-+ (float)bottomOffsetModifiedFor4Inch:(float)yBottomOffset;
-+ (CGRect)contentFrame;
-
 @end

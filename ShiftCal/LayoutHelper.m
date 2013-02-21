@@ -12,45 +12,7 @@
 
 @implementation LayoutHelper
 
-+ (UIView *)splashScreenViewFor:(UIView *)iconView titleText:(NSString *)titleText description:(NSString *)description
-{
-    CGRect frame = [LayoutHelper contentFrame];
-    UIView *view = [[UIView alloc] initWithFrame:frame];
-    
-    view.backgroundColor = [UIColor whiteColor];
-    
-    float yBottomOffset = [LayoutHelper bottomOffsetModifiedFor4Inch:276.0f];
-    
-    iconView.center = CGPointMake(160.0, frame.size.height - yBottomOffset);
-    
-    //Labels
-    UIColor *textColor = [UIColor colorWithRed:0.5 green:0.53 blue:0.58 alpha:1.0];
-    
-    static float kXOffset       = 10.0f;
-    float yOffset               = frame.size.height - [LayoutHelper bottomOffsetModifiedFor4Inch:146.0f];
-    static float kWidth         = 300.0f; // 320 - 2 * x-offset
-    static float kHeight        = 40.0f;
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(kXOffset, yOffset, kWidth, kHeight)];
-    label.numberOfLines = 2;
-    label.text = titleText;
-    label.font = [UIFont boldSystemFontOfSize:18.0f];
-    label.textColor = textColor;
-    label.textAlignment = NSTextAlignmentCenter;
-    
-    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(kXOffset, yOffset + kHeight, kWidth, kHeight)];
-    detailLabel.numberOfLines = 2;
-    detailLabel.text = description;
-    detailLabel.font = [UIFont systemFontOfSize:15.0f];
-    detailLabel.textColor = textColor;
-    detailLabel.textAlignment = NSTextAlignmentCenter;
-    
-    [view addSubview:iconView];
-    [view addSubview:label];
-    [view addSubview:detailLabel];
-    
-    return [view autorelease];
-}
+#pragma mark - public methods
 
 + (UIView *)emptyListViewWithTarget:(id)target action:(SEL)selector
 {
@@ -63,7 +25,7 @@
     [addButton setImage:addImagePressed forState:UIControlStateHighlighted];
     [addButton addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 
-    UIView *view = [LayoutHelper splashScreenViewFor:addButton titleText:@"No Event Templates, yet." description:@"Add templates and start\nto Paste Your Time!"];
+    UIView *view = [LayoutHelper splashScreenViewFor:addButton titleText:@"No Event Templates, yet." detailText:@"Add templates and start\nto Paste Your Time!"];
 
     [addButton release];
     
@@ -75,23 +37,74 @@
     // Lock Icon
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"lock.png"]];
     
-    UIView *view = [LayoutHelper splashScreenViewFor:imageView titleText:@"This app needs Calendar access\nto work." description:@"You can enable access in Privacy Settings."];
+    UIView *view = [LayoutHelper splashScreenViewFor:imageView titleText:@"This app needs Calendar access\nto work." detailText:@"You can enable access in Privacy Settings."];
 
     [imageView release];
     
     return view;
 }
 
-+ (float)bottomOffsetModifiedFor4Inch:(float)yBottomOffset
+#pragma mark - private factory methods
+
++ (UIView *)splashScreenViewFor:(UIView *)iconView titleText:(NSString *)titleText detailText:(NSString *)detailText
 {
-    static float kYBottom4InchOffset = 30.0f;
+    CGRect frame = [LayoutHelper contentFrame];
+    UIView *view = [[UIView alloc] initWithFrame:frame];
+    
+    view.backgroundColor = [UIColor whiteColor];
+    
+    static float kScreenWidth = 320.0f;
+    static float kY4InchOffset = 40.0f;
+    
+    CGPoint iconViewCenter = CGPointMake(kScreenWidth / 2, 160.0f);
     
     if (IS_4INCH_DISPLAY)
     {
-        yBottomOffset += kYBottom4InchOffset;
+        iconViewCenter.y += kY4InchOffset;
     }
     
-    return yBottomOffset;
+    iconView.center = iconViewCenter;
+    
+    [view addSubview:iconView];
+    
+    
+    CGPoint offset = CGPointMake(10.0f, iconViewCenter.y + 120.0f);
+    CGSize size = CGSizeMake(kScreenWidth - 2*offset.x, 40.0f);
+    
+    if (IS_4INCH_DISPLAY)
+    {
+        offset.y += 10.0f;
+    }
+    
+    CGRect labelFrame = CGRectMake(offset.x, offset.y, size.width, size.height);
+    [view addSubview:[LayoutHelper titleLabelWithFrame:labelFrame text:titleText]];
+    
+    CGRect detailLabelFrame = labelFrame;
+    detailLabelFrame.origin.y += size.height;
+    [view addSubview:[LayoutHelper labelWithFrame:detailLabelFrame text:detailText]];
+    
+    return [view autorelease];
+}
+
++ (UILabel *)labelWithFrame:(CGRect)frame text:(NSString *)text
+{
+    UIColor *textColor = [UIColor colorWithRed:0.5 green:0.53 blue:0.58 alpha:1.0];
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.numberOfLines = 2;
+    label.font = [UIFont systemFontOfSize:15.0f];
+    label.text = text;
+    label.textColor = textColor;
+    label.textAlignment = NSTextAlignmentCenter;
+    
+    return [label autorelease];
+}
+
++ (UILabel *)titleLabelWithFrame:(CGRect)frame text:(NSString *)text
+{
+    UILabel *label = [LayoutHelper labelWithFrame:frame text:text];
+    label.font = [UIFont boldSystemFontOfSize:18.0f];
+    
+    return label;
 }
 
 + (CGRect)contentFrame
