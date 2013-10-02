@@ -564,14 +564,7 @@
 {
     NSMutableArray *mutableCalendars = nil;
     
-    if ([self.eventStore respondsToSelector:@selector(calendarsForEntityType:)])
-    {
-        mutableCalendars = [[self.eventStore calendarsForEntityType:EKEntityTypeEvent] mutableCopy];
-    }
-    else
-    {
-        mutableCalendars = [[self.eventStore calendars] mutableCopy];
-    }
+    mutableCalendars = [[self.eventStore calendarsForEntityType:EKEntityTypeEvent] mutableCopy];
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.allowsContentModifications == YES"];
     [mutableCalendars filterUsingPredicate:predicate];
