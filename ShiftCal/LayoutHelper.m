@@ -17,8 +17,8 @@
 + (UIView *)emptyListViewWithTarget:(id)target action:(SEL)selector
 {
     // Plus Icon
-    UIImage *addImage        = [UIImage imageNamed:@"plus.png"];
-    UIImage *addImagePressed = [UIImage imageNamed:@"plus_pressed.png"];
+    UIImage *addImage        = [UIImage imageNamed:@"Plus"];
+    UIImage *addImagePressed = [UIImage imageNamed:@"PlusPressed"];
     
     UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, addImage.size.width, addImage.size.height)];
     [addButton setImage:addImage forState:UIControlStateNormal];
@@ -35,7 +35,7 @@
 + (UIView *)grantCalendarAccessView
 {
     // Lock Icon
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"lock.png"]];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Lock"]];
     
     UIView *view = [LayoutHelper splashScreenViewFor:imageView titleText:@"This app needs Calendar access\nto work." detailText:@"You can enable access in Privacy Settings."];
 

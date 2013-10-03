@@ -66,7 +66,7 @@
     self.accessoryView = button;
     
     self.layer.masksToBounds = YES;
-    self.detailTextLabel.textAlignment = UITextAlignmentRight;
+    self.detailTextLabel.textAlignment = NSTextAlignmentRight;
     
     return self;
 }

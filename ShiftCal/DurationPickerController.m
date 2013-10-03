@@ -161,7 +161,7 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     theLabel = [[UILabel alloc] initWithFrame:labelFrame];
     theLabel.tag = labelTag;
     theLabel.text = labelText;
-    theLabel.textAlignment = UITextAlignmentLeft;
+    theLabel.textAlignment = NSTextAlignmentLeft;
     theLabel.font = [UIFont boldSystemFontOfSize:20.0f];
     theLabel.textColor = [UIColor colorWithWhite:0.25 alpha:1.0];
     theLabel.shadowColor = [UIColor colorWithWhite:0.8 alpha:0.8];
@@ -423,7 +423,7 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     
     subLabel = [[UILabel alloc] initWithFrame:frame];
     
-    subLabel.textAlignment = UITextAlignmentRight;
+    subLabel.textAlignment = NSTextAlignmentRight;
     subLabel.backgroundColor = [UIColor clearColor];
     subLabel.font = [UIFont boldSystemFontOfSize:24.0];
     subLabel.userInteractionEnabled = NO;
