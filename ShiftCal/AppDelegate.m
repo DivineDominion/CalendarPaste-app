@@ -22,7 +22,7 @@
 - (void)showOverviewViewControllerAnimated:(BOOL)animated;
 - (UIViewController *)grantCalendarAccessViewController;
 - (void)eventStoreChanged:(id)sender;
-- (void)styleNavigationController;
+- (void)styleNavigationBar;
 @end
 
 
@@ -43,11 +43,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [self styleNavigationBar];
+    
     self.eventStore    = [[[EKEventStore alloc] init] autorelease];
     self.window        = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.navController = [[[UINavigationController alloc] init] autorelease];
-
-    [self styleNavigationController];
     
     if ([EKEventStore instancesRespondToSelector:@selector(requestAccessToEntityType:completion:)])
     {
@@ -64,7 +64,7 @@
     return YES;
 }
 
-- (void)styleNavigationController
+- (void)styleNavigationBar
 {
     UIColor *topBarColor = [UIColor colorWithRed:116.0/255 green:128.0/255 blue:199.0/255 alpha:1.0];
     UIColor *creamWhiteColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
