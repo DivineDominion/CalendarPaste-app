@@ -146,8 +146,6 @@ BOOL _enableTwoDigits = NO;
     label.textColor       = durationColor;
     label.textAlignment   = NSTextAlignmentCenter;
     
-    label.highlightedTextColor = [UIColor whiteColor];
-    
     return [label autorelease];
 }
 
@@ -167,8 +165,6 @@ BOOL _enableTwoDigits = NO;
     label.font            = labelFont;
     label.textColor       = labelColor;
     label.textAlignment   = NSTextAlignmentCenter;
-    
-    label.highlightedTextColor = [UIColor whiteColor];
     
     label.text = caption;
     
@@ -307,10 +303,12 @@ BOOL _enableTwoDigits = NO;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     
     if (self)
-    {
-        self.backgroundColor = [UIColor darkGrayColor];
-        
+    {      
         self.durationLabel = [[[DurationLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, [ShiftOverviewCell cellHeight])] autorelease];
+        
+        UIView *highlightView = [[UIView alloc] init];
+        highlightView.backgroundColor = [UIColor colorWithRed:245.0/255 green:251.0/255 blue:190.0/255 alpha:1.0];
+        self.selectedBackgroundView = highlightView;
         
         self.textLabel.font = [UIFont boldSystemFontOfSize:22.0];
         self.textLabel.backgroundColor = [UIColor clearColor];
@@ -323,7 +321,6 @@ BOOL _enableTwoDigits = NO;
         self.calendarLabel.textAlignment = NSTextAlignmentRight;
         self.calendarLabel.font = [UIFont boldSystemFontOfSize:12.0];
         self.calendarLabel.textColor = [UIColor colorWithRed:120.0/256 green:120.0/256 blue:170.0/256 alpha:1.0];
-        self.calendarLabel.highlightedTextColor = [UIColor whiteColor];
         
         [self.contentView addSubview:self.durationLabel];
         [self.contentView addSubview:self.calendarLabel];
