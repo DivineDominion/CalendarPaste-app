@@ -70,7 +70,6 @@
     UIColor *creamWhiteColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     
     [[UINavigationBar appearance] setBarTintColor:topBarColor];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     
     NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:

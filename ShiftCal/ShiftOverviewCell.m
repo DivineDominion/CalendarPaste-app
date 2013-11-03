@@ -11,14 +11,14 @@
 #define LABEL_WIDTH 40.0f
 #define SECOND_LABEL_X LABEL_WIDTH
 #define STD_LEFT_INDENT 5.0f
-#define TIME_LABEL_Y 5.0f
+#define TIME_LABEL_Y 3.0f
 #define TIME_LABEL_HEIGHT 30.0f
 #define CAPTION_LABEL_Y (TIME_LABEL_Y + TIME_LABEL_HEIGHT - 4.0f)
 #define CAPTION_LABEL_HEIGHT 20.0f
 
 #define CALENDAR_TOP_MARGIN_4INCH 2.0f
 #define SUBTITLE_TOP_MARGIN_4INCH 7.0f
-#define BASELINE_TOP_MARGIN_4INCH 4.0f
+#define BASELINE_TOP_MARGIN_4INCH 5.0f
 
 BOOL _enableTwoDigits = NO;
 
@@ -314,7 +314,10 @@ BOOL _enableTwoDigits = NO;
         self.textLabel.backgroundColor = [UIColor clearColor];
         
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
-        self.detailTextLabel.font = [UIFont systemFontOfSize:16.0];
+        if (IS_4INCH_DISPLAY)
+        {
+            self.detailTextLabel.font = [UIFont systemFontOfSize:16.0];
+        }
         self.detailTextLabel.textColor = [UIColor grayColor];
         
         self.calendarLabel = [[[UILabel alloc] initWithFrame:CGRectMake(215.0f, 0.0f, 100.0f, 18.0f)] autorelease];
@@ -378,12 +381,12 @@ BOOL _enableTwoDigits = NO;
     }
     
     // Override default frame
-    float textLabelYOffset   = 0.0f;
-    float detailLabelYOffset = 0.0f;
+    float textLabelYOffset   = -1.0f;
+    float detailLabelYOffset = -2.0f;
     if (IS_4INCH_DISPLAY)
     {
-        textLabelYOffset   = BASELINE_TOP_MARGIN_4INCH;
-        detailLabelYOffset = SUBTITLE_TOP_MARGIN_4INCH;
+        textLabelYOffset   += BASELINE_TOP_MARGIN_4INCH;
+        detailLabelYOffset += SUBTITLE_TOP_MARGIN_4INCH;
         
         CGRect frame = self.calendarLabel.frame;
         frame.origin.y = CALENDAR_TOP_MARGIN_4INCH;

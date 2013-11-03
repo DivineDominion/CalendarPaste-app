@@ -3,16 +3,18 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "Default-568h@2x.png",
+      "extent" : "full-screen",
       "minimum-system-version" : "7.0",
-      "subtype" : "retina4",
+      "filename" : "2013-11-03 launch image 3.5 inch.png",
       "scale" : "2x"
     },
     {
-      "orientation" : "portrait",
+      "extent" : "full-screen",
       "idiom" : "iphone",
-      "filename" : "Default@2x.png",
+      "subtype" : "retina4",
+      "filename" : "iOS Simulator Screen shot 03.11.2013 13.34.12.png",
       "minimum-system-version" : "7.0",
+      "orientation" : "portrait",
       "scale" : "2x"
     }
   ],
