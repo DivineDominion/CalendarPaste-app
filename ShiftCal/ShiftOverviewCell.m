@@ -13,12 +13,12 @@
 #define STD_LEFT_INDENT 5.0f
 #define TIME_LABEL_Y 5.0f
 #define TIME_LABEL_HEIGHT 30.0f
-#define CAPTION_LABEL_Y (TIME_LABEL_Y + TIME_LABEL_HEIGHT - 5.0f)
+#define CAPTION_LABEL_Y (TIME_LABEL_Y + TIME_LABEL_HEIGHT - 4.0f)
 #define CAPTION_LABEL_HEIGHT 20.0f
 
 #define CALENDAR_TOP_MARGIN_4INCH 2.0f
 #define SUBTITLE_TOP_MARGIN_4INCH 7.0f
-#define BASELINE_TOP_MARGIN_4INCH 6.0f
+#define BASELINE_TOP_MARGIN_4INCH 4.0f
 
 BOOL _enableTwoDigits = NO;
 
@@ -138,7 +138,7 @@ BOOL _enableTwoDigits = NO;
     }
     
     UILabel *label         = [[UILabel alloc] initWithFrame:CGRectMake(leftIndent, timeLabelY, LABEL_WIDTH, TIME_LABEL_HEIGHT)];
-    UIFont *durationFont   = [UIFont boldSystemFontOfSize:32.0];
+    UIFont *durationFont   = [UIFont fontWithName:@"HelveticaNeue-Light" size:32.0];
     UIColor *durationColor = [UIColor colorWithRed:128.0/256 green:151.0/256 blue:185.0/256 alpha:1.0];
     
     label.backgroundColor = [UIColor clearColor];
@@ -158,7 +158,7 @@ BOOL _enableTwoDigits = NO;
     }
     
     UILabel *label      = [[UILabel alloc] initWithFrame:CGRectMake(leftIndent, captionLabelY, LABEL_WIDTH, CAPTION_LABEL_HEIGHT)];
-    UIFont *labelFont   = [UIFont boldSystemFontOfSize:16.0];
+    UIFont *labelFont   = [UIFont systemFontOfSize:16.0];
     UIColor *labelColor = [UIColor grayColor];
     
     label.backgroundColor = [UIColor clearColor];
@@ -188,7 +188,7 @@ BOOL _enableTwoDigits = NO;
     frame.size.height = frame.size.height + 3.0f;
     timeLabel.frame = frame;
     
-    UIFont *labelFont = [UIFont boldSystemFontOfSize:28.0];
+    UIFont *labelFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:32.0];
     timeLabel.font = labelFont;
     
     timeLabel.text = @"all";
@@ -310,10 +310,12 @@ BOOL _enableTwoDigits = NO;
         highlightView.backgroundColor = [UIColor colorWithRed:245.0/255 green:251.0/255 blue:190.0/255 alpha:1.0];
         self.selectedBackgroundView = highlightView;
         
-        self.textLabel.font = [UIFont boldSystemFontOfSize:22.0];
+        self.textLabel.font = [UIFont systemFontOfSize:22.0];
         self.textLabel.backgroundColor = [UIColor clearColor];
         
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
+        self.detailTextLabel.font = [UIFont systemFontOfSize:16.0];
+        self.detailTextLabel.textColor = [UIColor grayColor];
         
         self.calendarLabel = [[[UILabel alloc] initWithFrame:CGRectMake(215.0f, 0.0f, 100.0f, 18.0f)] autorelease];
         self.calendarLabel.backgroundColor = [UIColor clearColor];
