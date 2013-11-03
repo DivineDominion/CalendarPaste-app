@@ -10,12 +10,18 @@
 #import "NSDate+Tomorrow.h"
 
 #define PICKER_HEIGHT 216.0f
+#define PICKER_TAG 123
 
 #define SECTION_TITLE 0
 #define SECTION_STARTS_ENDS 1
 
 #define ROW_STARTS 0
-#define ROW_ENDS   1
+#define ROW_PICKER 1
+#define ROW_ENDS   2
+
+static NSString *kCellInfo = @"otherCell";
+static NSString *kCellDate = @"dateCell";
+static NSString *kCellPicker = @"datePicker";
 
 #define CELL_HEIGHT_STARTS_ENDS 42.0
 
@@ -117,31 +123,13 @@
     
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     float screenWidth   = screenBounds.size.width;
-    float screenHeight  = screenBounds.size.height;
     
     self.tableView.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.tableView.scrollEnabled    = NO;
-    self.tableView.sectionHeaderHeight = 5.0f;
-    self.tableView.sectionFooterHeight = 5.0f;
     
-    // top margin:  15px = 1/2 200px (visible content height) - 1/2 160px (cell's heights) - 5px section top margin
-    float topMargin = 15.0f;
-    if ([self.shift isAllDay])
-    {
-        // nudge down half a cell if only one is shown
-        topMargin += CELL_HEIGHT_STARTS_ENDS / 2;
-    }
-    if (screenHeight == 568.0f)
-    {
-        // nudge down even further on iPhone 4-inch screens
-        topMargin += 44.0f;
-    }
-    
-    CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, screenWidth, topMargin);
-    self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:tableHeaderFrame] autorelease];
-    
-    CGRect pickerFrame = CGRectMake(0.0f, screenHeight, screenWidth, PICKER_HEIGHT);
+    CGRect pickerFrame = CGRectMake(0.0f, 0.0f, screenWidth - 20, PICKER_HEIGHT);
     self.datePicker = [[[UIDatePicker alloc] initWithFrame:pickerFrame] autorelease];
+    self.datePicker.tag = PICKER_TAG;
     [self.datePicker addTarget:self action:@selector(datePickerChanged:) forControlEvents:UIControlEventValueChanged];
     
     UIDatePickerMode pickerMode = UIDatePickerModeDateAndTime;
@@ -177,18 +165,6 @@
     [cancelItem release];
     
     self.title = @"Pick a Time";
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    CGRect frame   = self.datePicker.frame;
-    frame.origin.y = frame.origin.y - PICKER_HEIGHT - 64.0f; // Navbar + status bar height: 64px
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        self.datePicker.frame = frame;
-    }];
 }
 
 - (NSDateFormatter *)dateFormatter
@@ -236,37 +212,66 @@
     {
         if ([self.shift isAllDay])
         {
-            return 1;
+            return 2;
         }
         
-        return 2;
+        return 3;
     }
     
     return 0;
 }
 
+- (BOOL)indexPathIsInfo:(NSIndexPath *)indexPath {
+    return SECTION_TITLE == [indexPath section];
+}
+
+- (BOOL)indexPathIsPicker:(NSIndexPath *)indexPath {
+    return SECTION_STARTS_ENDS == [indexPath section] && ROW_PICKER == [indexPath row];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (SECTION_TITLE == [indexPath section])
+    if ([self indexPathIsInfo:indexPath])
     {
         return 62.0;
+    }
+    else if ([self indexPathIsPicker:indexPath])
+    {
+        return PICKER_HEIGHT;
     }
     
     return CELL_HEIGHT_STARTS_ENDS;
 }
 
+- (NSString *)cellIdForIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellId = kCellDate;
+    
+    if ([self indexPathIsPicker:indexPath])
+    {
+        cellId = kCellPicker;
+    }
+    
+    if ([self indexPathIsInfo:indexPath])
+    {
+        cellId = kCellInfo;
+    }
+    
+    return cellId;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    
     NSInteger section = [indexPath section];
     NSInteger row     = [indexPath row];
+
+    NSString *cellId = [self cellIdForIndexPath:indexPath];
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     
     if (!cell)
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId] autorelease];
     }
     
     cell.textLabel.textColor = [UIColor grayColor];
@@ -301,8 +306,13 @@
                 
                 cell.detailTextLabel.textColor = [UIColor darkTextColor];
                 cell.detailTextLabel.text = [self.dateFormatter stringFromDate:self.startDate];
-                
-                cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            }
+            else if (row == ROW_PICKER)
+            {
+                if ([cell viewWithTag:PICKER_TAG] == nil)
+                {
+                    [cell addSubview:self.datePicker];
+                }
             }
             else if (row == ROW_ENDS)
             {
@@ -332,8 +342,17 @@
 {
     self.startDate = self.datePicker.date;
     
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SECTION_STARTS_ENDS]
-                  withRowAnimation:UITableViewRowAnimationNone];
+    NSIndexPath *startCellIndexPath = [NSIndexPath indexPathForRow:ROW_STARTS inSection:SECTION_STARTS_ENDS];
+    UITableViewCell *startCell = [self.tableView cellForRowAtIndexPath:startCellIndexPath];
+    
+    startCell.detailTextLabel.text = [self.dateFormatter stringFromDate:self.startDate];
+    
+    if (![self.shift isAllDay]) {
+        NSIndexPath *endCellIndexPath = [NSIndexPath indexPathForRow:ROW_ENDS inSection:SECTION_STARTS_ENDS];
+        UITableViewCell *endCell = [self.tableView cellForRowAtIndexPath:endCellIndexPath];
+        
+        endCell.detailTextLabel.text = [self.dateFormatter stringFromDate:[self endDate]];
+    }
 }
 
 #pragma mark Navigation Buttons
