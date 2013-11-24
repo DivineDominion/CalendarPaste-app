@@ -566,8 +566,10 @@
     
     mutableCalendars = [[self.eventStore calendarsForEntityType:EKEntityTypeEvent] mutableCopy];
     
+#ifndef DEVELOPMENT
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.allowsContentModifications == YES"];
     [mutableCalendars filterUsingPredicate:predicate];
+#endif
     
     self.calendars = mutableCalendars;
     
