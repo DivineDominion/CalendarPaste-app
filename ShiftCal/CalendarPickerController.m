@@ -17,7 +17,7 @@
 #define LABEL_TEXT_WIDTH 256.0f
 #define LABEL_DETAIL_WIDTH 60.0f
 
-#define CELL_WIDTH 300.0f
+#define CELL_WIDTH 320.0f
 #define CELL_HEIGHT 44.0f
 
 #define ACTION_PANEL_CORNER_RADIUS 8.0f
@@ -310,15 +310,15 @@
 - (UIView *)actionPanelForIndexPath:(NSIndexPath *)indexPath andTableView:(UITableView *)tableView
 {
     NSInteger row     = [indexPath row];
-    NSInteger section = [indexPath section];
     BOOL hideToolView = ![self.selectedCellIndexPath isEqual:indexPath] || [self.defaultCellIndexPath isEqual:indexPath];
 
-    CGRect actionButtonFrame   = CGRectMake(0.0f, 0.0f, CELL_WIDTH, ACTION_PANEL_HEIGHT);
-    CGRect actionPanelFrame    = actionButtonFrame;
-    actionPanelFrame.origin.y  = CELL_HEIGHT;  // Top margin = cell height
+    CGRect actionPanelFrame    = CGRectMake(0, CELL_HEIGHT, CELL_WIDTH, ACTION_PANEL_HEIGHT);
+    CGRect actionButtonFrame   = actionPanelFrame;
+    actionButtonFrame.origin.y  = 0;  // Top margin = cell height
+    actionButtonFrame = CGRectInset(actionButtonFrame, 4.0f, 4.0f);
     
     UIView *view           = [[UIView alloc] initWithFrame:actionPanelFrame];
-    UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeSystem];
 
     // Setup wrapping view
     view.tag                 = TAG_ACTIONPANEL;
@@ -329,51 +329,16 @@
     actionButton.tag                 = row;
     actionButton.autoresizingMask    = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     actionButton.layer.masksToBounds = YES;
-
-    UIImage *buttonImage        = [UIImage imageNamed:@"makedefault.png"];
-    UIImage *buttonPressedImage = [UIImage imageNamed:@"makedefault_pressed.png"];
-    
-    if ([buttonImage respondsToSelector:@selector(resizableImageWithCapInsets:resizingMode:)])
-    {
-        UIEdgeInsets buttonInsets = UIEdgeInsetsMake(0, 4, 0, 4);
-        
-        buttonImage        = [buttonImage resizableImageWithCapInsets:buttonInsets resizingMode:UIImageResizingModeTile];
-        buttonPressedImage = [buttonPressedImage resizableImageWithCapInsets:buttonInsets resizingMode:UIImageResizingModeTile];
-    }
-    else
-    {
-        buttonImage        = [buttonImage stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-        buttonPressedImage = [buttonPressedImage stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-    }
-    
-    [actionButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
-    [actionButton setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
+    //actionButton.backgroundColor = [UIColor yellowColor];
     
     [actionButton setTitle:@"make default" forState:UIControlStateNormal];
-    actionButton.titleLabel.font      = [UIFont boldSystemFontOfSize:actionButton.titleLabel.font.pointSize];
-    actionButton.titleLabel.textColor = [UIColor whiteColor];
     
     [actionButton addTarget:self action:@selector(makeDefault:) forControlEvents:UIControlEventTouchDown];
     
-    // Round bottom corners when in last cell's row
-    if (row == [self tableView:self.tableView numberOfRowsInSection:section] - 1)
-    {
-        CGRect frame              = actionButton.bounds;
-        UIBezierPath *roundedPath = nil;
-        CAShapeLayer *maskLayer   = [CAShapeLayer layer];
-        
-        maskLayer.frame = frame;
-        
-        roundedPath = [UIBezierPath bezierPathWithRoundedRect:maskLayer.bounds
-                                            byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight
-                                                  cornerRadii:CGSizeMake(ACTION_PANEL_CORNER_RADIUS, ACTION_PANEL_CORNER_RADIUS)];
-        
-        maskLayer.fillColor       = [[UIColor whiteColor] CGColor];
-        maskLayer.backgroundColor = [[UIColor clearColor] CGColor];
-        maskLayer.path            = [roundedPath CGPath];
-        
-        actionButton.layer.mask = maskLayer;
-    }
+    actionButton.layer.borderWidth = 1;
+    actionButton.layer.borderColor = [UIColor blueColor].CGColor;
+    actionButton.layer.cornerRadius = 8;
+    actionButton.layer.masksToBounds = YES;
     
     [view addSubview:actionButton];
     
