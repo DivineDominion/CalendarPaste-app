@@ -17,6 +17,7 @@
 // private properties
 @property (nonatomic, retain, readwrite) UINavigationController *navController;
 @property (nonatomic, retain, readwrite) EKEventStore *eventStore;
+@property (nonatomic, retain, readwrite) UIColor *appColor;
 
 - (void)requestCalendarAccessForOverviewViewController;
 - (void)showOverviewViewControllerAnimated:(BOOL)animated;
@@ -28,6 +29,7 @@
 
 @implementation AppDelegate
 @synthesize eventStore = _eventStore;
+@synthesize appColor = _appColor;
 
 - (void)dealloc
 {
@@ -43,6 +45,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.appColor      = [UIColor colorWithRed:116.0/255 green:128.0/255 blue:199.0/255 alpha:1.0];
+    
     [self styleNavigationBar];
     
     self.eventStore    = [[[EKEventStore alloc] init] autorelease];
@@ -66,7 +70,7 @@
 
 - (void)styleNavigationBar
 {
-    UIColor *topBarColor = [UIColor colorWithRed:116.0/255 green:128.0/255 blue:199.0/255 alpha:1.0];
+    UIColor *topBarColor = [self appColor];
     UIColor *creamWhiteColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     
     [[UINavigationBar appearance] setBarTintColor:topBarColor];

@@ -214,6 +214,7 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     return appDelegate.eventStore;
 }
+
 - (NSString *)selectedCellCalendarIdentifier
 {
     return self.selectedCell.calendarIdentifier;
@@ -327,7 +328,7 @@
     // Setup Action Panel
     actionButton.frame               = actionButtonFrame;
     actionButton.tag                 = row;
-    actionButton.autoresizingMask    = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    actionButton.autoresizingMask    = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
     actionButton.layer.masksToBounds = YES;
     //actionButton.backgroundColor = [UIColor yellowColor];
     
@@ -335,8 +336,9 @@
     
     [actionButton addTarget:self action:@selector(makeDefault:) forControlEvents:UIControlEventTouchDown];
     
-    actionButton.layer.borderWidth = 1;
-    actionButton.layer.borderColor = [UIColor blueColor].CGColor;
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    actionButton.layer.borderWidth = 2.0f;
+    actionButton.layer.borderColor = [appDelegate appColor].CGColor;
     actionButton.layer.cornerRadius = 8;
     actionButton.layer.masksToBounds = YES;
     
