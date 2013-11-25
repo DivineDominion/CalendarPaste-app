@@ -63,6 +63,7 @@
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.userInteractionEnabled = NO; // Prevents selection
+    [button setTintColor:[UIColor colorWithRed:0 green:0.5 blue:1.0 alpha:1.0]];
     self.accessoryView = button;
     
     self.layer.masksToBounds = YES;
@@ -78,17 +79,14 @@
         _checked = checked;
         
         UIImage *imageNormal    = nil;
-        UIImage *imageHighlight = nil;
         UIButton *button = (UIButton *)self.accessoryView;
         
         if (checked == YES)
         {
-            imageNormal    = [UIImage imageNamed:@"UIPreferencesBlueCheck.png"];
-            imageHighlight = [UIImage imageNamed:@"UIPreferencesWhiteCheck.png"];
+            imageNormal = [[UIImage imageNamed:@"Checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         }
         
         [button setBackgroundImage:imageNormal forState:UIControlStateNormal];
-        [button setBackgroundImage:imageHighlight forState:UIControlStateHighlighted];
     }
 }
 
