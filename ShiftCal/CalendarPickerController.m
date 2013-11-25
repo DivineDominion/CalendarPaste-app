@@ -95,7 +95,7 @@
 - (void)layoutSubviews {
     static double kCellVisualHeight = CELL_HEIGHT - 1.0f;
     static double kCheckmarkSize    = 14.0f;
-    static double kCheckmarkX       = CELL_WIDTH - 14.0f; // - kCheckmarkSize
+    static double kCheckmarkX       = CELL_WIDTH - 10.0f - 14.0f; // - kCheckmarkSize
     static double kMargin           = 10.0f;
     
     [super layoutSubviews];
@@ -326,19 +326,22 @@
     view.layer.masksToBounds = YES;
     
     // Setup Action Panel
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    UIColor *appColor = [appDelegate appColor];
+    
     actionButton.frame               = actionButtonFrame;
     actionButton.tag                 = row;
     actionButton.autoresizingMask    = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
     actionButton.layer.masksToBounds = YES;
+    [actionButton setTitleColor:appColor forState:UIControlStateNormal];
     //actionButton.backgroundColor = [UIColor yellowColor];
     
     [actionButton setTitle:@"make default" forState:UIControlStateNormal];
     
     [actionButton addTarget:self action:@selector(makeDefault:) forControlEvents:UIControlEventTouchDown];
     
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     actionButton.layer.borderWidth = 2.0f;
-    actionButton.layer.borderColor = [appDelegate appColor].CGColor;
+    actionButton.layer.borderColor = appColor.CGColor;
     actionButton.layer.cornerRadius = 8;
     actionButton.layer.masksToBounds = YES;
     
