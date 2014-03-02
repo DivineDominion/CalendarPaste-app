@@ -10,6 +10,7 @@
 		600BFE7615FB5ADF008B03CA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A515C08EB900801105 /* CoreGraphics.framework */; };
 		600E119F160373F3009A7E24 /* AlarmPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 600E119E160373F3009A7E24 /* AlarmPickerViewController.m */; };
 		6026C75F16B1AA4A00445709 /* NSDate+Tomorrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6026C75E16B1AA4A00445709 /* NSDate+Tomorrow.m */; };
+		602B6AFF18C3A005005D2227 /* ShiftData.m in Sources */ = {isa = PBXBuildFile; fileRef = 602B6AFE18C3A005005D2227 /* ShiftData.m */; };
 		605A96B516171D160008B1C6 /* ShiftTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 605A96B416171D160008B1C6 /* ShiftTemplate.m */; };
 		605A96B7161B1EC30008B1C6 /* ShiftTemplateController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FBA82C15F4FE2B008B48A1 /* ShiftTemplateController.m */; };
 		605A96B8161B1FE10008B1C6 /* ShiftModificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F1603315DD1447005834B3 /* ShiftModificationViewController.m */; };
@@ -60,6 +61,8 @@
 		600E11A216038973009A7E24 /* AlarmPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerDelegate.h; sourceTree = "<group>"; };
 		6026C75D16B1AA4A00445709 /* NSDate+Tomorrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Tomorrow.h"; sourceTree = "<group>"; };
 		6026C75E16B1AA4A00445709 /* NSDate+Tomorrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Tomorrow.m"; sourceTree = "<group>"; };
+		602B6AFD18C3A005005D2227 /* ShiftData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftData.h; sourceTree = "<group>"; };
+		602B6AFE18C3A005005D2227 /* ShiftData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftData.m; sourceTree = "<group>"; };
 		605A96B316171D160008B1C6 /* ShiftTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftTemplate.h; sourceTree = "<group>"; };
 		605A96B416171D160008B1C6 /* ShiftTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplate.m; sourceTree = "<group>"; };
 		605A96B9161B27E10008B1C6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -283,6 +286,8 @@
 		60FBA83115F66C59008B48A1 /* Modify Shift */ = {
 			isa = PBXGroup;
 			children = (
+				602B6AFD18C3A005005D2227 /* ShiftData.h */,
+				602B6AFE18C3A005005D2227 /* ShiftData.m */,
 				60FBA82115F10443008B48A1 /* DurationPickerController.h */,
 				60FBA82215F10443008B48A1 /* DurationPickerController.m */,
 				60FBA82A15F3DD76008B48A1 /* DurationPickerDelegate.h */,
@@ -443,6 +448,7 @@
 				609EF760163188DA003E4BB3 /* ShiftOverviewCell.m in Sources */,
 				609167BF1658F45A006C33EE /* UITableViewController+CalloutCell.m in Sources */,
 				6026C75F16B1AA4A00445709 /* NSDate+Tomorrow.m in Sources */,
+				602B6AFF18C3A005005D2227 /* ShiftData.m in Sources */,
 				60A66EA216D60FFA0083BE95 /* LayoutHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

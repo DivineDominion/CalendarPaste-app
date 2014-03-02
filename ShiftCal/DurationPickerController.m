@@ -54,8 +54,6 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
 + (UILabel *)createLabelForComponet:(NSInteger)component;
 
 - (UIView *)rowViewForComponent:(NSInteger)component;
-- (void)updateCellForHoursAndMinutes;
-- (NSString *)textForUserSelection;
 @end
 
 @implementation DurationPickerController
@@ -70,19 +68,9 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     return [self initWithHours:0 andMinutes:0];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    return [self initWithHours:0 andMinutes:0 withStyle:style];
-}
-
 - (id)initWithHours:(NSInteger)hours andMinutes:(NSInteger)minutes
 {
-    return [self initWithHours:hours andMinutes:minutes withStyle:UITableViewStyleGrouped];
-}
-
-- (id)initWithHours:(NSInteger)hours andMinutes:(NSInteger)minutes withStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
+    self = [super init];
     
     if (self)
     {
@@ -95,47 +83,48 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     return self;
 }
 
-- (void)loadView
+- (UIView *)pickerView
 {
-    [super loadView];
-    
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    float screenWidth   = screenBounds.size.width;
-    float screenHeight  = screenBounds.size.height;
-    
-    // top margin:  67px = 1/2 200px (visible content height) - 1/2 46px (cell height) - 10px table margin
-    float topMargin = 67.0f;
-    if (screenHeight == 568.0f)
+    if (_pickerWrap == nil)
     {
-        topMargin += 44.0f; // iPhone 4-inch
+        CGRect screenBounds = [[UIScreen mainScreen] bounds];
+        float screenWidth   = screenBounds.size.width;
+        float screenHeight  = screenBounds.size.height;
+        
+        // top margin:  67px = 1/2 200px (visible content height) - 1/2 46px (cell height) - 10px table margin
+        float topMargin = 67.0f;
+        if (screenHeight == 568.0f)
+        {
+            topMargin += 44.0f; // iPhone 4-inch
+        }
+        
+        UIView *pickerWrap = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, screenWidth, PICKER_HEIGHT)];
+        
+        _pickerView = [[UIPickerView alloc] init];
+        _pickerView.delegate = self;
+        _pickerView.dataSource = self;
+        _pickerView.showsSelectionIndicator = YES;
+        _pickerView.hidden = NO;
+        
+        UILabel *hourLabel = [self.class createLabelForComponet:COMPONENT_HOUR];
+        UILabel *minLabel  = [self.class createLabelForComponet:COMPONENT_MIN];
+        
+        [pickerWrap addSubview:_pickerView];
+        [pickerWrap addSubview:hourLabel];
+        [pickerWrap addSubview:minLabel];
+        
+        
+        _pickerWrap = pickerWrap;
+        
+        // Update labels
+        [self pluralizeLabels];
     }
     
-    CGRect tableHeaderFrame = CGRectMake(0.0f, 0.0f, screenWidth, topMargin);
+    // TODO where does this belong?
+    [_pickerView selectRow:self.hours   inComponent:COMPONENT_HOUR animated:NO];
+    [_pickerView selectRow:RESET_MINUTES inComponent:COMPONENT_MIN  animated:NO];
     
-    self.tableView.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    self.tableView.tableHeaderView  = [[[UIView alloc] initWithFrame:tableHeaderFrame] autorelease];
-    self.tableView.scrollEnabled    = NO;
-    
-    // Visually hide down below screen bounds
-    _pickerWrap = [[UIView alloc] initWithFrame:CGRectMake(0.0f, screenHeight, screenWidth, PICKER_HEIGHT)];
-    
-    _pickerView = [[UIPickerView alloc] init];
-    _pickerView.delegate = self;
-    _pickerView.dataSource = self;
-    _pickerView.showsSelectionIndicator = YES;
-    _pickerView.hidden = NO;
-    
-    UILabel *hourLabel = [self.class createLabelForComponet:COMPONENT_HOUR];
-    UILabel *minLabel  = [self.class createLabelForComponet:COMPONENT_MIN];
-
-    [_pickerWrap addSubview:_pickerView];
-    [_pickerWrap addSubview:hourLabel];
-    [_pickerWrap addSubview:minLabel];
-    
-    [self.tableView addSubview:_pickerWrap];
-    
-    // Update labels
-    [self pluralizeLabels];
+    return _pickerWrap;
 }
 
 + (UILabel *)createLabelForComponet:(NSInteger)component
@@ -184,96 +173,12 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     [super dealloc];
 }
 
-#pragma mark - View callbacks
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    UIBarButtonItem *saveItem   = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                                target:self
-                                                                                action:@selector(save:)];
-    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                target:self
-                                                                                action:@selector(cancel:)];
-    
-    self.navigationItem.rightBarButtonItem = saveItem;
-    self.navigationItem.leftBarButtonItem  = cancelItem;
-    
-    [saveItem release];
-    [cancelItem release];
-    
-    self.title = @"Duration";
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    CGRect frame = _pickerWrap.frame;
-    frame.origin.y = frame.origin.y - PICKER_HEIGHT - 64.0f; // Navbar + status bar height: 64px
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        _pickerWrap.frame = frame;
-    }];
-    
-    [_pickerView selectRow:self.hours   inComponent:COMPONENT_HOUR animated:NO];
-    [_pickerView selectRow:RESET_MINUTES inComponent:COMPONENT_MIN  animated:NO];
-}
-
-#pragma mark - TableView data
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if (section != 0)
-    {
-        StupidError(@"more sections asked for than set up: %d", section)
-    }
-    
-    return 1;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ([indexPath section] != 0 && [indexPath row] != 0)
-    {
-        StupidError(@"invalid section/row pair (%d, %d):  setup wrong", [indexPath section], [indexPath row]);
-    }
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_ID];
-
-    if (!cell)
-    {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CELL_ID] autorelease];
-        
-        cell.textLabel.text = @"Duration";
-        cell.detailTextLabel.text = [self textForUserSelection];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    
-    return cell;
-}
-
-- (NSString *)textForUserSelection
-{
-    return [self.timeTranslator humanReadableFormOfHours:self.hours minutes:self.minutes];
-}
-
-- (void)updateCellForHoursAndMinutes
-{
-    UITableViewCell *cell  = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    cell.detailTextLabel.text = [self textForUserSelection];
-}
-
 #pragma mark - PickerView
 #pragma mark PickerView delegate
 
 -(void)pluralizeLabels
 {
-    UILabel *label = (UILabel*)[self.tableView viewWithTag:COMPONENT_HOUR_LABEL_TAG];
+    UILabel *label = (UILabel*)[self.pickerView viewWithTag:COMPONENT_HOUR_LABEL_TAG];
     NSString *text;
     
     if (self.hours == 1)
@@ -288,7 +193,7 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     [label setText:text];
     [label setNeedsDisplay];
     
-    label = (UILabel*)[self.tableView viewWithTag:COMPONENT_MIN_LABEL_TAG];
+    label = (UILabel*)[self.pickerView viewWithTag:COMPONENT_MIN_LABEL_TAG];
 
     if (self.minutes == 1)
     {
@@ -336,8 +241,8 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
         }
     }
     
-    // Update view
-    [self updateCellForHoursAndMinutes];
+    // Notify delegate of change
+    [self.delegate durationPicker:self didSelectHours:self.hours andMinutes:self.minutes];
 }
 
 #pragma mark PickerView data source
@@ -433,18 +338,6 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     [subLabel release];
     
     return rowView;
-}
-
-#pragma mark - Save and Cancel
-
-- (void)save:(id)sender
-{
-    [self.delegate durationPicker:self didSelectHours:self.hours andMinutes:self.minutes];
-}
-
-- (void)cancel:(id)sender
-{
-    [self.delegate durationPicker:self didSelectHours:0 andMinutes:0];
 }
 
 @end
