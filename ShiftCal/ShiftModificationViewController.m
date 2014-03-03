@@ -335,6 +335,7 @@
                     [switchView release];
                 }
                 
+                cell.layer.zPosition = 1.0f;
                 cell.textLabel.text = @"All-day";
                 [self displayAllDayInCell:cell];
             }
@@ -348,6 +349,7 @@
                                                    reuseIdentifier:CELL_SUBVIEW] autorelease];
                 }
                 
+                cell.layer.zPosition = 0.5f;
                 cell.accessoryType = UITableViewCellAccessoryNone;
                 cell.textLabel.text = @"Duration";
                 
@@ -363,7 +365,9 @@
                                                    reuseIdentifier:CELL_PICKER] autorelease];
                 }
                 
+                cell.layer.zPosition = 0.0f;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
                 [cell addSubview:self.durationPickerView];
             }
             
@@ -510,12 +514,7 @@
     if (SECTION_DURATION == [indexPath section]
         && ROW_DURATION_PICKER == [indexPath row])
     {
-        if ([self durationPickerIsShown])
-        {
-            return CELL_PICKER_HEIGHT;
-        }
-        
-        return 0.0f;
+        return CELL_PICKER_HEIGHT;
     }
     
     return 40.0f;
@@ -847,14 +846,15 @@
     
     if ([self durationPickerIsShown])
     {
-        paths = @[durationPath, durationPickerPath];
+        paths = @[durationPickerPath, durationPath];
     }
     
     if (allDayHasBeenEnabled)
     {
         [self.shiftData setAllDay:YES];
-        [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationTop];
         self.showDurationPicker = NO;
+        
+        [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationTop];
     }
     else
     {
