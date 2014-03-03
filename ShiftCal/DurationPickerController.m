@@ -27,14 +27,14 @@
 #define COMPONENT_HOUR_X (COMPONENT_WIDTH - COMPONENT_HOUR_LABEL_WIDTH - COMPONENT_LABEL_OFFSET - COMPONENT_ROW_WIDTH)
 #define COMPONENT_HOUR_LABEL_TAG 103
 #define COMPONENT_HOUR_LABEL_WIDTH 65.0f
-#define COMPONENT_HOUR_LABEL_X (160.0f - COMPONENT_HOUR_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
+#define COMPONENT_HOUR_LABEL_X (160.0f + 1 - COMPONENT_HOUR_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
 
 #define COMPONENT_MIN 1
 #define COMPONENT_MIN_TAG 102
 #define COMPONENT_MIN_X (COMPONENT_WIDTH - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET - COMPONENT_ROW_WIDTH)
 #define COMPONENT_MIN_LABEL_TAG 104
 #define COMPONENT_MIN_LABEL_WIDTH 58.0f
-#define COMPONENT_MIN_LABEL_X (160.0f + 2 + COMPONENT_WIDTH - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
+#define COMPONENT_MIN_LABEL_X (160.0f + 6 + COMPONENT_WIDTH - COMPONENT_MIN_LABEL_WIDTH - COMPONENT_LABEL_OFFSET)
 
 #define RESET_MINUTES self.minutes + (kMinuteItemsMinFactor * kMinuteItems)
 
@@ -136,13 +136,13 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     
     if (component == COMPONENT_HOUR)
     {
-        labelFrame = CGRectMake(COMPONENT_HOUR_LABEL_X, COMPONENT_LABEL_Y+2, COMPONENT_HOUR_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT);
+        labelFrame = CGRectMake(COMPONENT_HOUR_LABEL_X, COMPONENT_LABEL_Y+1, COMPONENT_HOUR_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT);
         labelText  = @"hours";
         labelTag   = COMPONENT_HOUR_LABEL_TAG;
     }
     else // assuming: component == COMPONENT_MIN
     {
-        labelFrame = CGRectMake(COMPONENT_MIN_LABEL_X, COMPONENT_LABEL_Y+2, COMPONENT_MIN_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT);
+        labelFrame = CGRectMake(COMPONENT_MIN_LABEL_X, COMPONENT_LABEL_Y+1, COMPONENT_MIN_LABEL_WIDTH, COMPONENT_LABEL_HEIGHT);
         labelText  = @"mins";
         labelTag   = COMPONENT_MIN_LABEL_TAG;
     }
@@ -151,10 +151,8 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     theLabel.tag = labelTag;
     theLabel.text = labelText;
     theLabel.textAlignment = NSTextAlignmentLeft;
-    theLabel.font = [UIFont boldSystemFontOfSize:20.0f];
+    theLabel.font = [UIFont systemFontOfSize:23.0f];
     theLabel.textColor = [UIColor colorWithWhite:0.25 alpha:1.0];
-    theLabel.shadowColor = [UIColor colorWithWhite:0.8 alpha:0.8];
-    theLabel.shadowOffset = CGSizeMake(0, 1.0f);
     theLabel.backgroundColor = [UIColor clearColor];
     theLabel.userInteractionEnabled = NO;
 

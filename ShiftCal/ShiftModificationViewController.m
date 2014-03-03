@@ -26,6 +26,7 @@
 #define SECTION_URL            4
 #define SECTION_NOTES          5
 
+#define ROW_DURATION           1
 #define ROW_DURATION_PICKER    2
 
 // TODO refactor to NSString constants
@@ -34,6 +35,8 @@
 #define CELL_TEXT_AREA  @"textarea"
 #define CELL_TOGGLE     @"toggle"
 #define CELL_PICKER     @"durationpickercell"
+
+#define CELL_PICKER_HEIGHT 219.0f
 
 #define COLOR_GRAYSCALE_PLACEHOLDER 0.7
 
@@ -63,6 +66,7 @@
 
 @property (nonatomic, readonly) DurationPickerController *durationController;
 @property (nonatomic, readonly) UIView *durationPickerView;
+@property (nonatomic, readwrite, getter = durationPickerIsShown) BOOL showDurationPicker;
 
 - (void)invalidateCalendar:(NSNotification *)notification;
 - (void)resetTextViewToPlaceholder:(UITextView *)textView;
@@ -115,6 +119,8 @@
                                                  selector:@selector(invalidateCalendar:)
                                                      name:SCStoreChangedNotification
                                                    object:[[UIApplication sharedApplication] delegate]];
+        
+        self.showDurationPicker = NO;
     }
     
     return self;
@@ -233,7 +239,12 @@
                 return 1;
             }
             
-            return 3;
+            if ([self durationPickerIsShown])
+            {
+                return 3;
+            }
+            
+            return 2;
         case SECTION_ALARM:
             if ([self.shiftData hasFirstAlarm])
             {
@@ -344,7 +355,6 @@
             }
             else if (row == ROW_DURATION_PICKER)
             {
-#pragma mark - PICKER
                 cell = [tableView dequeueReusableCellWithIdentifier:CELL_PICKER];
                 
                 if (!cell)
@@ -500,7 +510,12 @@
     if (SECTION_DURATION == [indexPath section]
         && ROW_DURATION_PICKER == [indexPath row])
     {
-        return 219.0f;
+        if ([self durationPickerIsShown])
+        {
+            return CELL_PICKER_HEIGHT;
+        }
+        
+        return 0.0f;
     }
     
     return 40.0f;
@@ -512,7 +527,6 @@
     BOOL state = [self.shiftData isAllDay];
     
     [switchView setOn:state];
-    
 }
 
 - (void)displayDurationInCell:(UITableViewCell *)cell
@@ -559,13 +573,28 @@
     NSInteger row     = [indexPath row];
     UIViewController *modalController = nil;
     
+    [self hideKeyboard];
+    
     switch (section)
     {
         case SECTION_DURATION:
         {
             if (row == 1)
             {
-                // TODO toggle display duration cell boolean property, then set height of the cell to 0
+                self.showDurationPicker = ![self durationPickerIsShown];
+                
+                //[self.tableView beginUpdates];
+                //[self.tableView endUpdates];
+                NSIndexPath *durationPickerPath = [NSIndexPath indexPathForRow:ROW_DURATION_PICKER inSection:SECTION_DURATION];
+                
+                if ([self durationPickerIsShown])
+                {
+                    [self.tableView insertRowsAtIndexPaths:@[durationPickerPath] withRowAnimation:UITableViewRowAnimationTop];
+                }
+                else
+                {
+                    [self.tableView deleteRowsAtIndexPaths:@[durationPickerPath] withRowAnimation:UITableViewRowAnimationTop];
+                }
             }
             
             break;
@@ -806,25 +835,43 @@
     NSAssert(sender, @"sender required");
     NSAssert([sender isKindOfClass:[UISwitch class]], @"sender must be a UISwitch");
     
+    [self hideKeyboard];
+    
     UISwitch *switchView = (UISwitch *)sender;
+    BOOL allDayHasBeenEnabled = switchView.on;
     
-    NSIndexPath *durationPath = [NSIndexPath indexPathForRow:1 inSection:SECTION_DURATION];
+    NSIndexPath *durationPath = [NSIndexPath indexPathForRow:ROW_DURATION inSection:SECTION_DURATION];
+    NSIndexPath *durationPickerPath = [NSIndexPath indexPathForRow:ROW_DURATION_PICKER inSection:SECTION_DURATION];
+
+    NSArray *paths = @[durationPath];
     
-    if (switchView.on)
+    if ([self durationPickerIsShown])
     {
-        // TODO hide duration cell
+        paths = @[durationPath, durationPickerPath];
+    }
+    
+    if (allDayHasBeenEnabled)
+    {
         [self.shiftData setAllDay:YES];
-        [self.tableView deleteRowsAtIndexPaths:@[durationPath] withRowAnimation:UITableViewRowAnimationTop];
+        [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationTop];
+        self.showDurationPicker = NO;
     }
     else
     {
-        // TODO show duration view
         [self.shiftData setAllDay:NO];
-        [self.tableView insertRowsAtIndexPaths:@[durationPath] withRowAnimation:UITableViewRowAnimationTop];
+        [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationTop];
     }
 }
 
 #pragma mark - Save and Cancel
+
+- (void)hideKeyboard
+{
+    // Unfocus text fields
+    [[self.tableView viewWithTag:TAG_TEXTFIELD_TITLE] resignFirstResponder];
+    [[self.tableView viewWithTag:TAG_TEXTFIELD_LOCATION] resignFirstResponder];
+    [[self.tableView viewWithTag:TAG_TEXTFIELD_URL] resignFirstResponder];
+}
 
 - (void)save:(id)sender
 {
