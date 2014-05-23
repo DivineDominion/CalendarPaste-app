@@ -18,9 +18,7 @@
 		605A96BD161CAC660008B1C6 /* ShiftTemplateCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 605A96BC161CAC660008B1C6 /* ShiftTemplateCollection.m */; };
 		605AC42616086B5800E02F16 /* DateIntervalTranslator.m in Sources */ = {isa = PBXBuildFile; fileRef = 605AC42516086B5800E02F16 /* DateIntervalTranslator.m */; };
 		6060426216245AB000BA5EEC /* ShiftAssignmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6060426116245AB000BA5EEC /* ShiftAssignmentViewController.m */; };
-		606042661625D12D00BA5EEC /* hud-checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 606042651625D12D00BA5EEC /* hud-checkmark.png */; };
 		606042AA1625D2A000BA5EEC /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 606042A91625D2A000BA5EEC /* MBProgressHUD.m */; };
-		606042AC1625D52E00BA5EEC /* hud-checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 606042AB1625D52E00BA5EEC /* hud-checkmark@2x.png */; };
 		609167BF1658F45A006C33EE /* UITableViewController+CalloutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 609167BE1658F45A006C33EE /* UITableViewController+CalloutCell.m */; };
 		609EF760163188DA003E4BB3 /* ShiftOverviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */; };
 		60A1392D17FCA97600D3FBF5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60A1392C17FCA97600D3FBF5 /* Images.xcassets */; };
@@ -72,10 +70,8 @@
 		6060426016245AB000BA5EEC /* ShiftAssignmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftAssignmentViewController.h; sourceTree = "<group>"; };
 		6060426116245AB000BA5EEC /* ShiftAssignmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftAssignmentViewController.m; sourceTree = "<group>"; };
 		606042641625CC1D00BA5EEC /* ShiftAssignmentViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftAssignmentViewDelegate.h; sourceTree = "<group>"; };
-		606042651625D12D00BA5EEC /* hud-checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hud-checkmark.png"; sourceTree = "<group>"; };
 		606042A81625D2A000BA5EEC /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = MBProgressHUD/MBProgressHUD.h; sourceTree = SOURCE_ROOT; };
 		606042A91625D2A000BA5EEC /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = MBProgressHUD/MBProgressHUD.m; sourceTree = SOURCE_ROOT; };
-		606042AB1625D52E00BA5EEC /* hud-checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hud-checkmark@2x.png"; sourceTree = "<group>"; };
 		6072513016B127DF00483239 /* ShiftTemplates 1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ShiftTemplates 1.1.xcdatamodel"; sourceTree = "<group>"; };
 		609167BD1658F45A006C33EE /* UITableViewController+CalloutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewController+CalloutCell.h"; sourceTree = "<group>"; };
 		609167BE1658F45A006C33EE /* UITableViewController+CalloutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewController+CalloutCell.m"; sourceTree = "<group>"; };
@@ -178,15 +174,6 @@
 			name = "Assign Shift";
 			sourceTree = "<group>";
 		};
-		608F6FDD15FF78AD001C8217 /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				606042651625D12D00BA5EEC /* hud-checkmark.png */,
-				606042AB1625D52E00BA5EEC /* hud-checkmark@2x.png */,
-			);
-			name = Images;
-			sourceTree = "<group>";
-		};
 		60BB969215C08EB900801105 = {
 			isa = PBXGroup;
 			children = (
@@ -224,7 +211,6 @@
 		60BB96A715C08EB900801105 /* ShiftCal */ = {
 			isa = PBXGroup;
 			children = (
-				608F6FDD15FF78AD001C8217 /* Images */,
 				60FBA83115F66C59008B48A1 /* Modify Shift */,
 				6060425E16245A8E00BA5EEC /* Assign Shift */,
 				605A96B616171D980008B1C6 /* Model */,
@@ -377,8 +363,6 @@
 			files = (
 				60BB96AC15C08EB900801105 /* InfoPlist.strings in Resources */,
 				60A1392D17FCA97600D3FBF5 /* Images.xcassets in Resources */,
-				606042661625D12D00BA5EEC /* hud-checkmark.png in Resources */,
-				606042AC1625D52E00BA5EEC /* hud-checkmark@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
