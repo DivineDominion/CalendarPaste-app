@@ -281,11 +281,11 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
 
     if (view.tag == COMPONENT_HOUR_TAG)
     {
-        theText = [NSString stringWithFormat:@"%d", row];
+        theText = [NSString stringWithFormat:@"%ld", (long)row];
     }
     else // assuming COMPONENT_MIN_TAG
     {
-        theText = [NSString stringWithFormat:@"%d", row % kMinuteItems];
+        theText = [NSString stringWithFormat:@"%ld", (long)(row % kMinuteItems)];
     }
     
     UILabel * theLabel = (UILabel *)[rowView viewWithTag:COMPONENT_SUBLABEL_TAG];

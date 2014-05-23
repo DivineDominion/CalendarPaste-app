@@ -99,8 +99,8 @@
 
 - (void)setDurationHours:(NSInteger)hours andMinutes:(NSInteger)minutes
 {
-    [self.shiftAttributes setValue:[NSNumber numberWithInt:hours] forKey:@"durHours"];
-    [self.shiftAttributes setValue:[NSNumber numberWithInt:minutes] forKey:@"durMinutes"];
+    [self.shiftAttributes setValue:[NSNumber numberWithInteger:hours] forKey:@"durHours"];
+    [self.shiftAttributes setValue:[NSNumber numberWithInteger:minutes] forKey:@"durMinutes"];
 }
 
 - (NSNumber *)alarmFirstInterval

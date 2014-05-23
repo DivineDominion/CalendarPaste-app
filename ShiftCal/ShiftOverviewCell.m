@@ -116,8 +116,8 @@ BOOL _enableTwoDigits = NO;
 
 - (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes
 {
-    self.hoursLabel.text   = [NSString stringWithFormat:@"%d", hours];
-    self.minutesLabel.text = [NSString stringWithFormat:@"%02d", minutes];
+    self.hoursLabel.text   = [NSString stringWithFormat:@"%lu", (unsigned long)hours];
+    self.minutesLabel.text = [NSString stringWithFormat:@"%02lu", (unsigned long)minutes];
     
     if (hours == 1)
     {

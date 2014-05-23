@@ -104,7 +104,7 @@
     
     if ([dateComponents day] > 1 || [dateComponents day] < -1)
     {   
-        [textParts addObject:[NSString stringWithFormat:@"%d days", abs([dateComponents day])]];
+        [textParts addObject:[NSString stringWithFormat:@"%ld days", labs([dateComponents day])]];
     }
     else if ([dateComponents day])
     {
@@ -113,7 +113,7 @@
     
     if ([dateComponents hour] > 1 || [dateComponents hour] < -1)
     {
-        [textParts addObject:[NSString stringWithFormat:@"%d hours", abs([dateComponents hour])]];
+        [textParts addObject:[NSString stringWithFormat:@"%ld hours", labs([dateComponents hour])]];
     }
     else if ([dateComponents hour])
     {
@@ -122,7 +122,7 @@
     
     if ([dateComponents minute] > 1 || [dateComponents minute] < -1)
     {
-        [textParts addObject:[NSString stringWithFormat:@"%d minutes", abs([dateComponents minute])]];
+        [textParts addObject:[NSString stringWithFormat:@"%ld minutes", labs([dateComponents minute])]];
     }
     else if ([dateComponents minute])
     {

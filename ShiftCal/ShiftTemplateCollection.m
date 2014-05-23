@@ -84,7 +84,7 @@
         // Assigns a displayOrder value to the new object
         ShiftTemplate *lastShift = [self.shifts lastObject];
         NSUInteger oldMaxOrder   = [lastShift.displayOrder integerValue];
-        shift.displayOrder       = [NSNumber numberWithInt:oldMaxOrder + 1];
+        shift.displayOrder       = [NSNumber numberWithUnsignedInteger:oldMaxOrder + 1];
     }
     
     

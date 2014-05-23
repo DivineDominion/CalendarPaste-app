@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Christian Tietze. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface ShiftCalTests : SenTestCase
+@interface ShiftCalTests : XCTestCase
 
 @end

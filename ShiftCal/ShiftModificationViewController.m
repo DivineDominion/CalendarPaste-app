@@ -257,7 +257,7 @@
         case SECTION_NOTES:
             return 1;
         default:
-            StupidError(@"section %d not supported", section);
+            StupidError(@"section %ld not supported", (long)section);
             break;
     }
     
@@ -310,7 +310,7 @@
                 textField.text = self.shiftData.location;
             }
             else {
-                StupidError(@"no placeholder for row %d", row);
+                StupidError(@"no placeholder for row %ld", (long)row);
             }
             
             break;
