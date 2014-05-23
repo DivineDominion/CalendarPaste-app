@@ -875,9 +875,9 @@
 
 - (void)save:(id)sender
 {
-    // Safely unfocus title text field so it doesn't reset
-    // the title again upon view disposal
-    [[self.tableView viewWithTag:TAG_TEXTFIELD_TITLE] endEditing:YES];
+    // Safely unfocus any text field so it doesn't reset
+    // the title again upon view disposal; also save changes.
+    [self.tableView endEditing:YES];
     
     if (self.modificationDelegate)
     {
