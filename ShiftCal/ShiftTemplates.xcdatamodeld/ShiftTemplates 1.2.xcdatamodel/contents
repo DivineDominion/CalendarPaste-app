@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="ShiftTemplate" representedClassName="ShiftTemplate" syncable="YES">
+        <attribute name="alarmFirstInterval" optional="YES" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="alarmSecondInterval" optional="YES" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="allDay" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="calendarIdentifier" attributeType="String" syncable="YES"/>
+        <attribute name="displayOrder" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="displayTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="durHours" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="durMinutes" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="lastPasteHours" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="lastPasteMins" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="ShiftTemplate" positionX="160" positionY="192" width="128" height="255"/>
+    </elements>
+</model>

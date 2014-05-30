@@ -40,14 +40,15 @@
 
 #define COLOR_GRAYSCALE_PLACEHOLDER 0.7
 
-#define TAG_TEXTFIELD_TITLE      100
-#define TAG_TEXTFIELD_LOCATION   101
-#define TAG_TEXTFIELD_URL        102
-#define TAG_ALARM_FIRST          103
-#define TAG_ALARM_SECOND         104
-#define TAG_TEXTVIEW_NORMAL      105
-#define TAG_TEXTVIEW_EDITING     106
-#define TAG_TEXTVIEW_PLACEHOLDER 107
+#define TAG_TEXTFIELD_TITLE        100
+#define TAG_TEXTFIELD_DISPLAYTITLE 108
+#define TAG_TEXTFIELD_LOCATION     101
+#define TAG_TEXTFIELD_URL          102
+#define TAG_ALARM_FIRST            103
+#define TAG_ALARM_SECOND           104
+#define TAG_TEXTVIEW_NORMAL        105
+#define TAG_TEXTVIEW_EDITING       106
+#define TAG_TEXTVIEW_PLACEHOLDER   107
 
 @interface ShiftModificationViewController ()
 {
@@ -232,7 +233,7 @@
     switch (section)
     {
         case SECTION_TITLE_LOCATION:
-            return 2;
+            return 3;
         case SECTION_DURATION:
             if ([self.shiftData isAllDay])
             {
@@ -304,6 +305,12 @@
                 textField.text = self.shiftData.title;
             }
             else if (row == 1)
+            {
+                textField.placeholder = @"Display Title (optional)";
+                textField.tag = TAG_TEXTFIELD_DISPLAYTITLE;
+                textField.text = self.shiftData.displayTitle;
+            }
+            else if (row == 2)
             {
                 textField.placeholder = @"Location";
                 textField.tag = TAG_TEXTFIELD_LOCATION;
@@ -708,6 +715,9 @@
             self.navigationItem.rightBarButtonItem.enabled = YES;
             
             break;
+        case TAG_TEXTFIELD_DISPLAYTITLE:
+            self.shiftData.displayTitle = textField.text;
+            break;
         case TAG_TEXTFIELD_LOCATION:
             self.shiftData.location = textField.text;
             break;
@@ -727,7 +737,7 @@
         [[self.tableView viewWithTag:TAG_TEXTFIELD_LOCATION] becomeFirstResponder];
     }
     
-    if (textField.tag == TAG_TEXTFIELD_LOCATION || textField.tag == TAG_TEXTFIELD_URL)
+    if (textField.tag == TAG_TEXTFIELD_DISPLAYTITLE || textField.tag == TAG_TEXTFIELD_LOCATION || textField.tag == TAG_TEXTFIELD_URL)
     {
         [textField resignFirstResponder];
     }
@@ -869,6 +879,7 @@
 {
     // Unfocus text fields
     [[self.tableView viewWithTag:TAG_TEXTFIELD_TITLE] resignFirstResponder];
+    [[self.tableView viewWithTag:TAG_TEXTFIELD_DISPLAYTITLE] resignFirstResponder];
     [[self.tableView viewWithTag:TAG_TEXTFIELD_LOCATION] resignFirstResponder];
     [[self.tableView viewWithTag:TAG_TEXTFIELD_URL] resignFirstResponder];
 }

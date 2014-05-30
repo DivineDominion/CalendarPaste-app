@@ -15,6 +15,7 @@
 @property (nonatomic, retain) NSNumber *displayOrder;
 
 @property (nonatomic, retain) NSString *title;
+@property (nonatomic, retain) NSString *displayTitle;
 @property (nonatomic, retain) NSString *location;
 
 @property (nonatomic, retain) NSNumber *durHours;
@@ -40,6 +41,7 @@
 - (void)setLastPasteHour:(NSUInteger)hours andMinute:(NSUInteger)minutes;
 - (BOOL)wasAlreadyPasted;
 - (BOOL)isAllDay;
+- (NSString *)onScreenTitle;
 
 - (EKEvent *)event;
 - (NSString *)calendarTitle;

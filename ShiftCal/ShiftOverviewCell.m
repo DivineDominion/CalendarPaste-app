@@ -347,7 +347,7 @@ BOOL _enableTwoDigits = NO;
     [_shift release];
     _shift = [shift retain];
     
-    self.textLabel.text = shift.title;
+    self.textLabel.text = [shift onScreenTitle];
     self.detailTextLabel.text = shift.location;
     self.calendarLabel.text = shift.calendarTitle;
     

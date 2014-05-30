@@ -19,6 +19,7 @@
 
 @dynamic displayOrder;
 @dynamic title;
+@dynamic displayTitle;
 @dynamic location;
 @dynamic durHours;
 @dynamic durMinutes;
@@ -137,6 +138,18 @@
     [self didAccessValueForKey:@"allDay"];
     
     return (allDay != nil) ? [allDay boolValue] : NO;
+}
+
+- (NSString *)onScreenTitle
+{
+    NSString *displayTitle = self.displayTitle;
+    
+    if (displayTitle != nil && displayTitle.length > 0)
+    {
+        return displayTitle;
+    }
+    
+    return self.title;
 }
 
 # pragma mark - Class-level utility methods

@@ -282,7 +282,7 @@ static NSString *kCellPicker = @"datePicker";
     {
         case SECTION_TITLE:
             cell.textLabel.numberOfLines = 2;
-            cell.textLabel.text = @"Title\nCalendar";
+            cell.textLabel.text = @"Event Title\nCalendar";
             
             cell.detailTextLabel.numberOfLines = 2;
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\n%@", self.shift.title, self.shift.calendarTitle];

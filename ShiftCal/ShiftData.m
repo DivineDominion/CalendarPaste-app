@@ -47,6 +47,21 @@
     [self.shiftAttributes setValue:[[title copy] autorelease] forKey:@"title"];
 }
 
+- (NSString *)displayTitle
+{
+    NSString *displayTitle = [self.shiftAttributes objectForKey:@"displayTitle"];
+    if ([displayTitle isKindOfClass:[NSNull class]])
+    {
+        return nil;
+    }
+    return displayTitle;
+}
+
+- (void)setDisplayTitle:(NSString *)displayTitle
+{
+    [self.shiftAttributes setValue:[[displayTitle copy] autorelease] forKey:@"displayTitle"];
+}
+
 - (NSString *)location
 {
     NSString *location = [self.shiftAttributes objectForKey:@"location"];

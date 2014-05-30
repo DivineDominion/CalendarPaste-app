@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSMutableDictionary *shiftAttributes;
 
 @property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *displayTitle;
 @property (nonatomic, copy) NSString *location;
 @property (nonatomic, assign, getter = isAllDay) BOOL allDay;
 @property (nonatomic, retain) NSNumber *alarmFirstInterval;

@@ -73,6 +73,7 @@
 		606042A81625D2A000BA5EEC /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = MBProgressHUD/MBProgressHUD.h; sourceTree = SOURCE_ROOT; };
 		606042A91625D2A000BA5EEC /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = MBProgressHUD/MBProgressHUD.m; sourceTree = SOURCE_ROOT; };
 		6072513016B127DF00483239 /* ShiftTemplates 1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ShiftTemplates 1.1.xcdatamodel"; sourceTree = "<group>"; };
+		608023FF19386FC300E2BA83 /* ShiftTemplates 1.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ShiftTemplates 1.2.xcdatamodel"; sourceTree = "<group>"; };
 		609167BD1658F45A006C33EE /* UITableViewController+CalloutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewController+CalloutCell.h"; sourceTree = "<group>"; };
 		609167BE1658F45A006C33EE /* UITableViewController+CalloutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewController+CalloutCell.m"; sourceTree = "<group>"; };
 		609EF75E163188DA003E4BB3 /* ShiftOverviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftOverviewCell.h; sourceTree = "<group>"; };
@@ -635,10 +636,11 @@
 		60DC7E2916170203009C8723 /* ShiftTemplates.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				608023FF19386FC300E2BA83 /* ShiftTemplates 1.2.xcdatamodel */,
 				6072513016B127DF00483239 /* ShiftTemplates 1.1.xcdatamodel */,
 				60DC7E2A16170204009C8723 /* ShiftTemplates.xcdatamodel */,
 			);
-			currentVersion = 6072513016B127DF00483239 /* ShiftTemplates 1.1.xcdatamodel */;
+			currentVersion = 608023FF19386FC300E2BA83 /* ShiftTemplates 1.2.xcdatamodel */;
 			path = ShiftTemplates.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
