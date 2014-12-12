@@ -17,11 +17,7 @@ typedef NS_ENUM(NSInteger, SCCellLabelWidth) {
 };
 
 @interface ShiftOverviewCell : UITableViewCell
-{
-    ShiftTemplate *_shift;
-}
-
-@property (nonatomic, strong) ShiftTemplate *shift;
+@property (nonatomic, strong, readwrite) ShiftTemplate *shift;
 
 + (float)cellHeight;
 - (instancetype)initAndReuseIdentifier:(NSString *)reuseIdentifer;

@@ -20,8 +20,6 @@
 
 
 @implementation AppDelegate
-@synthesize eventStore = _eventStore;
-@synthesize appColor = _appColor;
 
 - (void)dealloc
 {

@@ -36,11 +36,11 @@
 {
     [super awakeFromInsert];
     
-    ShiftTemplate *__unsafe_unretained unsafe_unretainedSelf = self;
+    __weak ShiftTemplate *welf = self;
     // Adopt default template values manually to invoke setPrimitiveValue:forKey:
     // instead of setValue:forKey:
     [[ShiftTemplate defaultAttributes] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        [unsafe_unretainedSelf setPrimitiveValue:obj forKey:key];
+        [welf setPrimitiveValue:obj forKey:key];
     }];
 }
 

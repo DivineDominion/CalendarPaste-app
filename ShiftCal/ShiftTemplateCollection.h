@@ -10,12 +10,6 @@
 #import "ShiftTemplateController.h"
 
 @interface ShiftTemplateCollection : NSObject
-{
-    ShiftTemplateController *_shiftTemplateController;
-    
-    NSMutableArray *_shifts;
-}
-
 @property (nonatomic, strong) ShiftTemplateController *shiftTemplateController;
 @property (nonatomic, strong) NSMutableArray *shifts;
 @property (nonatomic, readonly) NSUInteger countOfShifts;

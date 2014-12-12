@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface DateIntervalTranslator : NSObject
-
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (NSDateComponents *)dateComponentsForTimeInterval:(NSTimeInterval)interval;
 - (NSTimeInterval)timeIntervalForComponentDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins;

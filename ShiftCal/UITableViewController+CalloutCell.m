@@ -11,15 +11,15 @@
 @implementation UITableViewController (CalloutCell)
 - (void)calloutCell:(NSIndexPath *)indexPath
 {
-    UITableViewController *__unsafe_unretained unsafe_unretainedSelf = self;
+    __weak UITableViewController *welf = self;
     [UIView animateWithDuration:0.0
                           delay:0.0
                         options:UIViewAnimationOptionAllowUserInteraction
                      animations:^void() {
-                         [[unsafe_unretainedSelf.tableView cellForRowAtIndexPath:indexPath] setHighlighted:YES animated:YES];
+                         [[welf.tableView cellForRowAtIndexPath:indexPath] setHighlighted:YES animated:YES];
                      }
                      completion:^(BOOL finished) {
-                         [[unsafe_unretainedSelf.tableView cellForRowAtIndexPath:indexPath] setHighlighted:NO animated:YES];
+                         [[welf.tableView cellForRowAtIndexPath:indexPath] setHighlighted:NO animated:YES];
                      }];
 }
 @end

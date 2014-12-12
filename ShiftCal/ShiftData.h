@@ -9,10 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface ShiftData : NSObject
-{
-    NSMutableDictionary *_shiftAttributes;
-}
-
 @property (nonatomic, strong) NSMutableDictionary *shiftAttributes;
 
 @property (nonatomic, copy) NSString *title;

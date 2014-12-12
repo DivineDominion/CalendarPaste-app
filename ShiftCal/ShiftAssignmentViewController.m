@@ -28,27 +28,12 @@ static NSString *kCellPicker = @"datePicker";
 @interface ShiftAssignmentViewController ()
 @property (nonatomic, strong, readwrite) ShiftTemplate *shift;
 @property (nonatomic, strong) NSDate *startDate;
-@property (nonatomic, strong, readonly) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong, readwrite) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) ShiftTemplateController *shiftTemplateController;
 @property (nonatomic, strong) UIDatePicker *datePicker;
-
-@property (nonatomic, readonly, copy) NSDate *endDate;
-
-- (void)done:(id)sender;
-- (void)cancel:(id)sender;
-
-+ (NSDateComponents *)dateComponentsForNowFrom:(NSCalendar *)calendar;
-+ (NSDate *)roundedDate;
-+ (NSDate *)nextDateWithHour:(NSUInteger)hour andMinute:(NSUInteger)minute;
 @end
 
 @implementation ShiftAssignmentViewController
-//@synthesize delegate = _delegate;
-@synthesize dateFormatter = _dateFormatter;
-@synthesize shift = _shift;
-@synthesize shiftTemplateController = _shiftTemplateController;
-@synthesize startDate = _startDate;
-@synthesize datePicker = _datePicker;
 
 - (instancetype)init
 {

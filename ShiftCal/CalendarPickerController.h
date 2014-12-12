@@ -12,7 +12,7 @@
 #import "CalendarPickerDelegate.h"
 
 @interface CalendarPickerController : UITableViewController
-@property (unsafe_unretained) id<CalendarPickerDelegate> delegate;
+@property (nonatomic, weak) id<CalendarPickerDelegate> delegate;
 
 - (instancetype)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier;
 - (instancetype)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier withStyle:(UITableViewStyle)style NS_DESIGNATED_INITIALIZER;

@@ -17,11 +17,7 @@
 #import "ShiftModificationDelegate.h"
 
 @interface ShiftModificationViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, DurationPickerDelegate, CalendarPickerDelegate, AlarmPickerDelegate>
-{
-    __unsafe_unretained id<ShiftModificationDelegate> _modificationDelegate;
-}
-
-@property (nonatomic, unsafe_unretained) id<ShiftModificationDelegate> modificationDelegate;
+@property (nonatomic, weak) id<ShiftModificationDelegate> modificationDelegate;
 
 - (instancetype)initWithShift:(ShiftTemplate *)shift NS_DESIGNATED_INITIALIZER;
 

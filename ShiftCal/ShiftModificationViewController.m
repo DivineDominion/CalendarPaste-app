@@ -51,23 +51,15 @@
 #define TAG_TEXTVIEW_PLACEHOLDER   107
 
 @interface ShiftModificationViewController ()
-{
-    ShiftData *_shiftData;
-    BOOL _isNewEntry;
-    DateIntervalTranslator *_dateTranslator;
-    NSInteger _selectedAlarmRow;
-    ShiftTemplateController *_shiftTemplateController;
-    DurationPickerController *_durationController;
-}
-
+@property (nonatomic, assign, getter = isNewEntry) BOOL newEntry;
 @property (nonatomic, strong) ShiftData *shiftData;
 @property (nonatomic, strong) DateIntervalTranslator *dateTranslator;
 @property (nonatomic, assign) NSInteger selectedAlarmRow;
-@property (strong, nonatomic, readonly) ShiftTemplateController *shiftTemplateController;
+@property (nonatomic, strong, readwrite) ShiftTemplateController *shiftTemplateController;
 
-@property (nonatomic, readonly) DurationPickerController *durationController;
-@property (strong, nonatomic, readonly) UIView *durationPickerView;
-@property (nonatomic, readwrite, getter = durationPickerIsShown) BOOL showDurationPicker;
+@property (nonatomic, strong, readwrite) DurationPickerController *durationController;
+@property (nonatomic, strong, readonly) UIView *durationPickerView;
+@property (nonatomic, assign, readwrite, getter = durationPickerIsShown) BOOL showDurationPicker;
 
 - (void)invalidateCalendar:(NSNotification *)notification;
 - (void)resetTextViewToPlaceholder:(UITextView *)textView;
@@ -80,13 +72,6 @@
 @end
 
 @implementation ShiftModificationViewController
-
-@synthesize dateTranslator = _dateTranslator;
-@synthesize selectedAlarmRow = _selectedAlarmRow;
-
-@synthesize shiftData = _shiftData;
-@synthesize modificationDelegate = _modificationDelegate;
-@synthesize durationController = _durationController;
 
 - (instancetype)init
 {
@@ -104,14 +89,14 @@
             // Loads an existing shift into the scratchpad context
             self.shiftData = [[ShiftData alloc] initWithAttributes:[self.shiftTemplateController attributeDictionaryForShift:shift]];
             
-            _isNewEntry = NO;
+            _newEntry = NO;
         }
         else
         {
             // Creates a temporary shift into the scratchpad context
             self.shiftData = [[ShiftData alloc] initWithAttributes:[self.shiftTemplateController defaultAttributeDictionary]];
 
-            _isNewEntry = YES;
+            _newEntry = YES;
         }
         
         self.dateTranslator = [[DateIntervalTranslator alloc] init];
@@ -164,7 +149,7 @@
                                                                                 action:@selector(cancel:)];
 
     // Prevent save until title could have been entered
-    saveItem.enabled = !_isNewEntry;
+    saveItem.enabled = !self.isNewEntry;
     
     self.navigationItem.rightBarButtonItem = saveItem;
     self.navigationItem.leftBarButtonItem  = cancelItem;
@@ -187,12 +172,12 @@
 {
     [super viewDidAppear:animated];
     
-    if (_isNewEntry)
+    if (self.isNewEntry)
     {
         UITextField *defaultTextField = (UITextField *)[self.tableView viewWithTag:TAG_TEXTFIELD_TITLE];
         [defaultTextField becomeFirstResponder];
         
-        _isNewEntry = NO;
+        self.newEntry = NO;
     }
 }
 

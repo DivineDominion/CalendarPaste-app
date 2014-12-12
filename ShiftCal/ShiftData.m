@@ -11,7 +11,6 @@
 #import "AppDelegate.h"
 
 @implementation ShiftData
-@synthesize shiftAttributes = _shiftAttributes;
 
 - (instancetype)initWithAttributes:(NSDictionary *)attributes
 {

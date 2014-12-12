@@ -15,24 +15,13 @@
 #define INDEX_OFFSET 1
 
 @interface AlarmPickerViewController ()
-// private properties
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
-@property (nonatomic, copy)   NSArray *alarms;
+@property (nonatomic, copy) NSArray *alarms;
 @property (nonatomic, strong, readonly) UIColor *selectionColor;
 @property (nonatomic, strong) DateIntervalTranslator *dateTranslator;
-
-// private methods
-- (NSInteger)rowForInterval:(NSTimeInterval)interval;
 @end
 
 @implementation AlarmPickerViewController
-
-//@synthesize delegate = _delegate;
-@synthesize selectionColor = _selectionColor;
-@synthesize dateTranslator = _dateTranslator;
-
-@synthesize selectedIndexPath = _selectedIndexPath;
-@synthesize alarms = _alarms;
 
 - (instancetype)init
 {

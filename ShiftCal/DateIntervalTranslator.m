@@ -11,15 +11,9 @@
 @interface DateIntervalTranslator ()
 @property (nonatomic, strong) NSCalendar *calendar;
 @property (nonatomic, strong) NSDate *referenceDate;
-
-//private methods
-- (NSDateComponents *)dateComponentsForDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins;
 @end
 
 @implementation DateIntervalTranslator
-
-@synthesize calendar = _calendar;
-@synthesize referenceDate = _referenceDate;
 
 - (instancetype)init
 {

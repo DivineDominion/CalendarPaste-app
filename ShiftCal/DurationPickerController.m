@@ -43,25 +43,12 @@ static const NSInteger kMinuteItemsMinFactor = 3;
 static const NSInteger kMinuteItemsMaxFactor = 4;
 
 @interface DurationPickerController ()
-{
-    UIPickerView *_pickerView;
-    UIView *_pickerWrap;
-    DateIntervalTranslator *_dateIntervalTranslator;
-}
-
+@property (nonatomic, strong, readwrite) UIPickerView *pickerView;
+@property (nonatomic, strong, readwrite) UIView *pickerWrap;
 @property (nonatomic, strong) DateIntervalTranslator *timeTranslator;
-
-+ (UILabel *)createLabelForComponet:(NSInteger)component;
-
-- (UIView *)rowViewForComponent:(NSInteger)component;
 @end
 
 @implementation DurationPickerController
-
-@synthesize hours    = _hours;
-@synthesize minutes  = _minutes;
-@synthesize delegate = _delegate;
-@synthesize timeTranslator = _dateIntervalTranslator;
 
 - (instancetype)init
 {

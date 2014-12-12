@@ -9,8 +9,6 @@
 #import "ShiftTemplateCollection.h"
 
 @implementation ShiftTemplateCollection
-@synthesize shiftTemplateController = _shiftTemplateController;
-@synthesize shifts = _shifts;
 
 - (instancetype)init
 {

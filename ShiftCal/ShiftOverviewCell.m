@@ -23,15 +23,6 @@
 BOOL _enableTwoDigits = NO;
 
 @interface DurationLabel : UIView
-{
-    UILabel *_hoursLabel;
-    UILabel *_hoursCaptionLabel;
-    UILabel *_minutesLabel;
-    UILabel *_minutesCaptionLabel;
-    
-    BOOL _allDay;
-    UILabel *_allDayLabel;
-}
 
 @property (nonatomic, strong) UILabel *hoursLabel;
 @property (nonatomic, strong) UILabel *hoursCaptionLabel;
@@ -54,12 +45,6 @@ BOOL _enableTwoDigits = NO;
 @end
 
 @implementation DurationLabel
-@synthesize hoursLabel = _hoursLabel;
-@synthesize hoursCaptionLabel = _hoursCaptionLabel;
-@synthesize minutesLabel = _minutesLabel;
-@synthesize minutesCaptionLabel = _minutesCaptionlabel;
-@synthesize allDay = _allDay;
-@synthesize allDayLabel = _allDayLabel;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -246,21 +231,11 @@ BOOL _enableTwoDigits = NO;
 @end
 
 @interface ShiftOverviewCell ()
-{
-    DurationLabel *_durationLabel;
-    UILabel *_calendarLabel;
-}
-
 @property (nonatomic, strong) DurationLabel *durationLabel;
 @property (nonatomic, strong) UILabel *calendarLabel;
-
 @end
 
 @implementation ShiftOverviewCell
-
-@synthesize shift = _shift;
-@synthesize durationLabel = _durationLabel;
-@synthesize calendarLabel = _calendarLabel;
 
 + (void)enableLayoutTwoDigits
 {

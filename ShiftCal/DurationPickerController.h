@@ -10,15 +10,11 @@
 #import "DurationPickerDelegate.h"
 
 @interface DurationPickerController : NSObject <UIPickerViewDataSource, UIPickerViewDelegate>
-{
-    __unsafe_unretained id<DurationPickerDelegate> _delegate;
-}
-
 @property (nonatomic, assign) NSInteger hours;
 @property (nonatomic, assign) NSInteger minutes;
-@property (nonatomic, strong, readonly) UIView *pickerView;
+@property (nonatomic, strong, readonly) UIPickerView *pickerView;
 
-@property (nonatomic, unsafe_unretained) id<DurationPickerDelegate> delegate;
+@property (nonatomic, weak) id<DurationPickerDelegate> delegate;
 
 - (instancetype)initWithHours:(NSInteger)hours andMinutes:(NSInteger)minutes NS_DESIGNATED_INITIALIZER;
 

@@ -34,8 +34,6 @@
 
 @implementation SCCalendarCell
 
-@synthesize checked = _checked;
-
 - (instancetype)init
 {
     return [self initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CELL_ID];
@@ -144,12 +142,6 @@
 @end
 
 @implementation CalendarPickerController
-
-@synthesize calendars = _calendars;
-@synthesize defaultCellIndexPath = _defaultCellIndexPath;
-@synthesize preselectedCalendarIdentifier = _preselectedCalendarIdentifier;
-@synthesize delegate = _delegate;
-@synthesize selectedCell = _selectedCell;
 
 - (instancetype)init
 {

@@ -12,15 +12,9 @@
 #import "ShiftTemplate.h"
 
 @interface ShiftTemplateController : NSObject
-{
-    NSPersistentStoreCoordinator *_persistentStoreCoordinator;
-    NSManagedObjectModel         *_managedObjectModel;
-    NSManagedObjectContext       *_managedObjectContext;
-}
-
 @property (strong, nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (strong, nonatomic, readonly) NSManagedObjectModel         *managedObjectModel;
-@property (strong, nonatomic, readonly) NSManagedObjectContext       *managedObjectContext;
+@property (strong, nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
+@property (strong, nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 
 - (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift;
 - (ShiftTemplate *)importShiftByAttributeDictionary:(NSDictionary *)attributes;
@@ -28,10 +22,11 @@
 @property (nonatomic, readonly, copy) NSMutableDictionary *attributeDictionary;
 - (NSMutableDictionary *)defaultAttributeDictionary;
 
-@property (nonatomic, readonly, strong) ShiftTemplate *createShift;
-- (ShiftTemplate *)shiftWithId:(NSManagedObjectID *)shiftId;
-- (void)deleteShift:(ShiftTemplate *)shift;
 @property (nonatomic, readonly, copy) NSArray *shifts;
-@property (nonatomic, readonly) BOOL saveManagedObjectContext;
+- (ShiftTemplate *)createShift;
+- (void)deleteShift:(ShiftTemplate *)shift;
+- (ShiftTemplate *)shiftWithId:(NSManagedObjectID *)shiftId;
+
+- (BOOL)saveManagedObjectContext;
 
 @end

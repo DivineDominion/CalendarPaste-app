@@ -14,6 +14,12 @@
 // Class-level global
 static NSString *kShiftEntityName = @"ShiftTemplate";
 
+@interface ShiftTemplateController ()
+@property (strong, nonatomic, readwrite) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (strong, nonatomic, readwrite) NSManagedObjectModel *managedObjectModel;
+@property (strong, nonatomic, readwrite) NSManagedObjectContext *managedObjectContext;
+@end
+
 @implementation ShiftTemplateController
 
 #pragma mark - Instance methods

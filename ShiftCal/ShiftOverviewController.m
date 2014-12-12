@@ -23,11 +23,8 @@
 #import "LayoutHelper.h"
 
 @interface ModificationCommand : NSObject <ShiftModificationDelegate>
-{
-    __unsafe_unretained ShiftOverviewController *_target;
-}
 
-@property (nonatomic, unsafe_unretained) ShiftOverviewController *target;
+@property (nonatomic, weak) ShiftOverviewController *target;
 @property (nonatomic, strong) NSDictionary *shiftAttributes;
 
 - (instancetype)initWithTarget:(ShiftOverviewController *)target NS_DESIGNATED_INITIALIZER;
@@ -67,17 +64,12 @@
 @end
 
 @interface EditCommand : ModificationCommand
-{
-    NSUInteger _row;
-}
-
 @property (nonatomic, assign) NSUInteger row;
 
--(instancetype)initWithTarget:(ShiftOverviewController *)target forRow:(NSUInteger)row NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithTarget:(ShiftOverviewController *)target forRow:(NSUInteger)row NS_DESIGNATED_INITIALIZER;
 @end
 
 @implementation EditCommand
-@synthesize row = _row;
 
 - (instancetype)initWithTarget:(ShiftOverviewController *)target forRow:(NSUInteger)row
 {
@@ -114,36 +106,14 @@
 #define TAG_EMPTY_LIST_VIEW 101
 
 @interface ShiftOverviewController ()
-{
-    // private instance variables
-    ModificationCommand *_modificationCommand;
-    ShiftTemplateCollection *_shiftCollection;
-    ShiftTemplateController *_shiftTemplateController;
-    NSUInteger _longHoursCount;
-}
-
-// private properties
 @property (nonatomic, strong) ModificationCommand *modificationCommand;
 @property (nonatomic, strong) ShiftTemplateCollection *shiftCollection;
 @property (nonatomic, strong) ShiftTemplateController *shiftTemplateController;
 @property (nonatomic, assign) NSUInteger longHoursCount;
 @property (nonatomic, readonly, strong) UIView *emptyListView;
-
-// private methods
-- (void)addAction:(id)sender;
-- (void)showHud;
-- (void)invalidateCalendars:(NSNotification *)notification;
-
-- (void)hideEmptyListView;
-- (void)coverTable;
-- (void)fadeInCoverTable;
 @end
 
 @implementation ShiftOverviewController
-@synthesize modificationCommand = _modificationCommand;
-@synthesize shiftCollection = _shiftCollection;
-@synthesize shiftTemplateController = _shiftTemplateController;
-@synthesize longHoursCount = _longHoursCount;
 
 - (instancetype)init
 {
