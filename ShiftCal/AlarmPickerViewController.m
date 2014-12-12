@@ -34,22 +34,22 @@
 @synthesize selectedIndexPath = _selectedIndexPath;
 @synthesize alarms = _alarms;
 
-- (id)init
+- (instancetype)init
 {
     return [self initWithAlarmOffset:nil];
 }
 
-- (id)initWithAlarmOffset:(NSNumber *)alarmOffset
+- (instancetype)initWithAlarmOffset:(NSNumber *)alarmOffset
 {
     return [self initWithStyle:UITableViewStyleGrouped selectedAlarmOffset:alarmOffset];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (instancetype)initWithStyle:(UITableViewStyle)style
 {
     return [self initWithStyle:style selectedAlarmOffset:nil];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style selectedAlarmOffset:(NSNumber *)alarmOffset
+- (instancetype)initWithStyle:(UITableViewStyle)style selectedAlarmOffset:(NSNumber *)alarmOffset
 {
     self = [super initWithStyle:style];
     
@@ -77,7 +77,7 @@
 {
     // Since "None" is not a desired outcome (this method wouldn't be called
     // in that case), index == ROW_NONE would be illegal and can be ignored.
-    NSIndexSet *indexes = [[self.alarms objectAtIndex:INDEX_OFFSET] indexesOfObjectsPassingTest:
+    NSIndexSet *indexes = [self.alarms[INDEX_OFFSET] indexesOfObjectsPassingTest:
                            ^BOOL(id intervalObj, NSUInteger index, BOOL *stop)
                            {
                                BOOL found = (interval == [intervalObj doubleValue]
@@ -108,14 +108,14 @@
     
     NSArray *labels = @[
         @"None",
-        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:1] doubleValue]],
-        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:2] doubleValue]],
-        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:3] doubleValue]],
-        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:4] doubleValue]],
-        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:5] doubleValue]],
-        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:6] doubleValue]],
-        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:7] doubleValue]],
-        [self.dateTranslator humanReadableFormOfInterval:[[intervals objectAtIndex:8] doubleValue]]];
+        [self.dateTranslator humanReadableFormOfInterval:[intervals[1] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[intervals[2] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[intervals[3] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[intervals[4] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[intervals[5] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[intervals[6] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[intervals[7] doubleValue]],
+        [self.dateTranslator humanReadableFormOfInterval:[intervals[8] doubleValue]]];
     
     self.alarms = @[labels, intervals];
 }
@@ -152,7 +152,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[self.alarms objectAtIndex:INDEX_LABEL] count];
+    return [self.alarms[INDEX_LABEL] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -169,7 +169,7 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
-    cell.textLabel.text = [[self.alarms objectAtIndex:INDEX_LABEL] objectAtIndex:row];
+    cell.textLabel.text = self.alarms[INDEX_LABEL][row];
     
     if ([self.selectedIndexPath isEqual:indexPath])
     {
@@ -216,7 +216,7 @@
     
     if (row != ROW_NONE)
     {
-        alarmOffset = [[self.alarms objectAtIndex:INDEX_OFFSET] objectAtIndex:row];
+        alarmOffset = self.alarms[INDEX_OFFSET][row];
     }
     
     [self.delegate alarmPicker:self didSelectAlarmOffset:alarmOffset canceled:NO];

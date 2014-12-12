@@ -13,7 +13,7 @@
 @implementation ShiftData
 @synthesize shiftAttributes = _shiftAttributes;
 
-- (id)initWithAttributes:(NSDictionary *)attributes
+- (instancetype)initWithAttributes:(NSDictionary *)attributes
 {
     NSAssert(attributes, @"attributes required");
     
@@ -28,7 +28,7 @@
 
 - (NSString *)title
 {
-    NSString *title = [self.shiftAttributes objectForKey:@"title"];
+    NSString *title = self.shiftAttributes[@"title"];
     if ([title isKindOfClass:[NSNull class]])
     {
         return nil;
@@ -43,7 +43,7 @@
 
 - (NSString *)displayTitle
 {
-    NSString *displayTitle = [self.shiftAttributes objectForKey:@"displayTitle"];
+    NSString *displayTitle = self.shiftAttributes[@"displayTitle"];
     if ([displayTitle isKindOfClass:[NSNull class]])
     {
         return nil;
@@ -58,7 +58,7 @@
 
 - (NSString *)location
 {
-    NSString *location = [self.shiftAttributes objectForKey:@"location"];
+    NSString *location = self.shiftAttributes[@"location"];
     if ([location isKindOfClass:[NSNull class]])
     {
         return nil;
@@ -73,7 +73,7 @@
 
 - (BOOL)isAllDay
 {
-    NSNumber *allDay = [self.shiftAttributes objectForKey:@"allDay"];
+    NSNumber *allDay = self.shiftAttributes[@"allDay"];
     if ([allDay isKindOfClass:[NSNull class]])
     {
         return NO;
@@ -83,12 +83,12 @@
 
 - (void)setAllDay:(BOOL)allDay
 {
-    [self.shiftAttributes setValue:[NSNumber numberWithBool:allDay] forKey:@"allDay"];
+    [self.shiftAttributes setValue:@(allDay) forKey:@"allDay"];
 }
 
 - (NSInteger)durationHours
 {
-    NSNumber *durHours = [self.shiftAttributes objectForKey:@"durHours"];
+    NSNumber *durHours = self.shiftAttributes[@"durHours"];
     if ([durHours isKindOfClass:[NSNull class]])
     {
         return 0;
@@ -98,7 +98,7 @@
 
 - (NSInteger)durationMinutes
 {
-    NSNumber *durMinutes = [self.shiftAttributes objectForKey:@"durMinutes"];
+    NSNumber *durMinutes = self.shiftAttributes[@"durMinutes"];
     if ([durMinutes isKindOfClass:[NSNull class]])
     {
         return 0;
@@ -108,13 +108,13 @@
 
 - (void)setDurationHours:(NSInteger)hours andMinutes:(NSInteger)minutes
 {
-    [self.shiftAttributes setValue:[NSNumber numberWithInteger:hours] forKey:@"durHours"];
-    [self.shiftAttributes setValue:[NSNumber numberWithInteger:minutes] forKey:@"durMinutes"];
+    [self.shiftAttributes setValue:@(hours) forKey:@"durHours"];
+    [self.shiftAttributes setValue:@(minutes) forKey:@"durMinutes"];
 }
 
 - (NSNumber *)alarmFirstInterval
 {
-    NSNumber *alarmFirstInterval = [self.shiftAttributes objectForKey:@"alarmFirstInterval"];
+    NSNumber *alarmFirstInterval = self.shiftAttributes[@"alarmFirstInterval"];
     if ([alarmFirstInterval isKindOfClass:[NSNull class]])
     {
         return nil;
@@ -129,7 +129,7 @@
 
 - (NSNumber *)alarmSecondInterval
 {
-    NSNumber *alarmSecondInterval = [self.shiftAttributes objectForKey:@"alarmSecondInterval"];
+    NSNumber *alarmSecondInterval = self.shiftAttributes[@"alarmSecondInterval"];
     if ([alarmSecondInterval isKindOfClass:[NSNull class]])
     {
         return nil;
@@ -149,7 +149,7 @@
 
 - (NSString *)calendarIdentifier
 {
-    NSString *calendarIdentifier = [self.shiftAttributes objectForKey:@"calendarIdentifier"];
+    NSString *calendarIdentifier = self.shiftAttributes[@"calendarIdentifier"];
     
     if ([calendarIdentifier isKindOfClass:[NSNull class]])
     {
@@ -194,7 +194,7 @@
 
 - (NSString *)url
 {
-    NSString *url = [self.shiftAttributes objectForKey:@"url"];
+    NSString *url = self.shiftAttributes[@"url"];
     if ([url isKindOfClass:[NSNull class]])
     {
         return nil;
@@ -209,7 +209,7 @@
 
 - (NSString *)note
 {
-    NSString *note = [self.shiftAttributes objectForKey:@"note"];
+    NSString *note = self.shiftAttributes[@"note"];
     if ([note isKindOfClass:[NSNull class]])
     {
         return nil;

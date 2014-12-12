@@ -20,8 +20,8 @@
 @property (nonatomic, strong, readonly) ShiftTemplate *shift;
 @property (nonatomic, unsafe_unretained) id<ShiftAssignmentViewDelegate> delegate;
 
-- (id)initWithShift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
-- (id)initWithStyle:(UITableViewStyle)style shift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
+- (instancetype)initWithShift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
+- (instancetype)initWithStyle:(UITableViewStyle)style shift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController NS_DESIGNATED_INITIALIZER;
 
 - (void)datePickerChanged:(id)sender;
 @end

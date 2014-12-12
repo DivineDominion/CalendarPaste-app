@@ -39,14 +39,14 @@
 - (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes;
 - (void)setLastPaste:(NSDate *)lastPaste;
 - (void)setLastPasteHour:(NSUInteger)hours andMinute:(NSUInteger)minutes;
-- (BOOL)wasAlreadyPasted;
+@property (nonatomic, readonly) BOOL wasAlreadyPasted;
 - (BOOL)isAllDay;
-- (NSString *)onScreenTitle;
+@property (nonatomic, readonly, copy) NSString *onScreenTitle;
 
-- (EKEvent *)event;
-- (NSString *)calendarTitle;
-- (BOOL)hasInvalidCalendar;
-- (NSTimeInterval)durationAsTimeInterval;
+@property (nonatomic, readonly, strong) EKEvent *event;
+@property (nonatomic, readonly, copy) NSString *calendarTitle;
+@property (nonatomic, readonly) BOOL hasInvalidCalendar;
+@property (nonatomic, readonly) NSTimeInterval durationAsTimeInterval;
 
 + (NSDictionary*)defaultAttributes;
 

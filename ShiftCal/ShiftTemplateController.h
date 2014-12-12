@@ -25,13 +25,13 @@
 - (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift;
 - (ShiftTemplate *)importShiftByAttributeDictionary:(NSDictionary *)attributes;
 - (NSMutableDictionary *)attributeDictionaryForShift:(ShiftTemplate *)shift;
-- (NSMutableDictionary *)attributeDictionary;
+@property (nonatomic, readonly, copy) NSMutableDictionary *attributeDictionary;
 - (NSMutableDictionary *)defaultAttributeDictionary;
 
-- (ShiftTemplate *)createShift;
+@property (nonatomic, readonly, strong) ShiftTemplate *createShift;
 - (ShiftTemplate *)shiftWithId:(NSManagedObjectID *)shiftId;
 - (void)deleteShift:(ShiftTemplate *)shift;
-- (NSArray *)shifts;
-- (BOOL)saveManagedObjectContext;
+@property (nonatomic, readonly, copy) NSArray *shifts;
+@property (nonatomic, readonly) BOOL saveManagedObjectContext;
 
 @end

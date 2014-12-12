@@ -21,7 +21,7 @@
 @synthesize calendar = _calendar;
 @synthesize referenceDate = _referenceDate;
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     

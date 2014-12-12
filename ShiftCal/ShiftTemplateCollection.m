@@ -12,17 +12,17 @@
 @synthesize shiftTemplateController = _shiftTemplateController;
 @synthesize shifts = _shifts;
 
-- (id)init
+- (instancetype)init
 {
     return [self initWithFallbackCalendarIdentifier:nil shiftTemplateController:nil];
 }
 
-- (id)initWithShiftTemplateController:(ShiftTemplateController *)shiftTemplateController
+- (instancetype)initWithShiftTemplateController:(ShiftTemplateController *)shiftTemplateController
 {
     return [self initWithFallbackCalendarIdentifier:nil shiftTemplateController:shiftTemplateController];
 }
 
-- (id)initWithFallbackCalendarIdentifier:(NSString *)fallbackCalendarIdentifier shiftTemplateController:(ShiftTemplateController *)shiftTemplateController
+- (instancetype)initWithFallbackCalendarIdentifier:(NSString *)fallbackCalendarIdentifier shiftTemplateController:(ShiftTemplateController *)shiftTemplateController
 {
     NSAssert(shiftTemplateController, @"shiftTemplateController required");
     
@@ -66,7 +66,7 @@
     if (index == 0)
     {
         [self.shifts addObject:shift];
-        shift.displayOrder = [NSNumber numberWithInt:0];
+        shift.displayOrder = @0;
     }
     else
     {
@@ -75,7 +75,7 @@
         // Assigns a displayOrder value to the new object
         ShiftTemplate *lastShift = [self.shifts lastObject];
         NSUInteger oldMaxOrder   = [lastShift.displayOrder integerValue];
-        shift.displayOrder       = [NSNumber numberWithUnsignedInteger:oldMaxOrder + 1];
+        shift.displayOrder       = @(oldMaxOrder + 1);
     }
     
     
@@ -105,7 +105,7 @@
 
 - (ShiftTemplate *)shiftAtIndex:(NSUInteger)index
 {
-    return [self.shifts objectAtIndex:index];
+    return self.shifts[index];
 }
 
 - (void)moveObjectFromIndex:(NSUInteger)from toIndex:(NSUInteger)to
@@ -119,7 +119,7 @@
     
     for (ShiftTemplate *shift in self.shifts)
     {
-        shift.displayOrder = [NSNumber numberWithInt:i++];
+        shift.displayOrder = @(i++);
     }
     
     [self.shiftTemplateController saveManagedObjectContext];

@@ -32,7 +32,7 @@ static NSString *kCellPicker = @"datePicker";
 @property (nonatomic, strong) ShiftTemplateController *shiftTemplateController;
 @property (nonatomic, strong) UIDatePicker *datePicker;
 
-- (NSDate *)endDate;
+@property (nonatomic, readonly, copy) NSDate *endDate;
 
 - (void)done:(id)sender;
 - (void)cancel:(id)sender;
@@ -50,22 +50,22 @@ static NSString *kCellPicker = @"datePicker";
 @synthesize startDate = _startDate;
 @synthesize datePicker = _datePicker;
 
-- (id)init
+- (instancetype)init
 {
     return [self initWithShift:nil shiftTemplateController:nil];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (instancetype)initWithStyle:(UITableViewStyle)style
 {
     return [self initWithStyle:style shift:nil shiftTemplateController:nil];
 }
 
-- (id)initWithShift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController
+- (instancetype)initWithShift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController
 {
     return [self initWithStyle:UITableViewStyleGrouped shift:shift shiftTemplateController:shiftTemplateController];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style shift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController
+- (instancetype)initWithStyle:(UITableViewStyle)style shift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController
 {
     NSAssert(shift, @"shift required");
     NSAssert(shiftTemplateController, @"shiftTemplateController required");

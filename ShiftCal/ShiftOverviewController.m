@@ -30,14 +30,14 @@
 @property (nonatomic, unsafe_unretained) ShiftOverviewController *target;
 @property (nonatomic, strong) NSDictionary *shiftAttributes;
 
-- (id)initWithTarget:(ShiftOverviewController *)target;
+- (instancetype)initWithTarget:(ShiftOverviewController *)target NS_DESIGNATED_INITIALIZER;
 - (void)execute;
 @end
 
 
 @implementation ModificationCommand
 
-- (id)initWithTarget:(ShiftOverviewController *)target;
+- (instancetype)initWithTarget:(ShiftOverviewController *)target;
 {
     self = [super init];
     
@@ -73,13 +73,13 @@
 
 @property (nonatomic, assign) NSUInteger row;
 
--(id)initWithTarget:(ShiftOverviewController *)target forRow:(NSUInteger)row;
+-(instancetype)initWithTarget:(ShiftOverviewController *)target forRow:(NSUInteger)row NS_DESIGNATED_INITIALIZER;
 @end
 
 @implementation EditCommand
 @synthesize row = _row;
 
-- (id)initWithTarget:(ShiftOverviewController *)target forRow:(NSUInteger)row
+- (instancetype)initWithTarget:(ShiftOverviewController *)target forRow:(NSUInteger)row
 {
     self = [super initWithTarget:target];
     
@@ -127,6 +127,7 @@
 @property (nonatomic, strong) ShiftTemplateCollection *shiftCollection;
 @property (nonatomic, strong) ShiftTemplateController *shiftTemplateController;
 @property (nonatomic, assign) NSUInteger longHoursCount;
+@property (nonatomic, readonly, strong) UIView *emptyListView;
 
 // private methods
 - (void)addAction:(id)sender;
@@ -134,7 +135,6 @@
 - (void)invalidateCalendars:(NSNotification *)notification;
 
 - (void)hideEmptyListView;
-- (UIView *)emptyListView;
 - (void)coverTable;
 - (void)fadeInCoverTable;
 @end
@@ -145,12 +145,12 @@
 @synthesize shiftTemplateController = _shiftTemplateController;
 @synthesize longHoursCount = _longHoursCount;
 
-- (id)init
+- (instancetype)init
 {
     return [self initWithStyle:UITableViewStylePlain];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (instancetype)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     
@@ -184,7 +184,7 @@
 
 - (void)invalidateCalendars:(NSNotification *)notification
 {
-    NSString *defaultCalendarIdentifer = [notification.userInfo objectForKey:NOTIFICATION_DEFAULT_CALENDAR_KEY];
+    NSString *defaultCalendarIdentifer = notification.userInfo[NOTIFICATION_DEFAULT_CALENDAR_KEY];
     
     [self.shiftCollection resetInvalidCalendarsTo:defaultCalendarIdentifer onChanges:^{
         [self.tableView reloadData];
@@ -457,7 +457,7 @@
     
     // Increment count afterwards to have the row added before, so
     // it's modified, too.
-    if ([[shiftAttributes objectForKey:@"durHours"] integerValue] >= 10)
+    if ([shiftAttributes[@"durHours"] integerValue] >= 10)
     {
         self.longHoursCount++;
     }
@@ -494,7 +494,7 @@
     // Compute a `longHoursCount` difference before/after the update
     NSInteger longHoursCountDifference = 0;
     
-    BOOL newCellHasTwoDigits = [[shiftAttributes objectForKey:@"durHours"] integerValue] >= 10;
+    BOOL newCellHasTwoDigits = [shiftAttributes[@"durHours"] integerValue] >= 10;
     BOOL oldCellHasTwoDigits = [[self.shiftCollection shiftAtIndex:row].durHours integerValue] >= 10;
     BOOL bothCellsHaveSameDigitAmount = newCellHasTwoDigits == oldCellHasTwoDigits;
     

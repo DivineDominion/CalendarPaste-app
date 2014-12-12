@@ -36,12 +36,12 @@
 
 @synthesize checked = _checked;
 
-- (id)init
+- (instancetype)init
 {
     return [self initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CELL_ID];
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [self init];
     self.frame = frame;
@@ -49,7 +49,7 @@
     return self;
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     
@@ -151,22 +151,22 @@
 @synthesize delegate = _delegate;
 @synthesize selectedCell = _selectedCell;
 
-- (id)init
+- (instancetype)init
 {
     return [self initWithStyle:UITableViewStyleGrouped];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (instancetype)initWithStyle:(UITableViewStyle)style
 {
     return [self initWithSelectedCalendarIdentifier:nil withStyle:style];
 }
 
-- (id)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier
+- (instancetype)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier
 {
     return [self initWithSelectedCalendarIdentifier:calendarIdentifier withStyle:UITableViewStyleGrouped];
 }
 
-- (id)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier withStyle:(UITableViewStyle)style
+- (instancetype)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier withStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     
@@ -234,10 +234,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    
-    _selectedCell.indexPath;
-    _selectedCell.calendarIdentifier;
 }
 
 #pragma mark - View callbacks
@@ -539,7 +535,7 @@
 - (EKCalendar *)calendarForIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-    EKCalendar *calendar = [self.calendars objectAtIndex:row];
+    EKCalendar *calendar = self.calendars[row];
     
     return calendar;
 }

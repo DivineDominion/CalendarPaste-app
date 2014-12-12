@@ -65,9 +65,8 @@
     [[UINavigationBar appearance] setBarTintColor:topBarColor];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     
-    NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     creamWhiteColor, NSForegroundColorAttributeName,
-                                     [UIFont fontWithName:@"HelveticaNeue-Bold" size:21.0], NSFontAttributeName, nil];
+    NSDictionary *titleAttributes = @{NSForegroundColorAttributeName: creamWhiteColor,
+                                     NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Bold" size:21.0]};
     [[UINavigationBar appearance] setTitleTextAttributes: titleAttributes];
 }
 

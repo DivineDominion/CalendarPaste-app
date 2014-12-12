@@ -61,7 +61,7 @@ BOOL _enableTwoDigits = NO;
 @synthesize allDay = _allDay;
 @synthesize allDayLabel = _allDayLabel;
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     
@@ -282,12 +282,12 @@ BOOL _enableTwoDigits = NO;
     [self.durationLabel expand];
 }
 
-- (id)initAndReuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initAndReuseIdentifier:(NSString *)reuseIdentifier
 {
     return [self initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     

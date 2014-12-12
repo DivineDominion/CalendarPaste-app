@@ -14,7 +14,7 @@
 @interface CalendarPickerController : UITableViewController
 @property (unsafe_unretained) id<CalendarPickerDelegate> delegate;
 
-- (id)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier;
-- (id)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier withStyle:(UITableViewStyle)style;
+- (instancetype)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier;
+- (instancetype)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier withStyle:(UITableViewStyle)style NS_DESIGNATED_INITIALIZER;
 
 @end

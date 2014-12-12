@@ -18,7 +18,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
 
 #pragma mark - Instance methods
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
 
@@ -264,8 +264,8 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
     
-    NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption : [NSNumber numberWithBool:YES],
-                              NSInferMappingModelAutomaticallyOption : [NSNumber numberWithBool:YES]};
+    NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption : @YES,
+                              NSInferMappingModelAutomaticallyOption : @YES};
     
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error])
     {

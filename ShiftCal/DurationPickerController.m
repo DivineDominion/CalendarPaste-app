@@ -63,12 +63,12 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
 @synthesize delegate = _delegate;
 @synthesize timeTranslator = _dateIntervalTranslator;
 
-- (id)init
+- (instancetype)init
 {
     return [self initWithHours:0 andMinutes:0];
 }
 
-- (id)initWithHours:(NSInteger)hours andMinutes:(NSInteger)minutes
+- (instancetype)initWithHours:(NSInteger)hours andMinutes:(NSInteger)minutes
 {
     self = [super init];
     

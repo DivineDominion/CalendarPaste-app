@@ -16,6 +16,6 @@
 
 @property (nonatomic, unsafe_unretained) id<AlarmPickerDelegate> delegate;
 
-- (id)initWithAlarmOffset:(NSNumber *)alarmOffset;
-- (id)initWithStyle:(UITableViewStyle)style selectedAlarmOffset:(NSNumber *)alarmOffset;
+- (instancetype)initWithAlarmOffset:(NSNumber *)alarmOffset;
+- (instancetype)initWithStyle:(UITableViewStyle)style selectedAlarmOffset:(NSNumber *)alarmOffset NS_DESIGNATED_INITIALIZER;
 @end

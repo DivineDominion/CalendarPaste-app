@@ -23,7 +23,7 @@
 
 @property (nonatomic, unsafe_unretained) id<ShiftModificationDelegate> modificationDelegate;
 
-- (id)initWithShift:(ShiftTemplate *)shift;
+- (instancetype)initWithShift:(ShiftTemplate *)shift NS_DESIGNATED_INITIALIZER;
 
 - (void)save:(id)sender;
 - (void)cancel:(id)sender;

@@ -18,12 +18,12 @@
 
 @property (nonatomic, strong) ShiftTemplateController *shiftTemplateController;
 @property (nonatomic, strong) NSMutableArray *shifts;
+@property (nonatomic, readonly) NSUInteger countOfShifts;
+@property (nonatomic, getter=isEmpty, readonly) BOOL empty;
 
-- (id)initWithShiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
-- (id)initWithFallbackCalendarIdentifier:(NSString *)fallbackCalendarIdentifier shiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
+- (instancetype)initWithShiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
+- (instancetype)initWithFallbackCalendarIdentifier:(NSString *)fallbackCalendarIdentifier shiftTemplateController:(ShiftTemplateController *)shiftTemplateController NS_DESIGNATED_INITIALIZER;
 
-- (NSUInteger)countOfShifts;
-- (BOOL)isEmpty;
 - (ShiftTemplate *)shiftAtIndex:(NSUInteger)index;
 - (NSInteger)addShiftWithAttributes:(NSDictionary *)shiftAttributes;
 - (void)removeShiftAtIndex:(NSUInteger)index;

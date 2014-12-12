@@ -88,12 +88,12 @@
 @synthesize modificationDelegate = _modificationDelegate;
 @synthesize durationController = _durationController;
 
-- (id)init
+- (instancetype)init
 {
     return [self initWithShift:nil];
 }
 
-- (id)initWithShift:(ShiftTemplate *)shift
+- (instancetype)initWithShift:(ShiftTemplate *)shift
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     
@@ -202,7 +202,7 @@
 {
     if ([self.shiftData hasInvalidCalendar])
     {
-        NSString *defaultCalendarIdentifer = [notification.userInfo objectForKey:NOTIFICATION_DEFAULT_CALENDAR_KEY];
+        NSString *defaultCalendarIdentifer = notification.userInfo[NOTIFICATION_DEFAULT_CALENDAR_KEY];
         
         self.shiftData.calendarIdentifier = defaultCalendarIdentifer;
         

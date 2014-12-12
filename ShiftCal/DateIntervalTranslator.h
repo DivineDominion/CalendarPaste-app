@@ -10,7 +10,7 @@
 
 @interface DateIntervalTranslator : NSObject
 
-- (id)init;
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (NSDateComponents *)dateComponentsForTimeInterval:(NSTimeInterval)interval;
 - (NSTimeInterval)timeIntervalForComponentDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins;
 - (NSString *)humanReadableFormOf:(NSDateComponents *)dateComponents;

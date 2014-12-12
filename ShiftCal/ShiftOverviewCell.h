@@ -11,10 +11,10 @@
 
 @class DurationLabel;
 
-typedef enum {
+typedef NS_ENUM(NSInteger, SCCellLabelWidth) {
     SCCellLabelWidthSmall,
     SCCellLabelWidthWide
-} SCCellLabelWidth;
+};
 
 @interface ShiftOverviewCell : UITableViewCell
 {
@@ -24,7 +24,7 @@ typedef enum {
 @property (nonatomic, strong) ShiftTemplate *shift;
 
 + (float)cellHeight;
-- (id)initAndReuseIdentifier:(NSString *)reuseIdentifer;
+- (instancetype)initAndReuseIdentifier:(NSString *)reuseIdentifer;
 
 - (void)compactLabels;
 - (void)expandLabels;

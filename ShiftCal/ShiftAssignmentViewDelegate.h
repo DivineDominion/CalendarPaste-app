@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum {
+typedef NS_ENUM(NSInteger, SCAssignmentViewAction) {
     SCAssignmentViewActionCanceled,
     SCAssignmentViewActionSaved
-} SCAssignmentViewAction;
+};
 
 @class ShiftAssignmentViewController;
 

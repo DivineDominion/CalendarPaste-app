@@ -25,12 +25,14 @@
 @property (nonatomic, copy) NSString *url;
 @property (nonatomic, copy) NSString *note;
 
-- (id)initWithAttributes:(NSDictionary *)attributes;
+@property (nonatomic, readonly) NSInteger durationHours;
+@property (nonatomic, readonly) NSInteger durationMinutes;
 
-- (NSInteger)durationHours;
-- (NSInteger)durationMinutes;
+@property (nonatomic, readonly, copy) NSString *calendarTitle;
+@property (nonatomic, readonly) BOOL hasInvalidCalendar;
+@property (nonatomic, readonly) BOOL hasFirstAlarm;
+
+- (instancetype)initWithAttributes:(NSDictionary *)attributes NS_DESIGNATED_INITIALIZER;
+
 - (void)setDurationHours:(NSInteger)hours andMinutes:(NSInteger)minutes;
-- (NSString *)calendarTitle;
-- (BOOL)hasInvalidCalendar;
-- (BOOL)hasFirstAlarm;
 @end
