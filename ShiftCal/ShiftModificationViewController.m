@@ -806,7 +806,7 @@
 
 - (void)allDayChanged:(id)sender
 {
-    NSAssert(sender, @"sender required");
+    NSParameterAssert(sender);
     NSAssert([sender isKindOfClass:[UISwitch class]], @"sender must be a UISwitch");
     
     [self hideKeyboard];

@@ -123,7 +123,12 @@
 
 - (void)setAlarmFirstInterval:(NSNumber *)alarmFirstInterval
 {
-    [self.shiftAttributes setValue:[alarmFirstInterval copy] forKey:@"alarmFirstInterval"];
+    id value = [alarmFirstInterval copy];
+    if (value == nil)
+    {
+        value = [NSNull null];
+    }
+    [self.shiftAttributes setValue:value forKey:@"alarmFirstInterval"];
 }
 
 - (NSNumber *)alarmSecondInterval
@@ -138,7 +143,12 @@
 
 - (void)setAlarmSecondInterval:(NSNumber *)alarmSecondInterval
 {
-    [self.shiftAttributes setValue:[alarmSecondInterval copy] forKey:@"alarmSecondInterval"];
+    id value = [alarmSecondInterval copy];
+    if (value == nil)
+    {
+        value = [NSNull null];
+    }
+    [self.shiftAttributes setValue:value forKey:@"alarmSecondInterval"];
 }
 
 - (BOOL)hasFirstAlarm
