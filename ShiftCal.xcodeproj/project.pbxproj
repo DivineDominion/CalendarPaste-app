@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5016FE021A3B5D13002B642E /* CalendarAccessGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5016FE011A3B5D13002B642E /* CalendarAccessGuard.m */; };
+		5016FE071A3B6BED002B642E /* ModificationCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 5016FE061A3B6BED002B642E /* ModificationCommand.m */; };
 		600BFE7615FB5ADF008B03CA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A515C08EB900801105 /* CoreGraphics.framework */; };
 		600E119F160373F3009A7E24 /* AlarmPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 600E119E160373F3009A7E24 /* AlarmPickerViewController.m */; };
 		6026C75F16B1AA4A00445709 /* NSDate+Tomorrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6026C75E16B1AA4A00445709 /* NSDate+Tomorrow.m */; };
@@ -41,6 +42,8 @@
 /* Begin PBXFileReference section */
 		5016FE001A3B5D13002B642E /* CalendarAccessGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarAccessGuard.h; sourceTree = "<group>"; };
 		5016FE011A3B5D13002B642E /* CalendarAccessGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarAccessGuard.m; sourceTree = "<group>"; };
+		5016FE051A3B6BED002B642E /* ModificationCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModificationCommand.h; sourceTree = "<group>"; };
+		5016FE061A3B6BED002B642E /* ModificationCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModificationCommand.m; sourceTree = "<group>"; };
 		600E1199160369BF009A7E24 /* AlarmPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerViewController.h; sourceTree = "<group>"; };
 		600E119E160373F3009A7E24 /* AlarmPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmPickerViewController.m; sourceTree = "<group>"; };
 		600E11A216038973009A7E24 /* AlarmPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerDelegate.h; sourceTree = "<group>"; };
@@ -119,6 +122,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5016FE031A3B635D002B642E /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				60BB96B015C08EB900801105 /* AppDelegate.h */,
+				60BB96B115C08EB900801105 /* AppDelegate.m */,
+				5016FE001A3B5D13002B642E /* CalendarAccessGuard.h */,
+				5016FE011A3B5D13002B642E /* CalendarAccessGuard.m */,
+			);
+			name = Infrastructure;
+			sourceTree = "<group>";
+		};
+		5016FE041A3B6391002B642E /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				60FBA83115F66C59008B48A1 /* Modify Shift */,
+				6060425E16245A8E00BA5EEC /* Assign Shift */,
+				60AAB81115C13297002114B9 /* ShiftOverviewController.h */,
+				60AAB81215C13297002114B9 /* ShiftOverviewController.m */,
+				5016FE051A3B6BED002B642E /* ModificationCommand.h */,
+				5016FE061A3B6BED002B642E /* ModificationCommand.m */,
+				60A66EA016D60FFA0083BE95 /* LayoutHelper.h */,
+				60A66EA116D60FFA0083BE95 /* LayoutHelper.m */,
+				609EF75E163188DA003E4BB3 /* ShiftOverviewCell.h */,
+				609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */,
+				606042A81625D2A000BA5EEC /* MBProgressHUD.h */,
+				606042A91625D2A000BA5EEC /* MBProgressHUD.m */,
+				609167BD1658F45A006C33EE /* UITableViewController+CalloutCell.h */,
+				609167BE1658F45A006C33EE /* UITableViewController+CalloutCell.m */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		605A96B616171D980008B1C6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -182,23 +217,9 @@
 		60BB96A715C08EB900801105 /* ShiftCal */ = {
 			isa = PBXGroup;
 			children = (
-				60FBA83115F66C59008B48A1 /* Modify Shift */,
-				6060425E16245A8E00BA5EEC /* Assign Shift */,
+				5016FE031A3B635D002B642E /* Infrastructure */,
+				5016FE041A3B6391002B642E /* UI */,
 				605A96B616171D980008B1C6 /* Model */,
-				60AAB81115C13297002114B9 /* ShiftOverviewController.h */,
-				60AAB81215C13297002114B9 /* ShiftOverviewController.m */,
-				60A66EA016D60FFA0083BE95 /* LayoutHelper.h */,
-				60A66EA116D60FFA0083BE95 /* LayoutHelper.m */,
-				609EF75E163188DA003E4BB3 /* ShiftOverviewCell.h */,
-				609EF75F163188DA003E4BB3 /* ShiftOverviewCell.m */,
-				606042A81625D2A000BA5EEC /* MBProgressHUD.h */,
-				606042A91625D2A000BA5EEC /* MBProgressHUD.m */,
-				60BB96B015C08EB900801105 /* AppDelegate.h */,
-				60BB96B115C08EB900801105 /* AppDelegate.m */,
-				5016FE001A3B5D13002B642E /* CalendarAccessGuard.h */,
-				5016FE011A3B5D13002B642E /* CalendarAccessGuard.m */,
-				609167BD1658F45A006C33EE /* UITableViewController+CalloutCell.h */,
-				609167BE1658F45A006C33EE /* UITableViewController+CalloutCell.m */,
 				60BB96A815C08EB900801105 /* Supporting Files */,
 			);
 			path = ShiftCal;
@@ -328,6 +349,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				60BB96AE15C08EB900801105 /* main.m in Sources */,
+				5016FE071A3B6BED002B642E /* ModificationCommand.m in Sources */,
 				60BB96B215C08EB900801105 /* AppDelegate.m in Sources */,
 				60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */,
 				60FBA82315F10443008B48A1 /* DurationPickerController.m in Sources */,

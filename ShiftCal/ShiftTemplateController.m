@@ -171,25 +171,20 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
 
 - (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift
 {
-    ShiftTemplate *shift = [self createShift];
-    
     NSArray *attKeys         = [[[foreignShift entity] attributesByName] allKeys];
     NSDictionary *attributes = [foreignShift dictionaryWithValuesForKeys:attKeys];
-    [shift setValuesForKeysWithDictionary:attributes];
     
-    return shift;
+    return [self importShiftByAttributeDictionary:attributes];
 }
 
 #pragma mark - CR(U)D
 
 - (ShiftTemplate *)createShift
 {
-    ShiftTemplate *shift = nil;
-    
     NSManagedObjectContext *context = self.managedObjectContext;
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:kShiftEntityName inManagedObjectContext:context];
     
-    shift = [[ShiftTemplate alloc] initWithEntity:entityDescription
+    ShiftTemplate *shift = [[ShiftTemplate alloc] initWithEntity:entityDescription
                     insertIntoManagedObjectContext:context];
     
     return shift;

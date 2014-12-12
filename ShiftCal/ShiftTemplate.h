@@ -16,16 +16,22 @@
 
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *displayTitle;
+@property (nonatomic, readonly) NSString *onScreenTitle;
 @property (nonatomic, strong) NSString *location;
 
 @property (nonatomic, strong) NSNumber *durHours;
 @property (nonatomic, strong) NSNumber *durMinutes;
+@property (nonatomic, readonly) NSTimeInterval durationAsTimeInterval;
 
 @property (nonatomic, strong) NSNumber *allDay;
+@property (nonatomic, readonly) BOOL isAllDay;
 @property (nonatomic, strong) NSNumber *lastPasteHours;
 @property (nonatomic, strong) NSNumber *lastPasteMins;
+@property (nonatomic, readonly) BOOL wasAlreadyPasted;
 
 @property (nonatomic, strong) NSString *calendarIdentifier;
+@property (nonatomic, readonly) NSString *calendarTitle;
+@property (nonatomic, readonly) BOOL hasInvalidCalendar;
 
 @property (nonatomic, strong) NSNumber *alarmFirstInterval;
 @property (nonatomic, strong) NSNumber *alarmSecondInterval;
@@ -36,18 +42,12 @@
 @property (weak, nonatomic, readonly) EKEventStore *eventStore;
 @property (weak, nonatomic, readonly) EKCalendar *calendar;
 
++ (NSDictionary*)defaultAttributes;
+
 - (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes;
 - (void)setLastPaste:(NSDate *)lastPaste;
 - (void)setLastPasteHour:(NSUInteger)hours andMinute:(NSUInteger)minutes;
-@property (nonatomic, readonly) BOOL wasAlreadyPasted;
-- (BOOL)isAllDay;
-@property (nonatomic, readonly, copy) NSString *onScreenTitle;
 
-@property (nonatomic, readonly, strong) EKEvent *event;
-@property (nonatomic, readonly, copy) NSString *calendarTitle;
-@property (nonatomic, readonly) BOOL hasInvalidCalendar;
-@property (nonatomic, readonly) NSTimeInterval durationAsTimeInterval;
-
-+ (NSDictionary*)defaultAttributes;
+- (EKEvent *)event;
 
 @end
