@@ -16,6 +16,7 @@
 @property (nonatomic, strong, readwrite) UINavigationController *navController;
 @property (nonatomic, strong, readwrite) EKEventStore *eventStore;
 @property (nonatomic, strong, readwrite) UIColor *appColor;
+@property (nonatomic, strong, readwrite) CalendarAccessGuard *calendarAccessGuard;
 @end
 
 
@@ -26,33 +27,55 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (EKEventStore *)eventStore
+{
+    if (_eventStore == nil)
+    {
+        _eventStore = [[EKEventStore alloc] init];
+    }
+    
+    return _eventStore;
+}
+
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [self.navController pushViewController:viewController animated:animated];
+}
+
 #pragma mark - Launch and Set-Up
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.appColor      = [UIColor colorWithRed:116.0/255 green:128.0/255 blue:199.0/255 alpha:1.0];
+    [self registerPreferenceDefaults];
     
+    self.appColor      = [UIColor colorWithRed:116.0/255 green:128.0/255 blue:199.0/255 alpha:1.0];
     [self styleNavigationBar];
     
-    self.eventStore    = [[EKEventStore alloc] init];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(eventStoreChanged:)
+                                                 name:EKEventStoreChangedNotification
+                                               object:self.eventStore];
+    
+    
+    
     self.window        = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.navController = [[UINavigationController alloc] init];
     
-    if ([EKEventStore instancesRespondToSelector:@selector(requestAccessToEntityType:completion:)])
-    {
-        NSLog(@"before");
-        [self requestCalendarAccessForOverviewViewController];
-        NSLog(@"after");
-    }
-    else
-    {
-        [self showOverviewViewControllerAnimated:NO];
-    }
-
+    [self guardCalendarAccess];
+    
     self.window.rootViewController = self.navController;
     
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)guardCalendarAccess
+{
+    CalendarAccessGuard *calendarAccessGuard = [[CalendarAccessGuard alloc] initWithEventStore:self.eventStore];
+    calendarAccessGuard.delegate = self;
+    self.calendarAccessGuard = calendarAccessGuard;
+    
+    [calendarAccessGuard guardCalendarAccess];
 }
 
 - (void)styleNavigationBar
@@ -68,63 +91,6 @@
     [[UINavigationBar appearance] setTitleTextAttributes: titleAttributes];
 }
 
-- (void)requestCalendarAccessForOverviewViewController
-{
-    [self.navController pushViewController:[self grantCalendarAccessViewController] animated:NO];
-    
-    EKAuthorizationStatus status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
-    
-    switch (status) {
-        case EKAuthorizationStatusAuthorized:
-            [self showOverviewViewControllerAnimated:NO];
-            break;
-            
-        case EKAuthorizationStatusDenied:
-        case EKAuthorizationStatusNotDetermined:
-        case EKAuthorizationStatusRestricted:
-        default:
-            [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-                if (granted)
-                {
-                    SEL selector = @selector(showOverviewViewControllerAnimated:);
-                    BOOL animated = YES;
-                    
-                    NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
-                    [inv setSelector:selector];
-                    [inv setTarget:self];
-                    [inv setArgument:&animated atIndex:2]; // 0 and 1 are preoccupied by default
-                    
-                    [inv performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];
-                }
-            }];
-            
-            break;
-    }
-}
-
-- (void)showOverviewViewControllerAnimated:(BOOL)animated
-{
-    // Register just now because calendar access, if necessary, is granted
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventStoreChanged:)
-                                                 name:EKEventStoreChangedNotification
-                                               object:self.eventStore];
-    
-    [self registerPreferenceDefaults];
-    
-    [self.navController pushViewController:[[ShiftOverviewController alloc] init]
-                                  animated:animated];
-}
-
-- (UIViewController *)grantCalendarAccessViewController
-{
-    UIViewController *grantCalendarAccessViewController = [[UIViewController alloc] init];
-    
-    UIView *view = [LayoutHelper grantCalendarAccessView];
-    grantCalendarAccessViewController.view = view;
-    
-    return grantCalendarAccessViewController;
-}
 
 #pragma mark User preferences
 
@@ -133,7 +99,7 @@
     [self registerPreferenceDefaults];
     
     // Inform observers to change calendars if necessary
-    NSString *defaultCalendarIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
+    NSString *defaultCalendarIdentifier = [self defaultCalendarIdentifier];
     NSDictionary *userInfo = @{ NOTIFICATION_DEFAULT_CALENDAR_KEY : defaultCalendarIdentifier };
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SCStoreChangedNotification
@@ -141,34 +107,47 @@
                                                       userInfo:userInfo];
 }
 
+- (NSUserDefaults *)standardUserDefaults
+{
+    return [NSUserDefaults standardUserDefaults];
+}
+
+- (NSString *)defaultCalendarIdentifier
+{
+    NSUserDefaults *prefs = [self standardUserDefaults];
+    return [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
+}
+
 - (void)registerPreferenceDefaults
 {
-    NSUserDefaults *prefs               = [NSUserDefaults standardUserDefaults];
-    NSString *defaultCalendarIdentifier = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
+    NSString *defaultCalendarIdentifier = [self defaultCalendarIdentifier];
     
     if (defaultCalendarIdentifier == nil)
     {
-        defaultCalendarIdentifier      = [self.eventStore defaultCalendarForNewEvents].calendarIdentifier;
-
-        [prefs setObject:defaultCalendarIdentifier forKey:PREFS_DEFAULT_CALENDAR_KEY];
-#ifdef DEVELOPMENT
-        [prefs synchronize];
-#endif
+        [self registerDefaultCalendarUserDefaults];
     }
     else
     {
-        // Sanity Check
-        EKCalendar *defaultCalendar = [self.eventStore calendarWithIdentifier:defaultCalendarIdentifier];
+        // Perform sanity check: was Calendar deleted?
+        EKEventStore *eventStore = self.eventStore;
+        EKCalendar *defaultCalendar = [eventStore calendarWithIdentifier:defaultCalendarIdentifier];
         
-        if (defaultCalendar == nil)
-        {
-            defaultCalendarIdentifier = [self.eventStore defaultCalendarForNewEvents].calendarIdentifier;
-            [prefs setObject:defaultCalendarIdentifier forKey:PREFS_DEFAULT_CALENDAR_KEY];
-#ifdef DEVELOPMENT
-            [prefs synchronize];
-#endif
+        if (defaultCalendar == nil) {
+            [self registerDefaultCalendarUserDefaults];
         }
     }
+}
+
+- (void)registerDefaultCalendarUserDefaults
+{
+    NSUserDefaults *prefs = [self standardUserDefaults];
+    EKEventStore *eventStore = self.eventStore;
+    NSString *defaultCalendarIdentifier = [eventStore defaultCalendarForNewEvents].calendarIdentifier;
+    
+    [prefs setObject:defaultCalendarIdentifier forKey:PREFS_DEFAULT_CALENDAR_KEY];
+#ifdef DEVELOPMENT
+    [prefs synchronize];
+#endif
 }
 
 

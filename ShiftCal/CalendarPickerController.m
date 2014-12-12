@@ -116,7 +116,6 @@
 @interface CalendarPickerController ()
 @property (nonatomic, strong) NSIndexPath *defaultCellIndexPath;
 @property (nonatomic, strong) NSString *preselectedCalendarIdentifier;
-@property (weak, nonatomic, readonly) EKEventStore *eventStore;
 @property (nonatomic, copy)   NSArray *calendars;
 
 @property (nonatomic, strong, readonly) SCCellSelection *selectedCell;
@@ -192,7 +191,7 @@
 
 - (EKEventStore *)eventStore
 {
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     return appDelegate.eventStore;
 }
 

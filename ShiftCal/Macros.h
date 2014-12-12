@@ -13,7 +13,7 @@
 
     #define IS_4INCH_DISPLAY [[UIScreen mainScreen] bounds].size.height == 568.0f
 
-//    #define DEVELOPMENT
+    #define DEVELOPMENT
 //    #define ADD_PRESET_SHIFTS
 
     #define PREFS_DEFAULT_CALENDAR_KEY @"DefaultCalendar"

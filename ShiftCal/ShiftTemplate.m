@@ -46,7 +46,7 @@
 
 - (EKEventStore *)eventStore
 {
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     return appDelegate.eventStore;
 }
 

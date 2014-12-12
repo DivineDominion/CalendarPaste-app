@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <EventKit/EventKit.h>
 
+#import "CalendarAccessGuard.h"
+
 @class ShiftOverviewController;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, CalendarAccessGuardDelegate>
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong, readonly) EKEventStore *eventStore;
 @property (nonatomic, strong, readonly) UIColor *appColor;
-
 @end
