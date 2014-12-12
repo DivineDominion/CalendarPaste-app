@@ -49,7 +49,7 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     DateIntervalTranslator *_dateIntervalTranslator;
 }
 
-@property (nonatomic, retain) DateIntervalTranslator *timeTranslator;
+@property (nonatomic, strong) DateIntervalTranslator *timeTranslator;
 
 + (UILabel *)createLabelForComponet:(NSInteger)component;
 
@@ -77,7 +77,7 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
         self.hours = hours;
         self.minutes = minutes;
         
-        self.timeTranslator = [[[DateIntervalTranslator alloc] init] autorelease];
+        self.timeTranslator = [[DateIntervalTranslator alloc] init];
     }
     
     return self;
@@ -156,19 +156,13 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     theLabel.backgroundColor = [UIColor clearColor];
     theLabel.userInteractionEnabled = NO;
 
-    return [theLabel autorelease];
+    return theLabel;
 }
 
 - (void)dealloc
 {    
     [_pickerView setDelegate:nil];
     [_pickerView setDataSource:nil];
-    [_pickerView release];
-    
-    [_pickerWrap release];
-    [_dateIntervalTranslator release];
-    
-    [super dealloc];
 }
 
 #pragma mark - PickerView
@@ -305,7 +299,7 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     {
         frame = CGRectMake(0, 0, COMPONENT_WIDTH, 32.0f);
         
-        rowView = [[[UIView alloc] initWithFrame:frame] autorelease];
+        rowView = [[UIView alloc] initWithFrame:frame];
         rowView.tag = COMPONENT_HOUR_TAG;
         
         // offset for sublabel
@@ -315,7 +309,7 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     {
         frame = CGRectMake(0, 0, COMPONENT_WIDTH, 32.0f);
         
-        rowView = [[[UIView alloc] initWithFrame:frame] autorelease];
+        rowView = [[UIView alloc] initWithFrame:frame];
         rowView.tag = COMPONENT_MIN_TAG;
         
         // offset for sublabel
@@ -333,7 +327,6 @@ static const NSInteger kMinuteItemsMaxFactor = 4;
     subLabel.tag = COMPONENT_SUBLABEL_TAG;
     
     [rowView addSubview:subLabel];
-    [subLabel release];
     
     return rowView;
 }

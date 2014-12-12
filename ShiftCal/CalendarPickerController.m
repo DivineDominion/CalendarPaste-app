@@ -29,12 +29,6 @@
 #define CELL_ID @"calendarcell"
 
 @interface SCCalendarCell : UITableViewCell
-{
-    // private instance variables
-    BOOL _checked;
-}
-
-// private properties
 @property (nonatomic, assign, getter = isChecked) BOOL checked;
 @end
 
@@ -113,25 +107,23 @@
 }
 @end
 
+@interface SCCellSelection : NSObject
+@property (strong) NSIndexPath *indexPath;
+@property (strong) NSString    *calendarIdentifier;
+@end
+@implementation SCCellSelection
+@end
+
 #pragma mark - CalendarPickerController
 @interface CalendarPickerController ()
-{
-    NSIndexPath *_defaultCellIndexPath;
-    NSString *_preselectedCalendarIdentifier;
-    SCCellSelection _selectedCell;
-    
-    NSArray *_calendars;
-}
-
-// private properties
-@property (nonatomic, retain) NSIndexPath *defaultCellIndexPath;
-@property (nonatomic, retain) NSString *preselectedCalendarIdentifier;
-@property (nonatomic, readonly) EKEventStore *eventStore;
+@property (nonatomic, strong) NSIndexPath *defaultCellIndexPath;
+@property (nonatomic, strong) NSString *preselectedCalendarIdentifier;
+@property (weak, nonatomic, readonly) EKEventStore *eventStore;
 @property (nonatomic, copy)   NSArray *calendars;
 
-@property (nonatomic, assign, readonly) SCCellSelection selectedCell;
-@property (nonatomic, retain, readonly) NSIndexPath *selectedCellIndexPath;
-@property (nonatomic, retain, readonly) NSString *selectedCellCalendarIdentifier;
+@property (nonatomic, strong, readonly) SCCellSelection *selectedCell;
+@property (nonatomic, strong, readonly) NSIndexPath *selectedCellIndexPath;
+@property (nonatomic, strong, readonly) NSString *selectedCellCalendarIdentifier;
 
 // private methods
 - (UIView *)actionPanelForIndexPath:(NSIndexPath *)indexPath andTableView:(UITableView *)tableView;
@@ -193,7 +185,6 @@
         else
         {
             StupidError(@"calendarIdentifier required");
-            [self release];
             self = nil;
             return nil;
         }
@@ -230,15 +221,13 @@
         return;
     }
     
-    [_selectedCell.indexPath release];
-    _selectedCell.indexPath = [indexPath retain];
-    
-    [_selectedCell.calendarIdentifier release];
+#warning TODO use value object instead
+    _selectedCell.indexPath = indexPath;
     _selectedCell.calendarIdentifier = nil;
     
     if (indexPath != nil)
     {
-        _selectedCell.calendarIdentifier  = [[[self calendarForIndexPath:indexPath] calendarIdentifier] retain];
+        _selectedCell.calendarIdentifier  = [[self calendarForIndexPath:indexPath] calendarIdentifier];
     }
 }
 
@@ -246,13 +235,9 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [_defaultCellIndexPath release];
-    [_calendars release];
     
-    [_selectedCell.indexPath release];
-    [_selectedCell.calendarIdentifier release];
-    
-    [super dealloc];
+    _selectedCell.indexPath;
+    _selectedCell.calendarIdentifier;
 }
 
 #pragma mark - View callbacks
@@ -271,8 +256,6 @@
     self.navigationItem.rightBarButtonItem = saveItem;
     self.navigationItem.leftBarButtonItem  = cancelItem;
     
-    [saveItem release];
-    [cancelItem release];
     
     self.title = @"Calendar";
 }
@@ -353,7 +336,7 @@
         view.frame = frame;
     }
     
-    return [view autorelease];
+    return view;
 }
 
 - (NSString *)defaultTextForCellAt:(NSIndexPath *)indexPath
@@ -373,7 +356,7 @@
     
     if (!cell)
     {
-        cell = [[[SCCalendarCell alloc] init] autorelease];
+        cell = [[SCCalendarCell alloc] init];
     }
     
     EKCalendar *calendar = [self calendarForIndexPath:indexPath];
@@ -457,7 +440,7 @@
     {
         NSInteger row = actionButton.tag;
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-        NSIndexPath *oldIndexPath = [[self.defaultCellIndexPath copy] autorelease];
+        NSIndexPath *oldIndexPath = [self.defaultCellIndexPath copy];
         
         // Hide "make default" panel for selected cell
         [self hideActionPanelForIndexPath:indexPath inTableView:self.tableView];
@@ -540,8 +523,6 @@
 #endif
     
     self.calendars = mutableCalendars;
-    
-    [mutableCalendars release];
 }
 
 - (void)loadUserDefaultCellIndexPath

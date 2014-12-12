@@ -24,12 +24,11 @@
 
 @interface ModificationCommand : NSObject <ShiftModificationDelegate>
 {
-    ShiftOverviewController *_target;
-    NSDictionary *_shiftAttributes;
+    __unsafe_unretained ShiftOverviewController *_target;
 }
 
-@property (nonatomic, weak) ShiftOverviewController *target;
-@property (nonatomic, retain) NSDictionary *shiftAttributes;
+@property (nonatomic, unsafe_unretained) ShiftOverviewController *target;
+@property (nonatomic, strong) NSDictionary *shiftAttributes;
 
 - (id)initWithTarget:(ShiftOverviewController *)target;
 - (void)execute;
@@ -37,9 +36,6 @@
 
 
 @implementation ModificationCommand
-
-@synthesize shiftAttributes = _shiftAttributes;
-@synthesize target = _target;
 
 - (id)initWithTarget:(ShiftOverviewController *)target;
 {
@@ -53,20 +49,13 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [_shiftAttributes release];
-    
-    [super dealloc];
-}
-
 - (void)shiftModificationViewController:(ShiftModificationViewController *)shiftAddViewController modifiedShiftAttributes:(NSDictionary *)shiftAttributes
 {
     [self.target dismissViewControllerAnimated:YES completion:nil]; // TODO refactor high coupling
     
     if (shiftAttributes)
     {
-        self.shiftAttributes = [[shiftAttributes copy] autorelease];
+        self.shiftAttributes = [shiftAttributes copy];
         [self execute];
     }
 }
@@ -134,9 +123,9 @@
 }
 
 // private properties
-@property (nonatomic, retain) ModificationCommand *modificationCommand;
-@property (nonatomic, retain) ShiftTemplateCollection *shiftCollection;
-@property (nonatomic, retain) ShiftTemplateController *shiftTemplateController;
+@property (nonatomic, strong) ModificationCommand *modificationCommand;
+@property (nonatomic, strong) ShiftTemplateCollection *shiftCollection;
+@property (nonatomic, strong) ShiftTemplateController *shiftTemplateController;
 @property (nonatomic, assign) NSUInteger longHoursCount;
 
 // private methods
@@ -170,8 +159,8 @@
         NSUserDefaults *prefs               = [NSUserDefaults standardUserDefaults];
         NSString *defaultCalendarIdentifier = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
 
-        self.shiftTemplateController = [[[ShiftTemplateController alloc] init] autorelease];
-        self.shiftCollection = [[[ShiftTemplateCollection alloc] initWithFallbackCalendarIdentifier:defaultCalendarIdentifier shiftTemplateController:self.shiftTemplateController] autorelease];
+        self.shiftTemplateController = [[ShiftTemplateController alloc] init];
+        self.shiftCollection = [[ShiftTemplateCollection alloc] initWithFallbackCalendarIdentifier:defaultCalendarIdentifier shiftTemplateController:self.shiftTemplateController];
         
         // Count hour values with 2 digits
         self.longHoursCount = 0;
@@ -205,12 +194,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [_modificationCommand release];
-    [_shiftCollection release];
-    [_shiftTemplateController release];
-    
-    [super dealloc];
 }
 
 - (void)setLongHoursCount:(NSUInteger)countLongHours
@@ -271,8 +254,6 @@
                                                                                    action:@selector(addAction:)];
     self.navigationItem.leftBarButtonItem  = [self editButtonItem];
     self.navigationItem.rightBarButtonItem = addButtonItem;
-    
-    [addButtonItem release];
     
     self.title = @"Templates";
     
@@ -335,7 +316,7 @@
     
     if (!cell)
     {
-        cell = [[[ShiftOverviewCell alloc] initAndReuseIdentifier:kCellIdentifier] autorelease];
+        cell = [[ShiftOverviewCell alloc] initAndReuseIdentifier:kCellIdentifier];
     }
     
     ShiftTemplate *shift = [self.shiftCollection shiftAtIndex:row];
@@ -372,8 +353,6 @@
         self.modificationCommand = editCommand;
         
         [self presentModificationViewControllerWithShift:shift];
-        
-        [editCommand release];
     }
     else
     {
@@ -384,9 +363,6 @@
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:assignController];
         
         [self presentViewController:navigationController animated:YES completion:nil];
-        
-        [assignController release];
-        [navigationController release];
     }
 }
 
@@ -421,9 +397,6 @@
     modificationController.modificationDelegate = self.modificationCommand;
     
     [[self navigationController] presentViewController:modificationNavController animated:YES completion:nil];
-    
-    [modificationController release];
-    [modificationNavController release];
 }
 
 #pragma mark ShiftAssignmentViewController callbacks
@@ -446,7 +419,7 @@
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:parentView];
     [parentView addSubview:hud];
     
-    hud.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"hud-checkmark.png"]] autorelease];
+    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"hud-checkmark.png"]];
     hud.mode       = MBProgressHUDModeCustomView;
     hud.delegate   = self;
     
@@ -457,7 +430,6 @@
 - (void)hudWasHidden:(MBProgressHUD *)hud
 {
     [hud removeFromSuperview];
-    [hud release];
 }
 
 #pragma mark ShiftModificationController callbacks
@@ -562,8 +534,6 @@
     self.modificationCommand = addCommand;
     
     [self presentModificationViewController];
-    
-    [addCommand release];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated

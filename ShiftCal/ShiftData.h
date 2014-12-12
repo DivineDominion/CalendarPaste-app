@@ -13,14 +13,14 @@
     NSMutableDictionary *_shiftAttributes;
 }
 
-@property (nonatomic, retain) NSMutableDictionary *shiftAttributes;
+@property (nonatomic, strong) NSMutableDictionary *shiftAttributes;
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *displayTitle;
 @property (nonatomic, copy) NSString *location;
 @property (nonatomic, assign, getter = isAllDay) BOOL allDay;
-@property (nonatomic, retain) NSNumber *alarmFirstInterval;
-@property (nonatomic, retain) NSNumber *alarmSecondInterval;
+@property (nonatomic, strong) NSNumber *alarmFirstInterval;
+@property (nonatomic, strong) NSNumber *alarmSecondInterval;
 @property (nonatomic, copy) NSString *calendarIdentifier;
 @property (nonatomic, copy) NSString *url;
 @property (nonatomic, copy) NSString *note;

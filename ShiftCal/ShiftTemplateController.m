@@ -32,15 +32,6 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     return self;
 }
 
-- (void)dealloc
-{
-    [_managedObjectModel release];
-    [_persistentStoreCoordinator release];
-    [_managedObjectContext release];
-    
-    [super dealloc];
-}
-
 - (NSURL *)documentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
@@ -57,8 +48,6 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     NSError *error = nil;
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
     NSAssert(count != NSNotFound, @"Could not count shifts, error: %@", error);
-    
-    [request release];
     
     return count;
 }
@@ -152,7 +141,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
         [attributes setValue:nil forKey:key];
     }
     
-    return [attributes autorelease];
+    return attributes;
 }
 
 - (NSMutableDictionary *)defaultAttributeDictionary
@@ -167,22 +156,22 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
 
 - (ShiftTemplate *)importShiftByAttributeDictionary:(NSDictionary *)attributes
 {
-    ShiftTemplate *shift = [[self createShift] retain];
+    ShiftTemplate *shift = [self createShift];
     
     [shift setValuesForKeysWithDictionary:attributes];
     
-    return [shift autorelease];
+    return shift;
 }
 
 - (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift
 {
-    ShiftTemplate *shift = [[self createShift] retain];
+    ShiftTemplate *shift = [self createShift];
     
     NSArray *attKeys         = [[[foreignShift entity] attributesByName] allKeys];
     NSDictionary *attributes = [foreignShift dictionaryWithValuesForKeys:attKeys];
     [shift setValuesForKeysWithDictionary:attributes];
     
-    return [shift autorelease];
+    return shift;
 }
 
 #pragma mark - CR(U)D
@@ -197,7 +186,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     shift = [[ShiftTemplate alloc] initWithEntity:entityDescription
                     insertIntoManagedObjectContext:context];
     
-    return [shift autorelease];
+    return shift;
 }
 
 - (ShiftTemplate *)shiftWithId:(NSManagedObjectID *)shiftId
@@ -231,7 +220,6 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
     
     NSAssert(fetchResults, @"Could not retrieve model data, error: %@", error);
 
-    [request release];
     return fetchResults;
 }
 
@@ -294,7 +282,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
         return _managedObjectModel;
     }
     
-    _managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles:nil] retain];
+    _managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
     
     return _managedObjectModel;
 }

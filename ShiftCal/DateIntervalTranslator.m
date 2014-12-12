@@ -9,15 +9,8 @@
 #import "DateIntervalTranslator.h"
 
 @interface DateIntervalTranslator ()
-{
-    // private instance variables
-    NSCalendar *_calendar;
-    NSDate *_referenceDate;
-}
-
-// private properties
-@property (nonatomic, retain) NSCalendar *calendar;
-@property (nonatomic, retain) NSDate *referenceDate;
+@property (nonatomic, strong) NSCalendar *calendar;
+@property (nonatomic, strong) NSDate *referenceDate;
 
 //private methods
 - (NSDateComponents *)dateComponentsForDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins;
@@ -35,25 +28,18 @@
     if (self)
     {
         self.calendar = [NSCalendar currentCalendar];
-        self.referenceDate = [[[NSDate alloc] initWithTimeIntervalSinceReferenceDate:0.0] autorelease];
+        self.referenceDate = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:0.0];
     }
     
     return self;
 }
 
-- (void)dealloc
-{
-    [_calendar release];
-    [_referenceDate release];
-    
-    [super dealloc];
-}
 
 # pragma mark - Private methods
 
 - (NSDateComponents *)dateComponentsForDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins
 {
-    NSDateComponents *components = [[[NSDateComponents alloc] init] autorelease];
+    NSDateComponents *components = [[NSDateComponents alloc] init];
     
     [components setDay:days];
     [components setHour:hours];
@@ -72,8 +58,6 @@
     NSDate *compDate = [[NSDate alloc] initWithTimeInterval:interval sinceDate:self.referenceDate];
     
     components = [self.calendar components:kComponentFlags fromDate:self.referenceDate toDate:compDate options:0];
-    
-    [compDate release];
     
     return components;
 }
@@ -136,8 +120,6 @@
     }
     
     text = [textParts componentsJoinedByString:@" "];
-    
-    [textParts release];
     
     return text;
 }

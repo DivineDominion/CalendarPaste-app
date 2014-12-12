@@ -18,9 +18,9 @@
     NSManagedObjectContext       *_managedObjectContext;
 }
 
-@property (nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, readonly) NSManagedObjectModel         *managedObjectModel;
-@property (nonatomic, readonly) NSManagedObjectContext       *managedObjectContext;
+@property (strong, nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (strong, nonatomic, readonly) NSManagedObjectModel         *managedObjectModel;
+@property (strong, nonatomic, readonly) NSManagedObjectContext       *managedObjectContext;
 
 - (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift;
 - (ShiftTemplate *)importShiftByAttributeDictionary:(NSDictionary *)attributes;

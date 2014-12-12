@@ -11,17 +11,8 @@
 #import "UITableViewController+CalloutCell.h"
 #import "CalendarPickerDelegate.h"
 
-typedef struct _SCCellSelection {
-    NSIndexPath *indexPath;
-    NSString    *calendarIdentifier;
-} SCCellSelection;
-
 @interface CalendarPickerController : UITableViewController
-{
-    id<CalendarPickerDelegate> _delegate;
-}
-
-@property (weak) id<CalendarPickerDelegate> delegate;
+@property (unsafe_unretained) id<CalendarPickerDelegate> delegate;
 
 - (id)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier;
 - (id)initWithSelectedCalendarIdentifier:(NSString *)calendarIdentifier withStyle:(UITableViewStyle)style;

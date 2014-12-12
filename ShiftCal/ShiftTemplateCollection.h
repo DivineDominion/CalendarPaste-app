@@ -16,8 +16,8 @@
     NSMutableArray *_shifts;
 }
 
-@property (nonatomic, retain) ShiftTemplateController *shiftTemplateController;
-@property (nonatomic, retain) NSMutableArray *shifts;
+@property (nonatomic, strong) ShiftTemplateController *shiftTemplateController;
+@property (nonatomic, strong) NSMutableArray *shifts;
 
 - (id)initWithShiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
 - (id)initWithFallbackCalendarIdentifier:(NSString *)fallbackCalendarIdentifier shiftTemplateController:(ShiftTemplateController *)shiftTemplateController;

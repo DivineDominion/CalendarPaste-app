@@ -36,17 +36,12 @@
 {
     [super awakeFromInsert];
     
-    ShiftTemplate *__unsafe_unretained weakSelf = self;
+    ShiftTemplate *__unsafe_unretained unsafe_unretainedSelf = self;
     // Adopt default template values manually to invoke setPrimitiveValue:forKey:
     // instead of setValue:forKey:
     [[ShiftTemplate defaultAttributes] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        [weakSelf setPrimitiveValue:obj forKey:key];
+        [unsafe_unretainedSelf setPrimitiveValue:obj forKey:key];
     }];
-}
-
-- (void)dealloc
-{
-    [super dealloc];
 }
 
 - (EKEventStore *)eventStore

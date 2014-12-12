@@ -13,7 +13,7 @@
 + (NSDate *)tomorrow {
 	NSDate *date = [NSDate date];
 	
-    NSDateComponents *components = [[[NSDateComponents alloc] init] autorelease];
+    NSDateComponents *components = [[NSDateComponents alloc] init];
 	[components setDay:1];
 	
     NSCalendar *calendar = [NSCalendar currentCalendar];

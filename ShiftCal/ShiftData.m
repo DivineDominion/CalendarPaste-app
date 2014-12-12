@@ -20,17 +20,11 @@
     self = [super init];
     if (self)
     {
-        self.shiftAttributes = [[attributes mutableCopy] autorelease];
+        self.shiftAttributes = [attributes mutableCopy];
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [_shiftAttributes release];
-    
-    [super dealloc];
-}
 
 - (NSString *)title
 {
@@ -44,7 +38,7 @@
 
 - (void)setTitle:(NSString *)title
 {
-    [self.shiftAttributes setValue:[[title copy] autorelease] forKey:@"title"];
+    [self.shiftAttributes setValue:[title copy] forKey:@"title"];
 }
 
 - (NSString *)displayTitle
@@ -59,7 +53,7 @@
 
 - (void)setDisplayTitle:(NSString *)displayTitle
 {
-    [self.shiftAttributes setValue:[[displayTitle copy] autorelease] forKey:@"displayTitle"];
+    [self.shiftAttributes setValue:[displayTitle copy] forKey:@"displayTitle"];
 }
 
 - (NSString *)location
@@ -74,7 +68,7 @@
 
 - (void)setLocation:(NSString *)location
 {
-    [self.shiftAttributes setValue:[[location copy] autorelease] forKey:@"location"];
+    [self.shiftAttributes setValue:[location copy] forKey:@"location"];
 }
 
 - (BOOL)isAllDay
@@ -130,7 +124,7 @@
 
 - (void)setAlarmFirstInterval:(NSNumber *)alarmFirstInterval
 {
-    [self.shiftAttributes setValue:[[alarmFirstInterval copy] autorelease] forKey:@"alarmFirstInterval"];
+    [self.shiftAttributes setValue:[alarmFirstInterval copy] forKey:@"alarmFirstInterval"];
 }
 
 - (NSNumber *)alarmSecondInterval
@@ -145,7 +139,7 @@
 
 - (void)setAlarmSecondInterval:(NSNumber *)alarmSecondInterval
 {
-    [self.shiftAttributes setValue:[[alarmSecondInterval copy] autorelease] forKey:@"alarmSecondInterval"];
+    [self.shiftAttributes setValue:[alarmSecondInterval copy] forKey:@"alarmSecondInterval"];
 }
 
 - (BOOL)hasFirstAlarm
@@ -167,7 +161,7 @@
 
 - (void)setCalendarIdentifier:(NSString *)calendarIdentifier
 {
-    [self.shiftAttributes setValue:[[calendarIdentifier copy] autorelease] forKey:@"calendarIdentifier"];
+    [self.shiftAttributes setValue:[calendarIdentifier copy] forKey:@"calendarIdentifier"];
 }
 
 - (BOOL)hasInvalidCalendar
@@ -210,7 +204,7 @@
 
 - (void)setUrl:(NSString *)url
 {
-    [self.shiftAttributes setValue:[[url copy] autorelease] forKey:@"url"];
+    [self.shiftAttributes setValue:[url copy] forKey:@"url"];
 }
 
 - (NSString *)note
@@ -225,7 +219,7 @@
 
 - (void)setNote:(NSString *)note
 {
-    [self.shiftAttributes setValue:[[note copy] autorelease] forKey:@"note"];
+    [self.shiftAttributes setValue:[note copy] forKey:@"note"];
 }
 
 @end

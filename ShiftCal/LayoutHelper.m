@@ -26,8 +26,6 @@
     [addButton addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 
     UIView *view = [LayoutHelper splashScreenViewFor:addButton titleText:@"No Event Templates, yet." detailText:@"Add templates and start\nto Paste Your Time!"];
-
-    [addButton release];
     
     return view;
 }
@@ -39,8 +37,6 @@
     
     UIView *view = [LayoutHelper splashScreenViewFor:imageView titleText:@"This app needs Calendar access\nto work." detailText:@"You can enable access in Privacy Settings."];
 
-    [imageView release];
-    
     return view;
 }
 
@@ -83,7 +79,7 @@
     detailLabelFrame.origin.y += size.height;
     [view addSubview:[LayoutHelper labelWithFrame:detailLabelFrame text:detailText]];
     
-    return [view autorelease];
+    return view;
 }
 
 + (UILabel *)labelWithFrame:(CGRect)frame text:(NSString *)text
@@ -96,7 +92,7 @@
     label.textColor = textColor;
     label.textAlignment = NSTextAlignmentCenter;
     
-    return [label autorelease];
+    return label;
 }
 
 + (UILabel *)titleLabelWithFrame:(CGRect)frame text:(NSString *)text

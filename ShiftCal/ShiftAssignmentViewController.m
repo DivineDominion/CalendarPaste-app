@@ -26,19 +26,11 @@ static NSString *kCellPicker = @"datePicker";
 #define CELL_HEIGHT_STARTS_ENDS 42.0
 
 @interface ShiftAssignmentViewController ()
-{
-    NSDate *_startDate;
-    NSDateFormatter *_dateFormatter;
-    
-    UIDatePicker *_datePicker;
-    ShiftTemplateController *_shiftTemplateController;
-}
-
-@property (nonatomic, retain, readwrite) ShiftTemplate *shift;
-@property (nonatomic, retain) NSDate *startDate;
-@property (nonatomic, retain, readonly) NSDateFormatter *dateFormatter;
-@property (nonatomic, retain) ShiftTemplateController *shiftTemplateController;
-@property (nonatomic, retain) UIDatePicker *datePicker;
+@property (nonatomic, strong, readwrite) ShiftTemplate *shift;
+@property (nonatomic, strong) NSDate *startDate;
+@property (nonatomic, strong, readonly) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) ShiftTemplateController *shiftTemplateController;
+@property (nonatomic, strong) UIDatePicker *datePicker;
 
 - (NSDate *)endDate;
 
@@ -51,7 +43,8 @@ static NSString *kCellPicker = @"datePicker";
 @end
 
 @implementation ShiftAssignmentViewController
-@synthesize delegate = _delegate;
+//@synthesize delegate = _delegate;
+@synthesize dateFormatter = _dateFormatter;
 @synthesize shift = _shift;
 @synthesize shiftTemplateController = _shiftTemplateController;
 @synthesize startDate = _startDate;
@@ -105,18 +98,6 @@ static NSString *kCellPicker = @"datePicker";
     return self;
 }
 
-- (void)dealloc
-{
-    [_shift release];
-    [_shiftTemplateController release];
-    
-    [_startDate release];
-    [_dateFormatter release];
-    [_datePicker release];
-    
-    [super dealloc];
-}
-
 - (void)loadView
 {
     [super loadView];
@@ -128,7 +109,7 @@ static NSString *kCellPicker = @"datePicker";
     self.tableView.scrollEnabled    = NO;
     
     CGRect pickerFrame = CGRectMake(0.0f, 0.0f, screenWidth - 20, PICKER_HEIGHT);
-    self.datePicker = [[[UIDatePicker alloc] initWithFrame:pickerFrame] autorelease];
+    self.datePicker = [[UIDatePicker alloc] initWithFrame:pickerFrame];
     self.datePicker.tag = PICKER_TAG;
     [self.datePicker addTarget:self action:@selector(datePickerChanged:) forControlEvents:UIControlEventValueChanged];
     
@@ -160,9 +141,6 @@ static NSString *kCellPicker = @"datePicker";
     
     self.navigationItem.rightBarButtonItem = saveItem;
     self.navigationItem.leftBarButtonItem  = cancelItem;
-    
-    [saveItem release];
-    [cancelItem release];
     
     self.title = @"Pick a Time";
 }
@@ -271,7 +249,7 @@ static NSString *kCellPicker = @"datePicker";
     
     if (!cell)
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
     }
     
     cell.textLabel.textColor = [UIColor grayColor];
@@ -360,7 +338,7 @@ static NSString *kCellPicker = @"datePicker";
 - (void)done:(id)sender
 {
     EKEventStore *eventStore = self.shift.eventStore;
-    EKEvent *event           = [[self.shift event] retain];
+    EKEvent *event           = [self.shift event];
     
     event.allDay = [self.shift isAllDay];
     
@@ -371,8 +349,6 @@ static NSString *kCellPicker = @"datePicker";
     
     BOOL success = [eventStore saveEvent:event span:EKSpanThisEvent commit:YES error:&error];
     NSAssert(success, @"saving the event failed: %@", error);
-    
-    [event release];
     
     if (success)
     {

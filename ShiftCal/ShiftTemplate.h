@@ -12,29 +12,29 @@
 
 @interface ShiftTemplate : NSManagedObject
 
-@property (nonatomic, retain) NSNumber *displayOrder;
+@property (nonatomic, strong) NSNumber *displayOrder;
 
-@property (nonatomic, retain) NSString *title;
-@property (nonatomic, retain) NSString *displayTitle;
-@property (nonatomic, retain) NSString *location;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *displayTitle;
+@property (nonatomic, strong) NSString *location;
 
-@property (nonatomic, retain) NSNumber *durHours;
-@property (nonatomic, retain) NSNumber *durMinutes;
+@property (nonatomic, strong) NSNumber *durHours;
+@property (nonatomic, strong) NSNumber *durMinutes;
 
-@property (nonatomic, retain) NSNumber *allDay;
-@property (nonatomic, retain) NSNumber *lastPasteHours;
-@property (nonatomic, retain) NSNumber *lastPasteMins;
+@property (nonatomic, strong) NSNumber *allDay;
+@property (nonatomic, strong) NSNumber *lastPasteHours;
+@property (nonatomic, strong) NSNumber *lastPasteMins;
 
-@property (nonatomic, retain) NSString *calendarIdentifier;
+@property (nonatomic, strong) NSString *calendarIdentifier;
 
-@property (nonatomic, retain) NSNumber *alarmFirstInterval;
-@property (nonatomic, retain) NSNumber *alarmSecondInterval;
+@property (nonatomic, strong) NSNumber *alarmFirstInterval;
+@property (nonatomic, strong) NSNumber *alarmSecondInterval;
 
-@property (nonatomic, retain) NSString *url;
-@property (nonatomic, retain) NSString *note;
+@property (nonatomic, strong) NSString *url;
+@property (nonatomic, strong) NSString *note;
 
-@property (nonatomic, readonly) EKEventStore *eventStore;
-@property (nonatomic, readonly) EKCalendar *calendar;
+@property (weak, nonatomic, readonly) EKEventStore *eventStore;
+@property (weak, nonatomic, readonly) EKCalendar *calendar;
 
 - (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes;
 - (void)setLastPaste:(NSDate *)lastPaste;

@@ -34,7 +34,6 @@
         
         NSMutableArray *mutableShifts = [[self.shiftTemplateController shifts] mutableCopy];
         self.shifts = mutableShifts;
-        [mutableShifts release];
         
         if (fallbackCalendarIdentifier)
         {
@@ -43,14 +42,6 @@
     }
     
     return self;
-}
-
-- (void)dealloc
-{
-    [_shifts release];
-    [_shiftTemplateController release];
-    
-    [super dealloc];
 }
 
 # pragma mark - Collection alteration

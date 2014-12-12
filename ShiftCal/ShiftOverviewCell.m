@@ -33,12 +33,12 @@ BOOL _enableTwoDigits = NO;
     UILabel *_allDayLabel;
 }
 
-@property (nonatomic, retain) UILabel *hoursLabel;
-@property (nonatomic, retain) UILabel *hoursCaptionLabel;
-@property (nonatomic, retain) UILabel *minutesLabel;
-@property (nonatomic, retain) UILabel *minutesCaptionLabel;
+@property (nonatomic, strong) UILabel *hoursLabel;
+@property (nonatomic, strong) UILabel *hoursCaptionLabel;
+@property (nonatomic, strong) UILabel *minutesLabel;
+@property (nonatomic, strong) UILabel *minutesCaptionLabel;
 @property (nonatomic, assign) BOOL allDay;
-@property (nonatomic, retain) UILabel *allDayLabel;
+@property (nonatomic, strong) UILabel *allDayLabel;
 
 - (void)setDurationHours:(NSUInteger)hours andMinutes:(NSUInteger)minutes;
 
@@ -84,17 +84,6 @@ BOOL _enableTwoDigits = NO;
     }
     
     return self;
-}
-
-- (void)dealloc
-{
-    [_hoursCaptionLabel release];
-    [_hoursLabel release];
-    [_minutesCaptionLabel release];
-    [_minutesLabel release];
-    [_allDayLabel release];
-    
-    [super dealloc];
 }
 
 - (void)setAllDay:(BOOL)allDay
@@ -146,7 +135,7 @@ BOOL _enableTwoDigits = NO;
     label.textColor       = durationColor;
     label.textAlignment   = NSTextAlignmentCenter;
     
-    return [label autorelease];
+    return label;
 }
 
 + (UILabel *)captionLabel:(NSString *)caption leftIndent:(float)leftIndent
@@ -168,7 +157,7 @@ BOOL _enableTwoDigits = NO;
     
     label.text = caption;
     
-    return [label autorelease];
+    return label;
 }
 
 + (UILabel *)allDayLabel
@@ -201,7 +190,7 @@ BOOL _enableTwoDigits = NO;
     [label addSubview:timeLabel];
     [label addSubview:captionLabel];
     
-    return [label autorelease];
+    return label;
 }
 
 - (void)layoutSubviews
@@ -262,8 +251,8 @@ BOOL _enableTwoDigits = NO;
     UILabel *_calendarLabel;
 }
 
-@property (nonatomic, retain) DurationLabel *durationLabel;
-@property (nonatomic, retain) UILabel *calendarLabel;
+@property (nonatomic, strong) DurationLabel *durationLabel;
+@property (nonatomic, strong) UILabel *calendarLabel;
 
 @end
 
@@ -304,7 +293,7 @@ BOOL _enableTwoDigits = NO;
     
     if (self)
     {      
-        self.durationLabel = [[[DurationLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, [ShiftOverviewCell cellHeight])] autorelease];
+        self.durationLabel = [[DurationLabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 80.0f, [ShiftOverviewCell cellHeight])];
         
         UIView *highlightView = [[UIView alloc] init];
         highlightView.backgroundColor = [UIColor colorWithRed:245.0/255 green:251.0/255 blue:190.0/255 alpha:1.0];
@@ -320,7 +309,7 @@ BOOL _enableTwoDigits = NO;
         }
         self.detailTextLabel.textColor = [UIColor grayColor];
         
-        self.calendarLabel = [[[UILabel alloc] initWithFrame:CGRectMake(215.0f, 0.0f, 100.0f, 18.0f)] autorelease];
+        self.calendarLabel = [[UILabel alloc] initWithFrame:CGRectMake(215.0f, 0.0f, 100.0f, 18.0f)];
         self.calendarLabel.backgroundColor = [UIColor clearColor];
         self.calendarLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         self.calendarLabel.textAlignment = NSTextAlignmentRight;
@@ -334,18 +323,9 @@ BOOL _enableTwoDigits = NO;
     return self;
 }
 
-- (void)dealloc
-{
-    [_durationLabel release];
-    [_calendarLabel release];
-    
-    [super dealloc];
-}
-
 - (void)setShift:(ShiftTemplate *)shift
 {
-    [_shift release];
-    _shift = [shift retain];
+    _shift = shift;
     
     self.textLabel.text = [shift onScreenTitle];
     self.detailTextLabel.text = shift.location;

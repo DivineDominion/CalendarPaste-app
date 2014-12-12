@@ -11,10 +11,10 @@
 
 @interface AlarmPickerViewController : UITableViewController
 {
-    id<AlarmPickerDelegate> _delegate;
+    __unsafe_unretained id<AlarmPickerDelegate> delegate;
 }
 
-@property (nonatomic, weak) id<AlarmPickerDelegate> delegate;
+@property (nonatomic, unsafe_unretained) id<AlarmPickerDelegate> delegate;
 
 - (id)initWithAlarmOffset:(NSNumber *)alarmOffset;
 - (id)initWithStyle:(UITableViewStyle)style selectedAlarmOffset:(NSNumber *)alarmOffset;

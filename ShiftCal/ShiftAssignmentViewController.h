@@ -14,12 +14,11 @@
 
 @interface ShiftAssignmentViewController : UITableViewController
 {
-    ShiftTemplate *_shift;
-    id<ShiftAssignmentViewDelegate> _delegate;
+    __unsafe_unretained id<ShiftAssignmentViewDelegate> delegate;
 }
 
-@property (nonatomic, retain, readonly) ShiftTemplate *shift;
-@property (nonatomic, weak) id<ShiftAssignmentViewDelegate> delegate;
+@property (nonatomic, strong, readonly) ShiftTemplate *shift;
+@property (nonatomic, unsafe_unretained) id<ShiftAssignmentViewDelegate> delegate;
 
 - (id)initWithShift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController;
 - (id)initWithStyle:(UITableViewStyle)style shift:(ShiftTemplate *)shift shiftTemplateController:(ShiftTemplateController *)shiftTemplateController;

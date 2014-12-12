@@ -21,7 +21,7 @@ typedef enum {
     ShiftTemplate *_shift;
 }
 
-@property (nonatomic, retain) ShiftTemplate *shift;
+@property (nonatomic, strong) ShiftTemplate *shift;
 
 + (float)cellHeight;
 - (id)initAndReuseIdentifier:(NSString *)reuseIdentifer;

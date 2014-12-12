@@ -60,13 +60,13 @@
     DurationPickerController *_durationController;
 }
 
-@property (nonatomic, retain) ShiftData *shiftData;
-@property (nonatomic, retain) DateIntervalTranslator *dateTranslator;
+@property (nonatomic, strong) ShiftData *shiftData;
+@property (nonatomic, strong) DateIntervalTranslator *dateTranslator;
 @property (nonatomic, assign) NSInteger selectedAlarmRow;
-@property (nonatomic, readonly) ShiftTemplateController *shiftTemplateController;
+@property (strong, nonatomic, readonly) ShiftTemplateController *shiftTemplateController;
 
 @property (nonatomic, readonly) DurationPickerController *durationController;
-@property (nonatomic, readonly) UIView *durationPickerView;
+@property (strong, nonatomic, readonly) UIView *durationPickerView;
 @property (nonatomic, readwrite, getter = durationPickerIsShown) BOOL showDurationPicker;
 
 - (void)invalidateCalendar:(NSNotification *)notification;
@@ -102,19 +102,19 @@
         if (shift)
         {
             // Loads an existing shift into the scratchpad context
-            self.shiftData = [[[ShiftData alloc] initWithAttributes:[self.shiftTemplateController attributeDictionaryForShift:shift]] autorelease];
+            self.shiftData = [[ShiftData alloc] initWithAttributes:[self.shiftTemplateController attributeDictionaryForShift:shift]];
             
             _isNewEntry = NO;
         }
         else
         {
             // Creates a temporary shift into the scratchpad context
-            self.shiftData = [[[ShiftData alloc] initWithAttributes:[self.shiftTemplateController defaultAttributeDictionary]] autorelease];
+            self.shiftData = [[ShiftData alloc] initWithAttributes:[self.shiftTemplateController defaultAttributeDictionary]];
 
             _isNewEntry = YES;
         }
         
-        self.dateTranslator = [[[DateIntervalTranslator alloc] init] autorelease];
+        self.dateTranslator = [[DateIntervalTranslator alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(invalidateCalendar:)
@@ -137,12 +137,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [_shiftData release];
-    [_dateTranslator release];
-    [_shiftTemplateController release];
-    
-    [super dealloc];
 }
 
 - (ShiftTemplateController *)shiftTemplateController
@@ -175,9 +169,6 @@
     self.navigationItem.rightBarButtonItem = saveItem;
     self.navigationItem.leftBarButtonItem  = cancelItem;
     
-    [saveItem release];
-    [cancelItem release];
-    
     self.title = @"Add Template";
 
     // Enable custom title when editing
@@ -188,8 +179,8 @@
     
     self.tableView.sectionHeaderHeight = 5.0f;
     self.tableView.sectionFooterHeight = 5.0f;
-    self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 5.0)] autorelease];
-    self.tableView.tableFooterView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 5.0)] autorelease];
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 5.0)];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0, 5.0)];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -280,8 +271,8 @@
             
             if (!cell)
             {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                               reuseIdentifier:CELL_TEXT_FIELD] autorelease];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                               reuseIdentifier:CELL_TEXT_FIELD];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
                 UITextField *textField     = [[UITextField alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 300.0f, 30.0f)];
@@ -289,8 +280,6 @@
                 textField.adjustsFontSizeToFitWidth = YES;
                 
                 [cell.contentView addSubview:textField];
-                
-                [textField release];
             }
             
             UITextField *textField = [[cell.contentView subviews] lastObject];
@@ -330,16 +319,14 @@
                 
                 if (!cell)
                 {
-                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                                   reuseIdentifier:CELL_TOGGLE] autorelease];
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                                   reuseIdentifier:CELL_TOGGLE];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     
                     UISwitch *switchView = [[UISwitch alloc] initWithFrame:CGRectZero];
                     [switchView addTarget:self action:@selector(allDayChanged:) forControlEvents:UIControlEventValueChanged];
                     
                     cell.accessoryView = switchView;
-                    
-                    [switchView release];
                 }
                 
                 cell.layer.zPosition = 1.0f;
@@ -352,8 +339,8 @@
                 
                 if (!cell)
                 {
-                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                                   reuseIdentifier:CELL_SUBVIEW] autorelease];
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                                   reuseIdentifier:CELL_SUBVIEW];
                 }
                 
                 cell.layer.zPosition = 0.5f;
@@ -368,8 +355,8 @@
                 
                 if (!cell)
                 {
-                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                                   reuseIdentifier:CELL_PICKER] autorelease];
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                                   reuseIdentifier:CELL_PICKER];
                 }
                 
                 cell.layer.zPosition = 0.0f;
@@ -380,13 +367,13 @@
             
             break;
         }
-        case SECTION_CALENDAR:
+        case SECTION_CALENDAR: {
             cell = [tableView dequeueReusableCellWithIdentifier:CELL_SUBVIEW];
             
             if (!cell)
             {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                               reuseIdentifier:CELL_SUBVIEW] autorelease];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                               reuseIdentifier:CELL_SUBVIEW];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
@@ -394,13 +381,14 @@
             [self displayCalendarInCell:cell];
 
             break;
-        case SECTION_ALARM:
+        }
+        case SECTION_ALARM: {
             cell = [tableView dequeueReusableCellWithIdentifier:CELL_SUBVIEW];
             
             if (!cell)
             {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                               reuseIdentifier:CELL_SUBVIEW] autorelease];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                               reuseIdentifier:CELL_SUBVIEW];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
             
@@ -420,14 +408,15 @@
             [self displayAlarmInCell:cell];
             
             break;
+        }
         case SECTION_URL:
         {
             cell = [tableView dequeueReusableCellWithIdentifier:CELL_TEXT_FIELD];
             
             if (!cell)
             {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                               reuseIdentifier:CELL_TEXT_FIELD] autorelease];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                               reuseIdentifier:CELL_TEXT_FIELD];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
                 UITextField *textField     = [[UITextField alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 300.0f, 30.0f)];
@@ -435,8 +424,6 @@
                 textField.adjustsFontSizeToFitWidth = YES;
                 cell.bounds = CGRectMake(0.0f, 0.0f, 300.0f, 110.0f);
                 [cell.contentView addSubview:textField];
-                
-                [textField release];
             }
             
             UITextField *textField = [[cell.contentView subviews] lastObject];
@@ -454,8 +441,8 @@
             
             if (!cell)
             {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                               reuseIdentifier:CELL_TEXT_AREA] autorelease];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                               reuseIdentifier:CELL_TEXT_AREA];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 
                 UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(4.0f, 10.0f, 292.0f, 165.0f)];
@@ -466,8 +453,6 @@
                 [textView setDelegate:self];
                 
                 [cell.contentView addSubview:textView];
-                
-                [textView release];
             }
             
             UITextView *textView = [[cell.contentView subviews] lastObject];
@@ -643,9 +628,6 @@
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:modalController];
         
         [self presentViewController:navController animated:YES completion:nil];
-        
-        [modalController release];
-        [navController release];
     }
     else
     {
@@ -687,8 +669,6 @@
     label.userInteractionEnabled = NO;
     
     [textView addSubview:label];
-    
-    [label release];
 }
 
 #pragma mark TextField delegate

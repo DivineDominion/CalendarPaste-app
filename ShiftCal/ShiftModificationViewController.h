@@ -18,10 +18,10 @@
 
 @interface ShiftModificationViewController : UITableViewController <UITextViewDelegate, UITextFieldDelegate, DurationPickerDelegate, CalendarPickerDelegate, AlarmPickerDelegate>
 {
-    id<ShiftModificationDelegate> _modificationDelegate;
+    __unsafe_unretained id<ShiftModificationDelegate> _modificationDelegate;
 }
 
-@property (nonatomic, weak) id<ShiftModificationDelegate> modificationDelegate;
+@property (nonatomic, unsafe_unretained) id<ShiftModificationDelegate> modificationDelegate;
 
 - (id)initWithShift:(ShiftTemplate *)shift;
 

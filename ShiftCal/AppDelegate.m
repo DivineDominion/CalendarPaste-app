@@ -13,17 +13,9 @@
 #import "LayoutHelper.h"
 
 @interface AppDelegate ()
-
-// private properties
-@property (nonatomic, retain, readwrite) UINavigationController *navController;
-@property (nonatomic, retain, readwrite) EKEventStore *eventStore;
-@property (nonatomic, retain, readwrite) UIColor *appColor;
-
-- (void)requestCalendarAccessForOverviewViewController;
-- (void)showOverviewViewControllerAnimated:(BOOL)animated;
-- (UIViewController *)grantCalendarAccessViewController;
-- (void)eventStoreChanged:(id)sender;
-- (void)styleNavigationBar;
+@property (nonatomic, strong, readwrite) UINavigationController *navController;
+@property (nonatomic, strong, readwrite) EKEventStore *eventStore;
+@property (nonatomic, strong, readwrite) UIColor *appColor;
 @end
 
 
@@ -34,11 +26,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [_navController release];
-    [_eventStore release];
-    
-    [super dealloc];
 }
 
 #pragma mark - Launch and Set-Up
@@ -49,13 +36,15 @@
     
     [self styleNavigationBar];
     
-    self.eventStore    = [[[EKEventStore alloc] init] autorelease];
-    self.window        = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    self.navController = [[[UINavigationController alloc] init] autorelease];
+    self.eventStore    = [[EKEventStore alloc] init];
+    self.window        = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.navController = [[UINavigationController alloc] init];
     
     if ([EKEventStore instancesRespondToSelector:@selector(requestAccessToEntityType:completion:)])
     {
+        NSLog(@"before");
         [self requestCalendarAccessForOverviewViewController];
+        NSLog(@"after");
     }
     else
     {
@@ -126,7 +115,7 @@
     
     [self registerPreferenceDefaults];
     
-    [self.navController pushViewController:[[[ShiftOverviewController alloc] init] autorelease]
+    [self.navController pushViewController:[[ShiftOverviewController alloc] init]
                                   animated:animated];
 }
 
@@ -137,7 +126,7 @@
     UIView *view = [LayoutHelper grantCalendarAccessView];
     grantCalendarAccessViewController.view = view;
     
-    return [grantCalendarAccessViewController autorelease];
+    return grantCalendarAccessViewController;
 }
 
 #pragma mark User preferences

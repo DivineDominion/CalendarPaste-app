@@ -15,19 +15,11 @@
 #define INDEX_OFFSET 1
 
 @interface AlarmPickerViewController ()
-{
-    // private instance variables
-    NSIndexPath *_selectedIndexPath;
-    NSArray *_alarms;
-    UIColor *_selectionColor;
-    DateIntervalTranslator *_dateTranslator;
-}
-
 // private properties
-@property (nonatomic, retain) NSIndexPath *selectedIndexPath;
+@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 @property (nonatomic, copy)   NSArray *alarms;
-@property (nonatomic, retain, readonly) UIColor *selectionColor;
-@property (nonatomic, retain) DateIntervalTranslator *dateTranslator;
+@property (nonatomic, strong, readonly) UIColor *selectionColor;
+@property (nonatomic, strong) DateIntervalTranslator *dateTranslator;
 
 // private methods
 - (NSInteger)rowForInterval:(NSTimeInterval)interval;
@@ -35,7 +27,7 @@
 
 @implementation AlarmPickerViewController
 
-@synthesize delegate = _delegate;
+//@synthesize delegate = _delegate;
 @synthesize selectionColor = _selectionColor;
 @synthesize dateTranslator = _dateTranslator;
 
@@ -68,7 +60,7 @@
         self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         
         // Corresponds to checkmark color
-        _selectionColor = [[UIColor colorWithRed:45/255.0 green:65/255.0 blue:115/255.0 alpha:1.0] retain];
+        _selectionColor = [UIColor colorWithRed:45/255.0 green:65/255.0 blue:115/255.0 alpha:1.0];
         
         if (alarmOffset)
         {
@@ -98,20 +90,10 @@
     return [indexes firstIndex];
 }
 
-- (void)dealloc
-{
-    [_alarms release];
-    [_selectionColor release];
-    
-    [_selectedIndexPath release];
-    [_dateTranslator release];
-    
-    [super dealloc];
-}
 
 - (void)loadModel
 {
-    self.dateTranslator = [[[DateIntervalTranslator alloc] init] autorelease];
+    self.dateTranslator = [[DateIntervalTranslator alloc] init];
 
     NSArray *intervals = @[
         @0.0,
@@ -152,8 +134,6 @@
     self.navigationItem.rightBarButtonItem = saveItem;
     self.navigationItem.leftBarButtonItem  = cancelItem;
     
-    [saveItem release];
-    [cancelItem release];
     
     self.title = @"Alarm";
 }
@@ -185,7 +165,7 @@
     
     if (!cell)
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
