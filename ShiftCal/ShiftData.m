@@ -12,9 +12,14 @@
 
 @implementation ShiftData
 
+- (instancetype)init
+{
+    return [self initWithAttributes:nil];
+}
+
 - (instancetype)initWithAttributes:(NSDictionary *)attributes
 {
-    NSAssert(attributes, @"attributes required");
+    NSParameterAssert(attributes);
     
     self = [super init];
     if (self)
@@ -24,50 +29,62 @@
     return self;
 }
 
-
-- (NSString *)title
+- (id)valueOrNilForKey:(NSString *)key
 {
-    NSString *title = self.shiftAttributes[@"title"];
-    if ([title isKindOfClass:[NSNull class]])
+    id value = self.shiftAttributes[key];
+    
+    if ([value isKindOfClass:[NSNull class]])
     {
         return nil;
     }
-    return title;
+    
+    return value;
+}
+
+- (id)copyOrNull:(id)original
+{
+    if (original == nil)
+    {
+        return [NSNull null];
+    }
+    
+    return [original copy];
+}
+
+
+#pragma mark -
+
+- (NSString *)title
+{
+    return [self valueOrNilForKey:@"title"];
 }
 
 - (void)setTitle:(NSString *)title
 {
-    [self.shiftAttributes setValue:[title copy] forKey:@"title"];
+    id value = [self copyOrNull:title];
+    [self.shiftAttributes setValue:value forKey:@"title"];
 }
 
 - (NSString *)displayTitle
 {
-    NSString *displayTitle = self.shiftAttributes[@"displayTitle"];
-    if ([displayTitle isKindOfClass:[NSNull class]])
-    {
-        return nil;
-    }
-    return displayTitle;
+    return [self valueOrNilForKey:@"displayTitle"];
 }
 
 - (void)setDisplayTitle:(NSString *)displayTitle
 {
-    [self.shiftAttributes setValue:[displayTitle copy] forKey:@"displayTitle"];
+    id value = [self copyOrNull:displayTitle];
+    [self.shiftAttributes setValue:value forKey:@"displayTitle"];
 }
 
 - (NSString *)location
 {
-    NSString *location = self.shiftAttributes[@"location"];
-    if ([location isKindOfClass:[NSNull class]])
-    {
-        return nil;
-    }
-    return location;
+    return [self valueOrNilForKey:@"location"];
 }
 
 - (void)setLocation:(NSString *)location
 {
-    [self.shiftAttributes setValue:[location copy] forKey:@"location"];
+    id value = [self copyOrNull:location];
+    [self.shiftAttributes setValue:value forKey:@"location"];
 }
 
 - (BOOL)isAllDay
@@ -113,41 +130,23 @@
 
 - (NSNumber *)alarmFirstInterval
 {
-    NSNumber *alarmFirstInterval = self.shiftAttributes[@"alarmFirstInterval"];
-    if ([alarmFirstInterval isKindOfClass:[NSNull class]])
-    {
-        return nil;
-    }
-    return alarmFirstInterval;
+    return [self valueOrNilForKey:@"alarmFirstInterval"];
 }
 
 - (void)setAlarmFirstInterval:(NSNumber *)alarmFirstInterval
 {
-    id value = [alarmFirstInterval copy];
-    if (value == nil)
-    {
-        value = [NSNull null];
-    }
+    id value = [self copyOrNull:alarmFirstInterval];
     [self.shiftAttributes setValue:value forKey:@"alarmFirstInterval"];
 }
 
 - (NSNumber *)alarmSecondInterval
 {
-    NSNumber *alarmSecondInterval = self.shiftAttributes[@"alarmSecondInterval"];
-    if ([alarmSecondInterval isKindOfClass:[NSNull class]])
-    {
-        return nil;
-    }
-    return alarmSecondInterval;
+    return [self valueOrNilForKey:@"alarmSecondInterval"];
 }
 
 - (void)setAlarmSecondInterval:(NSNumber *)alarmSecondInterval
 {
-    id value = [alarmSecondInterval copy];
-    if (value == nil)
-    {
-        value = [NSNull null];
-    }
+    id value = [self copyOrNull:alarmSecondInterval];
     [self.shiftAttributes setValue:value forKey:@"alarmSecondInterval"];
 }
 
@@ -158,19 +157,13 @@
 
 - (NSString *)calendarIdentifier
 {
-    NSString *calendarIdentifier = self.shiftAttributes[@"calendarIdentifier"];
-    
-    if ([calendarIdentifier isKindOfClass:[NSNull class]])
-    {
-        return nil;
-    }
-    
-    return calendarIdentifier;
+    return [self valueOrNilForKey:@"calendarIdentifier"];
 }
 
 - (void)setCalendarIdentifier:(NSString *)calendarIdentifier
 {
-    [self.shiftAttributes setValue:[calendarIdentifier copy] forKey:@"calendarIdentifier"];
+    id value = [self copyOrNull:calendarIdentifier];
+    [self.shiftAttributes setValue:value forKey:@"calendarIdentifier"];
 }
 
 - (BOOL)hasInvalidCalendar
@@ -203,32 +196,24 @@
 
 - (NSString *)url
 {
-    NSString *url = self.shiftAttributes[@"url"];
-    if ([url isKindOfClass:[NSNull class]])
-    {
-        return nil;
-    }
-    return url;
+    return [self valueOrNilForKey:@"url"];
 }
 
 - (void)setUrl:(NSString *)url
 {
-    [self.shiftAttributes setValue:[url copy] forKey:@"url"];
+    id value = [self copyOrNull:url];
+    [self.shiftAttributes setValue:value forKey:@"url"];
 }
 
 - (NSString *)note
 {
-    NSString *note = self.shiftAttributes[@"note"];
-    if ([note isKindOfClass:[NSNull class]])
-    {
-        return nil;
-    }
-    return note;
+    return [self valueOrNilForKey:@"note"];
 }
 
 - (void)setNote:(NSString *)note
 {
-    [self.shiftAttributes setValue:[note copy] forKey:@"note"];
+    id value = [self copyOrNull:note];
+    [self.shiftAttributes setValue:value forKey:@"note"];
 }
 
 @end
