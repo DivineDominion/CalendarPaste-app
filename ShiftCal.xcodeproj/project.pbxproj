@@ -154,6 +154,36 @@
 			name = UI;
 			sourceTree = "<group>";
 		};
+		5016FE081A3B70D7002B642E /* Duration */ = {
+			isa = PBXGroup;
+			children = (
+				60FBA82115F10443008B48A1 /* DurationPickerController.h */,
+				60FBA82215F10443008B48A1 /* DurationPickerController.m */,
+				60FBA82A15F3DD76008B48A1 /* DurationPickerDelegate.h */,
+			);
+			name = Duration;
+			sourceTree = "<group>";
+		};
+		5016FE091A3B70DD002B642E /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				60FBA82E15F66C4C008B48A1 /* CalendarPickerController.h */,
+				60FBA82F15F66C4C008B48A1 /* CalendarPickerController.m */,
+				60FBA83A15F7BAFA008B48A1 /* CalendarPickerDelegate.h */,
+			);
+			name = Calendar;
+			sourceTree = "<group>";
+		};
+		5016FE0A1A3B70E2002B642E /* Alarm */ = {
+			isa = PBXGroup;
+			children = (
+				600E1199160369BF009A7E24 /* AlarmPickerViewController.h */,
+				600E119E160373F3009A7E24 /* AlarmPickerViewController.m */,
+				600E11A216038973009A7E24 /* AlarmPickerDelegate.h */,
+			);
+			name = Alarm;
+			sourceTree = "<group>";
+		};
 		605A96B616171D980008B1C6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,22 +271,16 @@
 		60FBA83115F66C59008B48A1 /* Modify Shift */ = {
 			isa = PBXGroup;
 			children = (
-				602B6AFD18C3A005005D2227 /* ShiftData.h */,
-				602B6AFE18C3A005005D2227 /* ShiftData.m */,
-				60FBA82115F10443008B48A1 /* DurationPickerController.h */,
-				60FBA82215F10443008B48A1 /* DurationPickerController.m */,
-				60FBA82A15F3DD76008B48A1 /* DurationPickerDelegate.h */,
-				60FBA82E15F66C4C008B48A1 /* CalendarPickerController.h */,
-				60FBA82F15F66C4C008B48A1 /* CalendarPickerController.m */,
-				60FBA83A15F7BAFA008B48A1 /* CalendarPickerDelegate.h */,
-				600E1199160369BF009A7E24 /* AlarmPickerViewController.h */,
-				600E119E160373F3009A7E24 /* AlarmPickerViewController.m */,
-				600E11A216038973009A7E24 /* AlarmPickerDelegate.h */,
-				605AC42416086B5800E02F16 /* DateIntervalTranslator.h */,
-				605AC42516086B5800E02F16 /* DateIntervalTranslator.m */,
 				60F1603215DD1447005834B3 /* ShiftModificationViewController.h */,
 				60F1603315DD1447005834B3 /* ShiftModificationViewController.m */,
 				60DC7E201614B277009C8723 /* ShiftModificationDelegate.h */,
+				602B6AFD18C3A005005D2227 /* ShiftData.h */,
+				602B6AFE18C3A005005D2227 /* ShiftData.m */,
+				605AC42416086B5800E02F16 /* DateIntervalTranslator.h */,
+				605AC42516086B5800E02F16 /* DateIntervalTranslator.m */,
+				5016FE081A3B70D7002B642E /* Duration */,
+				5016FE091A3B70DD002B642E /* Calendar */,
+				5016FE0A1A3B70E2002B642E /* Alarm */,
 			);
 			name = "Modify Shift";
 			sourceTree = "<group>";

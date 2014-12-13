@@ -13,7 +13,7 @@
 @protocol ShiftModificationDelegate <NSObject>
 
 @required
-// shift == nil on cancel
+/// shift == nil on cancel
 - (void)shiftModificationViewController:(ShiftModificationViewController*)shiftAddViewController modifiedShiftAttributes:(NSDictionary *)shiftAttributes;
 
 @end

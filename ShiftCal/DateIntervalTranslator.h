@@ -9,9 +9,12 @@
 #import <Foundation/Foundation.h>
 
 @interface DateIntervalTranslator : NSObject
+@property (nonatomic, strong) NSCalendar *calendar;
+
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (NSDateComponents *)dateComponentsForTimeInterval:(NSTimeInterval)interval;
 - (NSTimeInterval)timeIntervalForComponentDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins;
+
 - (NSString *)humanReadableFormOf:(NSDateComponents *)dateComponents;
 - (NSString *)humanReadableFormOfInterval:(NSTimeInterval)interval;
 - (NSString *)humanReadableFormOfHours:(NSUInteger)hours minutes:(NSUInteger)mins;

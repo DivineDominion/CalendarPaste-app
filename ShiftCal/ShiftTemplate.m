@@ -160,8 +160,8 @@
 + (NSDictionary*)defaultAttributes
 {
     return @{ @"calendarIdentifier" : [ShiftTemplate userDefaultCalendarIdentifier],
-    @"durHours" : @1,
-    @"durMinutes" : @0 };
+              @"durHours" : @1,
+              @"durMinutes" : @0 };
 }
 
 @end

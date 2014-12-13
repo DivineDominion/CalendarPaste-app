@@ -9,7 +9,6 @@
 #import "DateIntervalTranslator.h"
 
 @interface DateIntervalTranslator ()
-@property (nonatomic, strong) NSCalendar *calendar;
 @property (nonatomic, strong) NSDate *referenceDate;
 @end
 
@@ -21,15 +20,21 @@
     
     if (self)
     {
-        self.calendar = [NSCalendar currentCalendar];
-        self.referenceDate = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:0.0];
+        _referenceDate = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:0.0];
     }
     
     return self;
 }
 
-
-# pragma mark - Private methods
+- (NSCalendar *)calendar
+{
+    if (_calendar == nil)
+    {
+        _calendar = [NSCalendar currentCalendar];
+    }
+    
+    return _calendar;
+}
 
 - (NSDateComponents *)dateComponentsForDays:(NSUInteger)days hours:(NSUInteger)hours minutes:(NSUInteger)mins
 {
@@ -41,6 +46,7 @@
     
     return components;
 }
+
 
 # pragma mark - Public methods
 
