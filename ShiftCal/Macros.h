@@ -9,10 +9,6 @@
 #ifndef ShiftCal_Macros_h
 #define ShiftCal_Macros_h
 
-    #define StupidError(...) [NSException raise:@"StudipError" format:__VA_ARGS__];
-
-    #define IS_4INCH_DISPLAY [[UIScreen mainScreen] bounds].size.height == 568.0f
-
     #define DEVELOPMENT
 //    #define ADD_PRESET_SHIFTS
 

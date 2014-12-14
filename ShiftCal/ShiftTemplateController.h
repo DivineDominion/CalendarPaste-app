@@ -11,10 +11,15 @@
 #import "NSMutableArray+MoveArray.h"
 #import "ShiftTemplate.h"
 
+extern NSString * const kShiftEntityName;
+
 @interface ShiftTemplateController : NSObject
-@property (strong, nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (strong, nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
-@property (strong, nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, copy, readonly) NSURL *storeURL;
+@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
+
+- (instancetype)initWithStoreURL:(NSURL *)storeURL NS_DESIGNATED_INITIALIZER;
 
 - (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift;
 - (ShiftTemplate *)importShiftByAttributeDictionary:(NSDictionary *)attributes;
