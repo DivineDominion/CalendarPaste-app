@@ -8,40 +8,48 @@
 
 #import "ShiftTemplateController.h"
 #import "AppDelegate.h"
+#import "Helpers.h"
 
-#define DATABASE_PATH @"database.sqlite"
-
-// Class-level global
-static NSString *kShiftEntityName = @"ShiftTemplate";
+NSString * const kDatabaseFile = @"database.sqlite";
+NSString * const kShiftEntityName = @"ShiftTemplate";
 
 @interface ShiftTemplateController ()
-@property (strong, nonatomic, readwrite) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (strong, nonatomic, readwrite) NSManagedObjectModel *managedObjectModel;
-@property (strong, nonatomic, readwrite) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, copy, readwrite) NSURL *storeURL;
+@property (nonatomic, strong, readwrite) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, strong, readwrite) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readwrite) NSManagedObjectContext *managedObjectContext;
 @end
 
 @implementation ShiftTemplateController
 
-#pragma mark - Instance methods
-
 - (instancetype)init
 {
-    self = [super init];
+    NSURL *documentsDir = [[self class] documentsDirectory];
+    return [self initWithStoreURL:[documentsDir URLByAppendingPathComponent:kDatabaseFile]];
+}
 
-#ifdef ADD_PRESET_SHIFTS
+- (instancetype)initWithStoreURL:(NSURL *)storeURL
+{
+    self = [super init];
+    
     if (self)
     {
+        _storeURL = storeURL;
+#ifdef ADD_PRESET_SHIFTS
         [self loadModel];
-    }
 #endif
+    }
     
     return self;
 }
 
-- (NSURL *)documentsDirectory
++ (NSURL *)documentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
+
+
+#pragma mark -
 
 - (NSUInteger)countOfShiftEntities
 {    
@@ -259,8 +267,7 @@ static NSString *kShiftEntityName = @"ShiftTemplate";
         return _persistentStoreCoordinator;
     }
     
-    NSURL *documentsDir = [self documentsDirectory];
-    NSURL *storeUrl     = [documentsDir URLByAppendingPathComponent:DATABASE_PATH];
+    NSURL *storeUrl     = self.storeURL;
     NSError *error      = nil;
     
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
