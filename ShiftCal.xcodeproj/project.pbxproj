@@ -18,6 +18,8 @@
 		50467DB31A403180001E18A9 /* PersistentStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DB21A403180001E18A9 /* PersistentStack.m */; };
 		50467DB61A4036CF001E18A9 /* PersistentStackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DB51A4036CF001E18A9 /* PersistentStackTests.m */; };
 		50467DB81A4038CD001E18A9 /* CalendarProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DB71A4038CD001E18A9 /* CalendarProviderTests.m */; };
+		50467DBC1A4047B5001E18A9 /* TestUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DBB1A4047B5001E18A9 /* TestUserDefaults.m */; };
+		50467DBF1A4047D9001E18A9 /* TestNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DBE1A4047D9001E18A9 /* TestNotificationCenter.m */; };
 		600BFE7615FB5ADF008B03CA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A515C08EB900801105 /* CoreGraphics.framework */; };
 		600E119F160373F3009A7E24 /* AlarmPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 600E119E160373F3009A7E24 /* AlarmPickerViewController.m */; };
 		6026C75F16B1AA4A00445709 /* NSDate+Tomorrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6026C75E16B1AA4A00445709 /* NSDate+Tomorrow.m */; };
@@ -81,6 +83,10 @@
 		50467DB21A403180001E18A9 /* PersistentStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentStack.m; sourceTree = "<group>"; };
 		50467DB51A4036CF001E18A9 /* PersistentStackTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentStackTests.m; sourceTree = "<group>"; };
 		50467DB71A4038CD001E18A9 /* CalendarProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarProviderTests.m; sourceTree = "<group>"; };
+		50467DBA1A4047B5001E18A9 /* TestUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestUserDefaults.h; sourceTree = "<group>"; };
+		50467DBB1A4047B5001E18A9 /* TestUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestUserDefaults.m; sourceTree = "<group>"; };
+		50467DBD1A4047D9001E18A9 /* TestNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestNotificationCenter.h; sourceTree = "<group>"; };
+		50467DBE1A4047D9001E18A9 /* TestNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestNotificationCenter.m; sourceTree = "<group>"; };
 		600E1199160369BF009A7E24 /* AlarmPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerViewController.h; sourceTree = "<group>"; };
 		600E119E160373F3009A7E24 /* AlarmPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmPickerViewController.m; sourceTree = "<group>"; };
 		600E11A216038973009A7E24 /* AlarmPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerDelegate.h; sourceTree = "<group>"; };
@@ -173,12 +179,9 @@
 			children = (
 				60BB96B015C08EB900801105 /* AppDelegate.h */,
 				60BB96B115C08EB900801105 /* AppDelegate.m */,
-				50329FAF1A3F04D5001F5D31 /* EventStore.h */,
-				50329FB01A3F04D5001F5D31 /* EventStore.m */,
-				50329F461A3EDE62001F5D31 /* CalendarProvider.h */,
-				50329F471A3EDE62001F5D31 /* CalendarProvider.m */,
 				5016FE001A3B5D13002B642E /* CalendarAccessGuard.h */,
 				5016FE011A3B5D13002B642E /* CalendarAccessGuard.m */,
+				50467DC01A404857001E18A9 /* Calendar */,
 				50467DB41A4031B5001E18A9 /* Core Data */,
 			);
 			name = Infrastructure;
@@ -260,8 +263,7 @@
 				50467DAF1A402A29001E18A9 /* ShiftTemplateControllerTests.m */,
 				50467DB51A4036CF001E18A9 /* PersistentStackTests.m */,
 				50467DB71A4038CD001E18A9 /* CalendarProviderTests.m */,
-				50467DAA1A40291A001E18A9 /* CoreDataStackTestCase.h */,
-				50467DAB1A40291A001E18A9 /* CoreDataStackTestCase.m */,
+				50467DB91A4047A6001E18A9 /* Helpers */,
 				50467DA11A4028AE001E18A9 /* Supporting Files */,
 			);
 			path = Tests;
@@ -282,6 +284,30 @@
 				50467DB21A403180001E18A9 /* PersistentStack.m */,
 			);
 			name = "Core Data";
+			sourceTree = "<group>";
+		};
+		50467DB91A4047A6001E18A9 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				50467DAA1A40291A001E18A9 /* CoreDataStackTestCase.h */,
+				50467DAB1A40291A001E18A9 /* CoreDataStackTestCase.m */,
+				50467DBD1A4047D9001E18A9 /* TestNotificationCenter.h */,
+				50467DBE1A4047D9001E18A9 /* TestNotificationCenter.m */,
+				50467DBA1A4047B5001E18A9 /* TestUserDefaults.h */,
+				50467DBB1A4047B5001E18A9 /* TestUserDefaults.m */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		50467DC01A404857001E18A9 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				50329F461A3EDE62001F5D31 /* CalendarProvider.h */,
+				50329F471A3EDE62001F5D31 /* CalendarProvider.m */,
+				50329FAF1A3F04D5001F5D31 /* EventStore.h */,
+				50329FB01A3F04D5001F5D31 /* EventStore.m */,
+			);
+			name = Calendar;
 			sourceTree = "<group>";
 		};
 		605A96B616171D980008B1C6 /* Model */ = {
@@ -507,10 +533,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50467DBF1A4047D9001E18A9 /* TestNotificationCenter.m in Sources */,
 				50467DAE1A40291A001E18A9 /* CoreDataWiringTest.m in Sources */,
 				50467DB01A402A29001E18A9 /* ShiftTemplateControllerTests.m in Sources */,
 				50467DAD1A40291A001E18A9 /* CoreDataStackTestCase.m in Sources */,
 				50467DB61A4036CF001E18A9 /* PersistentStackTests.m in Sources */,
+				50467DBC1A4047B5001E18A9 /* TestUserDefaults.m in Sources */,
 				50467DB81A4038CD001E18A9 /* CalendarProviderTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

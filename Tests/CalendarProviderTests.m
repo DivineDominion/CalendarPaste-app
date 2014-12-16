@@ -12,87 +12,9 @@
 #import "CalendarProvider.h"
 
 #import "CTKNotificationCenter.h"
+#import "TestNotificationCenter.h"
 #import "CTKUserDefaults.h"
-#import "EventStore.h"
-
-@interface TestNotificationCenter : NSNotificationCenter
-@property (nonatomic, strong) NSMutableArray *notifications;
-@end
-
-@implementation TestNotificationCenter
-- (NSArray *)notifications {
-    if (!_notifications) {
-        _notifications = [NSMutableArray array];
-    }
-    
-    return _notifications;
-}
-
-- (BOOL)didReceiveNotifications {
-    return self.notifications && self.notifications.count > 0;
-}
-
-- (void)postNotificationName:(NSString *)aName object:(id)anObject userInfo:(NSDictionary *)aUserInfo {
-    NSDictionary *notification = @{@"name" : aName, @"object" : anObject, @"userInfo" : aUserInfo};
-    [self.notifications addObject:notification];
-}
-
-- (void)addObserver:(id)observer selector:(SEL)aSelector name:(NSString *)aName object:(id)anObject { /* no op */ }
-- (void)removeObserver:(id)observer { /* no op */ }
-- (void)removeObserver:(id)observer name:(NSString *)aName object:(id)anObject { /* no op */ }
-@end
-
-@interface TestUserDefaults : NSObject
-@property (nonatomic, strong) NSMutableDictionary *defaultsStub;
-@end
-
-@implementation TestUserDefaults
-
-- (instancetype)init {
-    self = [super init];
-    
-    if (self) {
-        _defaultsStub = [NSMutableDictionary dictionary];
-    }
-    
-    return self;
-}
-
-- (id)objectForKey:(NSString *)defaultName {
-    return self.defaultsStub[defaultName];
-}
-
-- (void)setObject:(id)value forKey:(NSString *)defaultName {
-    if (value == nil) {
-        value = [NSNull null];
-    }
-    
-    self.defaultsStub[defaultName] = value;
-}
-
-- (void)setURL:(NSURL *)url forKey:(NSString *)defaultName {
-    [self setObject:url forKey:defaultName];
-}
-
-- (void)setBool:(BOOL)value forKey:(NSString *)defaultName {
-    [self setObject:@(value) forKey:defaultName];
-}
-
-- (void)setInteger:(NSInteger)value forKey:(NSString *)defaultName {
-    [self setObject:@(value) forKey:defaultName];
-}
-
-- (void)setDouble:(double)value forKey:(NSString *)defaultName {
-    [self setObject:@(value) forKey:defaultName];
-}
-
-- (void)setFloat:(float)value forKey:(NSString *)defaultName {
-    [self setObject:@(value) forKey:defaultName];
-}
-
-- (void)synchronize { /* no op */ }
-
-@end
+#import "TestUserDefaults.h"
 
 @interface TestEventStoreWrapper : NSObject
 @property (nonatomic, assign) BOOL isAuthorizedForCalendarAccess;
