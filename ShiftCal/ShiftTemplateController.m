@@ -10,13 +10,9 @@
 #import "AppDelegate.h"
 #import "Helpers.h"
 
-NSString * const kDatabaseFile = @"database.sqlite";
 NSString * const kShiftEntityName = @"ShiftTemplate";
 
 @interface ShiftTemplateController ()
-@property (nonatomic, copy, readwrite) NSURL *storeURL;
-@property (nonatomic, strong, readwrite) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, strong, readwrite) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong, readwrite) NSManagedObjectContext *managedObjectContext;
 @end
 
@@ -24,28 +20,22 @@ NSString * const kShiftEntityName = @"ShiftTemplate";
 
 - (instancetype)init
 {
-    NSURL *documentsDir = [[self class] documentsDirectory];
-    return [self initWithStoreURL:[documentsDir URLByAppendingPathComponent:kDatabaseFile]];
+    return [self initWithManagedObjectContext:nil];
 }
 
-- (instancetype)initWithStoreURL:(NSURL *)storeURL
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     self = [super init];
     
     if (self)
     {
-        _storeURL = storeURL;
+        _managedObjectContext = managedObjectContext;
 #ifdef ADD_PRESET_SHIFTS
         [self loadModel];
 #endif
     }
     
     return self;
-}
-
-+ (NSURL *)documentsDirectory
-{
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
 
@@ -239,60 +229,4 @@ NSString * const kShiftEntityName = @"ShiftTemplate";
     NSAssert(success, @"Could not persist changes, error: %@", error);
     return success;
 }
-
-#pragma mark - Core Data wrapper
-
-- (NSManagedObjectContext *)managedObjectContext
-{
-    if (_managedObjectContext)
-    {
-        return _managedObjectContext;
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = self.persistentStoreCoordinator;
-    
-    if (coordinator)
-    {
-        _managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [_managedObjectContext setPersistentStoreCoordinator:coordinator];
-    }
-    
-    return _managedObjectContext;
-}
-
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
-    if (_persistentStoreCoordinator)
-    {
-        return _persistentStoreCoordinator;
-    }
-    
-    NSURL *storeUrl     = self.storeURL;
-    NSError *error      = nil;
-    
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
-    
-    NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption : @YES,
-                              NSInferMappingModelAutomaticallyOption : @YES};
-    
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error])
-    {
-        StupidError(@"error while initializing persistentStoreCoordinator: %@", error.localizedDescription);
-    }
-    
-    return _persistentStoreCoordinator;
-}
-
-- (NSManagedObjectModel *)managedObjectModel
-{
-    if (_managedObjectModel)
-    {
-        return _managedObjectModel;
-    }
-    
-    _managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
-    
-    return _managedObjectModel;
-}
-
 @end

@@ -14,12 +14,9 @@
 extern NSString * const kShiftEntityName;
 
 @interface ShiftTemplateController : NSObject
-@property (nonatomic, copy, readonly) NSURL *storeURL;
-@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
 
-- (instancetype)initWithStoreURL:(NSURL *)storeURL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext NS_DESIGNATED_INITIALIZER;
 
 - (ShiftTemplate *)importShift:(NSManagedObject *)foreignShift;
 - (ShiftTemplate *)importShiftByAttributeDictionary:(NSDictionary *)attributes;

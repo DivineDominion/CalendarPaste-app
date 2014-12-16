@@ -12,6 +12,11 @@
 		50329F481A3EDE62001F5D31 /* CalendarProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 50329F471A3EDE62001F5D31 /* CalendarProvider.m */; };
 		50329FA71A3EFE11001F5D31 /* libTestingToolkit-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50329FA61A3EFE11001F5D31 /* libTestingToolkit-iOS.a */; };
 		50329FB11A3F04D5001F5D31 /* EventStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 50329FB01A3F04D5001F5D31 /* EventStore.m */; };
+		50467DAD1A40291A001E18A9 /* CoreDataStackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DAB1A40291A001E18A9 /* CoreDataStackTestCase.m */; };
+		50467DAE1A40291A001E18A9 /* CoreDataWiringTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DAC1A40291A001E18A9 /* CoreDataWiringTest.m */; };
+		50467DB01A402A29001E18A9 /* ShiftTemplateControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DAF1A402A29001E18A9 /* ShiftTemplateControllerTests.m */; };
+		50467DB31A403180001E18A9 /* PersistentStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DB21A403180001E18A9 /* PersistentStack.m */; };
+		50467DB61A4036CF001E18A9 /* PersistentStackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DB51A4036CF001E18A9 /* PersistentStackTests.m */; };
 		600BFE7615FB5ADF008B03CA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A515C08EB900801105 /* CoreGraphics.framework */; };
 		600E119F160373F3009A7E24 /* AlarmPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 600E119E160373F3009A7E24 /* AlarmPickerViewController.m */; };
 		6026C75F16B1AA4A00445709 /* NSDate+Tomorrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6026C75E16B1AA4A00445709 /* NSDate+Tomorrow.m */; };
@@ -42,6 +47,16 @@
 		60FBA83C15FA571F008B48A1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60FBA83B15FA571F008B48A1 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		50467DA51A4028AE001E18A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 60BB969415C08EB900801105 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 60BB969C15C08EB900801105;
+			remoteInfo = ShiftCal;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		5016FE001A3B5D13002B642E /* CalendarAccessGuard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarAccessGuard.h; sourceTree = "<group>"; };
 		5016FE011A3B5D13002B642E /* CalendarAccessGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarAccessGuard.m; sourceTree = "<group>"; };
@@ -55,6 +70,15 @@
 		50329FAE1A3EFFFF001F5D31 /* CTKUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTKUserDefaults.h; path = ../components/TestingToolkit/TestingToolkit/CTKUserDefaults.h; sourceTree = "<group>"; };
 		50329FAF1A3F04D5001F5D31 /* EventStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventStore.h; sourceTree = "<group>"; };
 		50329FB01A3F04D5001F5D31 /* EventStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventStore.m; sourceTree = "<group>"; };
+		50467D9F1A4028AE001E18A9 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		50467DA21A4028AE001E18A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Tests/Info.plist; sourceTree = "<group>"; };
+		50467DAA1A40291A001E18A9 /* CoreDataStackTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataStackTestCase.h; sourceTree = "<group>"; };
+		50467DAB1A40291A001E18A9 /* CoreDataStackTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataStackTestCase.m; sourceTree = "<group>"; };
+		50467DAC1A40291A001E18A9 /* CoreDataWiringTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataWiringTest.m; sourceTree = "<group>"; };
+		50467DAF1A402A29001E18A9 /* ShiftTemplateControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftTemplateControllerTests.m; sourceTree = "<group>"; };
+		50467DB11A403180001E18A9 /* PersistentStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistentStack.h; sourceTree = "<group>"; };
+		50467DB21A403180001E18A9 /* PersistentStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentStack.m; sourceTree = "<group>"; };
+		50467DB51A4036CF001E18A9 /* PersistentStackTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentStackTests.m; sourceTree = "<group>"; };
 		600E1199160369BF009A7E24 /* AlarmPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerViewController.h; sourceTree = "<group>"; };
 		600E119E160373F3009A7E24 /* AlarmPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmPickerViewController.m; sourceTree = "<group>"; };
 		600E11A216038973009A7E24 /* AlarmPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerDelegate.h; sourceTree = "<group>"; };
@@ -118,6 +142,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		50467D9C1A4028AE001E18A9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		60BB969A15C08EB900801105 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -146,6 +177,7 @@
 				50329F471A3EDE62001F5D31 /* CalendarProvider.m */,
 				5016FE001A3B5D13002B642E /* CalendarAccessGuard.h */,
 				5016FE011A3B5D13002B642E /* CalendarAccessGuard.m */,
+				50467DB41A4031B5001E18A9 /* Core Data */,
 			);
 			name = Infrastructure;
 			sourceTree = "<group>";
@@ -219,6 +251,36 @@
 			name = "New Group";
 			sourceTree = "<group>";
 		};
+		50467DA01A4028AE001E18A9 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				50467DAC1A40291A001E18A9 /* CoreDataWiringTest.m */,
+				50467DAF1A402A29001E18A9 /* ShiftTemplateControllerTests.m */,
+				50467DB51A4036CF001E18A9 /* PersistentStackTests.m */,
+				50467DAA1A40291A001E18A9 /* CoreDataStackTestCase.h */,
+				50467DAB1A40291A001E18A9 /* CoreDataStackTestCase.m */,
+				50467DA11A4028AE001E18A9 /* Supporting Files */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		50467DA11A4028AE001E18A9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				50467DA21A4028AE001E18A9 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		50467DB41A4031B5001E18A9 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				50467DB11A403180001E18A9 /* PersistentStack.h */,
+				50467DB21A403180001E18A9 /* PersistentStack.m */,
+			);
+			name = "Core Data";
+			sourceTree = "<group>";
+		};
 		605A96B616171D980008B1C6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,6 +314,7 @@
 			children = (
 				60A1392C17FCA97600D3FBF5 /* Images.xcassets */,
 				60BB96A715C08EB900801105 /* ShiftCal */,
+				50467DA01A4028AE001E18A9 /* Tests */,
 				60BB96A015C08EB900801105 /* Frameworks */,
 				60BB969E15C08EB900801105 /* Products */,
 			);
@@ -261,6 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				60BB969D15C08EB900801105 /* Cal Paste.app */,
+				50467D9F1A4028AE001E18A9 /* Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -326,6 +390,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		50467D9E1A4028AE001E18A9 /* Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50467DA71A4028AE001E18A9 /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildPhases = (
+				50467D9B1A4028AE001E18A9 /* Sources */,
+				50467D9C1A4028AE001E18A9 /* Frameworks */,
+				50467D9D1A4028AE001E18A9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				50467DA61A4028AE001E18A9 /* PBXTargetDependency */,
+			);
+			name = Tests;
+			productName = Tests;
+			productReference = 50467D9F1A4028AE001E18A9 /* Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		60BB969C15C08EB900801105 /* ShiftCal */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 60BB96CA15C08EB900801105 /* Build configuration list for PBXNativeTarget "ShiftCal" */;
@@ -354,6 +436,10 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Christian Tietze";
 				TargetAttributes = {
+					50467D9E1A4028AE001E18A9 = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = 60BB969C15C08EB900801105;
+					};
 					60BB969C15C08EB900801105 = {
 						DevelopmentTeam = FRMDA3XRGC;
 					};
@@ -372,11 +458,19 @@
 			projectRoot = "";
 			targets = (
 				60BB969C15C08EB900801105 /* ShiftCal */,
+				50467D9E1A4028AE001E18A9 /* Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		50467D9D1A4028AE001E18A9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		60BB969B15C08EB900801105 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -406,6 +500,17 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		50467D9B1A4028AE001E18A9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50467DAE1A40291A001E18A9 /* CoreDataWiringTest.m in Sources */,
+				50467DB01A402A29001E18A9 /* ShiftTemplateControllerTests.m in Sources */,
+				50467DAD1A40291A001E18A9 /* CoreDataStackTestCase.m in Sources */,
+				50467DB61A4036CF001E18A9 /* PersistentStackTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		60BB969915C08EB900801105 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -413,6 +518,7 @@
 				60BB96AE15C08EB900801105 /* main.m in Sources */,
 				5016FE071A3B6BED002B642E /* ModificationCommand.m in Sources */,
 				50329F481A3EDE62001F5D31 /* CalendarProvider.m in Sources */,
+				50467DB31A403180001E18A9 /* PersistentStack.m in Sources */,
 				60BB96B215C08EB900801105 /* AppDelegate.m in Sources */,
 				60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */,
 				60FBA82315F10443008B48A1 /* DurationPickerController.m in Sources */,
@@ -439,6 +545,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		50467DA61A4028AE001E18A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 60BB969C15C08EB900801105 /* ShiftCal */;
+			targetProxy = 50467DA51A4028AE001E18A9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		60BB96AA15C08EB900801105 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -451,6 +565,59 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		50467DA81A4028AE001E18A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cal Paste.app/Cal Paste";
+			};
+			name = Debug;
+		};
+		50467DA91A4028AE001E18A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cal Paste.app/Cal Paste";
+			};
+			name = Release;
+		};
 		60BB96C815C08EB900801105 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -469,7 +636,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/ctm/calendarpaste,
+					/Users/ctm/Coding/calendarpaste,
 					"$(PROJECT_DIR)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/CalendarPaste-fvkrxbvbjcxddvhhdfeypwazxbex/Build/Products/**",
 				);
@@ -513,7 +680,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/ctm/calendarpaste,
+					/Users/ctm/Coding/calendarpaste,
 					"$(PROJECT_DIR)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/CalendarPaste-fvkrxbvbjcxddvhhdfeypwazxbex/Build/Products/**",
 				);
@@ -587,6 +754,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		50467DA71A4028AE001E18A9 /* Build configuration list for PBXNativeTarget "Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				50467DA81A4028AE001E18A9 /* Debug */,
+				50467DA91A4028AE001E18A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		60BB969715C08EB900801105 /* Build configuration list for PBXProject "ShiftCal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

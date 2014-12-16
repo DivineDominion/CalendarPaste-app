@@ -7,7 +7,6 @@
 //
 
 #import "DurationPickerController.h"
-#import "ShiftTemplateController.h"
 #import "DateIntervalTranslator.h"
 
 #define CELL_ID @"duration"
