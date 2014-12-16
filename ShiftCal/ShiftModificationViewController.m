@@ -104,7 +104,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(invalidateCalendar:)
                                                      name:SCStoreChangedNotification
-                                                   object:[[UIApplication sharedApplication] delegate]];
+                                                   object:nil];
         
         self.showDurationPicker = NO;
     }
@@ -187,7 +187,7 @@
 {
     if ([self.shiftData hasInvalidCalendar])
     {
-        NSString *defaultCalendarIdentifer = notification.userInfo[NOTIFICATION_DEFAULT_CALENDAR_KEY];
+        NSString *defaultCalendarIdentifer = notification.userInfo[kKeyNotificationDefaultCalendar];
         
         self.shiftData.calendarIdentifier = defaultCalendarIdentifer;
         

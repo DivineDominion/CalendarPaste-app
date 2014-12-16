@@ -11,6 +11,7 @@
 
 @protocol CalendarAccessGuardDelegate <NSObject>
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated;
+- (void)grantCalendarAccess;
 @end
 
 @interface CalendarAccessGuard : NSObject

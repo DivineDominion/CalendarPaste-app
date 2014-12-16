@@ -47,7 +47,7 @@
     if (self)
     {
         NSUserDefaults *prefs               = [NSUserDefaults standardUserDefaults];
-        NSString *defaultCalendarIdentifier = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
+        NSString *defaultCalendarIdentifier = [prefs objectForKey:kKeyPrefsDefaultCalendar];
 
         self.shiftTemplateController = [[ShiftTemplateController alloc] init];
         self.shiftCollection = [[ShiftTemplateCollection alloc] initWithFallbackCalendarIdentifier:defaultCalendarIdentifier shiftTemplateController:self.shiftTemplateController];
@@ -66,7 +66,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(invalidateCalendars:)
                                                      name:SCStoreChangedNotification
-                                                   object:[[UIApplication sharedApplication] delegate]];
+                                                   object:nil];
     }
     
     return self;
@@ -74,7 +74,7 @@
 
 - (void)invalidateCalendars:(NSNotification *)notification
 {
-    NSString *defaultCalendarIdentifer = notification.userInfo[NOTIFICATION_DEFAULT_CALENDAR_KEY];
+    NSString *defaultCalendarIdentifer = notification.userInfo[kKeyNotificationDefaultCalendar];
     
     [self.shiftCollection resetInvalidCalendarsTo:defaultCalendarIdentifer onChanges:^{
         [self.tableView reloadData];
