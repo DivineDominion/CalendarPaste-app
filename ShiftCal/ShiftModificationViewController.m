@@ -14,9 +14,11 @@
 
 #import "DurationPickerController.h"
 #import "CalendarPickerController.h"
-#import "ShiftTemplateController.h"
 #import "AlarmPickerViewController.h"
 #import "DateIntervalTranslator.h"
+
+#import "PersistentStack.h"
+#import "ShiftTemplateController.h"
 
 #define NUM_SECTIONS           6
 #define SECTION_TITLE_LOCATION 0
@@ -55,6 +57,8 @@
 @property (nonatomic, strong) ShiftData *shiftData;
 @property (nonatomic, strong) DateIntervalTranslator *dateTranslator;
 @property (nonatomic, assign) NSInteger selectedAlarmRow;
+
+@property (nonatomic, strong) PersistentStack *persistentStack;
 @property (nonatomic, strong, readwrite) ShiftTemplateController *shiftTemplateController;
 
 @property (nonatomic, strong, readwrite) DurationPickerController *durationController;
@@ -126,13 +130,22 @@
 
 - (ShiftTemplateController *)shiftTemplateController
 {
-    if (_shiftTemplateController)
+    if (!_shiftTemplateController)
     {
-        return _shiftTemplateController;
+        _shiftTemplateController = [[ShiftTemplateController alloc] initWithManagedObjectContext:self.persistentStack.managedObjectContext];
     }
     
-    _shiftTemplateController = [[ShiftTemplateController alloc] init];
     return _shiftTemplateController;
+}
+
+- (PersistentStack *)persistentStack
+{
+    if (!_persistentStack)
+    {
+        _persistentStack = [PersistentStack persistentStack];
+    }
+    
+    return _persistentStack;
 }
 
 #pragma mark - View callbacks

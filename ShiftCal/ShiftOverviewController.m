@@ -7,6 +7,8 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
+
+#import "PersistentStack.h"
 #import "ShiftOverviewController.h"
 
 #import "EventStoreConstants.h"
@@ -28,7 +30,10 @@
 @interface ShiftOverviewController ()
 @property (nonatomic, strong) ModificationCommand *modificationCommand;
 @property (nonatomic, strong) ShiftTemplateCollection *shiftCollection;
+
+@property (nonatomic, strong) PersistentStack *persistentStack;
 @property (nonatomic, strong) ShiftTemplateController *shiftTemplateController;
+
 @property (nonatomic, assign) NSUInteger longHoursCount;
 @property (nonatomic, readonly, strong) UIView *emptyListView;
 @end
@@ -49,17 +54,18 @@
         NSUserDefaults *prefs               = [NSUserDefaults standardUserDefaults];
         NSString *defaultCalendarIdentifier = [prefs objectForKey:kKeyPrefsDefaultCalendar];
 
-        self.shiftTemplateController = [[ShiftTemplateController alloc] init];
-        self.shiftCollection = [[ShiftTemplateCollection alloc] initWithFallbackCalendarIdentifier:defaultCalendarIdentifier shiftTemplateController:self.shiftTemplateController];
+        _persistentStack = [PersistentStack persistentStack];
+        _shiftTemplateController = [[ShiftTemplateController alloc] initWithManagedObjectContext:_persistentStack.managedObjectContext];
+        _shiftCollection = [[ShiftTemplateCollection alloc] initWithFallbackCalendarIdentifier:defaultCalendarIdentifier shiftTemplateController:self.shiftTemplateController];
         
         // Count hour values with 2 digits
-        self.longHoursCount = 0;
+        _longHoursCount = 0;
         
-        [self.shiftCollection.shifts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            ShiftTemplate *shift = obj;
+        [_shiftCollection.shifts enumerateObjectsUsingBlock:^(ShiftTemplate *shift, NSUInteger idx, BOOL *stop) {
+            
             if ([shift.durHours integerValue] >= 10)
             {
-                self.longHoursCount++;
+                _longHoursCount++;
             }
         }];
         
