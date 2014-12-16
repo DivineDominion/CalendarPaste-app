@@ -12,11 +12,10 @@
 #import "ShiftOverviewController.h"
 #import "LayoutHelper.h"
 
-#import "CalendarProvider.h"
+#import "UserCalendarProvider.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong, readwrite) UINavigationController *navController;
-@property (nonatomic, strong, readwrite) EKEventStore *eventStore;
 @property (nonatomic, strong, readwrite) UIColor *appColor;
 
 @property (nonatomic, strong, readwrite) CalendarAccessGuard *calendarAccessGuard;
@@ -24,16 +23,6 @@
 
 
 @implementation AppDelegate
-
-- (EKEventStore *)eventStore
-{
-    return [[self calendarProvider] eventStore];
-}
-
-- (CalendarProvider *)calendarProvider
-{
-    return [CalendarProvider sharedInstance];
-}
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
@@ -43,8 +32,9 @@
 - (void)grantCalendarAccess
 {
     NSLog(@"granted");
-    [self registerPreferenceDefaults];
+    [[UserCalendarProvider sharedInstance] registerPreferenceDefaults];
 }
+
 
 #pragma mark - Launch and Set-Up
 
@@ -66,7 +56,7 @@
 
 - (void)guardCalendarAccess
 {
-    CalendarAccessGuard *calendarAccessGuard = [[CalendarAccessGuard alloc] initWithEventStore:self.eventStore];
+    CalendarAccessGuard *calendarAccessGuard = [[CalendarAccessGuard alloc] init];
     calendarAccessGuard.delegate = self;
     self.calendarAccessGuard = calendarAccessGuard;
     
@@ -85,13 +75,6 @@
                                      NSFontAttributeName: [UIFont fontWithName:@"HelveticaNeue-Bold" size:21.0]};
     [[UINavigationBar appearance] setTitleTextAttributes: titleAttributes];
 }
-
-
-- (void)registerPreferenceDefaults
-{
-    [self.calendarProvider registerPreferenceDefaults];
-}
-
 
 
 #pragma mark Application callbacks

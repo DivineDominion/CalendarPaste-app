@@ -1,5 +1,5 @@
 //
-//  EventStore.h
+//  EventStoreWrapper.h
 //  ShiftCal
 //
 //  Created by Christian Tietze on 15/12/14.
@@ -9,12 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <EventKit/EventKit.h>
 
-@interface EventStore : NSObject
+@interface EventStoreWrapper : NSObject
 @property (nonatomic, strong, readonly) EKEventStore *eventStore;
 
 - (instancetype)initWithEventStore:(EKEventStore *)eventStore NS_DESIGNATED_INITIALIZER;
 
+- (void)requestEventAccessWithGrantedBlock:(void (^)())closure;
 - (BOOL)isAuthorizedForCalendarAccess;
+
 - (EKCalendar *)defaultCalendar;
 - (NSString *)defaultCalendarIdentifier;
 @end

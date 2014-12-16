@@ -51,8 +51,7 @@
     
     if (self)
     {
-        NSUserDefaults *prefs               = [NSUserDefaults standardUserDefaults];
-        NSString *defaultCalendarIdentifier = [prefs objectForKey:kKeyPrefsDefaultCalendar];
+        NSString *defaultCalendarIdentifier = [[UserCalendarProvider sharedInstance] userDefaultCalendarIdentifier];
 
         _persistentStack = [PersistentStack persistentStack];
         _shiftTemplateController = [[ShiftTemplateController alloc] initWithManagedObjectContext:_persistentStack.managedObjectContext];

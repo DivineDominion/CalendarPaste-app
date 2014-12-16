@@ -449,11 +449,8 @@
         NSUserDefaults *prefs        = [NSUserDefaults standardUserDefaults];
         EKCalendar *calendar         = [self calendarForIndexPath:self.defaultCellIndexPath];
         NSString *calendarIdentifier = calendar.calendarIdentifier;
-        
-        [prefs setObject:calendarIdentifier forKey:kKeyPrefsDefaultCalendar];
-#ifdef DEVELOPMENT
-        [prefs synchronize];
-#endif
+
+        [[UserCalendarProvider sharedInstance] setUserDefaultCalendarIdentifier:calendarIdentifier];
     }
 }
 

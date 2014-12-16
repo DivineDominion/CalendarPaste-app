@@ -1,17 +1,17 @@
 //
-//  EventStore.m
+//  EventStoreWrapper.m
 //  ShiftCal
 //
 //  Created by Christian Tietze on 15/12/14.
 //  Copyright (c) 2014 Christian Tietze. All rights reserved.
 //
 
-#import "EventStore.h"
+#import "EventStoreWrapper.h"
 
-@interface EventStore ()
+@interface EventStoreWrapper ()
 @end
 
-@implementation EventStore
+@implementation EventStoreWrapper
 - (instancetype)init
 {
     return [self initWithEventStore:nil];
@@ -28,6 +28,19 @@
     }
     
     return self;
+}
+
+
+#pragma mark -
+
+- (void)requestEventAccessWithGrantedBlock:(void (^)())closure
+{
+    [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+        if (granted)
+        {
+            closure();
+        }
+    }];
 }
 
 - (BOOL)isAuthorizedForCalendarAccess
