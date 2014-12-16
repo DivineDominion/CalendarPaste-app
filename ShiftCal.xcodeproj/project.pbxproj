@@ -17,6 +17,7 @@
 		50467DB01A402A29001E18A9 /* ShiftTemplateControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DAF1A402A29001E18A9 /* ShiftTemplateControllerTests.m */; };
 		50467DB31A403180001E18A9 /* PersistentStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DB21A403180001E18A9 /* PersistentStack.m */; };
 		50467DB61A4036CF001E18A9 /* PersistentStackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DB51A4036CF001E18A9 /* PersistentStackTests.m */; };
+		50467DB81A4038CD001E18A9 /* CalendarProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DB71A4038CD001E18A9 /* CalendarProviderTests.m */; };
 		600BFE7615FB5ADF008B03CA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A515C08EB900801105 /* CoreGraphics.framework */; };
 		600E119F160373F3009A7E24 /* AlarmPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 600E119E160373F3009A7E24 /* AlarmPickerViewController.m */; };
 		6026C75F16B1AA4A00445709 /* NSDate+Tomorrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6026C75E16B1AA4A00445709 /* NSDate+Tomorrow.m */; };
@@ -79,6 +80,7 @@
 		50467DB11A403180001E18A9 /* PersistentStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistentStack.h; sourceTree = "<group>"; };
 		50467DB21A403180001E18A9 /* PersistentStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentStack.m; sourceTree = "<group>"; };
 		50467DB51A4036CF001E18A9 /* PersistentStackTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentStackTests.m; sourceTree = "<group>"; };
+		50467DB71A4038CD001E18A9 /* CalendarProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarProviderTests.m; sourceTree = "<group>"; };
 		600E1199160369BF009A7E24 /* AlarmPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerViewController.h; sourceTree = "<group>"; };
 		600E119E160373F3009A7E24 /* AlarmPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmPickerViewController.m; sourceTree = "<group>"; };
 		600E11A216038973009A7E24 /* AlarmPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerDelegate.h; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 				50467DAC1A40291A001E18A9 /* CoreDataWiringTest.m */,
 				50467DAF1A402A29001E18A9 /* ShiftTemplateControllerTests.m */,
 				50467DB51A4036CF001E18A9 /* PersistentStackTests.m */,
+				50467DB71A4038CD001E18A9 /* CalendarProviderTests.m */,
 				50467DAA1A40291A001E18A9 /* CoreDataStackTestCase.h */,
 				50467DAB1A40291A001E18A9 /* CoreDataStackTestCase.m */,
 				50467DA11A4028AE001E18A9 /* Supporting Files */,
@@ -508,6 +511,7 @@
 				50467DB01A402A29001E18A9 /* ShiftTemplateControllerTests.m in Sources */,
 				50467DAD1A40291A001E18A9 /* CoreDataStackTestCase.m in Sources */,
 				50467DB61A4036CF001E18A9 /* PersistentStackTests.m in Sources */,
+				50467DB81A4038CD001E18A9 /* CalendarProviderTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

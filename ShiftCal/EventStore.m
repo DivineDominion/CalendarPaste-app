@@ -36,4 +36,13 @@
     return status == EKAuthorizationStatusAuthorized;
 }
 
+- (NSString *)defaultCalendarIdentifier
+{
+    return self.defaultCalendar.calendarIdentifier;
+}
+
+- (EKCalendar *)defaultCalendar
+{
+    return [self.eventStore defaultCalendarForNewEvents];
+}
 @end
