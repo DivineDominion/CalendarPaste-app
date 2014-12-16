@@ -183,7 +183,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(invalidateCalendars:)
                                                      name:SCStoreChangedNotification
-                                                   object:[[UIApplication sharedApplication] delegate]];
+                                                   object:nil];
     }
 
     return self;
@@ -450,7 +450,7 @@
         EKCalendar *calendar         = [self calendarForIndexPath:self.defaultCellIndexPath];
         NSString *calendarIdentifier = calendar.calendarIdentifier;
         
-        [prefs setObject:calendarIdentifier forKey:PREFS_DEFAULT_CALENDAR_KEY];
+        [prefs setObject:calendarIdentifier forKey:kKeyPrefsDefaultCalendar];
 #ifdef DEVELOPMENT
         [prefs synchronize];
 #endif
@@ -516,7 +516,7 @@
 {
     // Read user defaults
     NSUserDefaults *prefs       = [NSUserDefaults standardUserDefaults];
-    NSString *defaultIdentifier = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
+    NSString *defaultIdentifier = [prefs objectForKey:kKeyNotificationDefaultCalendar];
     EKCalendar *defaultCalendar = [self.eventStore calendarWithIdentifier:defaultIdentifier];
     NSInteger defaultIndex      = [self.calendars indexOfObject:defaultCalendar];
     

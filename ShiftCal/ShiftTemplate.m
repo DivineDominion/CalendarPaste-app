@@ -8,6 +8,7 @@
 
 #import "ShiftTemplate.h"
 #import "AppDelegate.h"
+#import "CalendarProvider.h" // for the keys
 
 @interface ShiftTemplate ()
 
@@ -152,7 +153,7 @@
 + (NSString *)userDefaultCalendarIdentifier
 {
     NSUserDefaults *prefs       = [NSUserDefaults standardUserDefaults];
-    NSString *defaultCalendarId = [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
+    NSString *defaultCalendarId = [prefs objectForKey:kKeyPrefsDefaultCalendar];
     
     return defaultCalendarId;
 }

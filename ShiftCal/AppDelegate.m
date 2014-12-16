@@ -12,29 +12,27 @@
 #import "ShiftOverviewController.h"
 #import "LayoutHelper.h"
 
+#import "CalendarProvider.h"
+
 @interface AppDelegate ()
 @property (nonatomic, strong, readwrite) UINavigationController *navController;
 @property (nonatomic, strong, readwrite) EKEventStore *eventStore;
 @property (nonatomic, strong, readwrite) UIColor *appColor;
+
 @property (nonatomic, strong, readwrite) CalendarAccessGuard *calendarAccessGuard;
 @end
 
 
 @implementation AppDelegate
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (EKEventStore *)eventStore
 {
-    if (_eventStore == nil)
-    {
-        _eventStore = [[EKEventStore alloc] init];
-    }
-    
-    return _eventStore;
+    return [[self calendarProvider] eventStore];
+}
+
+- (CalendarProvider *)calendarProvider
+{
+    return [CalendarProvider sharedInstance];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -42,21 +40,18 @@
     [self.navController pushViewController:viewController animated:animated];
 }
 
+- (void)grantCalendarAccess
+{
+    NSLog(@"granted");
+    [self registerPreferenceDefaults];
+}
+
 #pragma mark - Launch and Set-Up
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [self registerPreferenceDefaults];
-    
     self.appColor      = [UIColor colorWithRed:116.0/255 green:128.0/255 blue:199.0/255 alpha:1.0];
     [self styleNavigationBar];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(eventStoreChanged:)
-                                                 name:EKEventStoreChangedNotification
-                                               object:self.eventStore];
-    
-    
     
     self.window        = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.navController = [[UINavigationController alloc] init];
@@ -92,63 +87,11 @@
 }
 
 
-#pragma mark User preferences
-
-- (void)eventStoreChanged:(NSNotification *)notification
-{
-    [self registerPreferenceDefaults];
-    
-    // Inform observers to change calendars if necessary
-    NSString *defaultCalendarIdentifier = [self defaultCalendarIdentifier];
-    NSDictionary *userInfo = @{ NOTIFICATION_DEFAULT_CALENDAR_KEY : defaultCalendarIdentifier };
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCStoreChangedNotification
-                                                        object:self
-                                                      userInfo:userInfo];
-}
-
-- (NSUserDefaults *)standardUserDefaults
-{
-    return [NSUserDefaults standardUserDefaults];
-}
-
-- (NSString *)defaultCalendarIdentifier
-{
-    NSUserDefaults *prefs = [self standardUserDefaults];
-    return [prefs objectForKey:PREFS_DEFAULT_CALENDAR_KEY];
-}
-
 - (void)registerPreferenceDefaults
 {
-    NSString *defaultCalendarIdentifier = [self defaultCalendarIdentifier];
-    
-    if (defaultCalendarIdentifier == nil)
-    {
-        [self registerDefaultCalendarUserDefaults];
-    }
-    else
-    {
-        // Perform sanity check: was Calendar deleted?
-        EKEventStore *eventStore = self.eventStore;
-        EKCalendar *defaultCalendar = [eventStore calendarWithIdentifier:defaultCalendarIdentifier];
-        
-        if (defaultCalendar == nil) {
-            [self registerDefaultCalendarUserDefaults];
-        }
-    }
+    [self.calendarProvider registerPreferenceDefaults];
 }
 
-- (void)registerDefaultCalendarUserDefaults
-{
-    NSUserDefaults *prefs = [self standardUserDefaults];
-    EKEventStore *eventStore = self.eventStore;
-    NSString *defaultCalendarIdentifier = [eventStore defaultCalendarForNewEvents].calendarIdentifier;
-    
-    [prefs setObject:defaultCalendarIdentifier forKey:PREFS_DEFAULT_CALENDAR_KEY];
-#ifdef DEVELOPMENT
-    [prefs synchronize];
-#endif
-}
 
 
 #pragma mark Application callbacks

@@ -15,7 +15,7 @@
     [UIView animateWithDuration:0.0
                           delay:0.0
                         options:UIViewAnimationOptionAllowUserInteraction
-                     animations:^void() {
+                     animations:^() {
                          [[welf.tableView cellForRowAtIndexPath:indexPath] setHighlighted:YES animated:YES];
                      }
                      completion:^(BOOL finished) {

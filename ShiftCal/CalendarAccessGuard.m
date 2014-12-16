@@ -35,6 +35,7 @@
 
 - (void)guardCalendarAccess
 {
+    [self showCalendarAccessLock];
     EKAuthorizationStatus authorizationStatus = [self authorizationStatusForCalendarAccess];
     if (authorizationStatus == EKAuthorizationStatusAuthorized) {
         [self showOverviewViewController];
@@ -43,10 +44,13 @@
     }
 }
 
-- (EKAuthorizationStatus)authorizationStatusForCalendarAccess
+- (void)showCalendarAccessLock
 {
     [self pushViewController:[self grantCalendarAccessViewController] animated:NO];
-    
+}
+
+- (EKAuthorizationStatus)authorizationStatusForCalendarAccess
+{
     return [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
 }
 
@@ -58,6 +62,7 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [welf showOverviewViewControllerAnimated:YES];
+                [welf.delegate grantCalendarAccess];
             });
         }
     }];
@@ -66,6 +71,7 @@
 - (void)showOverviewViewController
 {
     [self showOverviewViewControllerAnimated:NO];
+    [self.delegate grantCalendarAccess];
 }
 
 - (void)showOverviewViewControllerAnimated:(BOOL)animated
