@@ -6,4 +6,4 @@
 //  Copyright (c) 2013 Christian Tietze. All rights reserved.
 //
 
-#import "CalendarProvider.h"
+#import "UserCalendarProvider.h"

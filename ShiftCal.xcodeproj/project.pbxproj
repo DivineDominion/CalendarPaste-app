@@ -9,17 +9,19 @@
 /* Begin PBXBuildFile section */
 		5016FE021A3B5D13002B642E /* CalendarAccessGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5016FE011A3B5D13002B642E /* CalendarAccessGuard.m */; };
 		5016FE071A3B6BED002B642E /* ModificationCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 5016FE061A3B6BED002B642E /* ModificationCommand.m */; };
-		50329F481A3EDE62001F5D31 /* CalendarProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 50329F471A3EDE62001F5D31 /* CalendarProvider.m */; };
+		50329F481A3EDE62001F5D31 /* UserCalendarProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 50329F471A3EDE62001F5D31 /* UserCalendarProvider.m */; };
 		50329FA71A3EFE11001F5D31 /* libTestingToolkit-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50329FA61A3EFE11001F5D31 /* libTestingToolkit-iOS.a */; };
-		50329FB11A3F04D5001F5D31 /* EventStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 50329FB01A3F04D5001F5D31 /* EventStore.m */; };
+		50329FB11A3F04D5001F5D31 /* EventStoreWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 50329FB01A3F04D5001F5D31 /* EventStoreWrapper.m */; };
 		50467DAD1A40291A001E18A9 /* CoreDataStackTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DAB1A40291A001E18A9 /* CoreDataStackTestCase.m */; };
 		50467DAE1A40291A001E18A9 /* CoreDataWiringTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DAC1A40291A001E18A9 /* CoreDataWiringTest.m */; };
 		50467DB01A402A29001E18A9 /* ShiftTemplateControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DAF1A402A29001E18A9 /* ShiftTemplateControllerTests.m */; };
 		50467DB31A403180001E18A9 /* PersistentStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DB21A403180001E18A9 /* PersistentStack.m */; };
 		50467DB61A4036CF001E18A9 /* PersistentStackTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DB51A4036CF001E18A9 /* PersistentStackTests.m */; };
-		50467DB81A4038CD001E18A9 /* CalendarProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DB71A4038CD001E18A9 /* CalendarProviderTests.m */; };
+		50467DB81A4038CD001E18A9 /* UserCalendarProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DB71A4038CD001E18A9 /* UserCalendarProviderTests.m */; };
 		50467DBC1A4047B5001E18A9 /* TestUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DBB1A4047B5001E18A9 /* TestUserDefaults.m */; };
 		50467DBF1A4047D9001E18A9 /* TestNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DBE1A4047D9001E18A9 /* TestNotificationCenter.m */; };
+		50467DC21A40488B001E18A9 /* CalendarAccessGuardTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DC11A40488B001E18A9 /* CalendarAccessGuardTests.m */; };
+		50467DC51A404902001E18A9 /* TestEventStoreWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 50467DC41A404902001E18A9 /* TestEventStoreWrapper.m */; };
 		600BFE7615FB5ADF008B03CA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60BB96A515C08EB900801105 /* CoreGraphics.framework */; };
 		600E119F160373F3009A7E24 /* AlarmPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 600E119E160373F3009A7E24 /* AlarmPickerViewController.m */; };
 		6026C75F16B1AA4A00445709 /* NSDate+Tomorrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6026C75E16B1AA4A00445709 /* NSDate+Tomorrow.m */; };
@@ -65,14 +67,14 @@
 		5016FE011A3B5D13002B642E /* CalendarAccessGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarAccessGuard.m; sourceTree = "<group>"; };
 		5016FE051A3B6BED002B642E /* ModificationCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModificationCommand.h; sourceTree = "<group>"; };
 		5016FE061A3B6BED002B642E /* ModificationCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModificationCommand.m; sourceTree = "<group>"; };
-		50329F461A3EDE62001F5D31 /* CalendarProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarProvider.h; sourceTree = "<group>"; };
-		50329F471A3EDE62001F5D31 /* CalendarProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarProvider.m; sourceTree = "<group>"; };
+		50329F461A3EDE62001F5D31 /* UserCalendarProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCalendarProvider.h; sourceTree = "<group>"; };
+		50329F471A3EDE62001F5D31 /* UserCalendarProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCalendarProvider.m; sourceTree = "<group>"; };
 		50329FA61A3EFE11001F5D31 /* libTestingToolkit-iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libTestingToolkit-iOS.a"; path = "../../Library/Developer/Xcode/DerivedData/CalendarPaste-fvkrxbvbjcxddvhhdfeypwazxbex/Build/Products/Debug-iphoneos/libTestingToolkit-iOS.a"; sourceTree = "<group>"; };
 		50329FA91A3EFFAF001F5D31 /* CTKCalendarSupplier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTKCalendarSupplier.h; path = ../components/TestingToolkit/TestingToolkit/CTKCalendarSupplier.h; sourceTree = "<group>"; };
 		50329FAA1A3EFFAF001F5D31 /* CTKNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTKNotificationCenter.h; path = ../components/TestingToolkit/TestingToolkit/CTKNotificationCenter.h; sourceTree = "<group>"; };
 		50329FAE1A3EFFFF001F5D31 /* CTKUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTKUserDefaults.h; path = ../components/TestingToolkit/TestingToolkit/CTKUserDefaults.h; sourceTree = "<group>"; };
-		50329FAF1A3F04D5001F5D31 /* EventStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventStore.h; sourceTree = "<group>"; };
-		50329FB01A3F04D5001F5D31 /* EventStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventStore.m; sourceTree = "<group>"; };
+		50329FAF1A3F04D5001F5D31 /* EventStoreWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventStoreWrapper.h; sourceTree = "<group>"; };
+		50329FB01A3F04D5001F5D31 /* EventStoreWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventStoreWrapper.m; sourceTree = "<group>"; };
 		50467D9F1A4028AE001E18A9 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		50467DA21A4028AE001E18A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Tests/Info.plist; sourceTree = "<group>"; };
 		50467DAA1A40291A001E18A9 /* CoreDataStackTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataStackTestCase.h; sourceTree = "<group>"; };
@@ -82,11 +84,14 @@
 		50467DB11A403180001E18A9 /* PersistentStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersistentStack.h; sourceTree = "<group>"; };
 		50467DB21A403180001E18A9 /* PersistentStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentStack.m; sourceTree = "<group>"; };
 		50467DB51A4036CF001E18A9 /* PersistentStackTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersistentStackTests.m; sourceTree = "<group>"; };
-		50467DB71A4038CD001E18A9 /* CalendarProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarProviderTests.m; sourceTree = "<group>"; };
+		50467DB71A4038CD001E18A9 /* UserCalendarProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCalendarProviderTests.m; sourceTree = "<group>"; };
 		50467DBA1A4047B5001E18A9 /* TestUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestUserDefaults.h; sourceTree = "<group>"; };
 		50467DBB1A4047B5001E18A9 /* TestUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestUserDefaults.m; sourceTree = "<group>"; };
 		50467DBD1A4047D9001E18A9 /* TestNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestNotificationCenter.h; sourceTree = "<group>"; };
 		50467DBE1A4047D9001E18A9 /* TestNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestNotificationCenter.m; sourceTree = "<group>"; };
+		50467DC11A40488B001E18A9 /* CalendarAccessGuardTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarAccessGuardTests.m; sourceTree = "<group>"; };
+		50467DC31A404902001E18A9 /* TestEventStoreWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestEventStoreWrapper.h; sourceTree = "<group>"; };
+		50467DC41A404902001E18A9 /* TestEventStoreWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestEventStoreWrapper.m; sourceTree = "<group>"; };
 		600E1199160369BF009A7E24 /* AlarmPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerViewController.h; sourceTree = "<group>"; };
 		600E119E160373F3009A7E24 /* AlarmPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlarmPickerViewController.m; sourceTree = "<group>"; };
 		600E11A216038973009A7E24 /* AlarmPickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlarmPickerDelegate.h; sourceTree = "<group>"; };
@@ -245,7 +250,7 @@
 			name = MBProgressHUD;
 			sourceTree = "<group>";
 		};
-		50329FA81A3EFFA5001F5D31 /* New Group */ = {
+		50329FA81A3EFFA5001F5D31 /* TestingToolkit */ = {
 			isa = PBXGroup;
 			children = (
 				50329FA91A3EFFAF001F5D31 /* CTKCalendarSupplier.h */,
@@ -253,7 +258,7 @@
 				50329FAE1A3EFFFF001F5D31 /* CTKUserDefaults.h */,
 				50329FA61A3EFE11001F5D31 /* libTestingToolkit-iOS.a */,
 			);
-			name = "New Group";
+			name = TestingToolkit;
 			sourceTree = "<group>";
 		};
 		50467DA01A4028AE001E18A9 /* Tests */ = {
@@ -262,7 +267,8 @@
 				50467DAC1A40291A001E18A9 /* CoreDataWiringTest.m */,
 				50467DAF1A402A29001E18A9 /* ShiftTemplateControllerTests.m */,
 				50467DB51A4036CF001E18A9 /* PersistentStackTests.m */,
-				50467DB71A4038CD001E18A9 /* CalendarProviderTests.m */,
+				50467DB71A4038CD001E18A9 /* UserCalendarProviderTests.m */,
+				50467DC11A40488B001E18A9 /* CalendarAccessGuardTests.m */,
 				50467DB91A4047A6001E18A9 /* Helpers */,
 				50467DA11A4028AE001E18A9 /* Supporting Files */,
 			);
@@ -295,6 +301,8 @@
 				50467DBE1A4047D9001E18A9 /* TestNotificationCenter.m */,
 				50467DBA1A4047B5001E18A9 /* TestUserDefaults.h */,
 				50467DBB1A4047B5001E18A9 /* TestUserDefaults.m */,
+				50467DC31A404902001E18A9 /* TestEventStoreWrapper.h */,
+				50467DC41A404902001E18A9 /* TestEventStoreWrapper.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -302,10 +310,10 @@
 		50467DC01A404857001E18A9 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				50329F461A3EDE62001F5D31 /* CalendarProvider.h */,
-				50329F471A3EDE62001F5D31 /* CalendarProvider.m */,
-				50329FAF1A3F04D5001F5D31 /* EventStore.h */,
-				50329FB01A3F04D5001F5D31 /* EventStore.m */,
+				50329F461A3EDE62001F5D31 /* UserCalendarProvider.h */,
+				50329F471A3EDE62001F5D31 /* UserCalendarProvider.m */,
+				50329FAF1A3F04D5001F5D31 /* EventStoreWrapper.h */,
+				50329FB01A3F04D5001F5D31 /* EventStoreWrapper.m */,
 			);
 			name = Calendar;
 			sourceTree = "<group>";
@@ -361,7 +369,7 @@
 		60BB96A015C08EB900801105 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				50329FA81A3EFFA5001F5D31 /* New Group */,
+				50329FA81A3EFFA5001F5D31 /* TestingToolkit */,
 				50329F451A3EDD9B001F5D31 /* MBProgressHUD */,
 				605A96B9161B27E10008B1C6 /* CoreData.framework */,
 				60FBA83B15FA571F008B48A1 /* QuartzCore.framework */,
@@ -539,7 +547,9 @@
 				50467DAD1A40291A001E18A9 /* CoreDataStackTestCase.m in Sources */,
 				50467DB61A4036CF001E18A9 /* PersistentStackTests.m in Sources */,
 				50467DBC1A4047B5001E18A9 /* TestUserDefaults.m in Sources */,
-				50467DB81A4038CD001E18A9 /* CalendarProviderTests.m in Sources */,
+				50467DB81A4038CD001E18A9 /* UserCalendarProviderTests.m in Sources */,
+				50467DC21A40488B001E18A9 /* CalendarAccessGuardTests.m in Sources */,
+				50467DC51A404902001E18A9 /* TestEventStoreWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,7 +559,7 @@
 			files = (
 				60BB96AE15C08EB900801105 /* main.m in Sources */,
 				5016FE071A3B6BED002B642E /* ModificationCommand.m in Sources */,
-				50329F481A3EDE62001F5D31 /* CalendarProvider.m in Sources */,
+				50329F481A3EDE62001F5D31 /* UserCalendarProvider.m in Sources */,
 				50467DB31A403180001E18A9 /* PersistentStack.m in Sources */,
 				60BB96B215C08EB900801105 /* AppDelegate.m in Sources */,
 				60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */,
@@ -570,7 +580,7 @@
 				609167BF1658F45A006C33EE /* UITableViewController+CalloutCell.m in Sources */,
 				6026C75F16B1AA4A00445709 /* NSDate+Tomorrow.m in Sources */,
 				602B6AFF18C3A005005D2227 /* ShiftData.m in Sources */,
-				50329FB11A3F04D5001F5D31 /* EventStore.m in Sources */,
+				50329FB11A3F04D5001F5D31 /* EventStoreWrapper.m in Sources */,
 				60A66EA216D60FFA0083BE95 /* LayoutHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

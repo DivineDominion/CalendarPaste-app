@@ -11,37 +11,29 @@
 #import "LayoutHelper.h"
 #import "ShiftOverviewController.h"
 
+#import "UserCalendarProvider.h"
+#import "EventStoreWrapper.h"
+
 @implementation CalendarAccessGuard
 
-- (instancetype)init
+- (EventStoreWrapper *)eventStoreWrapper
 {
-    return [self initWithEventStore:nil];
+    return [[UserCalendarProvider sharedInstance] eventStoreWrapper];
 }
 
-- (instancetype)initWithEventStore:(EKEventStore *)eventStore
-{
-    NSParameterAssert(eventStore);
-    
-    self = [super init];
-    
-    if (self)
-    {
-        _eventStore = eventStore;
-    }
-    
-    return self;
-}
-
+#pragma mark -
 
 - (void)guardCalendarAccess
 {
     [self showCalendarAccessLock];
-    EKAuthorizationStatus authorizationStatus = [self authorizationStatusForCalendarAccess];
-    if (authorizationStatus == EKAuthorizationStatusAuthorized) {
+    
+    if ([self isAuthorizedForCalendarAccess])
+    {
         [self showOverviewViewController];
-    } else {
-        [self requestCalendarAccess];
+        return;
     }
+    
+    [self requestCalendarAccess];
 }
 
 - (void)showCalendarAccessLock
@@ -49,22 +41,19 @@
     [self pushViewController:[self grantCalendarAccessViewController] animated:NO];
 }
 
-- (EKAuthorizationStatus)authorizationStatusForCalendarAccess
+- (BOOL)isAuthorizedForCalendarAccess
 {
-    return [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
+    return [self.eventStoreWrapper isAuthorizedForCalendarAccess];
 }
 
 - (void)requestCalendarAccess
 {
     __weak CalendarAccessGuard *welf = self;
-    [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-        if (granted)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [welf showOverviewViewControllerAnimated:YES];
-                [welf.delegate grantCalendarAccess];
-            });
-        }
+    [self.eventStoreWrapper requestEventAccessWithGrantedBlock:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [welf showOverviewViewControllerAnimated:YES];
+            [welf.delegate grantCalendarAccess];
+        });
     }];
 }
 

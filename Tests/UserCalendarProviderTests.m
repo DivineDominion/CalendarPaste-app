@@ -1,5 +1,5 @@
 //
-//  CalendarProviderTests.m
+//  UserCalendarProviderTests.m
 //  ShiftCal
 //
 //  Created by Christian Tietze on 16/12/14.
@@ -9,29 +9,20 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "CalendarProvider.h"
+#import "UserCalendarProvider.h"
 
+#import "TestEventStoreWrapper.h"
 #import "CTKNotificationCenter.h"
 #import "TestNotificationCenter.h"
 #import "CTKUserDefaults.h"
 #import "TestUserDefaults.h"
 
-@interface TestEventStoreWrapper : NSObject
-@property (nonatomic, assign) BOOL isAuthorizedForCalendarAccess;
-@property (nonatomic, strong) id eventStore;
-@property (nonatomic, strong) id defaultCalendar;
-@property (nonatomic, copy) NSString *defaultCalendarIdentifier;
+@interface UserCalendarProviderTests : XCTestCase
 @end
 
-@implementation TestEventStoreWrapper
-@end
-
-@interface CalendarProviderTests : XCTestCase
-@end
-
-@implementation CalendarProviderTests
+@implementation UserCalendarProviderTests
 {
-    CalendarProvider *calendarProvider;
+    UserCalendarProvider *calendarProvider;
     
     TestNotificationCenter *testNotificationCenter;
     TestEventStoreWrapper *testEventStoreWrapper;
@@ -48,7 +39,7 @@
     [CTKUserDefaults setSharedInstance:[CTKUserDefaults userDefaultsWith:(id)testUserDefaults]];
     
     testEventStoreWrapper = [[TestEventStoreWrapper alloc] init];
-    calendarProvider = [[CalendarProvider alloc] initWithEventStore:(id)testEventStoreWrapper];
+    calendarProvider = [[UserCalendarProvider alloc] initWithEventStoreWrapper:(id)testEventStoreWrapper];
 }
 
 - (void)tearDown {

@@ -8,6 +8,8 @@
 
 #import "PersistentStack.h"
 
+NSString * const kDatabaseFile = @"database.sqlite";
+
 @interface PersistentStack ()
 @property (nonatomic, strong, readwrite) NSManagedObjectContext* managedObjectContext;
 @property (nonatomic, strong) NSURL* modelURL;
@@ -18,7 +20,7 @@
 
 + (instancetype)persistentStack
 {
-    NSURL *storeURL = [self documentsDirectory];
+    NSURL *storeURL = [[self documentsDirectory] URLByAppendingPathComponent:kDatabaseFile];
     NSURL *modelURL = nil; // TODO replace with URL instead of merged OM
     return [[self alloc] initWithStoreURL:storeURL modelURL:modelURL];
 }
@@ -62,7 +64,8 @@
 
 - (NSDictionary *)defaultStoreOptions
 {
-    return @{NSPersistentStoreUbiquitousContentNameKey: @"Calendar-Paste",
+#warning TODO introduce use iCloud key w/o overriding old stuff
+    return @{//NSPersistentStoreUbiquitousContentNameKey: @"Calendar-Paste",
              NSMigratePersistentStoresAutomaticallyOption : @YES,
              NSInferMappingModelAutomaticallyOption : @YES};
 }
