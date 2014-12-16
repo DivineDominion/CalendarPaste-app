@@ -64,10 +64,10 @@ static dispatch_once_t once_token = 0;
     {
         _eventStoreWrapper = eventStore;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(eventStoreChanged:)
-                                                     name:EKEventStoreChangedNotification
-                                                   object:_eventStoreWrapper.eventStore];
+        [self.notificationCenter addObserver:self
+                                    selector:@selector(eventStoreChanged:)
+                                        name:EKEventStoreChangedNotification
+                                      object:_eventStoreWrapper.eventStore];
     }
     
     return self;
@@ -114,8 +114,7 @@ static dispatch_once_t once_token = 0;
 
 - (BOOL)isAuthorizedForCalendarAccess
 {
-    EKAuthorizationStatus status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
-    return status == EKAuthorizationStatusAuthorized;
+    return [self.eventStoreWrapper isAuthorizedForCalendarAccess];
 }
 
 - (void)broadcastStoreChange
@@ -128,7 +127,7 @@ static dispatch_once_t once_token = 0;
     }
     
     NSDictionary *userInfo = @{ kKeyNotificationDefaultCalendar : defaultCalendarIdentifier };
-    [[NSNotificationCenter defaultCenter] postNotificationName:SCStoreChangedNotification object:self userInfo:userInfo];
+    [self.notificationCenter postNotificationName:SCStoreChangedNotification object:self userInfo:userInfo];
 }
 
 - (void)registerPreferenceDefaults
@@ -156,9 +155,11 @@ static dispatch_once_t once_token = 0;
 - (void)registerDefaultCalendarUserDefaults
 {
     NSUserDefaults *prefs = [self standardUserDefaults];
-    EKEventStore *eventStore = self.eventStore;
-    NSString *defaultCalendarIdentifier = [eventStore defaultCalendarForNewEvents].calendarIdentifier;
-    self.defaultUserCalendar = [eventStore calendarWithIdentifier:defaultCalendarIdentifier];
+    EventStore *eventStoreWrapper = self.eventStoreWrapper;
+    NSString *defaultCalendarIdentifier = [eventStoreWrapper defaultCalendarIdentifier];
+    NSAssert(defaultCalendarIdentifier, @"we assume there's at least 1 calendar present"); // TODO make more lenient
+    
+    self.defaultUserCalendar = [eventStoreWrapper defaultCalendar];
     
     [prefs setObject:defaultCalendarIdentifier forKey:kKeyPrefsDefaultCalendar];
 #ifdef DEVELOPMENT

@@ -15,4 +15,6 @@
 - (instancetype)initWithEventStore:(EKEventStore *)eventStore NS_DESIGNATED_INITIALIZER;
 
 - (BOOL)isAuthorizedForCalendarAccess;
+- (EKCalendar *)defaultCalendar;
+- (NSString *)defaultCalendarIdentifier;
 @end
