@@ -58,4 +58,14 @@
 {
     return [self.eventStore defaultCalendarForNewEvents];
 }
+
+- (EKCalendar *)calendarWithIdentifier:(NSString *)identifier
+{
+    return [self.eventStore calendarWithIdentifier:identifier];
+}
+
+- (NSArray *)calendars
+{
+    return [self.eventStore calendarsForEntityType:EKEntityTypeEvent];
+}
 @end

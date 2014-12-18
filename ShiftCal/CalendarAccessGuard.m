@@ -66,6 +66,7 @@
 
 - (BOOL)isAuthorizedForCalendarAccess
 {
+
     return [self.eventStoreWrapper isAuthorizedForCalendarAccess];
 }
 

@@ -22,9 +22,8 @@
 @interface EditCommand : ModificationCommand
 @property (nonatomic, assign) NSUInteger row;
 
-- (instancetype)initWithTarget:(ShiftOverviewController *)target forRow:(NSUInteger)row NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithTarget:(ShiftOverviewController *)target forRow:(NSUInteger)row;
 @end
 
 @interface AddCommand : ModificationCommand
-- (instancetype)initWithTarget:(ShiftOverviewController *)target NS_DESIGNATED_INITIALIZER;
 @end

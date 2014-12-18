@@ -46,7 +46,7 @@
 
 - (instancetype)initWithTarget:(ShiftOverviewController *)target forRow:(NSUInteger)row
 {
-    self = [super initWithTarget:target];
+    self = [self initWithTarget:target];
     
     if (self)
     {

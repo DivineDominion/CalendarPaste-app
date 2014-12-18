@@ -56,6 +56,7 @@
     CalendarAccessGuard *guard;
     
     TestCalendarAccessGuardDelegate *testDelegate;
+
     TestLockResponder *testLockResponder;
     TestUnlockResponder *testUnlockResponder;
     TestEventStoreWrapper *testEventStoreWrapper;

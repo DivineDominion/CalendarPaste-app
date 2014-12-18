@@ -11,6 +11,8 @@
 @protocol CalendarAccessResponder;
 @protocol CalendarAccessResponderUnlock;
 
+@class EventStoreWrapper;
+
 @protocol CalendarAccessGuardDelegate <NSObject>
 - (void)grantCalendarAccess;
 @end

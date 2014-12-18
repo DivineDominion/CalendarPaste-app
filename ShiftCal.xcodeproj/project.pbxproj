@@ -177,6 +177,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50329FA71A3EFE11001F5D31 /* libTestingToolkit-iOS.a in Frameworks */,
 				605A96BA161B27E10008B1C6 /* CoreData.framework in Frameworks */,
 				600BFE7615FB5ADF008B03CA /* CoreGraphics.framework in Frameworks */,
 				60FBA83C15FA571F008B48A1 /* QuartzCore.framework in Frameworks */,
