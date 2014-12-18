@@ -17,6 +17,8 @@
 - (void)requestEventAccessWithGrantedBlock:(void (^)())closure;
 - (BOOL)isAuthorizedForCalendarAccess;
 
+- (EKCalendar *)calendarWithIdentifier:(NSString *)identifier;
+- (NSArray *)calendars;
 - (EKCalendar *)defaultCalendar;
 - (NSString *)defaultCalendarIdentifier;
 @end

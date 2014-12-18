@@ -18,8 +18,6 @@
 
 @interface AppDelegate ()
 @property (nonatomic, strong, readwrite) UINavigationController *navController;
-@property (nonatomic, strong, readwrite) UIColor *appColor;
-
 @property (nonatomic, strong, readwrite) CalendarAccessGuard *calendarAccessGuard;
 @end
 
@@ -28,7 +26,6 @@
 
 - (void)grantCalendarAccess
 {
-    NSLog(@"granted");
     [[UserCalendarProvider sharedInstance] registerPreferenceDefaults];
 }
 
@@ -37,7 +34,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.appColor      = [UIColor colorWithRed:116.0/255 green:128.0/255 blue:199.0/255 alpha:1.0];
     [self styleNavigationBar];
     
     self.window        = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -45,8 +41,8 @@
     self.window.rootViewController = self.navController;
     [self.window makeKeyAndVisible];
     
-//    [self guardCalendarAccess];
-    [self.navController pushViewController:[self grantCalendarAccessViewController] animated:NO];
+    [self guardCalendarAccess];
+
     return YES;
 }
 
@@ -55,7 +51,7 @@
     id<CalendarAccessResponder> lockResponder = [[LockApp alloc] initWithViewController:[self grantCalendarAccessViewController]  navigationController:self.navController];
     
     ShiftOverviewController *shiftOverviewController = [[ShiftOverviewController alloc] init];
-    id<CalendarAccessResponder> unlockResponder = [[UnlockApp alloc] initWithViewController:shiftOverviewController navigationController:self.navController];
+    id<CalendarAccessResponderUnlock> unlockResponder = [[UnlockApp alloc] initWithViewController:shiftOverviewController navigationController:self.navController];
     
     CalendarAccessGuard *calendarAccessGuard = [[CalendarAccessGuard alloc] initWithLockResponder:lockResponder unlockResponder:unlockResponder];
     calendarAccessGuard.delegate = self;
@@ -76,7 +72,7 @@
 
 - (void)styleNavigationBar
 {
-    UIColor *topBarColor = [self appColor];
+    UIColor *topBarColor = [LayoutHelper appColor];
     UIColor *creamWhiteColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     
     [[UINavigationBar appearance] setBarTintColor:topBarColor];

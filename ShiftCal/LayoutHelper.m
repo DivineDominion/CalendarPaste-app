@@ -26,7 +26,7 @@
     [addButton addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 
     UIView *view = [LayoutHelper splashScreenViewFor:addButton titleText:@"No Event Templates, yet." detailText:@"Add templates and start\nto Paste Your Time!"];
-    
+    NSLog(@"%f, %f", view.frame.size.width, view.frame.size.height);
     return view;
 }
 
@@ -36,7 +36,8 @@
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Lock"]];
     
     UIView *view = [LayoutHelper splashScreenViewFor:imageView titleText:@"This app needs Calendar access\nto work." detailText:@"You can enable access in Privacy Settings."];
-
+    NSLog(@"%f, %f", view.frame.size.width, view.frame.size.height);
+    
     return view;
 }
 
@@ -44,20 +45,15 @@
 
 + (UIView *)splashScreenViewFor:(UIView *)iconView titleText:(NSString *)titleText detailText:(NSString *)detailText
 {
-    CGRect frame = [LayoutHelper contentFrame];
-    UIView *view = [[UIView alloc] initWithFrame:frame];
-    
+    CGRect screenFrame = [LayoutHelper contentFrame];
+
+    UIView *view = [[UIView alloc] initWithFrame:screenFrame];
     view.backgroundColor = [UIColor whiteColor];
     
-    static float kScreenWidth = 320.0f;
-    static float kY4InchOffset = 40.0f;
+    float screenWidth = screenFrame.size.width;
+    float screenHeight = screenFrame.size.height;
     
-    CGPoint iconViewCenter = CGPointMake(kScreenWidth / 2, 160.0f);
-    
-    if (IS_4INCH_DISPLAY)
-    {
-        iconViewCenter.y += kY4InchOffset;
-    }
+    CGPoint iconViewCenter = CGPointMake(screenWidth / 2, screenHeight / 2);
     
     iconView.center = iconViewCenter;
     
@@ -65,7 +61,7 @@
     
     
     CGPoint offset = CGPointMake(10.0f, iconViewCenter.y + 120.0f);
-    CGSize size = CGSizeMake(kScreenWidth - 2*offset.x, 40.0f);
+    CGSize size = CGSizeMake(screenWidth - 2*offset.x, 50.0f);
     
     if (IS_4INCH_DISPLAY)
     {
@@ -105,10 +101,21 @@
 
 + (CGRect)contentFrame
 {
-    CGRect frame = [[UIScreen mainScreen] bounds];
+    CGRect frame = [self screenBounds];
     frame.size = CGSizeMake(frame.size.width, frame.size.height - TOP_BAR_HEIGHT);
     
     return frame;
 }
 
++ (CGRect)screenBounds
+{
+    return [[UIScreen mainScreen] bounds];
+}
+
+#pragma mark - App Color
+
++ (UIColor *)appColor
+{
+    return [UIColor colorWithRed:116.0/255 green:128.0/255 blue:199.0/255 alpha:1.0];
+}
 @end

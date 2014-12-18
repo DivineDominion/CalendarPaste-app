@@ -16,5 +16,4 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate, CalendarAccessGuardDelegate>
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong, readonly) EKEventStore *eventStore;
-@property (nonatomic, strong, readonly) UIColor *appColor;
 @end

@@ -12,5 +12,5 @@
 
 + (UIView *)emptyListViewWithTarget:(id)target action:(SEL)selector;
 + (UIView *)grantCalendarAccessView;
-
++ (UIColor *)appColor;
 @end

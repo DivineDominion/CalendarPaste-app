@@ -15,7 +15,7 @@
 @property (nonatomic, weak) ShiftOverviewController *target;
 @property (nonatomic, strong) NSDictionary *shiftAttributes;
 
-- (instancetype)initWithTarget:(ShiftOverviewController *)target NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithTarget:(ShiftOverviewController *)target;
 - (void)execute;
 @end
 
@@ -26,4 +26,5 @@
 @end
 
 @interface AddCommand : ModificationCommand
+- (instancetype)initWithTarget:(ShiftOverviewController *)target NS_DESIGNATED_INITIALIZER;
 @end

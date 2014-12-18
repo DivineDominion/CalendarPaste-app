@@ -1,3 +1,6 @@
 [submodule "MBProgressHUD"]
 	path = MBProgressHUD
 	url = git://github.com/matej/MBProgressHUD.git
+[submodule "TestingToolkit"]
+	path = TestingToolkit
+	url = https://github.com/DivineDominion/TestingToolkit.git
