@@ -11,6 +11,7 @@
 
 #import "CalendarAccessGuard.h"
 
+#import "CalendarAccessResponder.h"
 #import "UserCalendarProvider.h"
 #import "TestEventStoreWrapper.h"
 
@@ -31,6 +32,21 @@
 }
 @end
 
+@interface TestLockResponder : NSObject <CalendarAccessResponder>
+@property (nonatomic, assign, readonly) BOOL didActivate;
+@end
+@implementation TestLockResponder
+- (void)activate
+{
+    _didActivate = YES;
+}
+@end
+
+@interface TestUnlockResponder : TestLockResponder <CalendarAccessResponderUnlock>
+@property (nonatomic, assign, readwrite) BOOL unlocksImmediately;
+@end
+@implementation TestUnlockResponder
+@end
 
 @interface CalendarAccessGuardTests : XCTestCase
 @end
@@ -40,6 +56,8 @@
     CalendarAccessGuard *guard;
     
     TestCalendarAccessGuardDelegate *testDelegate;
+    TestLockResponder *testLockResponder;
+    TestUnlockResponder *testUnlockResponder;
     TestEventStoreWrapper *testEventStoreWrapper;
 }
 
@@ -50,7 +68,9 @@
     [UserCalendarProvider setSharedInstance:[UserCalendarProvider calendarProviderWithEventStoreWrapper:(id)testEventStoreWrapper]];
     
     testDelegate = [[TestCalendarAccessGuardDelegate alloc] init];
-    guard = [[CalendarAccessGuard alloc] init];
+    testLockResponder = [[TestLockResponder alloc] init];
+    testUnlockResponder = [[TestUnlockResponder alloc] init];
+    guard = [[CalendarAccessGuard alloc] initWithLockResponder:testLockResponder unlockResponder:testUnlockResponder];
     guard.delegate = testDelegate;
 }
 
@@ -65,7 +85,9 @@
     [guard guardCalendarAccess];
     
     XCTAssert(testEventStoreWrapper.didRequestAccess);
+    XCTAssert(testLockResponder.didActivate);
     XCTAssertFalse(testDelegate.didGrantCalendarAccess);
+    XCTAssertFalse(testUnlockResponder.didActivate);
 }
 
 - (void)testGuard_WitAuth_RequestsAccess {
@@ -74,7 +96,9 @@
     [guard guardCalendarAccess];
     
     XCTAssertFalse(testEventStoreWrapper.didRequestAccess);
+    XCTAssert(testLockResponder.didActivate);
     XCTAssert(testDelegate.didGrantCalendarAccess);
+    XCTAssert(testUnlockResponder.didActivate);
 }
 
 @end

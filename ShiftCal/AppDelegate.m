@@ -13,6 +13,8 @@
 #import "LayoutHelper.h"
 
 #import "UserCalendarProvider.h"
+#import "LockApp.h"
+#import "UnlockApp.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong, readwrite) UINavigationController *navController;
@@ -23,11 +25,6 @@
 
 
 @implementation AppDelegate
-
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    [self.navController pushViewController:viewController animated:animated];
-}
 
 - (void)grantCalendarAccess
 {
@@ -45,23 +42,37 @@
     
     self.window        = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.navController = [[UINavigationController alloc] init];
-    
-    [self guardCalendarAccess];
-    
     self.window.rootViewController = self.navController;
-    
     [self.window makeKeyAndVisible];
+    
+//    [self guardCalendarAccess];
+    [self.navController pushViewController:[self grantCalendarAccessViewController] animated:NO];
     return YES;
 }
 
 - (void)guardCalendarAccess
 {
-    CalendarAccessGuard *calendarAccessGuard = [[CalendarAccessGuard alloc] init];
+    id<CalendarAccessResponder> lockResponder = [[LockApp alloc] initWithViewController:[self grantCalendarAccessViewController]  navigationController:self.navController];
+    
+    ShiftOverviewController *shiftOverviewController = [[ShiftOverviewController alloc] init];
+    id<CalendarAccessResponder> unlockResponder = [[UnlockApp alloc] initWithViewController:shiftOverviewController navigationController:self.navController];
+    
+    CalendarAccessGuard *calendarAccessGuard = [[CalendarAccessGuard alloc] initWithLockResponder:lockResponder unlockResponder:unlockResponder];
     calendarAccessGuard.delegate = self;
     self.calendarAccessGuard = calendarAccessGuard;
     
     [calendarAccessGuard guardCalendarAccess];
 }
+
+- (UIViewController *)grantCalendarAccessViewController
+{
+    UIViewController *grantCalendarAccessViewController = [[UIViewController alloc] init];
+    UIView *view = [LayoutHelper grantCalendarAccessView];
+    grantCalendarAccessViewController.view = view;
+    
+    return grantCalendarAccessViewController;
+}
+
 
 - (void)styleNavigationBar
 {

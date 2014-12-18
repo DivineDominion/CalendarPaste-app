@@ -7,17 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <EventKit/EventKit.h>
 
-@class EventStoreWrapper;
+@protocol CalendarAccessResponder;
+@protocol CalendarAccessResponderUnlock;
 
 @protocol CalendarAccessGuardDelegate <NSObject>
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated;
 - (void)grantCalendarAccess;
 @end
 
 @interface CalendarAccessGuard : NSObject
 @property (nonatomic, weak, readwrite) id<CalendarAccessGuardDelegate> delegate;
+
+@property (nonatomic, strong, readonly) id<CalendarAccessResponder> lockResponder;
+@property (nonatomic, strong, readonly) id<CalendarAccessResponderUnlock> unlockResponder;
+
+- (instancetype)initWithLockResponder:(id<CalendarAccessResponder>)lockResponder unlockResponder:(id<CalendarAccessResponderUnlock>)unlockResponder NS_DESIGNATED_INITIALIZER;
 
 - (void)guardCalendarAccess;
 @end

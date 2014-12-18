@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5016FE021A3B5D13002B642E /* CalendarAccessGuard.m in Sources */ = {isa = PBXBuildFile; fileRef = 5016FE011A3B5D13002B642E /* CalendarAccessGuard.m */; };
 		5016FE071A3B6BED002B642E /* ModificationCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 5016FE061A3B6BED002B642E /* ModificationCommand.m */; };
+		501EA1511A42CF0B0010F268 /* LockApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 501EA1501A42CF0B0010F268 /* LockApp.m */; };
+		501EA1541A42CF160010F268 /* UnlockApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 501EA1531A42CF160010F268 /* UnlockApp.m */; };
 		50329F481A3EDE62001F5D31 /* UserCalendarProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 50329F471A3EDE62001F5D31 /* UserCalendarProvider.m */; };
 		50329FA71A3EFE11001F5D31 /* libTestingToolkit-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50329FA61A3EFE11001F5D31 /* libTestingToolkit-iOS.a */; };
 		50329FB11A3F04D5001F5D31 /* EventStoreWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 50329FB01A3F04D5001F5D31 /* EventStoreWrapper.m */; };
@@ -67,6 +69,11 @@
 		5016FE011A3B5D13002B642E /* CalendarAccessGuard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarAccessGuard.m; sourceTree = "<group>"; };
 		5016FE051A3B6BED002B642E /* ModificationCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModificationCommand.h; sourceTree = "<group>"; };
 		5016FE061A3B6BED002B642E /* ModificationCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModificationCommand.m; sourceTree = "<group>"; };
+		501EA14F1A42CF0B0010F268 /* LockApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockApp.h; sourceTree = "<group>"; };
+		501EA1501A42CF0B0010F268 /* LockApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockApp.m; sourceTree = "<group>"; };
+		501EA1521A42CF160010F268 /* UnlockApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnlockApp.h; sourceTree = "<group>"; };
+		501EA1531A42CF160010F268 /* UnlockApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnlockApp.m; sourceTree = "<group>"; };
+		501EA1551A42CF380010F268 /* CalendarAccessResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarAccessResponder.h; sourceTree = "<group>"; };
 		50329F461A3EDE62001F5D31 /* UserCalendarProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCalendarProvider.h; sourceTree = "<group>"; };
 		50329F471A3EDE62001F5D31 /* UserCalendarProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCalendarProvider.m; sourceTree = "<group>"; };
 		50329FA61A3EFE11001F5D31 /* libTestingToolkit-iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libTestingToolkit-iOS.a"; path = "../../Library/Developer/Xcode/DerivedData/CalendarPaste-fvkrxbvbjcxddvhhdfeypwazxbex/Build/Products/Debug-iphoneos/libTestingToolkit-iOS.a"; sourceTree = "<group>"; };
@@ -186,6 +193,7 @@
 				60BB96B115C08EB900801105 /* AppDelegate.m */,
 				5016FE001A3B5D13002B642E /* CalendarAccessGuard.h */,
 				5016FE011A3B5D13002B642E /* CalendarAccessGuard.m */,
+				501EA1551A42CF380010F268 /* CalendarAccessResponder.h */,
 				50467DC01A404857001E18A9 /* Calendar */,
 				50467DB41A4031B5001E18A9 /* Core Data */,
 			);
@@ -239,6 +247,17 @@
 				600E11A216038973009A7E24 /* AlarmPickerDelegate.h */,
 			);
 			name = Alarm;
+			sourceTree = "<group>";
+		};
+		501EA14E1A42CEEA0010F268 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				501EA14F1A42CF0B0010F268 /* LockApp.h */,
+				501EA1501A42CF0B0010F268 /* LockApp.m */,
+				501EA1521A42CF160010F268 /* UnlockApp.h */,
+				501EA1531A42CF160010F268 /* UnlockApp.m */,
+			);
+			name = Application;
 			sourceTree = "<group>";
 		};
 		50329F451A3EDD9B001F5D31 /* MBProgressHUD */ = {
@@ -386,6 +405,7 @@
 			isa = PBXGroup;
 			children = (
 				5016FE031A3B635D002B642E /* Infrastructure */,
+				501EA14E1A42CEEA0010F268 /* Application */,
 				5016FE041A3B6391002B642E /* UI */,
 				605A96B616171D980008B1C6 /* Model */,
 				60BB96A815C08EB900801105 /* Supporting Files */,
@@ -557,11 +577,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				501EA1511A42CF0B0010F268 /* LockApp.m in Sources */,
 				60BB96AE15C08EB900801105 /* main.m in Sources */,
 				5016FE071A3B6BED002B642E /* ModificationCommand.m in Sources */,
 				50329F481A3EDE62001F5D31 /* UserCalendarProvider.m in Sources */,
 				50467DB31A403180001E18A9 /* PersistentStack.m in Sources */,
 				60BB96B215C08EB900801105 /* AppDelegate.m in Sources */,
+				501EA1541A42CF160010F268 /* UnlockApp.m in Sources */,
 				60AAB81315C13297002114B9 /* ShiftOverviewController.m in Sources */,
 				60FBA82315F10443008B48A1 /* DurationPickerController.m in Sources */,
 				60FBA83015F66C4C008B48A1 /* CalendarPickerController.m in Sources */,
@@ -803,6 +825,7 @@
 				50467DA91A4028AE001E18A9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		60BB969715C08EB900801105 /* Build configuration list for PBXProject "ShiftCal" */ = {
 			isa = XCConfigurationList;

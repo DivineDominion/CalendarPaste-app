@@ -7,6 +7,7 @@
 //
 
 #import "CalendarAccessGuard.h"
+#import "CalendarAccessResponder.h"
 
 #import "LayoutHelper.h"
 #import "ShiftOverviewController.h"
@@ -16,29 +17,51 @@
 
 @implementation CalendarAccessGuard
 
+- (instancetype)init
+{
+    return [self initWithLockResponder:nil unlockResponder:nil];
+}
+
+- (instancetype)initWithLockResponder:(id<CalendarAccessResponder>)lockResponder unlockResponder:(id<CalendarAccessResponderUnlock>)unlockResponder
+{
+    NSParameterAssert(lockResponder);
+    NSParameterAssert(unlockResponder);
+    
+    self = [super init];
+    
+    if (self)
+    {
+        _lockResponder = lockResponder;
+        _unlockResponder = unlockResponder;
+    }
+
+    return self;
+}
+
 - (EventStoreWrapper *)eventStoreWrapper
 {
     return [[UserCalendarProvider sharedInstance] eventStoreWrapper];
 }
 
+
 #pragma mark -
 
 - (void)guardCalendarAccess
 {
-    [self showCalendarAccessLock];
+    [self activateLockResponder];
     
     if ([self isAuthorizedForCalendarAccess])
     {
-        [self showOverviewViewController];
+        [self activateUnlockResponderImmediately];
         return;
     }
     
     [self requestCalendarAccess];
 }
 
-- (void)showCalendarAccessLock
+- (void)activateLockResponder
 {
-    [self pushViewController:[self grantCalendarAccessViewController] animated:NO];
+    [self.lockResponder activate];
 }
 
 - (BOOL)isAuthorizedForCalendarAccess
@@ -48,44 +71,38 @@
 
 - (void)requestCalendarAccess
 {
-    __weak CalendarAccessGuard *welf = self;
     [self.eventStoreWrapper requestEventAccessWithGrantedBlock:^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [welf showOverviewViewControllerAnimated:YES];
-            [welf.delegate grantCalendarAccess];
+            [self activateUnlockResponder];
         });
     }];
 }
 
-- (void)showOverviewViewController
+- (void)activateUnlockResponderImmediately
 {
-    [self showOverviewViewControllerAnimated:NO];
-    [self.delegate grantCalendarAccess];
+    [self activateUnlockResponder:self.unlockResponder immediately:YES];
+    [self grantCalendarAccess];
 }
 
-- (void)showOverviewViewControllerAnimated:(BOOL)animated
+- (void)activateUnlockResponder
 {
-    ShiftOverviewController *shiftOverviewController = [[ShiftOverviewController alloc] init];
-    [self pushViewController:shiftOverviewController
-                    animated:animated];
+    [self activateUnlockResponder:self.unlockResponder immediately:NO];
+    [self grantCalendarAccess];
 }
 
-- (UIViewController *)grantCalendarAccessViewController
+- (void)activateUnlockResponder:(id<CalendarAccessResponderUnlock>)unlockResponder immediately:(BOOL)immediate
 {
-    UIViewController *grantCalendarAccessViewController = [[UIViewController alloc] init];
-    UIView *view = [LayoutHelper grantCalendarAccessView];
-    grantCalendarAccessViewController.view = view;
-    
-    return grantCalendarAccessViewController;
+    [unlockResponder setUnlocksImmediately:immediate];
+    [unlockResponder activate];
 }
 
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)grantCalendarAccess
 {
     id<CalendarAccessGuardDelegate> delegate = self.delegate;
     
-    if (delegate && [delegate respondsToSelector:@selector(pushViewController:animated:)])
+    if (delegate && [delegate respondsToSelector:@selector(grantCalendarAccess)])
     {
-        [delegate pushViewController:viewController animated:animated];
+        [delegate grantCalendarAccess];
     }
 }
 @end
